@@ -1,9 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/language.dart';
 import 'package:ethio_chef/screens/SplashScreen.dart';
+import 'package:ethio_chef/utils/theme/app_theme.dart';
+import 'package:ethio_chef/utils/theme/model_theme.dart';
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,7 +20,7 @@ void main() async {
           Locale('en', 'AU'),
           Locale('en', 'CA'),
           Locale('am'),
-          Locale('en','GB'),
+          Locale('en', 'GB'),
           Locale('en'),
         ],
         path: 'assets/locale',
@@ -35,21 +38,36 @@ class EthioChef extends StatefulWidget {
 
 class _EthioChefState extends State<EthioChef> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Language.selectedLanguage = Language.getSelectedLanguage(context);
-    return MaterialApp(
-        localizationsDelegates: [
-          GlobalMaterialLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          ...context.localizationDelegates,
-        ],
-        supportedLocales: context.supportedLocales,
-        locale: context.locale,
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const SplashScreen(),
-          // '/main': (context) => const MainLayoutScreen()
-        });
+
+    return ChangeNotifierProvider(
+      create: (_) => ModelTheme(),
+      child: Consumer<ModelTheme>(
+          builder: (context, ModelTheme themeNotifier, child) {
+        return MaterialApp(
+            localizationsDelegates: [
+              GlobalMaterialLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              ...context.localizationDelegates,
+            ],
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            themeMode: themeNotifier.isDark ? ThemeMode.dark : ThemeMode.light,
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            initialRoute: '/',
+            routes: {
+              '/': (context) => const SplashScreen(),
+              // '/main': (context) => const MainLayoutScreen()
+            });
+      }),
+    );
   }
 }
