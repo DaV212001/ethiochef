@@ -32,6 +32,9 @@ class ImageHeadFoodCard extends StatelessWidget {
                   fit: BoxFit.fill,
                 ),
               )),
+          SizedBox(
+            height: 2,
+          ),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 5),
             child: Text(
@@ -44,9 +47,6 @@ class ImageHeadFoodCard extends StatelessWidget {
               textAlign: TextAlign.start,
             ),
           ),
-          SizedBox(
-            height: 5,
-          )
         ],
       ),
     );

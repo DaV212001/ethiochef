@@ -21,6 +21,7 @@ class AppTheme {
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: white
     ),
+    fontFamily: "Manrope",
     textTheme: TextTheme(
         headlineMedium: TextStyle(
           fontSize: 18,
@@ -28,6 +29,7 @@ class AppTheme {
           fontWeight: FontWeight.w400,
         ),
         headlineSmall: TextStyle(
+          letterSpacing: 0.5,
           fontSize: 15,
           color: cocoaBrown,
           fontWeight: FontWeight.w400,

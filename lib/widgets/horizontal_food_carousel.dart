@@ -18,8 +18,8 @@ class HorizontalFoodCarousel extends StatelessWidget {
       height = 275;
       width = 230;
     } else if (type == ImageHeadFoodCard.foodCardType){
-      height = 200;
-      width = 185;
+      height = 180;
+      width = 165;
     }
     return Container(
       height: height,
@@ -30,10 +30,7 @@ class HorizontalFoodCarousel extends StatelessWidget {
           itemExtent: width,
           itemCount: dishes.length,
           itemBuilder: (BuildContext context, int index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5,),
-              child: buildFoodCard(dishes[index]),
-            );
+            return buildFoodCard(dishes[index]);
           }
       ),
     );

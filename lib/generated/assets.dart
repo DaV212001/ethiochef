@@ -2,7 +2,14 @@
 class Assets {
   Assets._();
 
-  static const String imagesChef = 'assets/images/logo.png';
+  static const String fontsManropeBold = 'assets/fonts/Manrope-Bold.ttf';
+  static const String fontsManropeExtraBold = 'assets/fonts/Manrope-ExtraBold.ttf';
+  static const String fontsManropeExtraLight = 'assets/fonts/Manrope-ExtraLight.ttf';
+  static const String fontsManropeLight = 'assets/fonts/Manrope-Light.ttf';
+  static const String fontsManropeMedium = 'assets/fonts/Manrope-Medium.ttf';
+  static const String fontsManropeRegular = 'assets/fonts/Manrope-Regular.ttf';
+  static const String fontsManropeSemiBold = 'assets/fonts/Manrope-SemiBold.ttf';
+  static const String imagesLogo = 'assets/images/logo.png';
   static const String localeAm = 'assets/locale/am.json';
   static const String localeEn = 'assets/locale/en.json';
   static const String localeEnAU = 'assets/locale/en-AU.json';

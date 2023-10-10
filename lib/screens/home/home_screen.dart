@@ -1,5 +1,6 @@
 import 'package:ethio_chef/models/category.dart';
 import 'package:ethio_chef/models/food.dart';
+import 'package:ethio_chef/widgets/header.dart';
 import 'package:ethio_chef/widgets/horizontal_food_carousel.dart';
 import 'package:flutter/material.dart';
 
@@ -34,19 +35,24 @@ class HomeScreen extends StatelessWidget {
           physics: BouncingScrollPhysics(),
           child: Column(
             children: [
+              Header(title: "Category"),
+              HorizontalFoodCarousel(
+                dishes: dishes,
+                type: 2,
+              ),
+              Header(
+                title: "Recent Recipes",
+                showMore: true,
+                showMoreText: "See all",
+              ),
               HorizontalFoodCarousel(
                 dishes: dishes,
                 type: 3,
               ),
-              Divider(),
+              Header(title: "Testing Cards"),
               HorizontalFoodCarousel(
                 dishes: dishes,
                 type: 1,
-              ),
-              Divider(),
-              HorizontalFoodCarousel(
-                dishes: dishes,
-                type: 2,
               ),
               SizedBox(
                 height: 10,
