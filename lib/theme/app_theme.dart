@@ -38,6 +38,10 @@ class AppTheme {
           fontSize: 15,
           color: russet,
         ),
+        labelMedium: TextStyle(
+          fontSize: 13,
+          color: white,
+        ),
         labelSmall: TextStyle(
           fontSize: 10,
           color: white,
