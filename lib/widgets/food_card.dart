@@ -6,6 +6,7 @@ import 'package:ethio_chef/widgets/small_label_button.dart';
 import 'package:flutter/material.dart';
 
 class FoodCard extends StatelessWidget {
+  static int foodCardType = 1;
   final Food food;
 
   const FoodCard({super.key, required this.food});
@@ -14,9 +15,8 @@ class FoodCard extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Card(
-      elevation: 2,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
@@ -30,14 +30,15 @@ class FoodCard extends StatelessWidget {
                 ),
               )),
           const SizedBox(
-            height: 10,
+            height: 5,
           ),
           Expanded(
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 5),
               child: Text(
                 food.name,
-                style: theme.textTheme.headlineLarge,
+                style: theme.textTheme.headlineMedium,
+                textAlign: TextAlign.start,
               ),
             ),
           ),

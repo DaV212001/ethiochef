@@ -1,6 +1,6 @@
 import 'package:ethio_chef/models/category.dart';
 import 'package:ethio_chef/models/food.dart';
-import 'package:ethio_chef/screens/home/layout/horizontal_food_carousel.dart';
+import 'package:ethio_chef/widgets/horizontal_food_carousel.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -32,7 +32,16 @@ class HomeScreen extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            children: [HorizontalFoodCarousel(dishes: dishes)],
+            children: [
+              HorizontalFoodCarousel(
+                dishes: dishes,
+                type: 1,
+              ),
+              HorizontalFoodCarousel(
+                dishes: dishes,
+                type: 2,
+              )
+            ],
           ),
         ),
       ),

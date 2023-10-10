@@ -9,21 +9,28 @@ class AppTheme {
       onPrimary: white,
       primaryContainer: mikadoYellow,
       onPrimaryContainer: white,
-      secondary: seasalt,
+      secondary: silver,
       onSecondary: russet,
-      surface: seasalt,
+      tertiary: russet,
+      onTertiary: white,
+      surface: antiFlashWhite,
       onSurface: cocoaBrown,
       onSurfaceVariant: russet,
       shadow: mikadoYellow
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      backgroundColor: Colors.white
+      backgroundColor: white
     ),
     textTheme: TextTheme(
-        headlineLarge: TextStyle(
+        headlineMedium: TextStyle(
           fontSize: 18,
           color: cocoaBrown,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w400,
+        ),
+        headlineSmall: TextStyle(
+          fontSize: 15,
+          color: cocoaBrown,
+          fontWeight: FontWeight.w400,
         ),
         bodyMedium : TextStyle(
           fontSize: 15,
@@ -39,12 +46,17 @@ class AppTheme {
       textTheme: ButtonTextTheme.primary
     ),
     cardTheme: CardTheme(
-      color: seasalt,
+      color: antiFlashWhite,
       clipBehavior: Clip.hardEdge,
       shape: RoundedRectangleBorder(
-        borderRadius: allBorderRadius
+        side: BorderSide(
+          width: 0.5,
+          color: silver
+        ),
+        borderRadius: allBorderRadius,
       ),
-      shadowColor: mikadoYellow
+      elevation: 3,
+      shadowColor: Colors.transparent
     )
   );
 
@@ -62,6 +74,7 @@ class AppTheme {
   static Color cocoaBrown = const Color(0xFFD2691E);
   static Color grey = const Color(0xFF646464);
   static Color silver = const Color(0xFFCCCACA);
+  static Color antiFlashWhite = const Color(0xFFECECEC);
   static Color russet = const Color(0xFF141115);
   static Color russet_O90 = const Color(0xE6141115);
   static Color seasalt = const Color(0xFFF8FAFC);
