@@ -1,4 +1,4 @@
-import 'package:ethio_chef/utils/theme/my_theme_preference.dart';
+import 'package:ethio_chef/theme/my_theme_preference.dart';
 import 'package:flutter/material.dart';
 
 class ModelTheme extends ChangeNotifier {

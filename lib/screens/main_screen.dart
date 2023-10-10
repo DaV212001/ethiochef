@@ -1,10 +1,10 @@
 import 'package:ethio_chef/screens/category_screen.dart';
-import 'package:ethio_chef/screens/home_screen.dart';
+import 'package:ethio_chef/screens/competition_screen.dart';
+import 'package:ethio_chef/screens/home/home_screen.dart';
 import 'package:ethio_chef/screens/profile_screen.dart';
-import 'package:ethio_chef/screens/saved_recipes_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -54,13 +54,14 @@ class _MainScreenState extends State<MainScreen> {
     return [
       HomeScreen(),
       CategoryScreen(),
-      SavedRecipesScreen(),
+      // SavedRecipesScreen(),
+      CompetitionScreen(),
       ProfileScreen()
     ];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
-    Color activeColor = Theme.of(context).primaryColor;
+    Color activeColor = Theme.of(context).colorScheme.primary;
     Color inactiveColor = Theme.of(context).unselectedWidgetColor;
     return [
       PersistentBottomNavBarItem(
@@ -75,9 +76,15 @@ class _MainScreenState extends State<MainScreen> {
         activeColorPrimary: activeColor,
         inactiveColorPrimary: inactiveColor,
       ),
+      // PersistentBottomNavBarItem(
+      //   icon: Icon(CupertinoIcons.bookmark),
+      //   title: ("Saved Recipes"),
+      //   activeColorPrimary: activeColor,
+      //   inactiveColorPrimary: inactiveColor,
+      // ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.bookmark),
-        title: ("Saved Recipes"),
+        icon: Icon(CupertinoIcons.game_controller),
+        title: ("Competitions"),
         activeColorPrimary: activeColor,
         inactiveColorPrimary: inactiveColor,
       ),

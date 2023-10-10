@@ -2,8 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/language.dart';
 import 'package:ethio_chef/screens/splash_screen.dart';
 import 'package:ethio_chef/screens/main_screen.dart';
-import 'package:ethio_chef/utils/theme/app_theme.dart';
-import 'package:ethio_chef/utils/theme/model_theme.dart';
+import 'package:ethio_chef/theme/app_theme.dart';
+import 'package:ethio_chef/theme/model_theme.dart';
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -51,7 +51,7 @@ class _EthioChefState extends State<EthioChef> {
       create: (_) => ModelTheme(),
       child: Consumer<ModelTheme>(
           builder: (context, ModelTheme themeNotifier, child) {
-        themeNotifier.isDark = false; // using to check dark theme
+        // themeNotifier.isDark = false; // using to check dark theme
         return MaterialApp(
             localizationsDelegates: [
               GlobalMaterialLocalizations.delegate,
