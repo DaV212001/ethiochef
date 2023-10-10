@@ -37,7 +37,7 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
               padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
               decoration: BoxDecoration(
                   borderRadius: AppTheme.allBorderRadius,
-                  color: theme.colorScheme.tertiary.withOpacity(0.9)),
+                  color: theme.colorScheme.tertiary.withOpacity(0.8)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

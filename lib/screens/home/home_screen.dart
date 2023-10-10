@@ -31,15 +31,25 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Column(
             children: [
               HorizontalFoodCarousel(
                 dishes: dishes,
+                type: 3,
+              ),
+              Divider(),
+              HorizontalFoodCarousel(
+                dishes: dishes,
                 type: 1,
               ),
+              Divider(),
               HorizontalFoodCarousel(
                 dishes: dishes,
                 type: 2,
+              ),
+              SizedBox(
+                height: 10,
               )
             ],
           ),
