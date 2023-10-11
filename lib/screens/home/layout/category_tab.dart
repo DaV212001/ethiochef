@@ -28,7 +28,9 @@ class CategoryTab extends StatelessWidget {
           ButtonsTabBar(
             backgroundColor: theme.colorScheme.primary,
             unselectedBackgroundColor: Colors.transparent,
-            unselectedLabelStyle: theme.textTheme.bodyMedium,
+            unselectedLabelStyle: theme.textTheme.labelMedium?.copyWith(
+              color: theme.colorScheme.tertiary
+            ),
             labelStyle: theme.textTheme.bodyMedium
                 ?.copyWith(color: theme.colorScheme.onTertiary),
             contentPadding: EdgeInsets.symmetric(horizontal: 10),

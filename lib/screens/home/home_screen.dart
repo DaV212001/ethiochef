@@ -1,6 +1,7 @@
 import 'package:ethio_chef/models/category.dart';
 import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/screens/home/layout/category_tab.dart';
+import 'package:ethio_chef/screens/home/layout/home_screen_head.dart';
 import 'package:ethio_chef/widgets/header.dart';
 import 'package:ethio_chef/widgets/horizontal_food_carousel.dart';
 import 'package:flutter/material.dart';
@@ -33,10 +34,13 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
           child: Column(
             children: [
+              HomeScreenHead(hasNotification: true,),
               CategoryTab(dishes: dishes),
+              SizedBox(
+                height: 10,
+              ),
               Header(
                 title: "Recent Recipes",
                 showMore: true,
@@ -45,6 +49,9 @@ class HomeScreen extends StatelessWidget {
               HorizontalFoodCarousel(
                 dishes: dishes,
                 type: 3,
+              ),
+              SizedBox(
+                height: 10,
               ),
               Header(title: "Testing Cards"),
               HorizontalFoodCarousel(

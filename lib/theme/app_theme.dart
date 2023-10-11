@@ -11,18 +11,25 @@ class AppTheme {
       onPrimaryContainer: white,
       secondary: silver,
       onSecondary: russet,
+      secondaryContainer: silver,
+      onSecondaryContainer: russet,
       tertiary: russet,
       onTertiary: white,
       surface: antiFlashWhite,
       onSurface: cocoaBrown,
       onSurfaceVariant: russet,
-      shadow: mikadoYellow
+      shadow: grey,
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: white
     ),
     fontFamily: "Manrope",
     textTheme: TextTheme(
+        headlineLarge: TextStyle(
+          fontSize: 20,
+          color: russet,
+          fontWeight: FontWeight.bold,
+        ),
         headlineMedium: TextStyle(
           fontSize: 18,
           color: cocoaBrown,
