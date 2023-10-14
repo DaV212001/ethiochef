@@ -29,7 +29,9 @@ class HomeScreen extends StatelessWidget {
         description:
             "Savor the simplicity of Moist Zucchini Bread—a perfect fusion of fresh zucchini, aromatic spices, and tender crumb. A guilt-free, comforting treat for any time of day. Enjoy the homemade goodness!",
         categories: categories,
-        menuTimes: menuTimes);
+        menuTimes: menuTimes,
+        video: ""
+    );
     List<Food> dishes = List.filled(10, food);
     return Scaffold(
       body: SafeArea(

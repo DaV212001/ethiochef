@@ -10,6 +10,7 @@ class Food {
   bool isSaved;
   List<String>? ingredient;
   List<String>? steps;
+  String? video;
 
   Food({required this.thumbnail,
     required this.name,
@@ -18,5 +19,8 @@ class Food {
     this.description,
     this.label,
     this.isSaved = false,
+    this.ingredient,
+    this.steps,
+    this.video
   });
 }
