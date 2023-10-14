@@ -19,6 +19,7 @@ class AppTheme {
       onSurface: cocoaBrown,
       onSurfaceVariant: russet,
       shadow: grey,
+      background: white
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: white

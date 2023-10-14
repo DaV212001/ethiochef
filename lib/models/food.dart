@@ -8,6 +8,8 @@ class Food {
   List<Category> categories;
   String? label;
   bool isSaved;
+  List<String>? ingredient;
+  List<String>? steps;
 
   Food({required this.thumbnail,
     required this.name,

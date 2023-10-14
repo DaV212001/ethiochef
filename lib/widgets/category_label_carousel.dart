@@ -1,0 +1,35 @@
+import 'package:ethio_chef/models/category.dart';
+import 'package:ethio_chef/widgets/small_label_button.dart';
+import 'package:flutter/material.dart';
+
+class CategoryLabelCarousel extends StatelessWidget {
+  final List<Category> categories;
+
+  const CategoryLabelCarousel({super.key, required this.categories});
+
+  @override
+  Widget build(BuildContext context) {
+    List<SmallLabelButton> labels = categories
+        .map((e) => SmallLabelButton(text: e.name, onTap: () {}))
+        .toList();
+    return Expanded(
+      child: Container(
+        alignment: Alignment.centerLeft,
+        child: ListView(
+          physics: BouncingScrollPhysics(),
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          children: List.generate(
+            labels.length,
+            (index) => Row(
+              children: [
+                labels[index],
+                if (index < labels.length - 1) SizedBox(width: 5.0),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
