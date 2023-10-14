@@ -29,15 +29,15 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
             child: CachedImage(url: widget.food.thumbnail, fit: BoxFit.fill),
           ),
           Positioned(
-            bottom: 5,
-            left: 10,
-            right: 10,
+            bottom: 0,
+            left: 0,
+            right: 0,
             child: Container(
               height: 75,
               padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
               decoration: BoxDecoration(
                   borderRadius: AppTheme.allBorderRadius,
-                  color: theme.colorScheme.tertiary.withOpacity(0.8)),
+                  color: theme.colorScheme.tertiary.withOpacity(0.7)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

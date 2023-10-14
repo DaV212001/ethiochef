@@ -1,8 +1,9 @@
+import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/screens/category_screen.dart';
 import 'package:ethio_chef/screens/competition_screen.dart';
 import 'package:ethio_chef/screens/home/home_screen.dart';
 import 'package:ethio_chef/screens/profile_screen.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
@@ -65,13 +66,27 @@ class _MainScreenState extends State<MainScreen> {
     Color inactiveColor = Theme.of(context).unselectedWidgetColor;
     return [
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.home),
+        icon: SvgIcon(
+          image: Assets.iconsHome,
+          color: activeColor,
+        ),
+        inactiveIcon: SvgIcon(
+          image: Assets.iconsHome,
+          color: inactiveColor,
+        ),
         title: ("Home"),
         activeColorPrimary: activeColor,
         inactiveColorPrimary: inactiveColor,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.category_outlined),
+        icon: SvgIcon(
+        image: Assets.iconsCategory,
+        color: activeColor,
+      ),
+        inactiveIcon: SvgIcon(
+          image: Assets.iconsCategory,
+          color: inactiveColor,
+        ),
         title: ("Categories"),
         activeColorPrimary: activeColor,
         inactiveColorPrimary: inactiveColor,
@@ -83,13 +98,27 @@ class _MainScreenState extends State<MainScreen> {
       //   inactiveColorPrimary: inactiveColor,
       // ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.game_controller),
+        icon: SvgIcon(
+          image: Assets.iconsMedal,
+          color: activeColor,
+        ),
+        inactiveIcon: SvgIcon(
+          image: Assets.iconsMedal,
+          color: inactiveColor,
+        ),
         title: ("Competitions"),
         activeColorPrimary: activeColor,
         inactiveColorPrimary: inactiveColor,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.profile_circled),
+        icon: SvgIcon(
+          image: Assets.iconsProfile,
+          color: activeColor,
+        ),
+        inactiveIcon: SvgIcon(
+          image: Assets.iconsProfile,
+          color: inactiveColor,
+        ),
         title: ("Profile"),
         activeColorPrimary: activeColor,
         inactiveColorPrimary: inactiveColor,

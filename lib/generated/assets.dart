@@ -9,6 +9,10 @@ class Assets {
   static const String fontsManropeMedium = 'assets/fonts/Manrope-Medium.ttf';
   static const String fontsManropeRegular = 'assets/fonts/Manrope-Regular.ttf';
   static const String fontsManropeSemiBold = 'assets/fonts/Manrope-SemiBold.ttf';
+  static const String iconsCategory = 'assets/images/icons/category.svg';
+  static const String iconsHome = 'assets/images/icons/home.svg';
+  static const String iconsMedal = 'assets/images/icons/medal.svg';
+  static const String iconsProfile = 'assets/images/icons/profile.svg';
   static const String imagesLogo = 'assets/images/logo.png';
   static const String localeAm = 'assets/locale/am.json';
   static const String localeEn = 'assets/locale/en.json';
