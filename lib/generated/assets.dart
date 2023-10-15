@@ -10,9 +10,17 @@ class Assets {
   static const String fontsManropeRegular = 'assets/fonts/Manrope-Regular.ttf';
   static const String fontsManropeSemiBold = 'assets/fonts/Manrope-SemiBold.ttf';
   static const String iconsCategory = 'assets/images/icons/category.svg';
+  static const String iconsCategoryOutlined = 'assets/images/icons/category_outlined.svg';
+  static const String iconsCooking = 'assets/images/icons/cooking.svg';
+  static const String iconsCookingTime = 'assets/images/icons/cooking_time.svg';
+  static const String iconsFoodMenu = 'assets/images/icons/food_menu.svg';
   static const String iconsHome = 'assets/images/icons/home.svg';
+  static const String iconsIngredients = 'assets/images/icons/ingredients.svg';
+  static const String iconsMealTime = 'assets/images/icons/meal_time.svg';
   static const String iconsMedal = 'assets/images/icons/medal.svg';
+  static const String iconsPeople = 'assets/images/icons/people.svg';
   static const String iconsProfile = 'assets/images/icons/profile.svg';
+  static const String iconsTime = 'assets/images/icons/time.svg';
   static const String imagesLogo = 'assets/images/logo.png';
   static const String localeAm = 'assets/locale/am.json';
   static const String localeEn = 'assets/locale/en.json';
