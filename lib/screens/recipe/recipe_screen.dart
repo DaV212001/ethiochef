@@ -75,7 +75,10 @@ class _RecipeScreenState extends State<RecipeScreen> {
                     : SizedBox.shrink(),
                 RecipeBody(
                     ingredients: widget.food.ingredient!, steps: widget.food.steps!),
-                SizedBox(height: 10,)
+                SizedBox(height: 10,),
+                RecipeHeader(
+                  food: widget.food,
+                ),
               ],
             ),
           ),

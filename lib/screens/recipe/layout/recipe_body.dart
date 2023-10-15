@@ -1,6 +1,7 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:ethio_chef/generated/assets.dart';
-import 'package:ethio_chef/widgets/recipe/Ingredient_card.dart';
+import 'package:ethio_chef/screens/recipe/layout/recipe_ingredients.dart';
+import 'package:ethio_chef/screens/recipe/layout/recipe_steps.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 
@@ -33,15 +34,15 @@ class _RecipeBodyState extends State<RecipeBody> with TickerProviderStateMixin {
     });
     bool tabIsSteps  = selectedIndex == 1;
     double ingredientsHeight = widget.ingredients.length * 50;
-    double stepsHeight = (widget.ingredients.length - 5) * 50;
+    double stepsHeight = widget.steps.length * 70;
     ThemeData theme = Theme.of(context);
     var tabs = [
       Tab(
         text: "Ingredients",
         icon: SvgIcon(
           image: Assets.iconsIngredients,
-          color: !tabIsSteps ? theme.colorScheme.primary
-              : theme.unselectedWidgetColor,
+          color: tabIsSteps ? theme.unselectedWidgetColor
+              : theme.colorScheme.primary,
         ),
       ),
       Tab(
@@ -69,51 +70,19 @@ class _RecipeBodyState extends State<RecipeBody> with TickerProviderStateMixin {
           tabs: tabs,
           physics: NeverScrollableScrollPhysics(),
         ),
-        SizedBox(
-          height: !tabIsSteps ? ingredientsHeight : stepsHeight,
+        Container(
+          constraints: BoxConstraints(
+            maxHeight: !tabIsSteps ? ingredientsHeight : stepsHeight,
+          ),
           child: TabBarView(
             controller: _tabController,
             children: <Widget>[
-              ingredients(),
-              steps()
+              RecipeIngredients(ingredients: widget.ingredients),
+              RecipeSteps(steps: widget.steps,),
             ],
           ),
         ),
       ],
-    );
-  }
-
-  Widget ingredients() {
-    return ListView.builder(
-      padding: EdgeInsets.all(0),
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: widget.ingredients.length,
-      itemExtent: 50,
-      itemBuilder: (context, index) {
-        return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
-            child: IngredientCard(
-              ingredient: widget.ingredients[index],
-            ));
-      },
-    );
-  }
-
-  Widget steps() {
-    return ListView.builder(
-      padding: EdgeInsets.all(0),
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: widget.ingredients.length - 5,
-      itemExtent: 50,
-      itemBuilder: (context, index) {
-        return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
-            child: IngredientCard(
-              ingredient: widget.ingredients[index],
-            ));
-      },
     );
   }
 }
