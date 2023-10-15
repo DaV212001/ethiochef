@@ -2,7 +2,7 @@ import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/screens/recipe/recipe_screen.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:ethio_chef/widgets/cached_image.dart';
-import 'package:ethio_chef/widgets/category_label_carousel.dart';
+import 'package:ethio_chef/widgets/home/category_label_carousel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';

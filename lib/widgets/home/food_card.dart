@@ -2,7 +2,7 @@ import 'package:ethio_chef/models/category.dart';
 import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:ethio_chef/widgets/cached_image.dart';
-import 'package:ethio_chef/widgets/small_label_button.dart';
+import 'package:ethio_chef/widgets/home/small_label_button.dart';
 import 'package:flutter/material.dart';
 
 class FoodCard extends StatelessWidget {

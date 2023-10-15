@@ -22,6 +22,23 @@ class HomeScreen extends StatelessWidget {
       Category(id: 4, name: "Healthy"),
       Category(id: 5, name: "Homemade"),
     ];
+    List<String> ingredients = [
+      "¾ cup milk",
+      "2 tablespoons white vinegar ",
+      "1 cup all-purpose flour ",
+      "2 tablespoons white sugar ",
+      "1 teaspoon baking powder ",
+      "½ teaspoon baking soda ",
+      "½ teaspoon salt ",
+      "1 egg",
+      "2 tablespoons butter, melted ",
+      "cooking spray"
+    ];
+    List<String> steps = [
+      "Combine milk with vinegar in a medium bowl and set aside for 5 minutes to \"sour\"."
+          "Combine flour, sugar, baking powder, baking soda, and salt in a large mixing bowl. Whisk egg and butter into \"soured\" milk. Pour the flour mixture into the wet ingredients and whisk until lumps are gone."
+          "Heat a large skillet over medium heat, and coat with cooking spray. Pour 1/4 cupfuls of batter onto the skillet, and cook until bubbles appear on the surface. Flip with a spatula, and cook until browned on the other side."
+    ];
     Food food = Food(
         thumbnail:
             "https://ethiochef.com/storage/app/public/food/lHV2tjemk6rxwB4FuWxBjUKwFuaYzIov0SmbwiSy.png",
@@ -30,15 +47,18 @@ class HomeScreen extends StatelessWidget {
             "Savor the simplicity of Moist Zucchini Bread—a perfect fusion of fresh zucchini, aromatic spices, and tender crumb. A guilt-free, comforting treat for any time of day. Enjoy the homemade goodness!",
         categories: categories,
         menuTimes: menuTimes,
-        video: ""
-    );
+        video: "",
+        ingredient: ingredients,
+        steps: steps);
     List<Food> dishes = List.filled(10, food);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              HomeScreenHead(hasNotification: true,),
+              HomeScreenHead(
+                hasNotification: true,
+              ),
               CategoryTab(dishes: dishes),
               SizedBox(
                 height: 10,

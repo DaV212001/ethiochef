@@ -1,4 +1,4 @@
-import 'package:ethio_chef/widgets/search_input_field.dart';
+import 'package:ethio_chef/widgets/home/search_input_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

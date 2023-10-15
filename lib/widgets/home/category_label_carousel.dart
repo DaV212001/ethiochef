@@ -1,5 +1,5 @@
 import 'package:ethio_chef/models/category.dart';
-import 'package:ethio_chef/widgets/small_label_button.dart';
+import 'package:ethio_chef/widgets/home/small_label_button.dart';
 import 'package:flutter/material.dart';
 
 class CategoryLabelCarousel extends StatelessWidget {

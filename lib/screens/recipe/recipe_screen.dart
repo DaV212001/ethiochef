@@ -1,4 +1,5 @@
 import 'package:ethio_chef/models/food.dart';
+import 'package:ethio_chef/screens/recipe/layout/recipe_body.dart';
 import 'package:ethio_chef/screens/recipe/layout/recipe_header.dart';
 import 'package:ethio_chef/screens/recipe/layout/recipe_header_image.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
@@ -18,6 +19,7 @@ class RecipeScreen extends StatefulWidget {
 
 class _RecipeScreenState extends State<RecipeScreen> {
   late YoutubePlayerController controller;
+  bool fullScreen = false;
 
   @override
   void initState() {
@@ -38,33 +40,44 @@ class _RecipeScreenState extends State<RecipeScreen> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return YoutubePlayerBuilder(
+      //later  use better package
       player: YoutubePlayer(
         thumbnail: CachedImage(url: widget.food.thumbnail, fit: BoxFit.fill),
         progressIndicatorColor: theme.colorScheme.primary,
         controller: controller,
       ),
+      onEnterFullScreen: () {
+        fullScreen = true;
+      },
       onExitFullScreen: () {
         setState(() {
+          fullScreen = false;
           _changeStatusBarToLight();
         });
       },
       builder: (context, player) => Scaffold(
         body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              RecipeHeaderImage(
-                image: widget.food.thumbnail,
-                isFavorite: widget.food.isSaved,
-                onFavorite: () {},
-              ),
-              RecipeHeader(
-                food: widget.food,
-              ),
-              widget.food.video != null
-                  ? recipeVideoPlayer(player)
-                  : SizedBox.shrink()
-            ],
+          child: DefaultTabController(
+            length: 2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RecipeHeaderImage(
+                  image: widget.food.thumbnail,
+                  isFavorite: widget.food.isSaved,
+                  onFavorite: () {},
+                ),
+                RecipeHeader(
+                  food: widget.food,
+                ),
+                widget.food.video != null
+                    ? recipeVideoPlayer(player)
+                    : SizedBox.shrink(),
+                RecipeBody(
+                    ingredients: widget.food.ingredient!, steps: widget.food.steps!),
+                SizedBox(height: 10,)
+              ],
+            ),
           ),
         ),
       ),
@@ -74,7 +87,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
   Widget recipeVideoPlayer(Widget player) {
     return Container(
         decoration: BoxDecoration(
-          borderRadius: AppTheme.allBorderRadius,
+          borderRadius: fullScreen ? null : AppTheme.allBorderRadius,
         ),
         padding: EdgeInsets.symmetric(horizontal: 20),
         child: ClipRRect(
@@ -86,7 +99,6 @@ class _RecipeScreenState extends State<RecipeScreen> {
   _changeStatusBarToLight() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: SystemUiOverlay.values);
-
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
   }
 }
