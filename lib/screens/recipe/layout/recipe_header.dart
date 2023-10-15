@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 class RecipeHeader extends StatelessWidget {
   final Food food;
+
   const RecipeHeader({super.key, required this.food});
 
   @override
@@ -14,7 +15,7 @@ class RecipeHeader extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(
         left: 10,
-        top: 20,
+        top: 10,
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Padding(
@@ -29,24 +30,30 @@ class RecipeHeader extends StatelessWidget {
             child: Row(children: [
               SvgIcon(
                   size: 30,
-                  color: theme.colorScheme.shadow,
+                  color: theme.colorScheme.tertiary,
                   image: Assets.iconsTime),
               SizedBox(
                 width: 5,
               ),
-              CategoryLabelCarousel(categories: food.menuTimes)
+              CategoryLabelCarousel(
+                categories: food.menuTimes,
+                color: theme.colorScheme.primary,
+              )
             ])),
         Container(
             height: 35,
             child: Row(children: [
               SvgIcon(
                   size: 30,
-                  color: theme.colorScheme.shadow,
+                  color: theme.colorScheme.tertiary,
                   image: Assets.iconsCategory),
               SizedBox(
                 width: 5,
               ),
-              CategoryLabelCarousel(categories: food.categories)
+              CategoryLabelCarousel(
+                categories: food.categories,
+                color: theme.colorScheme.primary,
+              )
             ])),
         food.description != null ? description(context) : SizedBox.shrink(),
       ]),

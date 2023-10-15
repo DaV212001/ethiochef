@@ -9,7 +9,7 @@ class IngredientCard extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       decoration: BoxDecoration(
         color: theme.colorScheme.primaryContainer.withOpacity(0.05),
         borderRadius: AppTheme.allBorderRadius,
@@ -17,10 +17,12 @@ class IngredientCard extends StatelessWidget {
           color: theme.colorScheme.primary
         ),
       ),
-      child: Text(
-        textAlign: TextAlign.center,
-        ingredient,
-        style: theme.textTheme.bodyMedium,
+      child: Center(
+        child: Text(
+          textAlign: TextAlign.center,
+          ingredient,
+          style: theme.textTheme.bodyMedium,
+        ),
       ),
     );
   }
