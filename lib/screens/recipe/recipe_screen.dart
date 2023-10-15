@@ -1,11 +1,15 @@
+import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/screens/recipe/layout/recipe_body.dart';
 import 'package:ethio_chef/screens/recipe/layout/recipe_header.dart';
 import 'package:ethio_chef/screens/recipe/layout/recipe_header_image.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
-import 'package:ethio_chef/widgets/cached_image.dart';
+import 'package:ethio_chef/utils/place_holder_data.dart';
+import 'package:ethio_chef/widgets/header.dart';
+import 'package:ethio_chef/widgets/horizontal_food_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class RecipeScreen extends StatefulWidget {
@@ -24,7 +28,6 @@ class _RecipeScreenState extends State<RecipeScreen> {
   @override
   void initState() {
     super.initState();
-
     controller = YoutubePlayerController(
       initialVideoId: YoutubePlayer.convertUrlToId(widget.food.video ?? "") ??
           "8H_SzNGXC8c",
@@ -42,7 +45,11 @@ class _RecipeScreenState extends State<RecipeScreen> {
     return YoutubePlayerBuilder(
       //later  use better package
       player: YoutubePlayer(
-        thumbnail: CachedImage(url: widget.food.thumbnail, fit: BoxFit.fill),
+        thumbnail: Container(
+          decoration:
+              BoxDecoration(color: Theme.of(context).colorScheme.tertiary),
+          child: Image.asset(Assets.imagesLogo),
+        ),
         progressIndicatorColor: theme.colorScheme.primary,
         controller: controller,
       ),
@@ -74,11 +81,14 @@ class _RecipeScreenState extends State<RecipeScreen> {
                     ? recipeVideoPlayer(player)
                     : SizedBox.shrink(),
                 RecipeBody(
-                    ingredients: widget.food.ingredient!, steps: widget.food.steps!),
-                SizedBox(height: 10,),
-                RecipeHeader(
-                  food: widget.food,
+                    ingredients: widget.food.ingredient!,
+                    steps: widget.food.steps!),
+                SizedBox(
+                  height: 10,
                 ),
+                Header(title: "Related Recipes"),
+                HorizontalFoodCarousel(type: 3, dishes: PlaceHolderData.dishes),
+                shareButton(theme)
               ],
             ),
           ),
@@ -103,5 +113,44 @@ class _RecipeScreenState extends State<RecipeScreen> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: SystemUiOverlay.values);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+  }
+  Widget shareButton(ThemeData theme){
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: TextButton(
+        onPressed: () {
+          String text =
+              "Check out this delicious recipe I found on EthioChef!"
+              "\n 🍲✨The name of the recipe is ${widget.food.name}."
+              "\n👩‍🍳👨‍🍳 Give it a try and let me know what you think!"
+              "\n 📲 Check out the app at [App Download Link] or you can also use the website ethiochef.com #CookingAdventures #Foodie";
+          Share.share(text, subject: "Ethiochef");
+        },
+        style: TextButton.styleFrom(
+          padding: const EdgeInsets.all(10),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0), // You can adjust the radius
+            side: BorderSide(
+              color: theme.colorScheme.primary,
+              width: 1.0,
+            ),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.share,
+              color: theme.colorScheme.primary,
+            ),
+            SizedBox(width: 10),
+            Text(
+              "Share this recipe!",
+              style: theme.textTheme.headlineMedium,
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

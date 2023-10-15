@@ -70,16 +70,19 @@ class _RecipeBodyState extends State<RecipeBody> with TickerProviderStateMixin {
           tabs: tabs,
           physics: NeverScrollableScrollPhysics(),
         ),
-        Container(
-          constraints: BoxConstraints(
-            maxHeight: !tabIsSteps ? ingredientsHeight : stepsHeight,
-          ),
-          child: TabBarView(
-            controller: _tabController,
-            children: <Widget>[
-              RecipeIngredients(ingredients: widget.ingredients),
-              RecipeSteps(steps: widget.steps,),
-            ],
+        Expanded(
+          flex: 0,
+          child: Container(
+            constraints: BoxConstraints(
+              maxHeight: !tabIsSteps ? ingredientsHeight : stepsHeight,
+            ),
+            child: TabBarView(
+              controller: _tabController,
+              children: <Widget>[
+                RecipeIngredients(ingredients: widget.ingredients),
+                RecipeSteps(steps: widget.steps,),
+              ],
+            ),
           ),
         ),
       ],
