@@ -1,6 +1,7 @@
 import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/widgets/home/category_label_carousel.dart';
+import 'package:ethio_chef/widgets/small_label_button.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 
@@ -25,34 +26,71 @@ class RecipeHeader extends StatelessWidget {
             style: theme.textTheme.headlineLarge,
           ),
         ),
+        Row(
+          children: [
+            Container(
+                height: 35,
+                child: Row(children: [
+                  SvgIcon(
+                      size: 35,
+                      color: theme.colorScheme.tertiary,
+                      image: Assets.iconsPeople),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  SmallLabelButton(
+                      text: food.servings!.toString() + " people",
+                      color: theme.colorScheme.primary.withOpacity(0.9),
+                      onTap: () {})
+                ])),
+            SizedBox(width: 20),
+            Container(
+                height: 35,
+                child: Row(children: [
+                  SvgIcon(
+                      size: 35,
+                      color: theme.colorScheme.tertiary,
+                      image: Assets.iconsCookingTime),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  SmallLabelButton(
+                      text: food.preparationTime!.toString() + " hours",
+                      color: theme.colorScheme.primary.withOpacity(0.9),
+                      onTap: () {})
+                ])),
+          ],
+        ),
+        SizedBox(height: 5),
         Container(
             height: 35,
             child: Row(children: [
               SvgIcon(
-                  size: 30,
+                  size: 35,
                   color: theme.colorScheme.tertiary,
-                  image: Assets.iconsTime),
+                  image: Assets.iconsMealTime),
               SizedBox(
                 width: 5,
               ),
               CategoryLabelCarousel(
                 categories: food.menuTimes,
-                color: theme.colorScheme.primary,
+                color: theme.colorScheme.primary.withOpacity(0.85),
               )
             ])),
+        SizedBox(height: 5),
         Container(
             height: 35,
             child: Row(children: [
               SvgIcon(
-                  size: 30,
+                  size: 35,
                   color: theme.colorScheme.tertiary,
-                  image: Assets.iconsCategory),
+                  image: Assets.iconsCategoryOutlined),
               SizedBox(
                 width: 5,
               ),
               CategoryLabelCarousel(
                 categories: food.categories,
-                color: theme.colorScheme.primary,
+                color: theme.colorScheme.primary.withOpacity(0.9),
               )
             ])),
         food.description != null ? description(context) : SizedBox.shrink(),

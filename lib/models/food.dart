@@ -11,6 +11,8 @@ class Food {
   List<String>? ingredient;
   List<String>? steps;
   String? video;
+  int? servings;
+  double? preparationTime;
 
   Food({required this.thumbnail,
     required this.name,
@@ -21,6 +23,8 @@ class Food {
     this.isSaved = false,
     this.ingredient,
     this.steps,
-    this.video
+    this.video,
+    this.preparationTime,
+    this.servings
   });
 }

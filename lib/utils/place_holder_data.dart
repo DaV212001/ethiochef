@@ -40,6 +40,9 @@ class PlaceHolderData{
       menuTimes: menuTimes,
       video: "",
       ingredient: ingredients,
-      steps: steps);
+      steps: steps,
+      servings: 2,
+      preparationTime: 1.5
+  );
   static List<Food> dishes = List.filled(10, food);
 }

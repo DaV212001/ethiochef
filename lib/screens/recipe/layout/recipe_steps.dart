@@ -47,7 +47,7 @@ class RecipeSteps extends StatelessWidget {
                       height: 35,
                       width: 35, // Set the width as per your requirement
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.primary,
+                        color: theme.colorScheme.primary.withOpacity(0.9),
                         borderRadius: BorderRadius.all(Radius.circular(5)),
                       ),
                       child: Center(
