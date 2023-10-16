@@ -11,9 +11,6 @@ class AuthHeader extends StatelessWidget {
     ThemeData theme = Theme.of(context);
     return Column(
       children: [
-        SizedBox(
-          height: 90,
-        ),
         Text(
           title,
           style: TextStyle(

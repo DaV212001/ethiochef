@@ -26,34 +26,22 @@ class _AuthScreenState extends State<AuthScreen> {
           backgroundColor: Colors.transparent,
           actions: [LanguageSelectorButton()],
         ),
-        body: SafeArea(
-          child: Align(
-            alignment: Alignment.center,
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Container(
-                  width: width,
-                  decoration: BoxDecoration(
-                      color: theme.colorScheme.surface,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: theme.colorScheme.secondaryContainer,
-                        width: 1.0,
-                      )),
-                  margin: EdgeInsets.symmetric(horizontal: 15),
-                  padding: EdgeInsets.all(15),
-                  child: widget.isSignIn ? SignIn() : SignUp(),
-                ),
-                Positioned(
-                    top: -100,
-                    left: width / 4,
-                    right: width / 4,
-                    child: SizedBox(
-                        width: 200,
-                        height: 200,
-                        child: Image.asset(Assets.imagesLogo)))
-              ],
+        body: Center(
+          child: SingleChildScrollView(
+            child: SafeArea(
+              child: Container(
+                width: width,
+                decoration: BoxDecoration(
+                    color: theme.colorScheme.surface,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: theme.colorScheme.secondaryContainer,
+                      width: 1.0,
+                    )),
+                margin: EdgeInsets.symmetric(horizontal: 15),
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                child: widget.isSignIn ? SignIn() : SignUp(),
+              ),
             ),
           ),
         ));
