@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/widgets/horizontal_food_carousel.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class RecipeRelated extends StatelessWidget {
         Padding(
             padding: EdgeInsets.only(left: 10, right: 10, top: 10),
             child: Text(
-              "related_recipes",
+              "related_recipes".tr(),
               style: theme.textTheme.headlineMedium?.copyWith(
                   color: theme.colorScheme.tertiary,
                   fontWeight: FontWeight.w500),

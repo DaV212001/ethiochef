@@ -147,7 +147,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
             ),
             SizedBox(width: 10),
             Text(
-              "share_this_recipe",
+              "share_this_recipe".tr(),
               style: theme.textTheme.headlineMedium,
             )
           ],

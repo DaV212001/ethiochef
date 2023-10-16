@@ -1,9 +1,11 @@
 import 'package:ethio_chef/models/category.dart';
 import 'package:ethio_chef/models/food.dart';
+import 'package:ethio_chef/screens/recipe/recipe_screen.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:ethio_chef/widgets/cached_image.dart';
 import 'package:ethio_chef/widgets/small_label_button.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 class FoodCard extends StatelessWidget {
   static int foodCardType = 1;
@@ -14,38 +16,49 @@ class FoodCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Container(
-              width: double.infinity,
-              height: 150,
-              child: ClipRRect(
-                borderRadius: AppTheme.topBorderRadius,
-                child: CachedImage(
-                  url: food.thumbnail,
-                  fit: BoxFit.fill,
-                ),
-              )),
-          const SizedBox(
-            height: 5,
+    return GestureDetector(
+      onTap: (){
+        pushNewScreen(
+          context,
+          withNavBar: false,
+          screen: RecipeScreen(
+              food: food
           ),
-          Expanded(
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 5),
-              child: Text(
-                food.name,
-                style: theme.textTheme.headlineMedium,
-                textAlign: TextAlign.start,
+        );
+      },
+      child: Card(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+                width: double.infinity,
+                height: 150,
+                child: ClipRRect(
+                  borderRadius: AppTheme.topBorderRadius,
+                  child: CachedImage(
+                    url: food.thumbnail,
+                    fit: BoxFit.fill,
+                  ),
+                )),
+            const SizedBox(
+              height: 5,
+            ),
+            Expanded(
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 5),
+                child: Text(
+                  food.name,
+                  style: theme.textTheme.headlineMedium,
+                  textAlign: TextAlign.start,
+                ),
               ),
             ),
-          ),
-          buildRow(food.menuTimes),
-          buildRow(food.categories),
-          SizedBox(height: 5,)
-        ],
+            buildRow(food.menuTimes),
+            buildRow(food.categories),
+            SizedBox(height: 5,)
+          ],
+        ),
       ),
     );
   }
