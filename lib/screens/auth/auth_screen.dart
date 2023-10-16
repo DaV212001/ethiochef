@@ -19,37 +19,45 @@ class _AuthScreenState extends State<AuthScreen> {
     ThemeData theme = Theme.of(context);
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+        extendBodyBehindAppBar: true,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: theme.scaffoldBackgroundColor,
+          backgroundColor: Colors.transparent,
           actions: [LanguageSelectorButton()],
         ),
-        body: Center(
-          child: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                width: width,
-                decoration: BoxDecoration(
-                    color: theme.colorScheme.surface,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: theme.colorScheme.secondaryContainer,
-                      width: 1.0,
-                    )),
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                padding: EdgeInsets.all(10),
-                child: widget.isSignIn ? SignIn() : SignUp(),
+        body: SingleChildScrollView(
+          child: SafeArea(
+            child: Center(
+              child: Container(
+                margin: EdgeInsets.only(top: widget.isSignIn ? 0 : 75),
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Container(
+                      width: width,
+                      decoration: BoxDecoration(
+                          color: theme.colorScheme.surface,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: theme.colorScheme.secondaryContainer,
+                            width: 1.0,
+                          )),
+                      margin: EdgeInsets.symmetric(horizontal: 15),
+                      padding: EdgeInsets.all(15),
+                      child: widget.isSignIn ? SignIn() : SignUp(),
+                    ),
+                    Positioned(
+                        top: -100,
+                        left: width / 4,
+                        right: width / 4,
+                        child: SizedBox(
+                            width: 200,
+                            height: 200,
+                            child: Image.asset(Assets.imagesLogo)))
+                  ],
+                ),
               ),
-              Positioned(
-                  top: -100,
-                  left: width / 4,
-                  right: width / 4,
-                  child: SizedBox(
-                      width: 200,
-                      height: 200,
-                      child: Image.asset(Assets.imagesLogo)))
-            ],
+            ),
           ),
         ));
   }

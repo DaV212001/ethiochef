@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 
 class PhoneInputField extends StatelessWidget {
   final TextEditingController controller;
-  const PhoneInputField({super.key, required this.controller});
+  final double height;
+  const PhoneInputField({super.key, required this.controller, this.height = 75});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 75,
+      height: height,
       child: TextFormField(
         maxLength: 9,
         controller: controller,
