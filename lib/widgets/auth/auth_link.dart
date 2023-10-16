@@ -14,10 +14,10 @@ class AuthLink extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Wrap(
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        SizedBox(height: 10),
         Text(
           text,
           style: theme.textTheme.headlineSmall?.copyWith(

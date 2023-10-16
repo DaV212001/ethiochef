@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/language.dart';
-import 'package:ethio_chef/screens/auth/auth_screen.dart';
 import 'package:ethio_chef/screens/splash_screen.dart';
 import 'package:ethio_chef/screens/main_screen.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
@@ -18,9 +17,8 @@ void main() async {
   runApp(
     EasyLocalization(
         supportedLocales: const [
-          // needed to use these locales because om,ti and, sm where not supported
+          // needed to use these locales because om,ti  where not supported
           Locale('en', 'AU'),
-          Locale('en', 'CA'),
           Locale('am'),
           Locale('en', 'GB'),
           Locale('en'),
@@ -67,7 +65,7 @@ class _EthioChefState extends State<EthioChef> {
             darkTheme: AppTheme.darkTheme,
             initialRoute: '/',
             routes: {
-              '/': (context) => const AuthScreen(),
+              '/': (context) => const SplashScreen(),
               '/main': (context) => const MainScreen()
             });
       }),

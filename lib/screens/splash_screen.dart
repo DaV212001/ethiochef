@@ -1,5 +1,5 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:ethio_chef/screens/main_screen.dart';
+import 'package:ethio_chef/screens/auth/auth_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -16,7 +16,7 @@ class SplashScreen extends StatelessWidget {
           fit: BoxFit.fill,
         ),
         animationDuration: const Duration(microseconds: 2500),
-        nextScreen: const MainScreen(),
+        nextScreen: const AuthScreen(),
         splashTransition: SplashTransition.scaleTransition,
         pageTransitionType: PageTransitionType.bottomToTop);
   }

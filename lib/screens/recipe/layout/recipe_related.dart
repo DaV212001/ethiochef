@@ -16,7 +16,7 @@ class RecipeRelated extends StatelessWidget {
         Padding(
             padding: EdgeInsets.only(left: 10, right: 10, top: 10),
             child: Text(
-              "Related Recipes",
+              "related_recipes",
               style: theme.textTheme.headlineMedium?.copyWith(
                   color: theme.colorScheme.tertiary,
                   fontWeight: FontWeight.w500),

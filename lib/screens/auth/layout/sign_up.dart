@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/screens/main_screen.dart';
 import 'package:ethio_chef/widgets/auth/auth_header.dart';
@@ -36,47 +37,47 @@ class _SignUpState extends State<SignUp> {
               width: 150,
               height: 150,
               child: Image.asset(Assets.imagesLogo)),
-          AuthHeader(title: "Hello There, 👋", body: "Let's get you started"),
+          AuthHeader(title: "sign_up_title".tr(), body: "sign_up_body".tr()),
           InputField(
             controller: firstNameController,
             icon: CupertinoIcons.person,
-            label: 'First Name',
-            hint: "Your first name...",
+            label: 'first_name'.tr(),
+            hint: "your_first_name".tr(),
             type: InputField.NameType,
           ),
           // SizedBox(height: 100,),
           InputField(
             controller: lastNameController,
             icon: CupertinoIcons.person,
-            label: 'Last Name',
-            hint: "Your last name...",
+            label: 'last_name'.tr(),
+            hint: "your_last_name".tr(),
             type: InputField.NameType,
           ),
           InputField(
             controller: emailController,
             icon: CupertinoIcons.mail,
-            label: "Email",
-            hint: "Your email...(Optional)",
+            label: "email".tr(),
+            hint: "your_email".tr(),
             type: InputField.EmailType,
           ),
           InputField(
             controller: promoCodeController,
             icon: Icons.password_outlined,
             type: InputField.PromoCodeType,
-            label: "Promo Code",
-            hint: "Your promo code...(Optional)",
+            label: "promo_code".tr(),
+            hint: "your_promo_code".tr(),
           ),
           PhoneInputField(controller: phoneController),
           MainButton(
-              text: "Sign Up",
+              text: "sign_up".tr(),
               onPress: () {
                 if (_formKey.currentState!.validate()) {
                   pushNewScreen(context, screen: MainScreen());
                 }
               }),
           AuthLink(
-              text: "Already have an account?",
-              buttonText: "Sign in",
+              text: "sign_up_auth_link_text".tr(),
+              buttonText: "sign_in".tr(),
               onPress: () {
                 Navigator.pop(context);
               })

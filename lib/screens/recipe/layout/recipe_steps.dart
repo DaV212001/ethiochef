@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class RecipeSteps extends StatelessWidget {
                 width: 10,
               ),
               Text(
-                "Cooking Steps",
+                "cooking_steps".tr(),
                 style: theme.textTheme.headlineMedium?.copyWith(
                     color: theme.colorScheme.tertiary
                 ),

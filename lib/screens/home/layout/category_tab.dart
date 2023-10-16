@@ -1,4 +1,5 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/category.dart';
 import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/widgets/header.dart';
@@ -24,7 +25,7 @@ class CategoryTab extends StatelessWidget {
       length: tabs.length,
       child: Column(
         children: [
-          Header(title: "Category"),
+          Header(title: "category".tr()),
           ButtonsTabBar(
             backgroundColor: theme.colorScheme.primary,
             unselectedBackgroundColor: Colors.transparent,

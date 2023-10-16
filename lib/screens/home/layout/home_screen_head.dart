@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/widgets/home/search_input_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,12 +23,12 @@ class HomeScreenHead extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Hello, Dagim",
+                    "hello_user".tr(args: ["Dagim"]),
                     style: theme.textTheme.headlineLarge,
                   ),
                   SizedBox(height: 10,),
                   Text(
-                    "Let's make dinner",
+                    "lets_make_dinner".tr(),
                     style: theme.textTheme.headlineSmall
                         ?.copyWith(color: theme.colorScheme.shadow),
                   )

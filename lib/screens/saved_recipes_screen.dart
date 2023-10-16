@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class SavedRecipesScreen extends StatelessWidget {
@@ -7,7 +8,7 @@ class SavedRecipesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text("Saved Recipes"),
+        child: Text("saved_recipes".tr()),
       ),
     );
   }

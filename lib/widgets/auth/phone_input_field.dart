@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -18,16 +19,16 @@ class PhoneInputField extends StatelessWidget {
         keyboardType: TextInputType.phone,
         decoration: InputDecoration(
           prefixIcon: Icon(CupertinoIcons.phone),
-          labelText: 'Phone Number',
+          labelText: "phone_number".tr(),
           prefixText: '+251 ',
           border: OutlineInputBorder(),
         ),
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return 'Phone number is required';
+            return "phone_number_required".tr();
           } else if (value.length != 9 ||
               !RegExp(r'^[0-9]+$').hasMatch(value)) {
-            return 'Invalid phone number';
+            return "phone_number_invalid".tr();
           }
           return null;
         },

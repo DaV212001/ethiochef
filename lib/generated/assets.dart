@@ -27,7 +27,6 @@ class Assets {
   static const String localeAm = 'assets/locale/am.json';
   static const String localeEn = 'assets/locale/en.json';
   static const String localeEnAU = 'assets/locale/en-AU.json';
-  static const String localeEnCA = 'assets/locale/en-CA.json';
   static const String localeEnGB = 'assets/locale/en-GB.json';
 
 }

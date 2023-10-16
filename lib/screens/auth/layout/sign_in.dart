@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/screens/auth/auth_screen.dart';
 import 'package:ethio_chef/screens/main_screen.dart';
@@ -33,13 +34,13 @@ class _SignInState extends State<SignIn> {
               height: 150,
               child: Image.asset(Assets.imagesLogo)),
           AuthHeader(
-              title: "Welcome Back",
-              body: "Let's get back to cooking a masterpiece"),
+              title: "sign_in_title".tr(),
+              body: "sign_in_body".tr()),
           PhoneInputField(controller: phoneController),
-          MainButton(text: "Sign In", onPress: signIn),
+          MainButton(text: "sign_in".tr(), onPress: signIn),
           AuthLink(
-              text: "Don't have an account?",
-              buttonText: "Sign up",
+              text: "sign_in_auth_link_text".tr(),
+              buttonText: "sign_up".tr(),
               onPress: () {
                 pushNewScreen(context,
                     screen: AuthScreen(

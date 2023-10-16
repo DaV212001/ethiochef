@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/widgets/home/category_label_carousel.dart';
@@ -39,7 +40,8 @@ class RecipeHeader extends StatelessWidget {
                     width: 5,
                   ),
                   SmallLabelButton(
-                      text: food.servings!.toString() + " people",
+                      text:
+                          "number_people".tr(args: [food.servings!.toString()]),
                       color: theme.colorScheme.primary.withOpacity(0.9),
                       onTap: () {})
                 ])),
@@ -55,7 +57,8 @@ class RecipeHeader extends StatelessWidget {
                     width: 5,
                   ),
                   SmallLabelButton(
-                      text: food.preparationTime!.toString() + " hours",
+                      text: "number_hours"
+                          .tr(args: [food.preparationTime!.toString()]),
                       color: theme.colorScheme.primary.withOpacity(0.9),
                       onTap: () {})
                 ])),
@@ -106,7 +109,7 @@ class RecipeHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Description",
+              "description".tr(),
               style: theme.textTheme.headlineMedium?.copyWith(
                   color: theme.colorScheme.tertiary,
                   fontWeight: FontWeight.w500),

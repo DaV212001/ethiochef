@@ -1,4 +1,5 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/models/language.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
@@ -43,8 +44,8 @@ class _LanguageSelectorButtonState extends State<LanguageSelectorButton> {
         onChanged: (value) {
           setState(() {
             Language.selectedLanguage = value!;
+            context.setLocale(value.code);
             print(Language.selectedLanguage.name);
-            //Todo set locale
           });
         },
         dropdownStyleData: DropdownStyleData(

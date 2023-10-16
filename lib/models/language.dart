@@ -11,7 +11,6 @@ class Language {
         Language('አማርኛ', const Locale('am')),
         Language('Afan Oromoo', const Locale('en', 'GB')),
         Language('ትግርኛ', const Locale('en', 'AU')),
-        Language('Af Somali', const Locale('en', 'CA')),
         Language('English', const Locale('en'))
       ];
 
@@ -35,4 +34,6 @@ class Language {
       return "en";
     }
   }
+
+  
 }
