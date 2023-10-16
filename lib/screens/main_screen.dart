@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/screens/category_screen.dart';
 import 'package:ethio_chef/screens/competition_screen.dart';
@@ -74,7 +75,7 @@ class _MainScreenState extends State<MainScreen> {
           image: Assets.iconsHome,
           color: inactiveColor,
         ),
-        title: ("Home"),
+        title: ("home".tr()),
         activeColorPrimary: activeColor,
         inactiveColorPrimary: inactiveColor,
       ),
@@ -87,7 +88,7 @@ class _MainScreenState extends State<MainScreen> {
           image: Assets.iconsCategory,
           color: inactiveColor,
         ),
-        title: ("Categories"),
+        title: ("categories".tr()),
         activeColorPrimary: activeColor,
         inactiveColorPrimary: inactiveColor,
       ),
@@ -106,7 +107,7 @@ class _MainScreenState extends State<MainScreen> {
           image: Assets.iconsMedal,
           color: inactiveColor,
         ),
-        title: ("Competitions"),
+        title: ("competitions".tr()),
         activeColorPrimary: activeColor,
         inactiveColorPrimary: inactiveColor,
       ),
@@ -119,7 +120,7 @@ class _MainScreenState extends State<MainScreen> {
           image: Assets.iconsProfile,
           color: inactiveColor,
         ),
-        title: ("Profile"),
+        title: ("profile".tr()),
         activeColorPrimary: activeColor,
         inactiveColorPrimary: inactiveColor,
       ),

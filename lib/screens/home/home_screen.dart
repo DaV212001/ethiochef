@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/home/layout/category_tab.dart';
 import 'package:ethio_chef/screens/home/layout/home_screen_head.dart';
 import 'package:ethio_chef/utils/place_holder_data.dart';
@@ -24,9 +25,9 @@ class HomeScreen extends StatelessWidget {
                 height: 10,
               ),
               Header(
-                title: "Recent Recipes",
+                title: "recent_recipes".tr(),
                 showMore: true,
-                showMoreText: "See all",
+                showMoreText: "see_all".tr(),
               ),
               HorizontalFoodCarousel(
                 dishes: PlaceHolderData.dishes,
@@ -35,7 +36,7 @@ class HomeScreen extends StatelessWidget {
               SizedBox(
                 height: 10,
               ),
-              Header(title: "Testing Cards"),
+              Header(title: "testing_cards".tr()),
               HorizontalFoodCarousel(
                 dishes: PlaceHolderData.dishes,
                 type: 1,

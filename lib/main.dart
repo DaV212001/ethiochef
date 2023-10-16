@@ -17,9 +17,8 @@ void main() async {
   runApp(
     EasyLocalization(
         supportedLocales: const [
-          // needed to use these locales because om,ti and, sm where not supported
+          // needed to use these locales because om,ti  where not supported
           Locale('en', 'AU'),
-          Locale('en', 'CA'),
           Locale('am'),
           Locale('en', 'GB'),
           Locale('en'),

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/screens/recipe/layout/recipe_header.dart';
@@ -117,11 +118,14 @@ class _RecipeScreenState extends State<RecipeScreen> {
       padding: const EdgeInsets.all(10),
       child: TextButton(
         onPressed: () {
-          String text = "Check out this delicious recipe I found on EthioChef!"
-              "\n 🍲✨The name of the recipe is ${widget.food.name} [Recipe link]."
-              "\n👩‍🍳👨‍🍳 Give it a try and let me know what you think!"
-              "\n 📲 Check out the app at [App Download Link] or you can also use the website ethiochef.com #CookingAdventures #Foodie";
-          Share.share(text, subject: "Ethiochef");
+          String text = "share_recipe".tr(
+            args: [
+              widget.food.name,
+              "[Recipe link]",
+            ]
+          );
+
+          Share.share(text, subject: "ethio_chef".tr());
         },
         style: TextButton.styleFrom(
           padding: const EdgeInsets.all(10),
@@ -143,7 +147,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
             ),
             SizedBox(width: 10),
             Text(
-              "Share this recipe!",
+              "share_this_recipe",
               style: theme.textTheme.headlineMedium,
             )
           ],

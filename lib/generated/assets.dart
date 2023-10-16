@@ -16,16 +16,17 @@ class Assets {
   static const String iconsFoodMenu = 'assets/images/icons/food_menu.svg';
   static const String iconsHome = 'assets/images/icons/home.svg';
   static const String iconsIngredients = 'assets/images/icons/ingredients.svg';
+  static const String iconsLanguage = 'assets/images/icons/language.svg';
   static const String iconsMealTime = 'assets/images/icons/meal_time.svg';
   static const String iconsMedal = 'assets/images/icons/medal.svg';
   static const String iconsPeople = 'assets/images/icons/people.svg';
   static const String iconsProfile = 'assets/images/icons/profile.svg';
   static const String iconsTime = 'assets/images/icons/time.svg';
+  static const String imagesEthiopianFlag = 'assets/images/ethiopian_flag.svg';
   static const String imagesLogo = 'assets/images/logo.png';
   static const String localeAm = 'assets/locale/am.json';
   static const String localeEn = 'assets/locale/en.json';
   static const String localeEnAU = 'assets/locale/en-AU.json';
-  static const String localeEnCA = 'assets/locale/en-CA.json';
   static const String localeEnGB = 'assets/locale/en-GB.json';
 
 }

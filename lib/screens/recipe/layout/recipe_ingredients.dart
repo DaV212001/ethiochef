@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/utils/screen_utils.dart';
 import 'package:ethio_chef/widgets/recipe/Ingredient_card.dart';
@@ -35,7 +36,7 @@ class RecipeIngredients extends StatelessWidget {
                 width: 10,
               ),
               Text(
-                "Ingredients",
+                "ingredients".tr(),
                 style: theme.textTheme.headlineMedium
                     ?.copyWith(color: theme.colorScheme.tertiary),
               )
