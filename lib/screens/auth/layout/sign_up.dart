@@ -32,6 +32,7 @@ class _SignUpState extends State<SignUp> {
           icon: CupertinoIcons.person,
           label: 'First Name',
           hint: "Your first name...",
+          type: InputField.NameType,
         ),
         // SizedBox(height: 100,),
         InputField(
@@ -39,16 +40,19 @@ class _SignUpState extends State<SignUp> {
           icon: CupertinoIcons.person,
           label: 'Last Name',
           hint: "Your last name...",
+          type: InputField.NameType,
         ),
         InputField(
           controller: emailController,
           icon: CupertinoIcons.mail,
           label: "Email",
           hint: "Your email...(Optional)",
+          type: InputField.EmailType,
         ),
         InputField(
           controller: promoCodeController,
           icon: Icons.password_outlined,
+          type: InputField.PromoCodeType,
           label: "Promo Code",
           hint: "Your promo code...(Optional)",
         ),

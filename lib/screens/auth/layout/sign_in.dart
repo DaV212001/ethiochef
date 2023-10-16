@@ -1,4 +1,5 @@
 import 'package:ethio_chef/screens/auth/auth_screen.dart';
+import 'package:ethio_chef/utils/sim_card_manager.dart';
 import 'package:ethio_chef/widgets/auth/auth_header.dart';
 import 'package:ethio_chef/widgets/auth/auth_link.dart';
 import 'package:ethio_chef/widgets/auth/phone_input_field.dart';

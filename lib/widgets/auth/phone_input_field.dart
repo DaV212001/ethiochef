@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 class PhoneInputField extends StatelessWidget {
   final TextEditingController controller;
   final double height;
-  const PhoneInputField({super.key, required this.controller, this.height = 75});
+
+  const PhoneInputField(
+      {super.key, required this.controller, this.height = 75});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +22,15 @@ class PhoneInputField extends StatelessWidget {
           prefixText: '+251 ',
           border: OutlineInputBorder(),
         ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Phone number is required';
+          } else if (value.length != 9 ||
+              !RegExp(r'^[0-9]+$').hasMatch(value)) {
+            return 'Invalid phone number';
+          }
+          return null;
+        },
       ),
     );
   }
