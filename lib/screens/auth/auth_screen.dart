@@ -1,5 +1,6 @@
 import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/screens/auth/layout/sign_in.dart';
+import 'package:ethio_chef/screens/auth/layout/sign_up.dart';
 import 'package:ethio_chef/widgets/auth/language_selector_button.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +39,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     )),
                 margin: EdgeInsets.symmetric(horizontal: 20),
                 padding: EdgeInsets.all(10),
-                child: widget.isSignIn ? SignIn() : SizedBox.shrink(),
+                child: widget.isSignIn ? SignIn() : SignUp(),
               ),
               Positioned(
                   top: -100,
