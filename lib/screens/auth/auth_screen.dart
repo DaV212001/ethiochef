@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 class AuthScreen extends StatefulWidget {
   final bool isSignIn;
+
   const AuthScreen({super.key, this.isSignIn = true});
 
   @override
@@ -13,11 +14,11 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
@@ -25,38 +26,34 @@ class _AuthScreenState extends State<AuthScreen> {
           backgroundColor: Colors.transparent,
           actions: [LanguageSelectorButton()],
         ),
-        body: SingleChildScrollView(
-          child: SafeArea(
-            child: Center(
-              child: Container(
-                margin: EdgeInsets.only(top: widget.isSignIn ? 0 : 75),
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Container(
-                      width: width,
-                      decoration: BoxDecoration(
-                          color: theme.colorScheme.surface,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: theme.colorScheme.secondaryContainer,
-                            width: 1.0,
-                          )),
-                      margin: EdgeInsets.symmetric(horizontal: 15),
-                      padding: EdgeInsets.all(15),
-                      child: widget.isSignIn ? SignIn() : SignUp(),
-                    ),
-                    Positioned(
-                        top: -100,
-                        left: width / 4,
-                        right: width / 4,
-                        child: SizedBox(
-                            width: 200,
-                            height: 200,
-                            child: Image.asset(Assets.imagesLogo)))
-                  ],
+        body: SafeArea(
+          child: Align(
+            alignment: Alignment.center,
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  width: width,
+                  decoration: BoxDecoration(
+                      color: theme.colorScheme.surface,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: theme.colorScheme.secondaryContainer,
+                        width: 1.0,
+                      )),
+                  margin: EdgeInsets.symmetric(horizontal: 15),
+                  padding: EdgeInsets.all(15),
+                  child: widget.isSignIn ? SignIn() : SignUp(),
                 ),
-              ),
+                Positioned(
+                    top: -100,
+                    left: width / 4,
+                    right: width / 4,
+                    child: SizedBox(
+                        width: 200,
+                        height: 200,
+                        child: Image.asset(Assets.imagesLogo)))
+              ],
             ),
           ),
         ));

@@ -33,6 +33,7 @@ class _SignUpState extends State<SignUp> {
           label: 'First Name',
           hint: "Your first name...",
         ),
+        // SizedBox(height: 100,),
         InputField(
           controller: lastNameController,
           icon: CupertinoIcons.person,
@@ -56,7 +57,9 @@ class _SignUpState extends State<SignUp> {
         AuthLink(
             text: "Already have an account?",
             buttonText: "Sign in",
-            onPress: () {})
+            onPress: () {
+              Navigator.pop(context);
+            })
       ],
     );
   }

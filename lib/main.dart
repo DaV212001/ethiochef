@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/language.dart';
+import 'package:ethio_chef/screens/auth/auth_screen.dart';
 import 'package:ethio_chef/screens/splash_screen.dart';
 import 'package:ethio_chef/screens/main_screen.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
@@ -66,7 +67,7 @@ class _EthioChefState extends State<EthioChef> {
             darkTheme: AppTheme.darkTheme,
             initialRoute: '/',
             routes: {
-              '/': (context) => const SplashScreen(),
+              '/': (context) => const AuthScreen(),
               '/main': (context) => const MainScreen()
             });
       }),
