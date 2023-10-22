@@ -22,13 +22,12 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return GestureDetector(
-      onTap: (){
-        pushNewScreen(
-            context,
-            withNavBar: false,
-            screen: RecipeScreen(
-                food: widget.food
-            ),
+      onTap: () {
+        pushNewScreenWithRouteSettings(
+          context,
+          withNavBar: false,
+          settings: RouteSettings(name: "/recipe"),
+          screen: RecipeScreen(food: widget.food),
         );
       },
       child: Card(
@@ -67,7 +66,7 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
                           GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  widget.food.isSaved = !widget.food.isSaved ;
+                                  widget.food.isSaved = !widget.food.isSaved;
                                 });
                               },
                               child: Icon(
@@ -89,5 +88,4 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
       ),
     );
   }
-
 }
