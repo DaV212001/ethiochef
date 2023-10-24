@@ -19,6 +19,8 @@ class VerticalCategoryList extends StatelessWidget {
     final double childAspectRatio = desiredItemWidth / desiredItemHeight;
 
     return PagedGridView<int, Category>(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       pagingController: pagingController,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: crossAxisCount,

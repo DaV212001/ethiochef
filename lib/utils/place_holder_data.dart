@@ -10,9 +10,19 @@ class PlaceHolderData {
             "https://ethiochef.com/storage/app/public/category/EuDkbjdW468BhIWAdyCLXmhnRBr0PoruwUsdpYHV.jpeg"),
     Category(
         id: 2,
+        name: "Lunch",
+        image:
+            "https://ethiochef.com/storage/app/public/food/4bZDeO7bYN9G2SYYTxlStaUmQJERrzjR3SFZGotq.jpeg"),
+    Category(
+        id: 3,
         name: "Supper",
         image:
-            "https://ethiochef.com/storage/app/public/category/tHgvocmsG5lXBgBBaH6cxIYFmPuFvhKB0fO8nu17.jpeg")
+            "https://ethiochef.com/storage/app/public/category/tHgvocmsG5lXBgBBaH6cxIYFmPuFvhKB0fO8nu17.jpeg"),
+    Category(
+        id: 4,
+        name: "Dinner",
+        image:
+            "https://ethiochef.com/storage/app/public/food/d9JyoZ1U64XDRCOOzqyLfH1EM6h1mLZnj9B65zD2.jpeg")
   ];
   static List<Category> categories = [
     Category(
