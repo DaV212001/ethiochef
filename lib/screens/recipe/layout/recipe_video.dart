@@ -1,0 +1,61 @@
+import 'package:ethio_chef/generated/assets.dart';
+import 'package:ethio_chef/theme/app_theme.dart';
+import 'package:flutter/material.dart';
+import 'package:pod_player/pod_player.dart';
+
+class RecipeVideo extends StatefulWidget {
+  final String link;
+
+  const RecipeVideo({Key? key, required this.link}) : super(key: key);
+
+  @override
+  State<RecipeVideo> createState() => _RecipeVideoState();
+}
+
+class _RecipeVideoState extends State<RecipeVideo> {
+  late final PodPlayerController controller;
+
+  @override
+  void initState() {
+    controller = PodPlayerController(
+      playVideoFrom: PlayVideoFrom.youtube(
+        widget.link,
+      ),
+      podPlayerConfig: const PodPlayerConfig(
+          autoPlay: false, isLooping: false, videoQualityPriority: [720, 360]),
+    )..initialise();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+    return Container(
+        decoration: BoxDecoration(
+          borderRadius: AppTheme.allBorderRadius,
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        child: ClipRRect(
+            clipBehavior: Clip.hardEdge,
+            borderRadius: AppTheme.allBorderRadius,
+            child: AspectRatio(
+                aspectRatio: 16 / 9,
+                child: PodVideoPlayer(
+                  podProgressBarConfig: PodProgressBarConfig(
+                      playingBarColor: theme.colorScheme.primary,
+                      circleHandlerColor: theme.colorScheme.primary,
+                      bufferedBarColor: theme.colorScheme.primary),
+                  controller: controller,
+                  backgroundColor: theme.colorScheme.tertiary,
+                  videoThumbnail: const DecorationImage(
+                    image: AssetImage(Assets.imagesLogo),
+                  ),
+                ))));
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+}
