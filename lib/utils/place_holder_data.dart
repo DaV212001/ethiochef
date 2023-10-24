@@ -45,4 +45,6 @@ class PlaceHolderData{
       preparationTime: 1.5
   );
   static List<Food> dishes = List.filled(10, food);
+
+  static String videoLink = 'https://youtu.be/Z4Uf25pHpDM';
 }
