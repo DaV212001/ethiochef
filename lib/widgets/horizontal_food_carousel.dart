@@ -16,7 +16,7 @@ class HorizontalFoodCarousel extends StatelessWidget {
     double width = 220;
     if(type == ImageFoodCard.foodCardType){
       height = 275;
-      width = 275;
+      width = 255;
     } else if (type == ImageHeadFoodCard.foodCardType){
       height = 180;
       width = 165;

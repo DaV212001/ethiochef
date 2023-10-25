@@ -42,7 +42,15 @@ class CategoryCard extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                 decoration: BoxDecoration(
                     borderRadius: AppTheme.allBorderRadius,
-                    color: theme.colorScheme.tertiary.withOpacity(0.35)),
+                    gradient: LinearGradient(
+                      colors: [
+                        theme.colorScheme.tertiary.withOpacity(0.2),
+                        theme.colorScheme.tertiary.withOpacity(0.35),
+                        theme.colorScheme.tertiary.withOpacity(0.75)
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    )),
                 child: Align(
                   alignment: Alignment.bottomLeft,
                   child: Padding(

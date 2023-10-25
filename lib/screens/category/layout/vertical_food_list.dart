@@ -18,10 +18,7 @@ class VerticalFoodList extends StatelessWidget {
       builderDelegate: PagedChildBuilderDelegate<Food>(
         noMoreItemsIndicatorBuilder: (_) => SizedBox.shrink(),
         itemBuilder: (context, food, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5.0),
-            child: FoodCard(food: food),
-          );
+          return FoodCard(food: food);
         },
       ),
     );

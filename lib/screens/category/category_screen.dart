@@ -49,7 +49,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
         body: SafeArea(
             child: SingleChildScrollView(
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
       children: [
         ScreenHead(hasNotification: true, screen: 1, searchHint: "Search"),
         VerticalFoodList(pagingController: _pagingController),

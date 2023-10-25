@@ -1,8 +1,7 @@
-import 'package:ethio_chef/models/category.dart';
 import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/screens/recipe/recipe_screen.dart';
+import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:ethio_chef/widgets/cached_image.dart';
-import 'package:ethio_chef/widgets/small_label_button.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
@@ -17,7 +16,8 @@ class FoodCard extends StatefulWidget {
 }
 
 class _FoodCardState extends State<FoodCard> {
-  @override
+  bool isFavorite = false;
+
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return GestureDetector(
@@ -25,79 +25,92 @@ class _FoodCardState extends State<FoodCard> {
         pushNewScreen(
           context,
           withNavBar: false,
-          screen: RecipeScreen(food: widget.food),
+          screen: RecipeScreen(
+              food: widget.food
+          ),
         );
       },
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 10),
-        decoration: BoxDecoration(color: theme.colorScheme.surface),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        child: Stack(
+          fit: StackFit.expand,
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(
-                widget.food.name,
-                style: theme.textTheme.headlineMedium
-                    ?.copyWith(fontWeight: FontWeight.w500),
-                textAlign: TextAlign.start,
+            ClipRRect(
+              borderRadius: AppTheme.topBorderRadius,
+              child: Container(
+                  child: CachedImage(
+                      url: widget.food.thumbnail, fit: BoxFit.fill)),
+            ),
+            Positioned(
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                height: double.infinity,
+                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                decoration: BoxDecoration(
+                    borderRadius: AppTheme.topBorderRadius,
+                    gradient: LinearGradient(
+                      colors: [
+                        theme.colorScheme.tertiary.withOpacity(0.2),
+                        theme.colorScheme.tertiary.withOpacity(0.35),
+                        theme.colorScheme.tertiary.withOpacity(0.75),
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    )),
               ),
             ),
-            if (widget.food.description != null)
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  _getTrimmedDescription(),
-                  style: theme.textTheme.bodyMedium,
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.food.name,
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                          color: theme.colorScheme.onTertiary,
+                          fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.start,
+                      softWrap: true,
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    if (widget.food.description != null)
+                      Text(widget.food.description!,
+                          softWrap: true,
+                          maxLines: 5,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.labelMedium)
+                  ],
                 ),
               ),
-            Container(
-                width: double.infinity,
-                height: 250,
-                child: CachedImage(
-                  url: widget.food.thumbnail,
-                  fit: BoxFit.fill,
-                )),
-            const SizedBox(
-              height: 5,
             ),
-            buildRow(widget.food.menuTimes),
-            buildRow(widget.food.categories)
+            Positioned(
+                top: 0,
+                right: 0,
+                child: IconButton(
+                    iconSize: 35,
+                    onPressed: () {
+                      setState(() {
+                        isFavorite = !isFavorite;
+                      });
+                    },
+                    icon: Icon(
+                      isFavorite
+                          ? Icons.favorite
+                          : Icons.favorite_border_outlined,
+                      color: theme.colorScheme.primary,
+                    )))
           ],
         ),
       ),
     );
-  }
-
-  Widget buildRow(List<Category> row) {
-    List<SmallLabelButton> labels =
-        row.map((e) => SmallLabelButton(text: e.name, onTap: () {})).toList();
-    return Expanded(
-      child: Container(
-        alignment: Alignment.centerLeft,
-        child: ListView(
-          physics: BouncingScrollPhysics(),
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          children: List.generate(
-            labels.length,
-            (index) => Row(
-              children: [
-                if (index < labels.length) SizedBox(width: 5.0),
-                labels[index],
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  String _getTrimmedDescription() {
-    if (widget.food.description!.length <= 150) {
-      return widget.food.description!;
-    }
-    return widget.food.description!.substring(0, 150) + "... ";
   }
 }
