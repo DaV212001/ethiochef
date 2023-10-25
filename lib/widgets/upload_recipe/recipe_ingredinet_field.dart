@@ -4,34 +4,50 @@ import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 
 class RecipeIngredientField extends StatelessWidget {
+  final bool isLastIngredient;
+  final bool isOnlyIngredient;
   final TextEditingController itemController;
   final TextEditingController quantityController;
+  final Function() onMinus;
 
   const RecipeIngredientField(
       {super.key,
       required this.itemController,
-      required this.quantityController});
+      required this.quantityController,
+      required this.onMinus,
+      required this.isLastIngredient,
+      required this.isOnlyIngredient});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        InputField(
-          width: 175,
-          controller: itemController,
-          hint: "Item",
-        ),
-        InputField(
-          width: 150,
-          controller: quantityController,
-          hint: "Quantity",
-        ),
-        SvgIcon(
-            color: Theme.of(context).colorScheme.tertiary,
-            image: Assets.iconsMinus)
-      ],
+    ThemeData theme = Theme.of(context);
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          InputField(
+            height: isLastIngredient ? 60 : 75,
+            width: 175,
+            controller: itemController,
+            hint: "Item",
+          ),
+          InputField(
+            height: isLastIngredient ? 60 : 75,
+            width: 135,
+            controller: quantityController,
+            hint: "Quantity",
+          ),
+          IconButton(
+            icon: SvgIcon(
+                color: isOnlyIngredient
+                    ? theme.unselectedWidgetColor
+                    : theme.colorScheme.tertiary,
+                image: Assets.iconsMinus),
+            onPressed: isOnlyIngredient ? null : onMinus,
+          )
+        ],
+      ),
     );
   }
 }

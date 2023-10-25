@@ -16,8 +16,16 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController prepTimeController = TextEditingController();
   TextEditingController servingSizeController = TextEditingController();
-  TextEditingController itemController = TextEditingController();
-  TextEditingController quantityController = TextEditingController();
+  List<TextEditingController> itemControllers = [TextEditingController()];
+  List<TextEditingController> quantityControllers = [TextEditingController()];
+  bool hasOneIngredient = true;
+
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -68,16 +76,40 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
                 inputType: TextInputType.number,
               ),
               Header(title: "Ingredients"),
-              SizedBox(height: 10,),
-              RecipeIngredientField(
-                quantityController: quantityController,
-                itemController: itemController,
+              SizedBox(
+                height: 10,
               ),
-              AddIngredientButton(onPress: (){})
+              for(int i = 0; i< quantityControllers.length; i++)
+              RecipeIngredientField(
+                quantityController: quantityControllers[i],
+                itemController: itemControllers[i],
+                isOnlyIngredient: hasOneIngredient,
+                isLastIngredient: i == quantityControllers.length - 1,
+                onMinus: () {
+                  removeIngredient(i);
+                },
+              ),
+              AddIngredientButton(onPress: addIngredient)
             ],
           ),
         ),
       ),
     );
+  }
+
+  void addIngredient() {
+    quantityControllers.add(TextEditingController());
+    itemControllers.add(TextEditingController());
+    setState(() {
+      hasOneIngredient = quantityControllers.length == 1;
+    });
+  }
+
+  void removeIngredient(int i) {
+    setState(() {
+      quantityControllers.removeAt(i);
+      itemControllers.removeAt(i);
+      hasOneIngredient = quantityControllers.length == 1;
+    });
   }
 }

@@ -54,22 +54,20 @@ class InputField extends StatelessWidget {
     return Container(
       height: height,
       width: width,
-      child: Expanded(
-        child: TextFormField(
-          controller: controller,
-          keyboardType: inputType,
-          maxLines: maxLines,
-          minLines: minLines,
-          textAlignVertical: TextAlignVertical.top,
-          decoration: InputDecoration(
-            prefixIcon: icon != null ? Icon(icon) : null,
-            labelText: label,
-            hintText: hint,
-            alignLabelWithHint: true,
-            border: OutlineInputBorder(),
-          ),
-          validator: validator,
+      child: TextFormField(
+        controller: controller,
+        keyboardType: inputType,
+        maxLines: maxLines,
+        minLines: minLines,
+        textAlignVertical: TextAlignVertical.top,
+        decoration: InputDecoration(
+          prefixIcon: icon != null ? Icon(icon) : null,
+          labelText: label,
+          hintText: hint,
+          alignLabelWithHint: true,
+          border: OutlineInputBorder(),
         ),
+        validator: validator,
       ),
     );
   }
