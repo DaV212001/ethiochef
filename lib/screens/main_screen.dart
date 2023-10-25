@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/generated/assets.dart';
-import 'package:ethio_chef/screens/category_screen.dart';
+import 'package:ethio_chef/screens/category/categories_screen.dart';
 import 'package:ethio_chef/screens/competition_screen.dart';
 import 'package:ethio_chef/screens/home/home_screen.dart';
 import 'package:ethio_chef/screens/profile_screen.dart';
@@ -55,7 +55,7 @@ class _MainScreenState extends State<MainScreen> {
   List<Widget> _buildScreens() {
     return [
       HomeScreen(),
-      CategoryScreen(),
+      CategoriesScreen(),
       // SavedRecipesScreen(),
       CompetitionScreen(),
       ProfileScreen()

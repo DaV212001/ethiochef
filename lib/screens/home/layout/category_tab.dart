@@ -39,7 +39,7 @@ class CategoryTab extends StatelessWidget {
             tabs: tabs,
           ),
           SizedBox(
-            height: 275,
+            height: 250,
             child: TabBarView(children: getTabs()),
           ),
         ],

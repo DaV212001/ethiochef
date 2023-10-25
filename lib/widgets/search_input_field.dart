@@ -1,8 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SearchInputField extends StatefulWidget {
+  final String hint;
   final bool enabled;
   final ValueChanged<String>? onSearchQueryChange;
   final FocusNode? focusNode;
@@ -11,15 +11,14 @@ class SearchInputField extends StatefulWidget {
       {super.key,
       this.onSearchQueryChange,
       this.enabled = false,
-      this.focusNode
-      });
+      this.focusNode,
+      required this.hint});
 
   @override
   State<SearchInputField> createState() => _SearchInputFieldState();
 }
 
 class _SearchInputFieldState extends State<SearchInputField> {
-
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -33,10 +32,8 @@ class _SearchInputFieldState extends State<SearchInputField> {
         keyboardType: TextInputType.text,
         textAlignVertical: TextAlignVertical.center,
         decoration: InputDecoration(
-          hintText: "search".tr(),
-          hintStyle: TextStyle(
-            color: theme.colorScheme.secondaryContainer
-          ),
+          hintText: widget.hint,
+          hintStyle: TextStyle(color: theme.colorScheme.secondaryContainer),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(5)),
             borderSide: BorderSide(
@@ -44,10 +41,8 @@ class _SearchInputFieldState extends State<SearchInputField> {
               width: 1,
             ),
           ),
-          prefixIcon: Icon(
-              CupertinoIcons.search,
-              color: theme.colorScheme.secondaryContainer
-          ),
+          prefixIcon: Icon(CupertinoIcons.search,
+              color: theme.colorScheme.secondaryContainer),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: theme.colorScheme.secondaryContainer,

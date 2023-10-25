@@ -46,37 +46,18 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
                 height: 75,
                 padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                 decoration: BoxDecoration(
-                    borderRadius: AppTheme.allBorderRadius,
                     color: theme.colorScheme.tertiary.withOpacity(0.7)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            widget.food.name,
-                            style: theme.textTheme.headlineSmall?.copyWith(
-                                color: theme.colorScheme.onTertiary,
-                                fontWeight: FontWeight.w500),
-                            textAlign: TextAlign.start,
-                          ),
-                          GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  widget.food.isSaved = !widget.food.isSaved;
-                                });
-                              },
-                              child: Icon(
-                                widget.food.isSaved
-                                    ? CupertinoIcons.bookmark_solid
-                                    : CupertinoIcons.bookmark,
-                                color: theme.colorScheme.secondary,
-                              ))
-                        ],
-                      ),
+                    SizedBox(height: 5),
+                    Text(
+                      widget.food.name,
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                          color: theme.colorScheme.onTertiary,
+                          fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.start,
                     ),
                     CategoryLabelCarousel(categories: widget.food.menuTimes)
                   ],

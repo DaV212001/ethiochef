@@ -1,5 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/home/layout/category_tab.dart';
-import 'package:ethio_chef/screens/home/layout/home_screen_head.dart';
+import 'package:ethio_chef/widgets/screen_head.dart';
 import 'package:ethio_chef/screens/home/layout/recent_dishes.dart';
 import 'package:ethio_chef/utils/place_holder_data.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +15,10 @@ class HomeScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              HomeScreenHead(
+              ScreenHead(
                 hasNotification: true,
+                screen: 0,
+                searchHint: "search".tr(),
               ),
               CategoryTab(dishes: PlaceHolderData.dishes),
               SizedBox(
