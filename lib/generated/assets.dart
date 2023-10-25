@@ -19,7 +19,9 @@ class Assets {
   static const String iconsLanguage = 'assets/images/icons/language.svg';
   static const String iconsMealTime = 'assets/images/icons/meal_time.svg';
   static const String iconsMedal = 'assets/images/icons/medal.svg';
+  static const String iconsMinus = 'assets/images/icons/minus.svg';
   static const String iconsPeople = 'assets/images/icons/people.svg';
+  static const String iconsPlus = 'assets/images/icons/plus.svg';
   static const String iconsProfile = 'assets/images/icons/profile.svg';
   static const String iconsTime = 'assets/images/icons/time.svg';
   static const String imagesEthiopianFlag = 'assets/images/ethiopian_flag.svg';

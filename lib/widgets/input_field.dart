@@ -7,19 +7,27 @@ class InputField extends StatelessWidget {
   static final PromoCodeType = 3;
 
   final TextEditingController controller;
-  final String label;
+  final String? label;
   final String? hint;
   final IconData? icon;
   final double height;
+  final double? width;
   final int type;
+  final int maxLines;
+  final int minLines;
+  final TextInputType inputType;
 
   const InputField({super.key,
     required this.controller,
-    required this.label,
+    this.label,
     this.hint,
     this.icon,
     this.height = 75,
-    this.type = 0
+    this.width,
+    this.type = 0,
+    this.maxLines = 1,
+    this.minLines = 1,
+    this.inputType = TextInputType.text,
   });
 
   @override
@@ -45,16 +53,23 @@ class InputField extends StatelessWidget {
 
     return Container(
       height: height,
-      child: TextFormField(
-        controller: controller,
-        keyboardType: TextInputType.text,
-        decoration: InputDecoration(
-          prefixIcon: icon != null ? Icon(icon) : null,
-          labelText: label,
-          hintText: hint,
-          border: OutlineInputBorder(),
+      width: width,
+      child: Expanded(
+        child: TextFormField(
+          controller: controller,
+          keyboardType: inputType,
+          maxLines: maxLines,
+          minLines: minLines,
+          textAlignVertical: TextAlignVertical.top,
+          decoration: InputDecoration(
+            prefixIcon: icon != null ? Icon(icon) : null,
+            labelText: label,
+            hintText: hint,
+            alignLabelWithHint: true,
+            border: OutlineInputBorder(),
+          ),
+          validator: validator,
         ),
-        validator: validator,
       ),
     );
   }

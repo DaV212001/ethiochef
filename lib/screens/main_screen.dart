@@ -4,6 +4,7 @@ import 'package:ethio_chef/screens/category/categories_screen.dart';
 import 'package:ethio_chef/screens/competition_screen.dart';
 import 'package:ethio_chef/screens/home/home_screen.dart';
 import 'package:ethio_chef/screens/profile_screen.dart';
+import 'package:ethio_chef/screens/upload_recipe/upload_recipe_screen.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
@@ -32,12 +33,18 @@ class _MainScreenState extends State<MainScreen> {
       screens: _buildScreens(),
       items: _navBarsItems(),
       confineInSafeArea: true,
-      backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor!,
+      backgroundColor:
+      Theme
+          .of(context)
+          .bottomNavigationBarTheme
+          .backgroundColor!,
       popAllScreensOnTapOfSelectedTab: true,
       popActionScreens: PopActionScreensType.all,
       decoration: NavBarDecoration(
         borderRadius: BorderRadius.circular(15.0),
-        colorBehindNavBar: Theme.of(context).scaffoldBackgroundColor,
+        colorBehindNavBar: Theme
+            .of(context)
+            .scaffoldBackgroundColor,
       ),
       itemAnimationProperties: ItemAnimationProperties(
         duration: Duration(milliseconds: 200),
@@ -48,7 +55,7 @@ class _MainScreenState extends State<MainScreen> {
         curve: Curves.ease,
         duration: Duration(milliseconds: 200),
       ),
-      navBarStyle: NavBarStyle.style6,
+      navBarStyle: NavBarStyle.style15,
     );
   }
 
@@ -57,14 +64,20 @@ class _MainScreenState extends State<MainScreen> {
       HomeScreen(),
       CategoriesScreen(),
       // SavedRecipesScreen(),
+      ProfileScreen(),
       CompetitionScreen(),
       ProfileScreen()
     ];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
-    Color activeColor = Theme.of(context).colorScheme.primary;
-    Color inactiveColor = Theme.of(context).unselectedWidgetColor;
+    Color inactiveColor = Theme
+        .of(context)
+        .unselectedWidgetColor;
+    Color activeColor = Theme
+        .of(context)
+        .colorScheme
+        .onSurface;
     return [
       PersistentBottomNavBarItem(
         icon: SvgIcon(
@@ -72,19 +85,22 @@ class _MainScreenState extends State<MainScreen> {
           color: activeColor,
         ),
         inactiveIcon: SvgIcon(
+          size: 30,
           image: Assets.iconsHome,
           color: inactiveColor,
         ),
         title: ("home".tr()),
+        textStyle: TextStyle(color: activeColor),
         activeColorPrimary: activeColor,
         inactiveColorPrimary: inactiveColor,
       ),
       PersistentBottomNavBarItem(
         icon: SvgIcon(
-        image: Assets.iconsCategory,
-        color: activeColor,
-      ),
+          image: Assets.iconsCategory,
+          color: activeColor,
+        ),
         inactiveIcon: SvgIcon(
+          size: 30,
           image: Assets.iconsCategory,
           color: inactiveColor,
         ),
@@ -99,11 +115,36 @@ class _MainScreenState extends State<MainScreen> {
       //   inactiveColorPrimary: inactiveColor,
       // ),
       PersistentBottomNavBarItem(
+          icon: SvgIcon(
+            image: Assets.iconsPlus,
+            color: Theme
+                .of(context)
+                .colorScheme
+                .surface,
+          ),
+          inactiveIcon: SvgIcon(
+            size: 30,
+            image: Assets.iconsPlus,
+            color: Theme
+                .of(context)
+                .colorScheme
+                .surface,
+          ),
+          title: ("Add recipe"),
+          activeColorPrimary: activeColor,
+          inactiveColorPrimary: inactiveColor,
+          onPressed: (context) {
+            pushNewScreen(context!,
+                screen: UploadRecipeScreen(), withNavBar: false);
+          }
+      ),
+      PersistentBottomNavBarItem(
         icon: SvgIcon(
           image: Assets.iconsMedal,
           color: activeColor,
         ),
         inactiveIcon: SvgIcon(
+          size: 30,
           image: Assets.iconsMedal,
           color: inactiveColor,
         ),
@@ -117,6 +158,7 @@ class _MainScreenState extends State<MainScreen> {
           color: activeColor,
         ),
         inactiveIcon: SvgIcon(
+          size: 30,
           image: Assets.iconsProfile,
           color: inactiveColor,
         ),

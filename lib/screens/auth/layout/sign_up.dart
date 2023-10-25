@@ -3,7 +3,7 @@ import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/screens/main_screen.dart';
 import 'package:ethio_chef/widgets/auth/auth_header.dart';
 import 'package:ethio_chef/widgets/auth/auth_link.dart';
-import 'package:ethio_chef/widgets/auth/input_field.dart';
+import 'package:ethio_chef/widgets/input_field.dart';
 import 'package:ethio_chef/widgets/auth/phone_input_field.dart';
 import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:flutter/cupertino.dart';
