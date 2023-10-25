@@ -1,7 +1,9 @@
 import 'package:ethio_chef/models/category.dart';
+import 'package:ethio_chef/screens/category/category_screen.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:ethio_chef/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 class CategoryCard extends StatelessWidget {
   final Category category;
@@ -12,7 +14,13 @@ class CategoryCard extends StatelessWidget {
     ThemeData theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
-
+        pushNewScreen(
+          context,
+          withNavBar: false,
+          screen: CategoryScreen(
+              category: category,
+          ),
+        );
       },
       child: Card(
         child: Stack(

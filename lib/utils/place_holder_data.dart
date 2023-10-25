@@ -70,7 +70,7 @@ class PlaceHolderData {
   ];
   static Food food = Food(
       thumbnail:
-          "https://ethiochef.com/storage/app/public/food/lHV2tjemk6rxwB4FuWxBjUKwFuaYzIov0SmbwiSy.png",
+          "https://ethiochef.com/storage/app/public/food/96Bz0NqAKx9PksMzm1qg24AxwI2wz5KwgyaLQ7N3.jpeg",
       name: "Zucchini Bread",
       description:
           "Savor the simplicity of Moist Zucchini Bread—a perfect fusion of fresh zucchini, aromatic spices, and tender crumb. A guilt-free, comforting treat for any time of day. Enjoy the homemade goodness!",
