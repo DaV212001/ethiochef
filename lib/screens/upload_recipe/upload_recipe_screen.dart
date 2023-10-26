@@ -1,13 +1,17 @@
+import 'dart:io';
+
+import 'package:chewie/chewie.dart';
 import 'package:ethio_chef/widgets/header.dart';
 import 'package:ethio_chef/widgets/input_field.dart';
 import 'package:ethio_chef/widgets/upload_recipe/add_ingredient_button.dart';
 import 'package:ethio_chef/widgets/upload_recipe/image_field.dart';
 import 'package:ethio_chef/widgets/upload_recipe/ingredinet_field.dart';
 import 'package:ethio_chef/widgets/upload_recipe/step_field.dart';
+import 'package:ethio_chef/widgets/upload_recipe/video_field.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter/cupertino.dart';
-import 'dart:io';
+import 'package:pod_player/pod_player.dart';
 
 class UploadRecipeScreen extends StatefulWidget {
   const UploadRecipeScreen({super.key});
@@ -27,10 +31,11 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
   bool hasOneIngredient = true;
   bool hasOneStep = true;
 
-
   final picker = ImagePicker();
   File? picture = null;
   File? video = null;
+  VideoPlayerController? videoController = null;
+  ChewieController? chewieController = null;
 
   @override
   void initState() {
@@ -60,7 +65,9 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
                 imagePath: picture,
                 onClicked: showOptions,
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               InputField(
                   controller: nameController,
                   label: "Dish Name",
@@ -120,6 +127,16 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
                   },
                 ),
               AddButton(text: "Add step", onPress: addStep),
+              Header(title: "Video"),
+              SizedBox(
+                height: 10,
+              ),
+              VideoField(
+                video: videoController,
+                  cVideo: chewieController, onClicked: getVideoFromGallery),
+              SizedBox(
+                height: 10,
+              )
             ],
           ),
         ),
@@ -211,8 +228,27 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
     final pickedFile = await picker.pickVideo(source: ImageSource.gallery);
     setState(() {
       if (pickedFile != null) {
-        picture = File(pickedFile.path);
+        video = File(pickedFile.path);
+        videoController =
+            VideoPlayerController.file(video!);
+        setState(() {
+          chewieController = ChewieController(
+            videoPlayerController: videoController!,
+            autoPlay: true,
+            looping: false,
+            aspectRatio: videoController?.value.aspectRatio,
+            allowMuting: true,
+            showControls: true,
+            autoInitialize: true
+          );
+        });
       }
     });
+  }
+
+  @override
+  void dispose() {
+    chewieController?.dispose();
+    super.dispose();
   }
 }
