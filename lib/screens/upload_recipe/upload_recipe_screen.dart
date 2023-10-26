@@ -1,7 +1,8 @@
 import 'package:ethio_chef/widgets/header.dart';
 import 'package:ethio_chef/widgets/input_field.dart';
 import 'package:ethio_chef/widgets/upload_recipe/add_ingredient_button.dart';
-import 'package:ethio_chef/widgets/upload_recipe/recipe_ingredinet_field.dart';
+import 'package:ethio_chef/widgets/upload_recipe/ingredinet_field.dart';
+import 'package:ethio_chef/widgets/upload_recipe/step_field.dart';
 import 'package:flutter/material.dart';
 
 class UploadRecipeScreen extends StatefulWidget {
@@ -18,14 +19,14 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
   TextEditingController servingSizeController = TextEditingController();
   List<TextEditingController> itemControllers = [TextEditingController()];
   List<TextEditingController> quantityControllers = [TextEditingController()];
+  List<TextEditingController> stepControllers = [TextEditingController()];
   bool hasOneIngredient = true;
-
+  bool hasOneStep = true;
 
   @override
   void initState() {
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -79,17 +80,32 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
               SizedBox(
                 height: 10,
               ),
-              for(int i = 0; i< quantityControllers.length; i++)
-              RecipeIngredientField(
-                quantityController: quantityControllers[i],
-                itemController: itemControllers[i],
-                isOnlyIngredient: hasOneIngredient,
-                isLastIngredient: i == quantityControllers.length - 1,
-                onMinus: () {
-                  removeIngredient(i);
-                },
+              for (int i = 0; i < quantityControllers.length; i++)
+                IngredientField(
+                  quantityController: quantityControllers[i],
+                  itemController: itemControllers[i],
+                  isOnlyIngredient: hasOneIngredient,
+                  isLastIngredient: i == quantityControllers.length - 1,
+                  onMinus: () {
+                    removeIngredient(i);
+                  },
+                ),
+              AddButton(text: "Add ingredient", onPress: addIngredient),
+              Header(title: "Steps"),
+              SizedBox(
+                height: 10,
               ),
-              AddIngredientButton(onPress: addIngredient)
+              for (int i = 0; i < stepControllers.length; i++)
+                StepField(
+                  index: i,
+                  stepController: stepControllers[i],
+                  isLastStep: i == stepControllers.length - 1,
+                  isOnlyStep: hasOneStep,
+                  onMinus: () {
+                    removeStep(i);
+                  },
+                ),
+              AddButton(text: "Add step", onPress: addStep),
             ],
           ),
         ),
@@ -110,6 +126,20 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
       quantityControllers.removeAt(i);
       itemControllers.removeAt(i);
       hasOneIngredient = quantityControllers.length == 1;
+    });
+  }
+
+  void addStep() {
+    stepControllers.add(TextEditingController());
+    setState(() {
+      hasOneStep = stepControllers.length == 1;
+    });
+  }
+
+  void removeStep(int i) {
+    setState(() {
+      stepControllers.removeAt(i);
+      hasOneStep = stepControllers.length == 1;
     });
   }
 }

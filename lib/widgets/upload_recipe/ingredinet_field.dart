@@ -3,14 +3,14 @@ import 'package:ethio_chef/widgets/input_field.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 
-class RecipeIngredientField extends StatelessWidget {
+class IngredientField extends StatelessWidget {
   final bool isLastIngredient;
   final bool isOnlyIngredient;
   final TextEditingController itemController;
   final TextEditingController quantityController;
   final Function() onMinus;
 
-  const RecipeIngredientField(
+  const IngredientField(
       {super.key,
       required this.itemController,
       required this.quantityController,

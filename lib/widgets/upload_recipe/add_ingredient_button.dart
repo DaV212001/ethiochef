@@ -2,10 +2,11 @@ import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 
-class AddIngredientButton extends StatelessWidget {
+class AddButton extends StatelessWidget {
+  final String text;
   final Function() onPress;
 
-  const AddIngredientButton({super.key, required this.onPress});
+  const AddButton({super.key, required this.onPress, required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class AddIngredientButton extends StatelessWidget {
                 image: Assets.iconsPlus),
             SizedBox(width: 10,),
             Text(
-              "Add ingredient",
+              text,
               style: theme.textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w500
               ),
