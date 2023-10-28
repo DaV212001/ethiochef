@@ -1,4 +1,3 @@
-import 'package:ethio_chef/widgets/header.dart';
 import 'package:ethio_chef/widgets/upload_recipe/add_ingredient_button.dart';
 import 'package:ethio_chef/widgets/upload_recipe/ingredient_field.dart';
 import 'package:ethio_chef/widgets/upload_recipe/stepper_control_buttons.dart';
@@ -28,10 +27,15 @@ class _IngredientsStepState extends State<IngredientsStep> {
   bool hasOneIngredient = true;
 
   @override
+  void initState() {
+    hasOneIngredient = widget.quantityControllers.length == 1;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Header(title: "Ingredients"),
         SizedBox(
           height: 10,
         ),

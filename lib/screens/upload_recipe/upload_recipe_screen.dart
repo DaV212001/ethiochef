@@ -1,8 +1,7 @@
 import 'dart:io';
-
-import 'package:easy_stepper/easy_stepper.dart';
 import 'package:ethio_chef/screens/upload_recipe/layout/basics_step.dart';
 import 'package:ethio_chef/screens/upload_recipe/layout/ingredients_step.dart';
+import 'package:ethio_chef/screens/upload_recipe/layout/steps_header.dart';
 import 'package:ethio_chef/screens/upload_recipe/layout/steps_step.dart';
 import 'package:ethio_chef/screens/upload_recipe/layout/video_step.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +57,7 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
 
   List<Widget> steps() {
     return [
+      StepsHeader(activeStep: activeStep),
       Visibility(
         visible: activeStep == 0,
         child: BasicsStep(
@@ -132,45 +132,4 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
     });
   }
 
-  Widget buildStepper() {
-    final steps = List.generate(4, (index) {
-      int stepNumber = index + 1;
-      return EasyStep(
-        customStep: CircleAvatar(
-          radius: 8,
-          backgroundColor: Colors.white,
-          child: CircleAvatar(
-            radius: 7,
-            backgroundColor: activeStep >= index ? Colors.orange : Colors.white,
-          ),
-        ),
-        title: stepNumber == 1
-            ? 'Basic Info'
-            : stepNumber == 2
-                ? 'Ingredients'
-                : stepNumber == 3
-                    ? 'Steps'
-                    : 'Video',
-        topTitle: true,
-      );
-    });
-    return EasyStepper(
-      activeStep: activeStep,
-      activeStepTextColor: Colors.black87,
-      finishedStepTextColor: Colors.black87,
-      internalPadding: 0,
-      showLoadingAnimation: false,
-      stepRadius: 8,
-      showStepBorder: false,
-      lineStyle: LineStyle(
-        lineLength: 70,
-        lineSpace: 0,
-        lineType: LineType.normal,
-        defaultLineColor: Colors.white,
-        finishedLineColor: Colors.orange,
-      ),
-      steps: steps,
-      onStepReached: (index) => setState(() => activeStep = index),
-    );
-  }
 }

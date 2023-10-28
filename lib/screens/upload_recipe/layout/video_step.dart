@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:ethio_chef/widgets/header.dart';
 import 'package:ethio_chef/widgets/upload_recipe/stepper_control_buttons.dart';
 import 'package:ethio_chef/widgets/upload_recipe/video_field.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +23,7 @@ class VideoStep extends StatefulWidget {
 
 class _VideoStepState extends State<VideoStep> {
   File? currentVideo = null;
+
   @override
   void initState() {
     currentVideo = widget.video;
@@ -34,7 +34,6 @@ class _VideoStepState extends State<VideoStep> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Header(title: "Video"),
         SizedBox(
           height: 10,
         ),

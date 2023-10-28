@@ -1,4 +1,3 @@
-import 'package:ethio_chef/widgets/header.dart';
 import 'package:ethio_chef/widgets/upload_recipe/add_ingredient_button.dart';
 import 'package:ethio_chef/widgets/upload_recipe/step_field.dart';
 import 'package:ethio_chef/widgets/upload_recipe/stepper_control_buttons.dart';
@@ -24,10 +23,9 @@ class StepsStep extends StatefulWidget {
 class _StepsStepState extends State<StepsStep> {
   bool hasOneStep = true;
 
-
   @override
   void initState() {
-    print("=========================================starting out the widget");
+    hasOneStep = widget.stepControllers.length == 1;
     super.initState();
   }
 
@@ -35,7 +33,6 @@ class _StepsStepState extends State<StepsStep> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Header(title: "Steps"),
         SizedBox(
           height: 10,
         ),
@@ -53,9 +50,7 @@ class _StepsStepState extends State<StepsStep> {
         StepperControlButtons(
           next: () {
             //Todo validate form
-            widget.updateControllers(
-              widget.stepControllers
-            );
+            widget.updateControllers(widget.stepControllers);
             widget.next();
           },
           back: () {
