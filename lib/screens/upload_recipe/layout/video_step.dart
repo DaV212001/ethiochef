@@ -23,6 +23,7 @@ class VideoStep extends StatefulWidget {
 
 class _VideoStepState extends State<VideoStep> {
   File? currentVideo = null;
+  bool videoInvalid = false;
 
   @override
   void initState() {
@@ -39,13 +40,21 @@ class _VideoStepState extends State<VideoStep> {
         ),
         VideoField(
           video: currentVideo,
+          invalid: videoInvalid,
           onVideoSelected: (File? video) {
             widget.updateVideo(video);
           },
         ),
+        if(videoInvalid)
+        invalidVideo(),
         StepperControlButtons(
           next: () {
-            //Todo validate form
+            if (currentVideo == null && videoInvalid == false) {
+              setState(() {
+                videoInvalid = true;
+              });
+              return;
+            }
             widget.next();
           },
           back: () {
@@ -53,6 +62,20 @@ class _VideoStepState extends State<VideoStep> {
           },
         )
       ],
+    );
+  }
+
+  Widget invalidVideo() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 15.0, top: 5),
+        child: Text("Video is required",
+            style: Theme.of(context)
+                .textTheme
+                .labelMedium
+                ?.copyWith(color: Theme.of(context).colorScheme.error)),
+      ),
     );
   }
 }

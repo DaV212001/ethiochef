@@ -4,7 +4,6 @@ import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 
 class IngredientField extends StatelessWidget {
-  final bool isLastIngredient;
   final bool isOnlyIngredient;
   final TextEditingController itemController;
   final TextEditingController quantityController;
@@ -15,7 +14,6 @@ class IngredientField extends StatelessWidget {
       required this.itemController,
       required this.quantityController,
       required this.onMinus,
-      required this.isLastIngredient,
       required this.isOnlyIngredient});
 
   @override
@@ -27,13 +25,13 @@ class IngredientField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           InputField(
-            height: isLastIngredient ? 60 : 75,
+            height: 75,
             width: 175,
             controller: itemController,
             hint: "Item",
           ),
           InputField(
-            height: isLastIngredient ? 60 : 75,
+            height: 75,
             width: 135,
             controller: quantityController,
             hint: "Quantity",

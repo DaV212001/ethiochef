@@ -1,13 +1,20 @@
+import 'dart:io';
+
 import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 
 class ImageField extends StatefulWidget {
+  final bool invalid;
   final File? image;
   final Function(File?) onImageSelected;
-  const ImageField({Key? key, required this.onImageSelected, this.image})
+
+  const ImageField(
+      {Key? key,
+      required this.onImageSelected,
+      this.image,
+      this.invalid = false})
       : super(key: key);
 
   @override
@@ -15,7 +22,6 @@ class ImageField extends StatefulWidget {
 }
 
 class _ImageFieldState extends State<ImageField> {
-
   final picker = ImagePicker();
   File? picture = null;
 
@@ -58,7 +64,9 @@ class _ImageFieldState extends State<ImageField> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
         border: Border.all(
-          color: theme.colorScheme.primary.withOpacity(0.5),
+          color: widget.invalid
+              ? theme.colorScheme.error
+              : theme.colorScheme.primary.withOpacity(0.5),
           width: 1,
         ),
       ),
@@ -71,19 +79,19 @@ class _ImageFieldState extends State<ImageField> {
               child: InkWell(
                 child: picture != null
                     ? InkWell(
-                      onTap: () {
-                        final imageProvider = Image.file(picture!).image;
-                        showImageViewer(context, imageProvider,
-                            backgroundColor: theme.colorScheme.background,
-                            swipeDismissible: true,
-                            doubleTapZoomable: true,
-                            closeButtonColor: theme.colorScheme.primary);
-                      },
-                      child: Image.file(
-                        picture!,
-                        fit: BoxFit.cover,
-                      ),
-                    )
+                        onTap: () {
+                          final imageProvider = Image.file(picture!).image;
+                          showImageViewer(context, imageProvider,
+                              backgroundColor: theme.colorScheme.background,
+                              swipeDismissible: true,
+                              doubleTapZoomable: true,
+                              closeButtonColor: theme.colorScheme.primary);
+                        },
+                        child: Image.file(
+                          picture!,
+                          fit: BoxFit.cover,
+                        ),
+                      )
                     : TextButton(
                         onPressed: showOptions,
                         child: Row(

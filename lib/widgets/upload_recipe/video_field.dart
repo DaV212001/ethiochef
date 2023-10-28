@@ -7,9 +7,16 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pod_player/pod_player.dart';
 
 class VideoField extends StatefulWidget {
+  final bool invalid;
   final File? video;
   final Function(File?) onVideoSelected;
-  const VideoField({Key? key, required this.onVideoSelected, this.video}) : super(key: key);
+
+  const VideoField(
+      {Key? key,
+      required this.onVideoSelected,
+      this.video,
+      this.invalid = false})
+      : super(key: key);
 
   @override
   State<VideoField> createState() => _VideoFieldState();
@@ -26,6 +33,7 @@ class _VideoFieldState extends State<VideoField> {
     setVideo(widget.video);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -57,15 +65,16 @@ class _VideoFieldState extends State<VideoField> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           border: Border.all(
-            color: theme.colorScheme.primary.withOpacity(0.5),
+            color: widget.invalid
+                ? theme.colorScheme.error
+                : theme.colorScheme.primary.withOpacity(0.5),
             width: 1,
           ),
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(5),
           child: Container(
-              constraints:
-                  BoxConstraints(minHeight: 200.0, maxHeight: 400),
+              constraints: BoxConstraints(minHeight: 200.0, maxHeight: 400),
               child: Ink(
                 width: double.infinity,
                 child: InkWell(
@@ -144,7 +153,7 @@ class _VideoFieldState extends State<VideoField> {
   }
 
   void setVideo(File? video) {
-    if(video == null){
+    if (video == null) {
       return;
     }
     setState(() {

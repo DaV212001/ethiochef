@@ -25,6 +25,7 @@ class IngredientsStep extends StatefulWidget {
 
 class _IngredientsStepState extends State<IngredientsStep> {
   bool hasOneIngredient = true;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -34,34 +35,38 @@ class _IngredientsStepState extends State<IngredientsStep> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 10,
-        ),
-        for (int i = 0; i < widget.quantityControllers.length; i++)
-          IngredientField(
-            quantityController: widget.quantityControllers[i],
-            itemController: widget.itemControllers[i],
-            isOnlyIngredient: hasOneIngredient,
-            isLastIngredient: i == widget.quantityControllers.length - 1,
-            onMinus: () {
-              removeIngredient(i);
-            },
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          SizedBox(
+            height: 10,
           ),
-        AddButton(text: "Add ingredient", onPress: addIngredient),
-        StepperControlButtons(
-          next: () {
-            //Todo validate form
-            widget.updateControllers(
-                widget.itemControllers, widget.quantityControllers);
-            widget.next();
-          },
-          back: () {
-            widget.back();
-          },
-        )
-      ],
+          for (int i = 0; i < widget.quantityControllers.length; i++)
+            IngredientField(
+              quantityController: widget.quantityControllers[i],
+              itemController: widget.itemControllers[i],
+              isOnlyIngredient: hasOneIngredient,
+              onMinus: () {
+                removeIngredient(i);
+              },
+            ),
+          AddButton(text: "Add ingredient", onPress: addIngredient),
+          StepperControlButtons(
+            next: () {
+              if (!_formKey.currentState!.validate()) {
+                return;
+              }
+              widget.updateControllers(
+                  widget.itemControllers, widget.quantityControllers);
+              widget.next();
+            },
+            back: () {
+              widget.back();
+            },
+          )
+        ],
+      ),
     );
   }
 

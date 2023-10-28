@@ -22,6 +22,7 @@ class StepsStep extends StatefulWidget {
 
 class _StepsStepState extends State<StepsStep> {
   bool hasOneStep = true;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -31,36 +32,40 @@ class _StepsStepState extends State<StepsStep> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 10,
-        ),
-        for (int i = 0; i < widget.stepControllers.length; i++)
-          StepField(
-            index: i,
-            stepController: widget.stepControllers[i],
-            isLastStep: i == widget.stepControllers.length - 1,
-            isOnlyStep: hasOneStep,
-            onMinus: () {
-              removeStep(i);
-            },
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          SizedBox(
+            height: 10,
           ),
-        AddButton(text: "Add step", onPress: addStep),
-        StepperControlButtons(
-          next: () {
-            //Todo validate form
-            widget.updateControllers(widget.stepControllers);
-            widget.next();
-          },
-          back: () {
-            widget.stepControllers.forEach((element) {
-              print(element.text);
-            });
-            widget.back();
-          },
-        )
-      ],
+          for (int i = 0; i < widget.stepControllers.length; i++)
+            StepField(
+              index: i,
+              stepController: widget.stepControllers[i],
+              isOnlyStep: hasOneStep,
+              onMinus: () {
+                removeStep(i);
+              },
+            ),
+          AddButton(text: "Add step", onPress: addStep),
+          StepperControlButtons(
+            next: () {
+              if (!_formKey.currentState!.validate()) {
+                return;
+              }
+              widget.updateControllers(widget.stepControllers);
+              widget.next();
+            },
+            back: () {
+              widget.stepControllers.forEach((element) {
+                print(element.text);
+              });
+              widget.back();
+            },
+          )
+        ],
+      ),
     );
   }
 

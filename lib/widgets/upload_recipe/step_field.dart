@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 class StepField extends StatelessWidget {
   final int index;
-  final bool isLastStep;
   final bool isOnlyStep;
   final TextEditingController stepController;
   final Function() onMinus;
@@ -15,14 +14,13 @@ class StepField extends StatelessWidget {
       required this.index,
       required this.stepController,
       required this.onMinus,
-      required this.isLastStep,
       required this.isOnlyStep});
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Container(
-      padding: EdgeInsets.only(bottom: isLastStep ? 0 : 10),
+      padding: EdgeInsets.only(bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -48,8 +46,7 @@ class StepField extends StatelessWidget {
           ),
           SizedBox(width: 10,),
           Expanded(
-            child: InputField(// expand the width
-              height: 60,
+            child: InputField(
               controller: stepController,
               hint: "Step",
             ),

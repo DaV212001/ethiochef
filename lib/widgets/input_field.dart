@@ -73,7 +73,9 @@ class InputField extends StatelessWidget {
   }
 
   String? validateNoType(String? value) {
-    // No validation for NoType
+    if (value == null || value.isEmpty) {
+      return 'This field is required';
+    }
     return null;
   }
 
