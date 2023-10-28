@@ -9,8 +9,9 @@ class BasicsStep extends StatefulWidget {
   final TextEditingController descriptionController;
   final TextEditingController prepTimeController;
   final TextEditingController servingSizeController;
+  final File? image;
   final Function(TextEditingController, TextEditingController,
-      TextEditingController, TextEditingController) updateControllers;
+      TextEditingController, TextEditingController, File?) updateControllers;
   final Function next;
 
   const BasicsStep(
@@ -20,19 +21,31 @@ class BasicsStep extends StatefulWidget {
       required this.nameController,
       required this.descriptionController,
       required this.prepTimeController,
-      required this.servingSizeController});
+      required this.servingSizeController,
+      this.image});
 
   @override
   State<BasicsStep> createState() => _BasicsStepState();
 }
 
 class _BasicsStepState extends State<BasicsStep> {
+  late File? currentImage;
+
+  @override
+  void initState() {
+    currentImage = widget.image;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         ImageField(
-          onImageSelected: (File? image) {},
+          image: currentImage,
+          onImageSelected: (File? image) {
+            currentImage = image;
+          },
         ),
         SizedBox(
           height: 10,
@@ -73,7 +86,9 @@ class _BasicsStepState extends State<BasicsStep> {
                 widget.nameController,
                 widget.descriptionController,
                 widget.prepTimeController,
-                widget.servingSizeController);
+                widget.servingSizeController,
+                currentImage
+            );
             //Todo validate form
             widget.next();
           },

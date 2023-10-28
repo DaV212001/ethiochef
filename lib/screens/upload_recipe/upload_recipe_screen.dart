@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:ethio_chef/screens/upload_recipe/layout/basics_step.dart';
 import 'package:ethio_chef/screens/upload_recipe/layout/ingredients_step.dart';
@@ -20,8 +22,9 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
   List<TextEditingController> itemControllers = [TextEditingController()];
   List<TextEditingController> quantityControllers = [TextEditingController()];
   List<TextEditingController> stepControllers = [TextEditingController()];
-
   int activeStep = 0;
+  File? image = null;
+  File? video = null;
 
   @override
   void initState() {
@@ -62,12 +65,14 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
           descriptionController: descriptionController,
           prepTimeController: prepTimeController,
           servingSizeController: servingSizeController,
+          image: image,
           updateControllers: (nameController, descriptionController,
-              prepTimeController, servingSizeController) {
+              prepTimeController, servingSizeController, image) {
             this.nameController = nameController;
             this.descriptionController = descriptionController;
             this.prepTimeController = prepTimeController;
             this.servingSizeController = servingSizeController;
+            this.image = image;
           },
           next: incrementStep,
         ),
@@ -102,7 +107,10 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
       Visibility(
         visible: activeStep == 3,
         child: VideoStep(
-          updateVideo: (video) {},
+          video: video,
+          updateVideo: (video) {
+           this.video = video;
+          },
           next: (){
 
           },

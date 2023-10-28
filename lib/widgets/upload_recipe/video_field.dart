@@ -7,8 +7,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pod_player/pod_player.dart';
 
 class VideoField extends StatefulWidget {
+  final File? video;
   final Function(File?) onVideoSelected;
-  const VideoField({Key? key, required this.onVideoSelected}) : super(key: key);
+  const VideoField({Key? key, required this.onVideoSelected, this.video}) : super(key: key);
 
   @override
   State<VideoField> createState() => _VideoFieldState();
@@ -20,6 +21,11 @@ class _VideoFieldState extends State<VideoField> {
   ChewieController? chewieController = null;
   bool isLoadingVideo = false;
 
+  @override
+  void initState() {
+    setVideo(widget.video);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -59,16 +65,14 @@ class _VideoFieldState extends State<VideoField> {
           borderRadius: BorderRadius.circular(5),
           child: Container(
               constraints:
-                  BoxConstraints(minHeight: 60.0,),
+                  BoxConstraints(minHeight: 200.0, maxHeight: 400),
               child: Ink(
                 width: double.infinity,
                 child: InkWell(
                   child: isLoadingVideo
                       ? LoadingVideo()
                       : videoController != null
-                          ? AspectRatio(
-                              aspectRatio: videoController!.value.aspectRatio,
-                              child: Chewie(controller: chewieController!))
+                          ? Chewie(controller: chewieController!)
                           : button(theme),
                 ),
               )),
@@ -136,14 +140,19 @@ class _VideoFieldState extends State<VideoField> {
       });
       return;
     }
-    File video = File(pickedFile.path);
+    setVideo(File(pickedFile.path));
+  }
+
+  void setVideo(File? video) {
+    if(video == null){
+      return;
+    }
     setState(() {
       videoController = VideoPlayerController.file(video);
       chewieController = ChewieController(
         videoPlayerController: videoController!,
         autoPlay: false,
         looping: false,
-        aspectRatio: videoController?.value.aspectRatio,
         allowMuting: true,
         showControls: true,
         autoInitialize: true,
@@ -160,7 +169,7 @@ class _VideoFieldState extends State<VideoField> {
       chewieController?.dispose();
       videoController = null;
       chewieController = null;
-      ;
+      widget.onVideoSelected(null);
     });
   }
 

@@ -5,8 +5,9 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class ImageField extends StatefulWidget {
+  final File? image;
   final Function(File?) onImageSelected;
-  const ImageField({Key? key, required this.onImageSelected})
+  const ImageField({Key? key, required this.onImageSelected, this.image})
       : super(key: key);
 
   @override
@@ -14,8 +15,16 @@ class ImageField extends StatefulWidget {
 }
 
 class _ImageFieldState extends State<ImageField> {
+
   final picker = ImagePicker();
   File? picture = null;
+
+  @override
+  void initState() {
+    print(widget.image);
+    picture = widget.image;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,6 +131,7 @@ class _ImageFieldState extends State<ImageField> {
     setState(() {
       if (pickedFile != null) {
         picture = File(pickedFile.path);
+        widget.onImageSelected(picture);
       }
     });
   }

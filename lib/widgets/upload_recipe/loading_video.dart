@@ -26,45 +26,48 @@ class _LoadingVideoState extends State<LoadingVideo> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 20,
-              width: 20,
-              child: CircularProgressIndicator(
-                strokeWidth: 3,
-              ),
-            ),
-            SizedBox(width: 10),
-            Text(
-              "Video is loading.",
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.unselectedWidgetColor.withOpacity(0.85),
-              ),
-            ),
-          ],
-        ),
-        if (showSecondRow)
-          SizedBox(
-            height: 10,
-          ),
-        if (showSecondRow) // Show the second row if showSecondRow is true
+    return SizedBox(
+      height: 200,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 3,
+                ),
+              ),
+              SizedBox(width: 10),
               Text(
-                "This might take a long time if the video size is large.",
-                style: theme.textTheme.bodySmall?.copyWith(
+                "Video is loading.",
+                style: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.unselectedWidgetColor.withOpacity(0.85),
                 ),
               ),
             ],
           ),
-      ],
+          if (showSecondRow)
+            SizedBox(
+              height: 10,
+            ),
+          if (showSecondRow) // Show the second row if showSecondRow is true
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "This might take a long time if the video size is large.",
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.unselectedWidgetColor.withOpacity(0.85),
+                  ),
+                ),
+              ],
+            ),
+        ],
+      ),
     );
   }
 }
