@@ -1,17 +1,12 @@
 import 'dart:io';
-
-import 'package:chewie/chewie.dart';
 import 'package:ethio_chef/widgets/header.dart';
 import 'package:ethio_chef/widgets/input_field.dart';
 import 'package:ethio_chef/widgets/upload_recipe/add_ingredient_button.dart';
-import 'package:ethio_chef/widgets/upload_recipe/image_field.dart';
-import 'package:ethio_chef/widgets/upload_recipe/ingredinet_field.dart';
+import 'package:ethio_chef/screens/upload_recipe/layout/image_field.dart';
+import 'package:ethio_chef/widgets/upload_recipe/ingredient_field.dart';
 import 'package:ethio_chef/widgets/upload_recipe/step_field.dart';
-import 'package:ethio_chef/widgets/upload_recipe/video_field.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:ethio_chef/screens/upload_recipe/layout/video_field.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:pod_player/pod_player.dart';
 
 class UploadRecipeScreen extends StatefulWidget {
   const UploadRecipeScreen({super.key});
@@ -30,12 +25,6 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
   List<TextEditingController> stepControllers = [TextEditingController()];
   bool hasOneIngredient = true;
   bool hasOneStep = true;
-
-  final picker = ImagePicker();
-  File? picture = null;
-  File? video = null;
-  VideoPlayerController? videoController = null;
-  ChewieController? chewieController = null;
 
   @override
   void initState() {
@@ -62,8 +51,7 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
           child: Column(
             children: [
               ImageField(
-                imagePath: picture,
-                onClicked: showOptions,
+                onImageSelected: (File? image) {},
               ),
               SizedBox(
                 height: 10,
@@ -132,10 +120,10 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
                 height: 10,
               ),
               VideoField(
-                video: videoController,
-                  cVideo: chewieController, onClicked: getVideoFromGallery),
+                onVideoSelected: (File? video) {},
+              ),
               SizedBox(
-                height: 10,
+                height: 100,
               )
             ],
           ),
@@ -172,83 +160,5 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
       stepControllers.removeAt(i);
       hasOneStep = stepControllers.length == 1;
     });
-  }
-
-  //Image Picker function to get image from gallery
-  Future getImageFromGallery() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      if (pickedFile != null) {
-        picture = File(pickedFile.path);
-      }
-    });
-  }
-
-  //Image Picker function to get image from camera
-  Future getImageFromCamera() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.camera);
-    setState(() {
-      if (pickedFile != null) {
-        picture = File(pickedFile.path);
-      }
-    });
-  }
-
-  //Show options to get image from camera or gallery
-  Future showOptions() async {
-    showCupertinoModalPopup(
-      context: context,
-      builder: (context) => CupertinoActionSheet(
-        actions: [
-          CupertinoActionSheetAction(
-            child: Text('Photo Gallery'),
-            onPressed: () {
-              // close the options modal
-              Navigator.of(context).pop();
-              // get image from gallery
-              getImageFromGallery();
-            },
-          ),
-          CupertinoActionSheetAction(
-            child: Text('Camera'),
-            onPressed: () {
-              // close the options modal
-              Navigator.of(context).pop();
-              // get image from camera
-              getImageFromCamera();
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  //Image Picker function to get image from gallery
-  Future getVideoFromGallery() async {
-    final pickedFile = await picker.pickVideo(source: ImageSource.gallery);
-    setState(() {
-      if (pickedFile != null) {
-        video = File(pickedFile.path);
-        videoController =
-            VideoPlayerController.file(video!);
-        setState(() {
-          chewieController = ChewieController(
-            videoPlayerController: videoController!,
-            autoPlay: true,
-            looping: false,
-            aspectRatio: videoController?.value.aspectRatio,
-            allowMuting: true,
-            showControls: true,
-            autoInitialize: true
-          );
-        });
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    chewieController?.dispose();
-    super.dispose();
   }
 }

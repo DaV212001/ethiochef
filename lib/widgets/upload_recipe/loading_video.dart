@@ -1,0 +1,70 @@
+import 'package:flutter/material.dart';
+
+class LoadingVideo extends StatefulWidget {
+  @override
+  _LoadingVideoState createState() => _LoadingVideoState();
+}
+
+class _LoadingVideoState extends State<LoadingVideo> {
+  bool showSecondRow = false;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 7), () {
+      setState(() {
+        if (mounted) {
+          // Check if the widget is still mounted
+          setState(() {
+            showSecondRow = true;
+          });
+        }
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 20,
+              width: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 3,
+              ),
+            ),
+            SizedBox(width: 10),
+            Text(
+              "Video is loading.",
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.unselectedWidgetColor.withOpacity(0.85),
+              ),
+            ),
+          ],
+        ),
+        if (showSecondRow)
+          SizedBox(
+            height: 10,
+          ),
+        if (showSecondRow) // Show the second row if showSecondRow is true
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "This might take a long time if the video size is large.",
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.unselectedWidgetColor.withOpacity(0.85),
+                ),
+              ),
+            ],
+          ),
+      ],
+    );
+  }
+}
