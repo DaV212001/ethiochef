@@ -1,11 +1,8 @@
-import 'dart:io';
-import 'package:ethio_chef/widgets/header.dart';
-import 'package:ethio_chef/widgets/input_field.dart';
-import 'package:ethio_chef/widgets/upload_recipe/add_ingredient_button.dart';
-import 'package:ethio_chef/screens/upload_recipe/layout/image_field.dart';
-import 'package:ethio_chef/widgets/upload_recipe/ingredient_field.dart';
-import 'package:ethio_chef/widgets/upload_recipe/step_field.dart';
-import 'package:ethio_chef/screens/upload_recipe/layout/video_field.dart';
+import 'package:easy_stepper/easy_stepper.dart';
+import 'package:ethio_chef/screens/upload_recipe/layout/basics_step.dart';
+import 'package:ethio_chef/screens/upload_recipe/layout/ingredients_step.dart';
+import 'package:ethio_chef/screens/upload_recipe/layout/steps_step.dart';
+import 'package:ethio_chef/screens/upload_recipe/layout/video_step.dart';
 import 'package:flutter/material.dart';
 
 class UploadRecipeScreen extends StatefulWidget {
@@ -23,8 +20,8 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
   List<TextEditingController> itemControllers = [TextEditingController()];
   List<TextEditingController> quantityControllers = [TextEditingController()];
   List<TextEditingController> stepControllers = [TextEditingController()];
-  bool hasOneIngredient = true;
-  bool hasOneStep = true;
+
+  int activeStep = 0;
 
   @override
   void initState() {
@@ -49,116 +46,123 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Column(
-            children: [
-              ImageField(
-                onImageSelected: (File? image) {},
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              InputField(
-                  controller: nameController,
-                  label: "Dish Name",
-                  hint: "Enter dish name"),
-              InputField(
-                controller: descriptionController,
-                label: "Dish Description",
-                hint: "Enter dish description",
-                maxLines: 10,
-                minLines: 10,
-                height: 150,
-              ),
-              SizedBox(
-                height: 13,
-              ),
-              InputField(
-                icon: Icons.timer_outlined,
-                controller: prepTimeController,
-                label: "Preparation time",
-                hint: "Enter dish preparation in minutes",
-                inputType: TextInputType.number,
-              ),
-              InputField(
-                icon: Icons.people_outline,
-                controller: servingSizeController,
-                label: "Serving size",
-                hint: "Enter dish serving size",
-                inputType: TextInputType.number,
-              ),
-              Header(title: "Ingredients"),
-              SizedBox(
-                height: 10,
-              ),
-              for (int i = 0; i < quantityControllers.length; i++)
-                IngredientField(
-                  quantityController: quantityControllers[i],
-                  itemController: itemControllers[i],
-                  isOnlyIngredient: hasOneIngredient,
-                  isLastIngredient: i == quantityControllers.length - 1,
-                  onMinus: () {
-                    removeIngredient(i);
-                  },
-                ),
-              AddButton(text: "Add ingredient", onPress: addIngredient),
-              Header(title: "Steps"),
-              SizedBox(
-                height: 10,
-              ),
-              for (int i = 0; i < stepControllers.length; i++)
-                StepField(
-                  index: i,
-                  stepController: stepControllers[i],
-                  isLastStep: i == stepControllers.length - 1,
-                  isOnlyStep: hasOneStep,
-                  onMinus: () {
-                    removeStep(i);
-                  },
-                ),
-              AddButton(text: "Add step", onPress: addStep),
-              Header(title: "Video"),
-              SizedBox(
-                height: 10,
-              ),
-              VideoField(
-                onVideoSelected: (File? video) {},
-              ),
-              SizedBox(
-                height: 100,
-              )
-            ],
+            children: steps(),
           ),
         ),
       ),
     );
   }
 
-  void addIngredient() {
-    quantityControllers.add(TextEditingController());
-    itemControllers.add(TextEditingController());
+  List<Widget> steps() {
+    return [
+      Visibility(
+        visible: activeStep == 0,
+        child: BasicsStep(
+          nameController: nameController,
+          descriptionController: descriptionController,
+          prepTimeController: prepTimeController,
+          servingSizeController: servingSizeController,
+          updateControllers: (nameController, descriptionController,
+              prepTimeController, servingSizeController) {
+            this.nameController = nameController;
+            this.descriptionController = descriptionController;
+            this.prepTimeController = prepTimeController;
+            this.servingSizeController = servingSizeController;
+          },
+          next: incrementStep,
+        ),
+      ),
+      Visibility(
+        visible: activeStep == 1,
+        child: IngredientsStep(
+          itemControllers: itemControllers,
+          quantityControllers: quantityControllers,
+          updateControllers: (quantityControllers, itemControllers) {
+            this.quantityControllers = quantityControllers;
+            this.itemControllers = itemControllers;
+          },
+          next: incrementStep,
+          back: decrementStep,
+        ),
+      ),
+      Visibility(
+        visible: activeStep == 2,
+        child: StepsStep(
+          stepControllers: stepControllers,
+          updateControllers: (stepControllers) {
+            stepControllers.forEach((element) {
+              print(element.text);
+            });
+            this.stepControllers = stepControllers;
+          },
+          next: incrementStep,
+          back: decrementStep,
+        ),
+      ),
+      Visibility(
+        visible: activeStep == 3,
+        child: VideoStep(
+          updateVideo: (video) {},
+          next: (){
+
+          },
+          back: decrementStep,
+        ),
+      )
+    ];
+  }
+
+  void incrementStep() {
     setState(() {
-      hasOneIngredient = quantityControllers.length == 1;
+      activeStep++;
     });
   }
 
-  void removeIngredient(int i) {
+  void decrementStep() {
     setState(() {
-      quantityControllers.removeAt(i);
-      itemControllers.removeAt(i);
-      hasOneIngredient = quantityControllers.length == 1;
+      activeStep--;
     });
   }
 
-  void addStep() {
-    stepControllers.add(TextEditingController());
-    setState(() {
-      hasOneStep = stepControllers.length == 1;
+  Widget buildStepper() {
+    final steps = List.generate(4, (index) {
+      int stepNumber = index + 1;
+      return EasyStep(
+        customStep: CircleAvatar(
+          radius: 8,
+          backgroundColor: Colors.white,
+          child: CircleAvatar(
+            radius: 7,
+            backgroundColor: activeStep >= index ? Colors.orange : Colors.white,
+          ),
+        ),
+        title: stepNumber == 1
+            ? 'Basic Info'
+            : stepNumber == 2
+                ? 'Ingredients'
+                : stepNumber == 3
+                    ? 'Steps'
+                    : 'Video',
+        topTitle: true,
+      );
     });
-  }
-
-  void removeStep(int i) {
-    setState(() {
-      stepControllers.removeAt(i);
-      hasOneStep = stepControllers.length == 1;
-    });
+    return EasyStepper(
+      activeStep: activeStep,
+      activeStepTextColor: Colors.black87,
+      finishedStepTextColor: Colors.black87,
+      internalPadding: 0,
+      showLoadingAnimation: false,
+      stepRadius: 8,
+      showStepBorder: false,
+      lineStyle: LineStyle(
+        lineLength: 70,
+        lineSpace: 0,
+        lineType: LineType.normal,
+        defaultLineColor: Colors.white,
+        finishedLineColor: Colors.orange,
+      ),
+      steps: steps,
+      onStepReached: (index) => setState(() => activeStep = index),
+    );
   }
 }
