@@ -19,7 +19,8 @@ class AppTheme {
       onSurface: cocoaBrown,
       onSurfaceVariant: russet,
       shadow: grey,
-      background: white
+      background: white,
+      error: tomato
     ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: white
@@ -93,6 +94,7 @@ class AppTheme {
   static Color russet_O90 = const Color(0xE6141115);
   static Color seasalt = const Color(0xFFF8FAFC);
   static Color white = Colors.white;
+  static const Color tomato = Color(0xFFFD3A39);
 
   static BorderRadius topBorderRadius = BorderRadius.only(
       topLeft: Radius.circular(5), topRight: Radius.circular(5));

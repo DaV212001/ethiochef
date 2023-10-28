@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/language.dart';
-import 'package:ethio_chef/screens/splash_screen.dart';
 import 'package:ethio_chef/screens/main_screen.dart';
+import 'package:ethio_chef/screens/splash_screen.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:ethio_chef/theme/model_theme.dart';
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
