@@ -1,8 +1,13 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/screens/recipe/recipe_screen.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:ethio_chef/widgets/cached_image.dart';
+import 'package:ethio_chef/widgets/main_button.dart';
+import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 class FoodCard extends StatefulWidget {
@@ -16,101 +21,125 @@ class FoodCard extends StatefulWidget {
 }
 
 class _FoodCardState extends State<FoodCard> {
-  bool isFavorite = false;
-
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return GestureDetector(
-      onTap: () {
-        pushNewScreen(
-          context,
-          withNavBar: false,
-          screen: RecipeScreen(
-              food: widget.food
-          ),
-        );
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            ClipRRect(
-              borderRadius: AppTheme.topBorderRadius,
-              child: Container(
-                  child: CachedImage(
-                      url: widget.food.thumbnail, fit: BoxFit.fill)),
-            ),
-            Positioned(
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                height: double.infinity,
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                decoration: BoxDecoration(
-                    borderRadius: AppTheme.topBorderRadius,
-                    gradient: LinearGradient(
-                      colors: [
-                        theme.colorScheme.tertiary.withOpacity(0.2),
-                        theme.colorScheme.tertiary.withOpacity(0.35),
-                        theme.colorScheme.tertiary.withOpacity(0.75),
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    )),
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.food.name,
-                      style: theme.textTheme.headlineSmall?.copyWith(
-                          color: theme.colorScheme.onTertiary,
-                          fontWeight: FontWeight.w500),
-                      textAlign: TextAlign.start,
-                      softWrap: true,
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    if (widget.food.description != null)
-                      Text(widget.food.description!,
-                          softWrap: true,
-                          maxLines: 5,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.labelMedium)
-                  ],
-                ),
-              ),
-            ),
-            Positioned(
-                top: 0,
-                right: 0,
-                child: IconButton(
-                    iconSize: 35,
-                    onPressed: () {
-                      setState(() {
-                        isFavorite = !isFavorite;
-                      });
-                    },
-                    icon: Icon(
-                      isFavorite
-                          ? Icons.favorite
-                          : Icons.favorite_border_outlined,
-                      color: theme.colorScheme.primary,
-                    )))
-          ],
-        ),
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: AppTheme.allBorderRadius,
       ),
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: AppTheme.allBorderRadius,
+                child: Container(
+                    width: 150.w,
+                    height: 175.h,
+                    child: CachedImage(
+                        url: widget.food.thumbnail, fit: BoxFit.fill)),
+              ),
+              SizedBox(
+                width: 10.w,
+              ),
+              SizedBox(
+                  height: 170,
+                  child: info(theme)),
+            ],
+          ),
+          MainButton(
+            height: 70.h,
+            width: 230.w,
+            text: "Show Recipe",
+            onPress: () {
+              pushNewScreen(
+                context,
+                withNavBar: false,
+                screen: RecipeScreen(food: widget.food),
+              );
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget info(ThemeData theme) {
+    List<String> menuTimes = [];
+    widget.food.menuTimes.forEach((element) {
+      menuTimes.add(element.name);
+    });
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Text(widget.food.name,
+            style: theme.textTheme.headlineMedium?.copyWith(
+                color: theme.colorScheme.tertiary,
+                fontWeight: FontWeight.w500)),
+        Container(
+            height: 35.h,
+            child: Row(children: [
+              SvgIcon(
+                  size: 25.sp,
+                  color: theme.colorScheme.tertiary,
+                  image: Assets.iconsPeople),
+              SizedBox(
+                width: 5.w,
+              ),
+              Text(
+                "number_people".tr(args: [widget.food.servings!.toString()]),
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: theme.unselectedWidgetColor,
+                ),
+              )
+            ])),
+        Container(
+            height: 35.h,
+            child: Row(children: [
+              SvgIcon(
+                  size: 25.sp,
+                  color: theme.colorScheme.tertiary,
+                  image: Assets.iconsCookingTime),
+              SizedBox(
+                width: 5.h,
+              ),
+              Text(
+                "number_hours".tr(args: [
+                  widget.food.preparationTime!.toString(),
+                ]),
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: theme.unselectedWidgetColor,
+                ),
+              )
+            ])),
+        Container(
+            height: 35.h,
+            child: Row(children: [
+              SvgIcon(
+                  size: 25.sp,
+                  color: theme.colorScheme.tertiary,
+                  image: Assets.iconsMealTime),
+              SizedBox(
+                width: 5.h,
+              ),
+              SizedBox(
+                width: 150.w,
+                child: Text(
+                  menuTimes.join(", "),
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: theme.unselectedWidgetColor,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                ),
+              )
+            ])),
+      ],
     );
   }
 }

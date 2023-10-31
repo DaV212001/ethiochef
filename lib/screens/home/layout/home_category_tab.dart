@@ -1,7 +1,7 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/models/category.dart';
 import 'package:ethio_chef/models/food.dart';
+import 'package:ethio_chef/utils/place_holder_data.dart';
 import 'package:ethio_chef/widgets/header.dart';
 import 'package:ethio_chef/widgets/horizontal_food_carousel.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +13,7 @@ class HomeCategoryTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //Later use actual data
-    List<Category> categories = dishes[0].categories;
-    List<Tab> tabs = categories
+    List<Tab> tabs = PlaceHolderData.categories
         .map((e) => Tab(
               text: e.name,
             ))
@@ -29,9 +27,8 @@ class HomeCategoryTab extends StatelessWidget {
           ButtonsTabBar(
             backgroundColor: theme.colorScheme.primary,
             unselectedBackgroundColor: Colors.transparent,
-            unselectedLabelStyle: theme.textTheme.labelMedium?.copyWith(
-              color: theme.colorScheme.tertiary
-            ),
+            unselectedLabelStyle: theme.textTheme.labelMedium
+                ?.copyWith(color: theme.colorScheme.tertiary),
             labelStyle: theme.textTheme.bodyMedium
                 ?.copyWith(color: theme.colorScheme.onTertiary),
             contentPadding: EdgeInsets.symmetric(horizontal: 10),
