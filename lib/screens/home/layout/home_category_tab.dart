@@ -6,10 +6,10 @@ import 'package:ethio_chef/widgets/header.dart';
 import 'package:ethio_chef/widgets/horizontal_food_carousel.dart';
 import 'package:flutter/material.dart';
 
-class CategoryTab extends StatelessWidget {
+class HomeCategoryTab extends StatelessWidget {
   final List<Food> dishes;
 
-  const CategoryTab({super.key, required this.dishes});
+  const HomeCategoryTab({super.key, required this.dishes});
 
   @override
   Widget build(BuildContext context) {

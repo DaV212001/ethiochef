@@ -62,6 +62,7 @@ dependencies:
   chewie: ^1.7.1
   easy_stepper: ^0.8.1
   easy_image_viewer: ^1.2.1
+  flutter_screenutil: ^5.9.0
 
 dev_dependencies:
   flutter_test:

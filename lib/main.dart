@@ -51,23 +51,26 @@ class _EthioChefState extends State<EthioChef> {
       child: Consumer<ModelTheme>(
           builder: (context, ModelTheme themeNotifier, child) {
         // themeNotifier.isDark = false; // using to check dark theme
-        return MaterialApp(
-            localizationsDelegates: [
-              GlobalMaterialLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              ...context.localizationDelegates,
-            ],
-            supportedLocales: context.supportedLocales,
-            locale: context.locale,
-            themeMode: themeNotifier.isDark ? ThemeMode.dark : ThemeMode.light,
-            theme: AppTheme.lightTheme,
-            darkTheme: AppTheme.darkTheme,
-            initialRoute: '/',
-            routes: {
-              '/': (context) => const SplashScreen(),
-              '/main': (context) => const MainScreen()
-            });
+        return ScreenUtilInit(
+          designSize: const Size(412, 892),//Never change this value
+          child: MaterialApp(
+              localizationsDelegates: [
+                GlobalMaterialLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                ...context.localizationDelegates,
+              ],
+              supportedLocales: context.supportedLocales,
+              locale: context.locale,
+              themeMode: themeNotifier.isDark ? ThemeMode.dark : ThemeMode.light,
+              theme: AppTheme.lightTheme,
+              darkTheme: AppTheme.darkTheme,
+              initialRoute: '/',
+              routes: {
+                '/': (context) => const SplashScreen(),
+                '/main': (context) => const MainScreen()
+              }),
+        );
       }),
     );
   }
