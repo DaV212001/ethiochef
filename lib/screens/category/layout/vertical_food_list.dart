@@ -24,7 +24,7 @@ class _VerticalFoodListState extends State<VerticalFoodList> {
         noMoreItemsIndicatorBuilder: (_) => SizedBox.shrink(),
         itemBuilder: (context, food, index) {
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 5.h),
+            padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
             child: FoodCard(food: food),
           );
         },

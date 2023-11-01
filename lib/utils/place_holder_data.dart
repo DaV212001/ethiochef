@@ -1,4 +1,5 @@
 import 'package:ethio_chef/models/category.dart';
+import 'package:ethio_chef/models/competition.dart';
 import 'package:ethio_chef/models/food.dart';
 
 class PlaceHolderData {
@@ -84,4 +85,32 @@ class PlaceHolderData {
   static List<Food> dishes = List.filled(10, food);
 
   static String videoLink = 'https://youtu.be/Z4Uf25pHpDM';
+
+  static List<Competition> foodCompetitionList = [
+    Competition(
+      "Cooking Challenge",
+      "Show off your culinary skills in a head-to-head cooking competition.",
+      "https://www.courier-journal.com/gcdn/presto/2018/09/13/PLOU/d947ceae-15e4-44d6-82d2-7fabf8fa785f-Gerron_Hurt_on_Masterchef_finale.jpg?width=660&height=440&fit=crop&format=pjpg&auto=webp",
+    ),
+    Competition(
+      "Baking Championship",
+      "Compete in a series of baking challenges and win the title of the best baker.",
+      "https://thumbs.dreamstime.com/b/cooking-master-competition-vector-illustration-53111191.jpg",
+    ),
+    Competition(
+      "Pizza Eating Contest",
+      "How many slices of pizza can you devour in a set time? Test your limits!",
+      "https://i.ytimg.com/vi/7j9NB_boaOE/hqdefault.jpg",
+    ),
+    Competition(
+      "Chili Cook-Off",
+      "Prepare your best chili recipe and see if it's the spiciest in town.",
+      "https://mummyfique.com/wp-content/uploads/2017/06/Mummyfique-Presents-an-All-New-Cooking-Competition-Home-Chef-2017-01.jpg",
+    ),
+    Competition(
+      "Sushi Masterclass",
+      "Learn the art of making sushi and compete to become the Sushi Master.",
+      "https://www.courier-journal.com/gcdn/presto/2018/09/13/PLOU/d947ceae-15e4-44d6-82d2-7fabf8fa785f-Gerron_Hurt_on_Masterchef_finale.jpg",
+    ),
+  ];
 }

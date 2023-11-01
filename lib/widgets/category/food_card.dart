@@ -38,7 +38,7 @@ class _FoodCardState extends State<FoodCard> {
               ClipRRect(
                 borderRadius: AppTheme.allBorderRadius,
                 child: Container(
-                    width: 150.w,
+                    width: 170.w,
                     height: 175.h,
                     child: CachedImage(
                         url: widget.food.thumbnail, fit: BoxFit.fill)),
@@ -47,7 +47,7 @@ class _FoodCardState extends State<FoodCard> {
                 width: 10.w,
               ),
               SizedBox(
-                  height: 170,
+                  height: 170.h,
                   child: info(theme)),
             ],
           ),
