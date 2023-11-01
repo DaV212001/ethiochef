@@ -3,16 +3,16 @@ import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:pod_player/pod_player.dart';
 
-class RecipeVideo extends StatefulWidget {
+class YoutubeVideoPlayer extends StatefulWidget {
   final String link;
 
-  const RecipeVideo({Key? key, required this.link}) : super(key: key);
+  const YoutubeVideoPlayer({Key? key, required this.link}) : super(key: key);
 
   @override
-  State<RecipeVideo> createState() => _RecipeVideoState();
+  State<YoutubeVideoPlayer> createState() => _YoutubeVideoPlayerState();
 }
 
-class _RecipeVideoState extends State<RecipeVideo> {
+class _YoutubeVideoPlayerState extends State<YoutubeVideoPlayer> {
   late final PodPlayerController controller;
 
   @override

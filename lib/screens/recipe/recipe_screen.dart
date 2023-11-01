@@ -4,7 +4,7 @@ import 'package:ethio_chef/screens/recipe/layout/recipe_header_image.dart';
 import 'package:ethio_chef/screens/recipe/layout/recipe_ingredients.dart';
 import 'package:ethio_chef/screens/recipe/layout/recipe_related.dart';
 import 'package:ethio_chef/screens/recipe/layout/recipe_steps.dart';
-import 'package:ethio_chef/screens/recipe/layout/recipe_video.dart';
+import 'package:ethio_chef/widgets/youtube_video_player.dart';
 import 'package:ethio_chef/utils/place_holder_data.dart';
 import 'package:ethio_chef/widgets/recipe/share_button.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +37,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
                 food: widget.food,
               ),
               if (widget.food.video != null)
-                RecipeVideo(
+                YoutubeVideoPlayer(
                   link: PlaceHolderData.videoLink,
                 ),
               RecipeIngredients(ingredients: widget.food.ingredient!),

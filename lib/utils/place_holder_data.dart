@@ -1,5 +1,6 @@
 import 'package:ethio_chef/models/category.dart';
 import 'package:ethio_chef/models/competition.dart';
+import 'package:ethio_chef/models/competitor.dart';
 import 'package:ethio_chef/models/food.dart';
 
 class PlaceHolderData {
@@ -88,29 +89,81 @@ class PlaceHolderData {
 
   static List<Competition> foodCompetitionList = [
     Competition(
-      "Cooking Challenge",
-      "Show off your culinary skills in a head-to-head cooking competition.",
-      "https://www.courier-journal.com/gcdn/presto/2018/09/13/PLOU/d947ceae-15e4-44d6-82d2-7fabf8fa785f-Gerron_Hurt_on_Masterchef_finale.jpg?width=660&height=440&fit=crop&format=pjpg&auto=webp",
-    ),
+        name: "Cooking Challenge",
+        description:
+            "Show off your culinary skills in a head-to-head cooking competition.",
+        image:
+            "https://www.courier-journal.com/gcdn/presto/2018/09/13/PLOU/d947ceae-15e4-44d6-82d2-7fabf8fa785f-Gerron_Hurt_on_Masterchef_finale.jpg?width=660&height=440&fit=crop&format=pjpg&auto=webp",
+        daysLeft: 10,
+        votes: 500,
+        competitor: competitorList,
+        video: videoLink),
     Competition(
-      "Baking Championship",
-      "Compete in a series of baking challenges and win the title of the best baker.",
-      "https://thumbs.dreamstime.com/b/cooking-master-competition-vector-illustration-53111191.jpg",
-    ),
+        name: "Baking Championship",
+        description:
+            "Compete in a series of baking challenges and win the title of the best baker.",
+        image:
+            "https://thumbs.dreamstime.com/b/cooking-master-competition-vector-illustration-53111191.jpg",
+        daysLeft: 5,
+        votes: 300,
+        competitor: competitorList,
+        video: videoLink),
     Competition(
-      "Pizza Eating Contest",
-      "How many slices of pizza can you devour in a set time? Test your limits!",
-      "https://i.ytimg.com/vi/7j9NB_boaOE/hqdefault.jpg",
-    ),
+        name: "Pizza Eating Contest",
+        description:
+            "How many slices of pizza can you devour in a set time? Test your limits!",
+        image: "https://i.ytimg.com/vi/7j9NB_boaOE/hqdefault.jpg",
+        daysLeft: 7,
+        votes: 800,
+        competitor: competitorList,
+        video: videoLink),
     Competition(
-      "Chili Cook-Off",
-      "Prepare your best chili recipe and see if it's the spiciest in town.",
-      "https://mummyfique.com/wp-content/uploads/2017/06/Mummyfique-Presents-an-All-New-Cooking-Competition-Home-Chef-2017-01.jpg",
-    ),
+        name: "Chili Cook-Off",
+        description:
+            "Prepare your best chili recipe and see if it's the spiciest in town.",
+        image:
+            "https://mummyfique.com/wp-content/uploads/2017/06/Mummyfique-Presents-an-All-New-Cooking-Competition-Home-Chef-2017-01.jpg",
+        daysLeft: 15,
+        votes: 400,
+        competitor: competitorList,
+        video: videoLink),
     Competition(
-      "Sushi Masterclass",
-      "Learn the art of making sushi and compete to become the Sushi Master.",
-      "https://www.courier-journal.com/gcdn/presto/2018/09/13/PLOU/d947ceae-15e4-44d6-82d2-7fabf8fa785f-Gerron_Hurt_on_Masterchef_finale.jpg",
+        name: "Sushi Masterclass",
+        description:
+            "Learn the art of making sushi and compete to become the Sushi Master.",
+        image:
+            "https://www.courier-journal.com/gcdn/presto/2018/09/13/PLOU/d947ceae-15e4-44d6-82d2-7fabf8fa785f-Gerron_Hurt_on_Masterchef_finale.jpg",
+        daysLeft: 20,
+        votes: 700,
+        competitor: competitorList,
+        video: videoLink),
+  ];
+
+  static List<Competitor> competitorList = [
+    Competitor(
+      "John Doe",
+      500,
+      "john_doe_image.jpg",
+    ),
+    Competitor(
+      "Jane Smith",
+      300,
+      "jane_smith_image.jpg",
+    ),
+    Competitor(
+      "Pizza Lover",
+      800,
+      "pizza_lover_image.jpg",
+    ),
+    Competitor(
+      "Spice Master",
+      400,
+      "spice_master_image.jpg",
+    ),
+    Competitor(
+      "Sushi Sensei",
+      700,
+      "sushi_sensei_image.jpg",
     ),
   ];
 }

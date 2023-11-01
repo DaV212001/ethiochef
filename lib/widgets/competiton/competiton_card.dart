@@ -1,25 +1,26 @@
 import 'package:ethio_chef/models/competition.dart';
+import 'package:ethio_chef/screens/competition/competition_screen.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:ethio_chef/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 class CompetitionsCard extends StatelessWidget {
   final Competition competition;
+
   const CompetitionsCard({super.key, required this.competition});
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return GestureDetector(
-      onTap: (){
-        // pushNewScreen(
-        //   context,
-        //   withNavBar: false,
-        //   screen: RecipeScreen(
-        //       food: food
-        //   ),
-        // );
+      onTap: () {
+        pushNewScreen(
+          context,
+          withNavBar: false,
+          screen: CompetitionScreen(competition: competition),
+        );
       },
       child: Container(
         decoration: BoxDecoration(
@@ -44,7 +45,9 @@ class CompetitionsCard extends StatelessWidget {
               height: 10.h,
             ),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 10.w,),
+              margin: EdgeInsets.symmetric(
+                horizontal: 10.w,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -57,20 +60,20 @@ class CompetitionsCard extends StatelessWidget {
                         textAlign: TextAlign.start,
                       ),
                       Text(
-                        "5K votes",
-                        style: theme.textTheme.labelMedium?.copyWith(
-                          color: theme.unselectedWidgetColor
-                        ),
+                        competition.votes.toString() + " votes",
+                        style: theme.textTheme.labelMedium
+                            ?.copyWith(color: theme.unselectedWidgetColor),
                         textAlign: TextAlign.start,
                       ),
                     ],
                   ),
-                  SizedBox(height: 10.h,),
+                  SizedBox(
+                    height: 10.h,
+                  ),
                   Text(
-                    "2 days left",
-                    style: theme.textTheme.labelMedium?.copyWith(
-                        color: theme.unselectedWidgetColor
-                    ),
+                    competition.daysLeft.toString() + " days left",
+                    style: theme.textTheme.labelMedium
+                        ?.copyWith(color: theme.unselectedWidgetColor),
                     textAlign: TextAlign.start,
                   ),
                 ],

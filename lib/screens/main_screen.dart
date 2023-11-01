@@ -65,7 +65,7 @@ class _MainScreenState extends State<MainScreen> {
       CategoriesScreen(),
       // SavedRecipesScreen(),
       ProfileScreen(),
-      CompetitionScreen(),
+      CompetitionsScreen(),
       ProfileScreen()
     ];
   }

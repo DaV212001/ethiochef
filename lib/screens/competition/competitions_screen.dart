@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class CompetitionScreen extends StatefulWidget {
-  const CompetitionScreen({super.key});
+class CompetitionsScreen extends StatefulWidget {
+  const CompetitionsScreen({super.key});
 
   @override
-  State<CompetitionScreen> createState() => _CompetitionScreenState();
+  State<CompetitionsScreen> createState() => _CompetitionsScreenState();
 }
 
-class _CompetitionScreenState extends State<CompetitionScreen> {
+class _CompetitionsScreenState extends State<CompetitionsScreen> {
   late Future<List<Competition>> items;
 
   final PagingController<int, Competition> _pagingController =
