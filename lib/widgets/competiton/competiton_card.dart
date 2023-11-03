@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/competition.dart';
 import 'package:ethio_chef/screens/competition/competition_screen.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
@@ -60,7 +61,7 @@ class CompetitionsCard extends StatelessWidget {
                         textAlign: TextAlign.start,
                       ),
                       Text(
-                        competition.votes.toString() + " votes",
+                        "_votes".tr(args: [competition.votes.toString()]),
                         style: theme.textTheme.labelMedium
                             ?.copyWith(color: theme.unselectedWidgetColor),
                         textAlign: TextAlign.start,
@@ -71,7 +72,7 @@ class CompetitionsCard extends StatelessWidget {
                     height: 10.h,
                   ),
                   Text(
-                    competition.daysLeft.toString() + " days left",
+                    "_days_left".tr(args: [competition.daysLeft.toString()]),
                     style: theme.textTheme.labelMedium
                         ?.copyWith(color: theme.unselectedWidgetColor),
                     textAlign: TextAlign.start,

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/upload_recipe/upload_recipe_screen.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,7 @@ class AddRecipeCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Upload your own recipe",
+                        "add_your_own_recipe".tr(),
                         style: theme.textTheme.headlineSmall?.copyWith(
                             color: theme.colorScheme.onTertiary,
                             fontWeight: FontWeight.w600),
@@ -55,7 +56,7 @@ class AddRecipeCard extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 10.h),
-                  Text("By uploading your recipes you can win prizes",
+                  Text("add_your_own_recipe_body".tr(),
                       style: theme.textTheme.labelSmall),
                   SizedBox(height: 15.h),
                   SizedBox(
@@ -77,7 +78,7 @@ class AddRecipeCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Upload",
+                              "submit".tr(),
                               style: theme.textTheme.headlineSmall?.copyWith(
                                   color: theme.colorScheme.onTertiary,
                                   fontWeight: FontWeight.w600),

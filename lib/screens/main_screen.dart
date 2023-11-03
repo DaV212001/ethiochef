@@ -130,7 +130,7 @@ class _MainScreenState extends State<MainScreen> {
                 .colorScheme
                 .surface,
           ),
-          title: ("Add recipe"),
+          title: ("add_recipe".tr()),
           activeColorPrimary: activeColor,
           inactiveColorPrimary: inactiveColor,
           onPressed: (context) {

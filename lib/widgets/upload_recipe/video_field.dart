@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chewie/chewie.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/widgets/upload_recipe/loading_video.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -142,7 +143,7 @@ class _VideoFieldState extends State<VideoField> {
     var fileSize = videoPath.length; // Get the file size in bytes
     if (fileSize >= maxFileSizeInBytes) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Video file size should not exceed 100MB.")),
+        SnackBar(content: Text("video_size_limit_text".tr())),
       );
       setState(() {
         isLoadingVideo = false;

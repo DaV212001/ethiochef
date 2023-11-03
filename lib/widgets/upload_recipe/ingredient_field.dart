@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/widgets/input_field.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
@@ -28,7 +29,7 @@ class IngredientField extends StatelessWidget {
             height: 75,
             width: 175,
             controller: itemController,
-            hint: "Item",
+            hint: "ingredient".tr(),
           ),
           InputField(
             height: 75,

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/widgets/upload_recipe/stepper_control_buttons.dart';
 import 'package:ethio_chef/widgets/upload_recipe/video_field.dart';
 import 'package:flutter/material.dart';
@@ -70,7 +71,7 @@ class _VideoStepState extends State<VideoStep> {
       alignment: Alignment.centerLeft,
       child: Padding(
         padding: const EdgeInsets.only(left: 15.0, top: 5),
-        child: Text("Video is required",
+        child: Text("video_is_required".tr(),
             style: Theme.of(context)
                 .textTheme
                 .labelMedium

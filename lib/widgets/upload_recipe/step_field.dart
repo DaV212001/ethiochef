@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/widgets/input_field.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
@@ -48,7 +49,7 @@ class StepField extends StatelessWidget {
           Expanded(
             child: InputField(
               controller: stepController,
-              hint: "Step",
+              hint: "step".tr(),
             ),
           ),
           IconButton(

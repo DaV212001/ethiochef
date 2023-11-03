@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/widgets/input_field.dart';
 import 'package:ethio_chef/widgets/upload_recipe/image_field.dart';
 import 'package:ethio_chef/widgets/upload_recipe/stepper_control_buttons.dart';
@@ -59,15 +60,15 @@ class _BasicsStepState extends State<BasicsStep> {
           ),
           InputField(
               controller: widget.nameController,
-              label: "Dish Name",
-              hint: "Enter dish name"),
+              label: "dish_name".tr(),
+              hint: "enter_dish_name".tr()),
           SizedBox(
             height: 10,
           ),
           InputField(
             controller: widget.descriptionController,
-            label: "Dish Description",
-            hint: "Enter dish description",
+            label: "dish_description".tr(),
+            hint: "enter_dish_description".tr(),
             maxLines: 3,
             minLines: 3,
             height: 100,
@@ -78,8 +79,8 @@ class _BasicsStepState extends State<BasicsStep> {
           InputField(
             icon: Icons.timer_outlined,
             controller: widget.prepTimeController,
-            label: "Preparation time",
-            hint: "Enter dish preparation in minutes",
+            label: "preparation_time".tr(),
+            hint: "enter_dish_preparation_in_minutes".tr(),
             inputType: TextInputType.number,
           ),
           SizedBox(
@@ -137,7 +138,7 @@ class _BasicsStepState extends State<BasicsStep> {
       alignment: Alignment.centerLeft,
       child: Padding(
         padding: const EdgeInsets.only(left: 15.0, top: 5),
-        child: Text("Image is required",
+        child: Text("image_is_required".tr(),
             style: Theme.of(context)
                 .textTheme
                 .labelMedium

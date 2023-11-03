@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class LoadingVideo extends StatefulWidget {
@@ -43,7 +44,7 @@ class _LoadingVideoState extends State<LoadingVideo> {
               ),
               SizedBox(width: 10),
               Text(
-                "Video is loading.",
+                "video_is_loading".tr(),
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.unselectedWidgetColor.withOpacity(0.85),
                 ),
@@ -59,7 +60,7 @@ class _LoadingVideoState extends State<LoadingVideo> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "This might take a long time if the video size is large.",
+                  "video_is_loading".tr(),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.unselectedWidgetColor.withOpacity(0.85),
                   ),

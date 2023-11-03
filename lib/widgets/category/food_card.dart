@@ -54,7 +54,7 @@ class _FoodCardState extends State<FoodCard> {
           MainButton(
             height: 60.h,
             width: 200.w,
-            text: "Show Recipe",
+            text: "show_recipe".tr(),
             onPress: () {
               pushNewScreen(
                 context,

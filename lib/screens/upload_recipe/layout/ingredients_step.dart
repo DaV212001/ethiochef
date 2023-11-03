@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/widgets/upload_recipe/add_ingredient_button.dart';
 import 'package:ethio_chef/widgets/upload_recipe/ingredient_field.dart';
 import 'package:ethio_chef/widgets/upload_recipe/stepper_control_buttons.dart';
@@ -51,7 +52,7 @@ class _IngredientsStepState extends State<IngredientsStep> {
                 removeIngredient(i);
               },
             ),
-          AddButton(text: "Add ingredient", onPress: addIngredient),
+          AddButton(text: "add_ingredient".tr(), onPress: addIngredient),
           StepperControlButtons(
             next: () {
               if (!_formKey.currentState!.validate()) {

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:easy_image_viewer/easy_image_viewer.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -162,7 +163,7 @@ class _ImageFieldState extends State<ImageField> {
       builder: (context) => CupertinoActionSheet(
         actions: [
           CupertinoActionSheetAction(
-            child: Text('Photo Gallery'),
+            child: Text('photo_gallery'.tr()),
             onPressed: () {
               // close the options modal
               Navigator.of(context).pop();
@@ -171,7 +172,7 @@ class _ImageFieldState extends State<ImageField> {
             },
           ),
           CupertinoActionSheetAction(
-            child: Text('Camera'),
+            child: Text('camera'.tr()),
             onPressed: () {
               // close the options modal
               Navigator.of(context).pop();

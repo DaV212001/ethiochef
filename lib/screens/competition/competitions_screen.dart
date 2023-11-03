@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/competition.dart';
 import 'package:ethio_chef/screens/competition/layout/vertical_competition_list.dart';
 import 'package:ethio_chef/services/competition_service.dart';
@@ -52,7 +53,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
             ScreenHead(
               hasNotification: true,
               screen: 1,
-              searchHint: "Search for competition",
+              searchHint: "search_for_competition".tr(),
             ),
             SizedBox(
                 height: 700.h,

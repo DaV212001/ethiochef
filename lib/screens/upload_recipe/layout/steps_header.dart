@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 
@@ -25,12 +26,12 @@ class _StepsHeaderState extends State<StepsHeader> {
           ),
         ),
         title: stepNumber == 1
-            ? 'Basic Info'
+            ? "basic_info".tr()
             : stepNumber == 2
-            ? 'Ingredients'
+            ? 'ingredients'.tr()
             : stepNumber == 3
-            ? 'Steps'
-            : 'Video'
+            ? 'steps'.tr()
+            : 'video'.tr()
       );
     });
     return EasyStepper(

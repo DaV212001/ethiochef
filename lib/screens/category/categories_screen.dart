@@ -1,4 +1,5 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/screens/category/layout/vertical_food_list.dart';
 import 'package:ethio_chef/services/food_service.dart';
@@ -63,7 +64,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   ScreenHead(
                     hasNotification: true,
                     screen: 1,
-                    searchHint: "Search for category",
+                    searchHint: "search_for_category".tr(),
                   ),
                   ButtonsTabBar(
                     backgroundColor: theme.colorScheme.primary,

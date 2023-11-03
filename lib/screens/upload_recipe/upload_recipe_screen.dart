@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/upload_recipe/layout/basics_step.dart';
 import 'package:ethio_chef/screens/upload_recipe/layout/ingredients_step.dart';
 import 'package:ethio_chef/screens/upload_recipe/layout/steps_header.dart';
@@ -39,7 +40,7 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
         foregroundColor: theme.colorScheme.primary,
         elevation: 0,
         title: Text(
-          "Upload a recipe",
+          "submit_a_recipe".tr(),
           style: theme.textTheme.headlineLarge
               ?.copyWith(color: theme.colorScheme.primary),
         ),
