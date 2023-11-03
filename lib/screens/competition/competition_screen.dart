@@ -5,6 +5,7 @@ import 'package:ethio_chef/utils/place_holder_data.dart';
 import 'package:ethio_chef/widgets/recipe/share_button.dart';
 import 'package:ethio_chef/widgets/youtube_video_player.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CompetitionScreen extends StatefulWidget {
   final Competition competition;
@@ -30,6 +31,9 @@ class _CompetitionScreenState extends State<CompetitionScreen> {
               ),
               CompetitionHeader(
                 competition: widget.competition,
+              ),
+              SizedBox(
+                height: 10.h,
               ),
               if (widget.competition.video != null)
                 YoutubeVideoPlayer(

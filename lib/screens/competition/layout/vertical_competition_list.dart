@@ -19,13 +19,13 @@ class _VerticalCompetitionListState extends State<VerticalCompetitionList> {
   Widget build(BuildContext context) {
     return PagedListView<int, Competition>(
       shrinkWrap: true,
-      itemExtent: 275.h,
+      itemExtent: 285.h,
       pagingController: widget.pagingController,
       builderDelegate: PagedChildBuilderDelegate<Competition>(
         noMoreItemsIndicatorBuilder: (_) => SizedBox.shrink(),
         itemBuilder: (context, competition, index) {
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 5.h),
+            padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 10.h),
             child: CompetitionsCard(competition: competition),
           );
         },

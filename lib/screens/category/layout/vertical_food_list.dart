@@ -18,13 +18,13 @@ class _VerticalFoodListState extends State<VerticalFoodList> {
   Widget build(BuildContext context) {
     return PagedListView<int, Food>(
       shrinkWrap: true,
-      itemExtent: 276.h,
+      itemExtent: 275.h,
       pagingController: widget.pagingController,
       builderDelegate: PagedChildBuilderDelegate<Food>(
         noMoreItemsIndicatorBuilder: (_) => SizedBox.shrink(),
         itemBuilder: (context, food, index) {
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
+            padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
             child: FoodCard(food: food),
           );
         },
