@@ -7,6 +7,8 @@ import 'package:ethio_chef/utils/place_holder_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'layout/ads_carusel.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -23,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              AdsCarousel(),
               ScreenHead(
                 hasNotification: true,
                 screen: 0,
