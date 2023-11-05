@@ -68,5 +68,15 @@
   "video_is_loading_body": "የቪዲዮው መጠን ትልቅ ከሆነ ይህ ረጅም ጊዜ ሊወስድ ይችላል።",
   "next": "ቀጥሎ",
   "back": "ተመለስ",
-  "video_size_limit_text": "የቪዲዮ ፋይል መጠን ከ100ሜባ መብለጥ የለበትም።"
+  "video_size_limit_text": "የቪዲዮ ፋይል መጠን ከ100ሜባ መብለጥ የለበትም።",
+  "change_profile": "መገለጫ ቀይር",
+  "change_password": "የሚስጥር ቁልፍ ይቀይሩ",
+  "change_theme": "ጭብጥ ቀይር",
+  "change_language": "ቋንቋ ቀይር",
+  "privacy_policy": "የ ግል የሆነ",
+  "faq": "ተደጋግሞ የሚነሱ ጥያቄዎች",
+  "terms_and_conditions": "አተገባበሩና ​​መመሪያው",
+  "about": "ስለ",
+  "general": "አጠቃላይ",
+  "documentation": "ሰነድ"
 }

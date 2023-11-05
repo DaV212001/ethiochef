@@ -68,5 +68,15 @@
   "video_is_loading_body": "This might take a long time if the video size is large.",
   "next": "Next",
   "back": "Back",
-  "video_size_limit_text": "Video file size should not exceed 100MB."
+  "video_size_limit_text": "Video file size should not exceed 100MB.",
+  "change_profile": "Change profile",
+  "change_password": "Change password",
+  "change_theme": "Change theme",
+  "change_language": "Change language",
+  "privacy_policy": "Privacy policy",
+  "faq": "FAQ",
+  "terms_and_conditions": "Terms and conditions",
+  "about": "About",
+  "general": "General",
+  "documentation": "Documentation"
 }

@@ -3,7 +3,7 @@ import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/screens/category/categories_screen.dart';
 import 'package:ethio_chef/screens/competition/competitions_screen.dart';
 import 'package:ethio_chef/screens/home/home_screen.dart';
-import 'package:ethio_chef/screens/profile_screen.dart';
+import 'package:ethio_chef/screens/profile/profile_screen.dart';
 import 'package:ethio_chef/screens/upload_recipe/upload_recipe_screen.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';

@@ -63,6 +63,8 @@ dependencies:
   easy_stepper: ^0.8.1
   easy_image_viewer: ^1.2.1
   flutter_screenutil: ^5.9.0
+  profile: ^0.0.1
+  avatar_glow: ^2.0.2
 
 dev_dependencies:
   flutter_test:
