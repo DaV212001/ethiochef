@@ -32,10 +32,7 @@ class ScreenHead extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "hello_user".tr(args: ["Dagim"]),
-                      style: theme.textTheme.headlineLarge,
-                    ),
+
                     // SizedBox(
                     //   height: 10,
                     // ),

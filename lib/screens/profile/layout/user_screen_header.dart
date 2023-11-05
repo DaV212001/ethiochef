@@ -1,5 +1,6 @@
 
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class UserHeader extends StatefulWidget {
@@ -79,13 +80,29 @@ class _UserHeaderState extends State<UserHeader> {
         ),
       )
   );
-  Widget buildContent() => Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(height: 10,),
-        Text("Abebe Faris"),
-        SizedBox(height: 10,),
-      ]
-  );
+  Widget buildContent() {
+    ThemeData theme = Theme.of(context);
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: 10,),
+          Text(
+            "hello_user".tr(args: ["Dagim"]),
+            style: theme.textTheme.headlineLarge,
+          ),
+          SizedBox(height: 10,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(tr("subscription_date")),
+              Text(":"),
+              Text(" 2 months ",style: theme.textTheme.headlineLarge,)
+            ],
+          ),
+          SizedBox(height: 10,),
+        ]
+    );
+  }
 }
