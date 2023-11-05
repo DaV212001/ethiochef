@@ -12,7 +12,7 @@ class ModelTheme extends ChangeNotifier {
     getPreferences();
   }
 //Switching the themes
-  set isDark(bool value) {
+  set setIsDark(bool value) {
     _isDark = value;
     _preferences.setTheme(value);
     notifyListeners();

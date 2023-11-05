@@ -10,9 +10,9 @@ class ScreenHead extends StatelessWidget {
 
   const ScreenHead(
       {super.key,
-      required this.hasNotification,
-      required this.screen,
-      required this.searchHint});
+        required this.hasNotification,
+        required this.screen,
+        required this.searchHint});
 
   @override
   Widget build(BuildContext context) {
@@ -21,35 +21,35 @@ class ScreenHead extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Row(
-            mainAxisAlignment: isHomeScreen
-                ? MainAxisAlignment.spaceBetween
-                : MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              //   Column(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: [
-              //
-              //       // SizedBox(
-              //       //   height: 10,
-              //       // ),
-              //       // Text(
-              //       //   "lets_make_dinner".tr(),
-              //       //   style: theme.textTheme.headlineSmall
-              //       //       ?.copyWith(color: theme.colorScheme.shadow),
-              //       // )
-              //     ],
-              //   ),
+        mainAxisAlignment: isHomeScreen
+            ? MainAxisAlignment.spaceBetween
+            : MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          //   Column(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //
+          //       // SizedBox(
+          //       //   height: 10,
+          //       // ),
+          //       // Text(
+          //       //   "lets_make_dinner".tr(),
+          //       //   style: theme.textTheme.headlineSmall
+          //       //       ?.copyWith(color: theme.colorScheme.shadow),
+          //       // )
+          //     ],
+          //   ),
 
-              SearchInputField(
-                enabled: true,
-                hint: searchHint,
-              ),
-              NotificationIcon(
-                hasNotification: hasNotification,
-              ),
-            ],
+          SearchInputField(
+            enabled: true,
+            hint: searchHint,
           ),
+          NotificationIcon(
+            hasNotification: hasNotification,
+          ),
+        ],
+      ),
     );
   }
 }

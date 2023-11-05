@@ -68,5 +68,16 @@
   "video_is_loading_body": "እዚ ድማ እቲ ቪድዮ ዓቢ እንተኾይኑ ነዊሕ ግዜ ክወስድ ይኽእል እዩ።",
   "next": "ቀፃሊ",
   "back": "ዝባን",
-  "video_size_limit_text": "መጠን ቪድዮ ፋይል ካብ 100MB ክሓልፍ የብሉን።"
+  "video_size_limit_text": "መጠን ቪድዮ ፋይል ካብ 100MB ክሓልፍ የብሉን።",
+  "change_profile": "ፕሮፋይል ምቕያር",
+  "change_password": "ፓስዎርድ ምቕያር",
+  "change_theme": "ቴማ ምቕያር",
+  "change_language": "ቋንቋ ምቕያር",
+  "privacy_policy": "ፖሊሲ ውልቃዊ ሓበሬታ",
+  "faq": "ብተደጋጋሚ ዝሕተቱ ሕቶታት",
+  "terms_and_conditions": "ውዕላትን ቅጥዕታትን",
+  "about": "ብዝዕባ",
+  "general": "ሓፈሻዊ",
+  "documentation": "ሰነድ ምግባር",
+  "subscription_date": "ዕለት ምዝገባ"
 }

@@ -68,5 +68,16 @@
   "video_is_loading_body": "Kun yeroo dheeraa fudhachuu danda'a yoo guddinni viidiyoo guddaa ta'e.",
   "next": "Kan itti aanu",
   "back": "Dugda",
-  "video_size_limit_text": "Hammi faayilii viidiyoo 100MB caalu hin qabu."
+  "video_size_limit_text": "Hammi faayilii viidiyoo 100MB caalu hin qabu.",
+  "change_profile": "Profaayila jijjiiri",
+  "change_password": "Jecha icciitii jijjiiri",
+  "change_theme": "Mata duree jijjiiri",
+  "change_language": "Afaan jijjiiri",
+  "privacy_policy": "Imaammata dhuunfaa",
+  "faq": "Gaaffiiwwan yeroo baay’ee gaafataman",
+  "terms_and_conditions": "Haalawwanii fi dambiiwwan",
+  "about": "Waa'ee",
+  "general": "Waliigala",
+  "documentation": "Dokumantarii",
+  "subscription_date": "Guyyaa maallaqa galchuu"
 }
