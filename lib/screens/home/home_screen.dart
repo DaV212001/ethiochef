@@ -29,11 +29,11 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 10.h,
               ),
-              // ScreenHead(
-              //   hasNotification: true,
-              //   screen: 0,
-              //   searchHint: "search".tr(),
-              // ),
+              ScreenHead(
+                hasNotification: true,
+                screen: 0,
+                searchHint: "search".tr(),
+              ),
               HomeCategoryTab(dishes: PlaceHolderData.dishes),
               if(showAddRecipeCard)
               SizedBox(

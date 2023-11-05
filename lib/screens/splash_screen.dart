@@ -1,24 +1,67 @@
-import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:ethio_chef/generated/assets.dart';
-import 'package:ethio_chef/screens/auth/auth_screen.dart';
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
 
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
+import 'auth/auth_screen.dart';
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+
+  var imageUrls = [
+    "assets/images/splash_screen_one.jpg",
+    "assets/images/splash_screen_two.jpg",
+    "assets/images/splash_screen_three.jpg",
+  ];
+  int currentIndex = 0;
+
+  late Timer timer;
+
+  @override
+  void initState() {
+    super.initState();
+    timer = Timer.periodic(const Duration(seconds: 3), (Timer t) {
+      setState(() {
+        if (currentIndex < imageUrls.length - 1) {
+          currentIndex++;
+        } else {
+          timer.cancel();
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AuthScreen(),
+            ),
+          );
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSplashScreen(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        splashIconSize: 250,
-        splash: Image.asset(
-          Assets.imagesLogo,
-          fit: BoxFit.fill,
+    return SafeArea(
+      child: AnimatedSwitcher(
+        duration: const Duration(seconds: 1),
+        child: FadeTransition(
+          key: ValueKey<int>(currentIndex),
+          opacity: const AlwaysStoppedAnimation<double>(1.0),
+          child: Image.asset(
+            imageUrls[currentIndex],
+            key: ValueKey<int>(currentIndex),
+            fit: BoxFit.cover,
+          ),
         ),
-        animationDuration: const Duration(microseconds: 2500),
-        nextScreen: const AuthScreen(),
-        splashTransition: SplashTransition.scaleTransition,
-        pageTransitionType: PageTransitionType.bottomToTop);
+      ),
+    );
   }
 }

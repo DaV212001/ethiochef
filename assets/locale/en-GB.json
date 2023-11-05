@@ -79,5 +79,10 @@
   "about": "Waa'ee",
   "general": "Waliigala",
   "documentation": "Dokumantarii",
-  "subscription_date": "Guyyaa maallaqa galchuu"
+  "subscription_date": "Guyyaa galchuu",
+  "add_recipe": "Recipe itti dabali",
+  "recipe_status": "Haala qophii nyaataa",
+  "competition_status": "Haala dorgommii",
+  "extend_subscription": "Maallaqa Maallaqa",
+  "recipe": "Recipe itti"
 }

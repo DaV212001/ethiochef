@@ -79,5 +79,10 @@
   "about": "ስለ",
   "general": "አጠቃላይ",
   "documentation": "ሰነድ",
-  "subscription_date": "የደንበኝነት ምዝገባ ቀን"
+  "subscription_date": "የደንበኝነት ምዝገባ ቀን",
+  "add_recipe": "የምግብ አዘገጃጀት አክል",
+  "recipe_status": "የምግብ አሰራር ሁኔታ",
+  "competition_status": "የውድድር ሁኔታ",
+  "extend_subscription": "የደንበኝነት ምዝገባን ያራዝሙ",
+  "recipe": "የምግብ አዘገጃጀት"
 }

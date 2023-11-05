@@ -30,6 +30,9 @@ class Assets {
   static const String imagesPhoto2 = 'assets/images/photo_2.jpg';
   static const String imagesPhoto3 = 'assets/images/photo_3.jpg';
   static const String imagesPhoto4 = 'assets/images/photo_4.jpg';
+  static const String imagesSplashScreenOne = 'assets/images/splash_screen_one.jpg';
+  static const String imagesSplashScreenThree = 'assets/images/splash_screen_three.jpg';
+  static const String imagesSplashScreenTwo = 'assets/images/splash_screen_two.jpg';
   static const String localeAm = 'assets/locale/am.json';
   static const String localeEn = 'assets/locale/en.json';
   static const String localeEnAU = 'assets/locale/en-AU.json';

@@ -79,5 +79,10 @@
   "about": "About",
   "general": "General",
   "documentation": "Documentation",
-  "subscription_date": "Subscription date"
+  "subscription_date": "Subscription date",
+  "add_recipe": "Add recipe",
+  "recipe_status": "Recipe status",
+  "competition_status": "Competition status",
+  "extend_subscription": "Extend Subscription",
+  "recipe": "Recipe"
 }

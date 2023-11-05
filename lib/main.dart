@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,8 +42,21 @@ class _EthioChefState extends State<EthioChef> {
   @override
   void initState() {
     super.initState();
+    _checkFirstTimeUser();
   }
-
+  bool isFirstTimeUser = true;
+  Future<void> _checkFirstTimeUser() async {
+    print("Checking First TimeUser");
+    final prefs = await SharedPreferences.getInstance();
+    final hasLaunchedBefore = prefs.getBool('hasLaunchedBefore') ?? false;
+    if (hasLaunchedBefore) {
+      setState(() {
+        isFirstTimeUser = false;
+      });
+    } else {
+      await prefs.setBool('hasLaunchedBefore', true);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     Language.selectedLanguage = Language.getSelectedLanguage(context);
@@ -52,6 +66,15 @@ class _EthioChefState extends State<EthioChef> {
       child: Consumer<ModelTheme>(
           builder: (context, ModelTheme themeNotifier, child) {
         // themeNotifier.isDark = false; // using to check dark theme
+            Widget homeScreen;
+            print("First Time User status $isFirstTimeUser");
+            if (isFirstTimeUser) {
+              print("To SplashScreen $isFirstTimeUser");
+              homeScreen = SplashScreen();
+            } else {
+              print("To SignupScreen $isFirstTimeUser");
+              homeScreen = MainScreen();
+            }
         return ScreenUtilInit(
           designSize: const Size(412, 892),//Never change this value
           child: MaterialApp(
@@ -68,7 +91,7 @@ class _EthioChefState extends State<EthioChef> {
               darkTheme: AppTheme.darkTheme,
               initialRoute: '/',
               routes: {
-                '/': (context) => const SplashScreen(),
+                '/': (context) => homeScreen,
                 '/main': (context) => const MainScreen()
               }),
         );

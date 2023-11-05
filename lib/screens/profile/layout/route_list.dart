@@ -40,8 +40,23 @@ class _RouteListState extends State<RouteList> {
             color: theme.colorScheme.primary),
       },
       {
-        "title": "change_password".tr(),
-        "leadingIcon": Icons.password,
+        "title": "recipe_status".tr(),
+        "leadingIcon": Icons.dinner_dining,
+        "onTap": () {
+          print("change_password");
+          // pushNewScreen(
+          //   context,
+          //   screen: ChangePassword(),
+          //   withNavBar: false,
+          //   pageTransitionAnimation: PageTransitionAnimation.cupertino,
+          // );
+        },
+        "trailing":
+        Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary)
+      },
+      {
+        "title": "competition_status".tr(),
+        "leadingIcon": Icons.incomplete_circle,
         "onTap": () {
           print("change_password");
           // pushNewScreen(
@@ -152,8 +167,9 @@ class _RouteListState extends State<RouteList> {
                 children: [
                   Container(
                     child: index==0?RouteLabelCards(text: tr("profile")):
-                    index==2?RouteLabelCards(text: tr("general")):
-                    index==4?RouteLabelCards(text: tr("documentation"))
+                    index==1?RouteLabelCards(text: tr("recipe")):
+                    index==3?RouteLabelCards(text: tr("general")):
+                    index==5?RouteLabelCards(text: tr("documentation"))
                   :null,
                   ),
                   RouteCard(

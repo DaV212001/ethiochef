@@ -54,7 +54,11 @@ class _SignInState extends State<SignIn> {
 
   Future<void> signIn() async {
     if (_formKey.currentState!.validate()) {
-      pushNewScreen(context, screen: MainScreen());
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(
+              builder: (BuildContext context)=>MainScreen())
+      );
+      // pushNewScreen(context, screen: MainScreen());
     }
   }
 

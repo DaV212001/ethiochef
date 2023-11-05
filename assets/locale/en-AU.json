@@ -79,5 +79,10 @@
   "about": "ብዝዕባ",
   "general": "ሓፈሻዊ",
   "documentation": "ሰነድ ምግባር",
-  "subscription_date": "ዕለት ምዝገባ"
+  "subscription_date": "ዕለት ምዝገባ",
+  "add_recipe": "ኣሰራርሓ መግቢ ወስኹሉ።",
+  "recipe_status": "ኩነታት ኣሰራርሓ መግቢ",
+  "competition_status": "ናይ ውድድር ኩነታት",
+  "extend_subscription": "ምዝገባ ምንዋሕ",
+  "recipe": "ኣሰራርሓ መግቢ"
 }

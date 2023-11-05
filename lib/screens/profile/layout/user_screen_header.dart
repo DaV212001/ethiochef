@@ -2,6 +2,7 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserHeader extends StatefulWidget {
   const UserHeader({super.key});
@@ -71,7 +72,7 @@ class _UserHeaderState extends State<UserHeader> {
         elevation: 8.0,
         shape: CircleBorder(),
         child: CircleAvatar(
-          backgroundColor: Colors.grey[100],
+          backgroundColor: Colors.white,
           child: Image.asset(
               'assets/images/logo.png',
               height: 80
@@ -98,7 +99,27 @@ class _UserHeaderState extends State<UserHeader> {
             children: [
               Text(tr("subscription_date")),
               Text(":"),
-              Text(" 2 months ",style: theme.textTheme.headlineLarge,)
+              Text(" 2 months ",style: theme.textTheme.headlineLarge,),
+              InkWell(
+                onTap: (){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Subscription Extension")),
+                  );
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.keyboard_arrow_right,
+                      size: 25.sp,
+                      color: theme.primaryColor,
+                    ),
+                      Text(tr("extend_subscription"),
+                      style: TextStyle(fontWeight: FontWeight.w400,fontSize: 10),)
+                  ],
+                ),
+              )
             ],
           ),
           SizedBox(height: 10,),

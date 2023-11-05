@@ -72,7 +72,11 @@ class _SignUpState extends State<SignUp> {
               text: "sign_up".tr(),
               onPress: () {
                 if (_formKey.currentState!.validate()) {
-                  pushNewScreen(context, screen: MainScreen());
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context)=>MainScreen())
+                  );
+                  // pushNewScreen(context, screen: MainScreen());
                 }
               }),
           AuthLink(
