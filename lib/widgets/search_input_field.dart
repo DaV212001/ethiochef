@@ -23,7 +23,7 @@ class _SearchInputFieldState extends State<SearchInputField> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return SizedBox(
-      width: 400,
+      width: 330,
       height: 50,
       child: TextFormField(
         focusNode: widget.focusNode,

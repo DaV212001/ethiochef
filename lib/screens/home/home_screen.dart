@@ -26,11 +26,14 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             children: [
               AdsCarousel(),
-              ScreenHead(
-                hasNotification: true,
-                screen: 0,
-                searchHint: "search".tr(),
+              SizedBox(
+                height: 10.h,
               ),
+              // ScreenHead(
+              //   hasNotification: true,
+              //   screen: 0,
+              //   searchHint: "search".tr(),
+              // ),
               HomeCategoryTab(dishes: PlaceHolderData.dishes),
               if(showAddRecipeCard)
               SizedBox(

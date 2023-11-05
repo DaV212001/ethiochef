@@ -1,5 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:ethio_chef/widgets/screen_head.dart';
 
 import '../../../widgets/home/ad_carousel_component.dart';
 
@@ -33,9 +35,10 @@ class _AdsCarouselState extends State<AdsCarousel> {
   //   }
   // }
   List imageList = [
-    {"id": 1, "image_path": 'assets/images/logo.png'},
-    {"id": 2, "image_path": 'assets/images/two.png'},
-    {"id": 3, "image_path": 'assets/images/three.png'}
+    {"id": 1, "image_path": 'assets/images/photo_1.jpg'},
+    {"id": 2, "image_path": 'assets/images/photo_2.jpg'},
+    {"id": 3, "image_path": 'assets/images/photo_3.jpg'},
+    {"id": 4, "image_path": 'assets/images/photo_4.jpg'}
   ];
 
   final CarouselController carouselController = CarouselController();
@@ -56,7 +59,17 @@ class _AdsCarouselState extends State<AdsCarousel> {
                 Container(
                     decoration: const BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage("assets/images/logo.png"),
+                            image: AssetImage("assets/images/photo_1.jpg"),
+                            fit: BoxFit.fill)),
+                    child:AdCarouselComponent(
+                        label: '',
+                        description: ''
+                    )
+                ),
+                Container(
+                    decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage("assets/images/photo_2.jpg"),
                             fit: BoxFit.fill)),
                     child:AdCarouselComponent(
                         label: '',
@@ -66,7 +79,7 @@ class _AdsCarouselState extends State<AdsCarousel> {
                 Container(
                   decoration: const BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage("assets/images/two.png"),
+                          image: AssetImage("assets/images/photo_3.jpg"),
                           fit: BoxFit.fill)),
                   child: AdCarouselComponent(
                       label: '',
@@ -78,7 +91,7 @@ class _AdsCarouselState extends State<AdsCarousel> {
                     decoration: const BoxDecoration(
                         image: DecorationImage(
                             image:
-                            AssetImage("assets/images/three.png"),
+                            AssetImage("assets/images/photo_4.jpg"),
                             fit: BoxFit.fill)),
                     child:  AdCarouselComponent(
                         label: '',
@@ -97,6 +110,16 @@ class _AdsCarouselState extends State<AdsCarousel> {
                   });
                 },
               ),
+            ),
+          ),
+          Positioned(
+            top: 5,
+            left: 0,
+            right: 0,
+            child: ScreenHead(
+              hasNotification: true,
+              screen: 0,
+              searchHint: "search".tr(),
             ),
           ),
           Positioned(

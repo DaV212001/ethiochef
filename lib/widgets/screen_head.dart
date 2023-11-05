@@ -20,46 +20,36 @@ class ScreenHead extends StatelessWidget {
     ThemeData theme = Theme.of(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Column(
-        children: [
-          Row(
+      child: Row(
             mainAxisAlignment: isHomeScreen
                 ? MainAxisAlignment.spaceBetween
                 : MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              if (isHomeScreen)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "hello_user".tr(args: ["Dagim"]),
-                      style: theme.textTheme.headlineLarge,
-                    ),
-                    // SizedBox(
-                    //   height: 10,
-                    // ),
-                    // Text(
-                    //   "lets_make_dinner".tr(),
-                    //   style: theme.textTheme.headlineSmall
-                    //       ?.copyWith(color: theme.colorScheme.shadow),
-                    // )
-                  ],
-                ),
+              //   Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //
+              //       // SizedBox(
+              //       //   height: 10,
+              //       // ),
+              //       // Text(
+              //       //   "lets_make_dinner".tr(),
+              //       //   style: theme.textTheme.headlineSmall
+              //       //       ?.copyWith(color: theme.colorScheme.shadow),
+              //       // )
+              //     ],
+              //   ),
+
+              SearchInputField(
+                enabled: true,
+                hint: searchHint,
+              ),
               NotificationIcon(
                 hasNotification: hasNotification,
               ),
             ],
           ),
-          SizedBox(
-            height: 10,
-          ),
-          SearchInputField(
-            enabled: true,
-            hint: searchHint,
-          ),
-        ],
-      ),
     );
   }
 }

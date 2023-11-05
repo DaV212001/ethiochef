@@ -26,8 +26,10 @@ class Assets {
   static const String iconsTime = 'assets/images/icons/time.svg';
   static const String imagesEthiopianFlag = 'assets/images/ethiopian_flag.svg';
   static const String imagesLogo = 'assets/images/logo.png';
-  static const String imagesThree = 'assets/images/three.png';
-  static const String imagesTwo = 'assets/images/two.png';
+  static const String imagesPhoto1 = 'assets/images/photo_1.jpg';
+  static const String imagesPhoto2 = 'assets/images/photo_2.jpg';
+  static const String imagesPhoto3 = 'assets/images/photo_3.jpg';
+  static const String imagesPhoto4 = 'assets/images/photo_4.jpg';
   static const String localeAm = 'assets/locale/am.json';
   static const String localeEn = 'assets/locale/en.json';
   static const String localeEnAU = 'assets/locale/en-AU.json';
