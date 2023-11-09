@@ -45,7 +45,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
                 steps: widget.food.steps!,
               ),
               RecipeRelated(dishes: PlaceHolderData.dishes),
-              ShareButton(food: widget.food)
+              // ShareButton(food: widget.food)
             ],
           ),
         ),

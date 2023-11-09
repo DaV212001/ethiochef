@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'layout/ads_carusel.dart';
+import 'layout/category_carousel.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,40 +23,43 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
+        child: ListView(
             children: [
               AdsCarousel(),
-              SizedBox(
-                height: 10.h,
-              ),
-              ScreenHead(
-                hasNotification: true,
-                screen: 0,
-                searchHint: "search".tr(),
-              ),
+              // SizedBox(
+              //   height: 10.h,
+              // ),
+              // ScreenHead(
+              //   hasNotification: true,
+              //   screen: 0,
+              //   searchHint: "search".tr(),
+              // ),
               HomeCategoryTab(dishes: PlaceHolderData.dishes),
               if(showAddRecipeCard)
+                SizedBox(
+                  height: 10.h,
+                ),
+              if(showAddRecipeCard)
+                AddRecipeCard(
+                  onRemove: () {
+                    setState(() {
+                      showAddRecipeCard = false;
+                    });
+                  },
+                ),
               SizedBox(
                 height: 10.h,
               ),
-              if(showAddRecipeCard)
-              AddRecipeCard(
-                onRemove: () {
-                  setState(() {
-                    showAddRecipeCard = false;
-                  });
-                },
-              ),
+              CategoryCarousel(dishes: PlaceHolderData.dishes),
               RecentDishes(
                 dishes: PlaceHolderData.dishes,
               ),
               SizedBox(
                 height: 10.h,
-              )
+              ),
             ],
           ),
-        ),
+
       ),
     );
   }

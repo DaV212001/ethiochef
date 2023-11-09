@@ -135,7 +135,7 @@ class _MainScreenState extends State<MainScreen> {
           inactiveColorPrimary: inactiveColor,
           onPressed: (context) {
             pushNewScreen(context!,
-                screen: UploadRecipeScreen(), withNavBar: false);
+                screen: UploadRecipeScreen(type: "recipe"), withNavBar: false);
           }
       ),
       PersistentBottomNavBarItem(

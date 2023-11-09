@@ -84,5 +84,6 @@
   "recipe_status": "Recipe status",
   "competition_status": "Competition status",
   "extend_subscription": "Extend Subscription",
-  "recipe": "Recipe"
+  "recipe": "Recipe",
+  "submit_a": "Submit a {}"
 }

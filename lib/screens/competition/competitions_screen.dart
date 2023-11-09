@@ -6,6 +6,9 @@ import 'package:ethio_chef/widgets/screen_head.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+
+import '../upload_recipe/upload_recipe_screen.dart';
 
 class CompetitionsScreen extends StatefulWidget {
   const CompetitionsScreen({super.key});
@@ -45,6 +48,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return Scaffold(
         body: SafeArea(
       child: SingleChildScrollView(
@@ -60,7 +64,16 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                 child: VerticalCompetitionList(
                     pagingController: _pagingController))
           ])),
-    ));
+    ),
+    floatingActionButton: FloatingActionButton(
+      backgroundColor: theme.colorScheme.primary,
+        onPressed: () {
+          pushNewScreen(context!,
+              screen: UploadRecipeScreen(type: "competition"), withNavBar: false);
+        },
+      child: Icon(Icons.add,color: Colors.white)
+    ),
+    );
   }
 
   @override

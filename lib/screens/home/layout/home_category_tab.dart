@@ -13,7 +13,7 @@ class HomeCategoryTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Tab> tabs = PlaceHolderData.categories
+    List<Tab> tabs = PlaceHolderData.menuTimes
         .map((e) => Tab(
               text: e.name,
             ))
@@ -46,7 +46,7 @@ class HomeCategoryTab extends StatelessWidget {
 
   List<Widget> getTabs() {
     return List.filled(
-      5,
+      4,
       HorizontalFoodCarousel(
         dishes: dishes,
         type: 2,

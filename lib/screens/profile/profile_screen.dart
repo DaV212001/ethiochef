@@ -18,13 +18,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: ListView(
-          scrollDirection: Axis.vertical,
-          children: [
-            UserHeader(),
-            RouteList()
-          ],
-        ),
+          body: ListView(
+            scrollDirection: Axis.vertical,
+            children: [
+              UserHeader(),
+              RouteList(),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Text("@2023 Copyright EthioChef"),
+              ),
+
+              SizedBox(
+                height: 45,
+              ),
+            ],
+          ),
+
       ),
     );
   }

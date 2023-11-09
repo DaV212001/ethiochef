@@ -8,7 +8,8 @@ import 'package:ethio_chef/screens/upload_recipe/layout/video_step.dart';
 import 'package:flutter/material.dart';
 
 class UploadRecipeScreen extends StatefulWidget {
-  const UploadRecipeScreen({super.key});
+  String type;
+  UploadRecipeScreen({super.key, required this.type});
 
   @override
   State<UploadRecipeScreen> createState() => _UploadRecipeScreenState();
@@ -40,7 +41,7 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
         foregroundColor: theme.colorScheme.primary,
         elevation: 0,
         title: Text(
-          "submit_a_recipe".tr(),
+          "Submit a ${widget.type}",
           style: theme.textTheme.headlineLarge
               ?.copyWith(color: theme.colorScheme.primary),
         ),

@@ -3,6 +3,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:ethio_chef/widgets/screen_head.dart';
 
+import '../../../theme/app_theme.dart';
+import '../../../widgets/cached_image.dart';
 import '../../../widgets/home/ad_carousel_component.dart';
 
 class AdsCarousel extends StatefulWidget {
@@ -47,106 +49,222 @@ class _AdsCarouselState extends State<AdsCarousel> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return Column(children: [
-      Stack(
-        children: [
-          InkWell(
-            onTap: () {
-              print(currentIndex);
-            },
-            child: CarouselSlider(
-              items: [
-                Container(
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
+    return Container(
+      color: Colors.black,
+      child: Column(children: [
+        Stack(
+          children: [
+            InkWell(
+              onTap: () {
+                print(currentIndex);
+              },
+              child: CarouselSlider(
+                items: [
+                  Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
                             image: AssetImage("assets/images/photo_1.jpg"),
-                            fit: BoxFit.fill)),
-                    child:AdCarouselComponent(
-                        label: '',
-                        description: ''
-                    )
-                ),
-                Container(
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("assets/images/photo_2.jpg"),
-                            fit: BoxFit.fill)),
-                    child:AdCarouselComponent(
-                        label: '',
-                        description: ''
-                    )
-                ),
-                Container(
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("assets/images/photo_3.jpg"),
-                          fit: BoxFit.fill)),
-                  child: AdCarouselComponent(
-                      label: '',
-                      description: ''
-                  ),
+                            fit: BoxFit.cover,
+                          ),
 
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          height: 75,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              // BoxShadow(
+                              //   color: Colors.black,
+                              //   offset: Offset(0, 40),
+                              //   blurRadius: 20
+                              // ),
+                            ],),
+                          child: SizedBox()
+                        ),
+                      ),
+                    ],
+                  ), Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage("assets/images/photo_2.jpg"),
+                            fit: BoxFit.cover,
+                          ),
+
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          height: 75,
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              // BoxShadow(
+                              //   color: Colors.black,
+                              //   offset: Offset(0, 40),
+                              //     blurRadius: 10,
+                              // ),
+                            ],),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage("assets/images/photo_3.jpg"),
+                            fit: BoxFit.cover,
+                          ),
+
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          height: 75,
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              // BoxShadow(
+                              //   color: Colors.black,
+                              //   offset: Offset(0, 40),
+                              //     blurRadius: 10,
+                              // ),
+                            ],),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage("assets/images/photo_4.jpg"),
+                              fit: BoxFit.cover,
+                            ),
+
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            height: 75,
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                // BoxShadow(
+                                //   color: Colors.black,
+                                //   offset: Offset(0, 40),
+                                //   blurRadius: 10,
+                                // ),
+                              ],),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                ],
+                carouselController: carouselController,
+                options: CarouselOptions(
+                  scrollPhysics: const BouncingScrollPhysics(),
+                  autoPlay: true,
+                  aspectRatio: 2,
+                  viewportFraction: 1,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      currentIndex = index;
+                    });
+                  },
                 ),
-                Container(
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image:
-                            AssetImage("assets/images/photo_4.jpg"),
-                            fit: BoxFit.fill)),
-                    child:  AdCarouselComponent(
-                        label: '',
-                        description: ''
-                    ))
-              ],
-              carouselController: carouselController,
-              options: CarouselOptions(
-                scrollPhysics: const BouncingScrollPhysics(),
-                autoPlay: true,
-                aspectRatio: 2,
-                viewportFraction: 1,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    currentIndex = index;
-                  });
-                },
               ),
             ),
-          ),
-          Positioned(
-              bottom: 10,
-              right: 0,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 17),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: imageList.asMap().entries.map((entry) {
-                        return GestureDetector(
-                          onTap: () =>
-                              carouselController.animateToPage(entry.key),
-                          child: Container(
-                            width: currentIndex == entry.key ? 17 : 7,
-                            height: 7.0,
-                            margin: const EdgeInsets.symmetric(
-                              horizontal: 3.0,
+            // Positioned(
+            //     bottom: 0,
+            //     right: 0,
+            //     left: 0,
+            //     child: ScreenHead(
+            //   hasNotification: true,
+            //   screen: 0,
+            //   searchHint: "search".tr(),
+            // )),
+            Positioned(
+                bottom: 10,
+                right: 0,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 17),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: imageList.asMap().entries.map((entry) {
+                          return GestureDetector(
+                            onTap: () =>
+                                carouselController.animateToPage(entry.key),
+                            child: Container(
+                              width: currentIndex == entry.key ? 17 : 7,
+                              height: 7.0,
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 3.0,
+                              ),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: currentIndex == entry.key
+                                      ? theme.colorScheme.primary
+                                      : theme.colorScheme.primaryContainer),
                             ),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: currentIndex == entry.key
-                                    ? theme.colorScheme.primary
-                                    : theme.colorScheme.primaryContainer),
-                          ),
-                        );
-                      }).toList(),
-                    )
-                  ],
-                ),
-              ))
-        ],
-      ),
-    ]);
+                          );
+                        }).toList(),
+                      )
+                    ],
+                  ),
+                ))
+          ],
+        ),
+        ScreenHead(
+          hasNotification: true,
+          screen: 0,
+          searchHint: "search".tr(),
+        )
+      ]),
+    );
   }
 }

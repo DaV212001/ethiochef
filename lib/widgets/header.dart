@@ -9,17 +9,17 @@ class Header extends StatelessWidget {
 
   const Header(
       {super.key,
-      required this.title,
-      this.showMore = false,
-      this.onTap,
-      this.showMoreText});
+        required this.title,
+        this.showMore = false,
+        this.onTap,
+        this.showMoreText});
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Container(
       margin: const EdgeInsets.only(top: 5),
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.symmetric(horizontal: 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

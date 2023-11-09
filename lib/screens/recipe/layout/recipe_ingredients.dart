@@ -14,8 +14,8 @@ class RecipeIngredients extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
 
-    final double desiredItemWidth = ScreenUtils.isTablet(context) ? 220 : 200;
-    final double desiredItemHeight = ScreenUtils.isTablet(context) ? 50 : 65;
+    final double desiredItemWidth = ScreenUtils.isTablet(context) ? 130 : 110;
+    final double desiredItemHeight = ScreenUtils.isTablet(context) ? 30 : 45;
     final double screenWidth = ScreenUtils.width(context);
 
     final int crossAxisCount = (screenWidth / desiredItemWidth).floor();

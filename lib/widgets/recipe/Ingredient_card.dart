@@ -11,7 +11,7 @@ class IngredientCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       decoration: BoxDecoration(
-        color: theme.colorScheme.primaryContainer.withOpacity(0.05),
+        // color: theme.colorScheme.primaryContainer.withOpacity(0.05),
         borderRadius: AppTheme.allBorderRadius,
         border: Border.all(
           color: theme.colorScheme.primary
