@@ -28,6 +28,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return PersistentTabView(
+
       context,
       controller: _controller,
       screens: _buildScreens(),
@@ -56,6 +57,7 @@ class _MainScreenState extends State<MainScreen> {
         duration: Duration(milliseconds: 200),
       ),
       navBarStyle: NavBarStyle.style15,
+
     );
   }
 

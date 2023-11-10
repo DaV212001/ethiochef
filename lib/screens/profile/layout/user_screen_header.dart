@@ -1,129 +1,147 @@
+import 'dart:io';
 
-import 'package:avatar_glow/avatar_glow.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/screens/profile/layout/update_profile_screen.dart';
+import 'package:ethio_chef/widgets/main_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
-class UserHeader extends StatefulWidget {
-  const UserHeader({super.key});
+import '../../../models/user.dart';
+import '../../../widgets/profile/profile_widget.dart';
+
+class UserScreenHeader extends StatefulWidget {
+
+  UserScreenHeader({super.key});
 
   @override
-  State<UserHeader> createState() => _UserHeaderState();
+  State<UserScreenHeader> createState() => _UserScreenHeaderState();
 }
 
-class _UserHeaderState extends State<UserHeader> {
+class _UserScreenHeaderState extends State<UserScreenHeader> {
+  final double coverHeight = 210.h;
+  final double imageHeight = 144.w;
+  final picker = ImagePicker();
+  // late var profilePicture;
+  bool isFile = false;
 
-  final double coverHeight = 150;
-  final double profileHeight = 124;
-
+  @override
+  void initState() {
+    // User.profilePicture = null;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      shrinkWrap: true,
-      children: [
-        buildBody(),
-        buildContent()
-      ],
-    );
-  }
-  Widget buildBody(){
-    final bottom = profileHeight / 2;
-    final top = coverHeight - profileHeight / 2;
-    return Stack(
-      clipBehavior: Clip.none,
-      alignment: Alignment.center,
-      children: [
-        Container(
-            margin: EdgeInsets.only(bottom: bottom),
-            child: buildCoverImage()
-        ),
-        Positioned(
-          top: top,
-          child: buildProfileImage(),
-        )
-      ],
-    );
-  }
-  Widget buildCoverImage(){
-    ThemeData theme = Theme.of(context);
-    return Container(
-      height: coverHeight,
-      width: double.infinity,
-      decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-              colors: [Color(0xFFD2691E), Color(0xFFFEC20A)]),
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(50),
-            bottomRight: Radius.circular(50),
-          )),
-    );
-  }
-  Widget buildProfileImage()=>AvatarGlow(
-      glowColor: Color(0xFFFEC20A),
-      endRadius: profileHeight/2,
-      duration: Duration(milliseconds: 2000),
-      repeat: true,
-      showTwoGlows: true,
-      repeatPauseDuration: Duration(milliseconds: 100),
-      child: Material(     // Replace this child with your own
-        elevation: 8.0,
-        shape: CircleBorder(),
-        child: CircleAvatar(
-          backgroundColor: Colors.white,
-          child: Image.asset(
-              'assets/images/logo.png',
-              height: 80
-          ),
-          radius: profileHeight/2,
-        ),
-      )
-  );
-  Widget buildContent() {
-    ThemeData theme = Theme.of(context);
-    return Column(
+    final ThemeData theme = Theme.of(context);
+    String firstName = "Abebe";
+    String lastName = "Lema";
+    String formattedName =
+        "${firstName[0].toUpperCase()}${firstName.substring(1).toLowerCase()} ${lastName[0].toUpperCase()}${lastName.substring(1).toLowerCase()}";
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(height: 10,),
-          Text(
-            "hello_user".tr(args: ["Dagim"]),
-            style: theme.textTheme.headlineLarge,
+          ProfileWidget(
+            isUpdateScreen: false,
+            imagePath: User.profilePicture,
+            hasEditButton: false,
+            isFile: isFile,
+            onClicked: showOptions,
           ),
-          SizedBox(height: 10,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(tr("subscription_date")),
-              Text(":"),
-              Text(" 2 months ",style: theme.textTheme.headlineLarge,),
-              InkWell(
-                onTap: (){
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Subscription Extension")),
-                  );
-                },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.keyboard_arrow_right,
-                      size: 25.sp,
-                      color: theme.primaryColor,
-                    ),
-                      Text(tr("extend_subscription"),
-                      style: TextStyle(fontWeight: FontWeight.w400,fontSize: 10),)
-                  ],
-                ),
-              )
-            ],
+          SizedBox(width: 10.h),
+         Expanded(
+           child: Column(
+             crossAxisAlignment: CrossAxisAlignment.start,
+             mainAxisAlignment: MainAxisAlignment.center,
+             children: [
+               Text("$formattedName",
+                   style: TextStyle(color: theme.colorScheme.tertiary, fontSize: 20.sp)),
+               SizedBox(height: 5.h),
+               Text("Email",
+                   style:
+                   TextStyle(color: theme.colorScheme.tertiary.withOpacity(0.5), fontSize: 15.sp)),
+             ],
+           ),
+         ),
+          SizedBox(width: 5.h),
+          ElevatedButton(onPressed: (){
+            pushNewScreen(context,
+                screen: UpdateProfileScreen(
+                  imagePath: User.profilePicture,
+                  hasEditButton: false,
+                  isFile: isFile,
+                  email: "Email",
+                  firstName: "Abebe",
+                  lastName: "Lema",
+                  phone: "091121212",
+                ));
+          }, child: Text("Edit"))
+        ],
+      ),
+    );
+  }
+
+  //Image Picker function to get image from gallery
+  Future getImageFromGallery() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        User.profilePicture = File(pickedFile.path);
+        isFile = true;
+      }
+    });
+  }
+
+  //Image Picker function to get image from camera
+  Future getImageFromCamera() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        User.profilePicture = File(pickedFile.path);
+        isFile = true;
+      }
+    });
+  }
+
+  //Show options to get image from camera or gallery
+  Future showOptions() async {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) => CupertinoActionSheet(
+        actions: [
+          CupertinoActionSheetAction(
+            child: Text(
+              'Photo Gallery',
+              style: TextStyle(fontSize: 20.sp),
+            ),
+            onPressed: () {
+              // close the options modal
+              Navigator.of(context).pop();
+              // get image from gallery
+              getImageFromGallery();
+            },
           ),
-          SizedBox(height: 10,),
-        ]
+          CupertinoActionSheetAction(
+            child: Text(
+              'Camera',
+              style: TextStyle(fontSize: 20.sp),
+            ),
+            onPressed: () {
+              // close the options modal
+              Navigator.of(context).pop();
+              // get image from camera
+              getImageFromCamera();
+            },
+          ),
+        ],
+      ),
     );
   }
 }

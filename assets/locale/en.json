@@ -85,5 +85,7 @@
   "competition_status": "Competition status",
   "extend_subscription": "Extend Subscription",
   "recipe": "Recipe",
-  "submit_a": "Submit a {}"
+  "submit_a": "Submit a {}",
+  "meal": "Meals",
+  "update": "Update"
 }

@@ -4,12 +4,12 @@ class Food {
   String name;
   String thumbnail;
   String? description;
-  List<Category> menuTimes;
-  List<Category> categories;
+  List<Category> menuTimes; //
+  List<Category> categories; //
   String? label;
   bool isSaved;
-  List<String>? ingredient;
-  List<String>? steps;
+  List<String>? ingredient; //
+  List<String>? steps; //
   String? video;
   int? servings;
   double? preparationTime;

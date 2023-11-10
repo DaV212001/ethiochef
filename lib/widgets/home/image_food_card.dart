@@ -5,6 +5,7 @@ import 'package:ethio_chef/widgets/cached_image.dart';
 import 'package:ethio_chef/widgets/home/category_label_carousel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 class ImageFoodCard extends StatefulWidget {
@@ -46,7 +47,7 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
                 height: 75,
                 padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                 decoration: BoxDecoration(
-                    color: theme.colorScheme.tertiary.withOpacity(0.7)),
+                    color: theme.colorScheme.primary.withOpacity(0.7)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -58,6 +59,9 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
                           color: theme.colorScheme.onTertiary,
                           fontWeight: FontWeight.w500),
                       textAlign: TextAlign.start,
+                    ),
+                    SizedBox(
+                      height: 5.h,
                     ),
                     CategoryLabelCarousel(categories: widget.food.menuTimes)
                   ],

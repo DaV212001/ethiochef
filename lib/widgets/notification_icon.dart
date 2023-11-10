@@ -14,7 +14,7 @@ class NotificationIcon extends StatelessWidget {
           Icon(
             CupertinoIcons.bell,
             color: theme.colorScheme.tertiary,
-            size: 35,
+            size: 27,
           ),
           Visibility(
             visible: hasNotification,

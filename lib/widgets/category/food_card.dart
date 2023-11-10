@@ -25,7 +25,7 @@ class _FoodCardState extends State<FoodCard> {
     ThemeData theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
+        color: theme.colorScheme.primary.withOpacity(0.5),
         borderRadius: AppTheme.allBorderRadius,
       ),
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
@@ -94,7 +94,7 @@ class _FoodCardState extends State<FoodCard> {
               Text(
                 "number_people".tr(args: [widget.food.servings!.toString()]),
                 style: theme.textTheme.labelMedium?.copyWith(
-                  color: theme.unselectedWidgetColor,
+                  color: theme.colorScheme.tertiary,
                 ),
               )
             ])),
@@ -113,7 +113,7 @@ class _FoodCardState extends State<FoodCard> {
                   widget.food.preparationTime!.toString(),
                 ]),
                 style: theme.textTheme.labelMedium?.copyWith(
-                  color: theme.unselectedWidgetColor,
+                  color: theme.colorScheme.tertiary,
                 ),
               )
             ])),
@@ -132,7 +132,7 @@ class _FoodCardState extends State<FoodCard> {
                 child: Text(
                   menuTimes.join(", "),
                   style: theme.textTheme.labelMedium?.copyWith(
-                    color: theme.unselectedWidgetColor,
+                    color: theme.colorScheme.tertiary,
                   ),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,

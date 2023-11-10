@@ -21,7 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           body: ListView(
             scrollDirection: Axis.vertical,
             children: [
-              UserHeader(),
+              UserScreenHeader(),
               RouteList(),
               Align(
                 alignment: Alignment.bottomCenter,

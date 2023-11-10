@@ -23,41 +23,55 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: ListView(
+        child: SingleChildScrollView(
+          child: Column(
             children: [
               AdsCarousel(),
-              // SizedBox(
-              //   height: 10.h,
-              // ),
+              SizedBox(
+                height: 5.h,
+              ),
               // ScreenHead(
               //   hasNotification: true,
               //   screen: 0,
               //   searchHint: "search".tr(),
               // ),
-              HomeCategoryTab(dishes: PlaceHolderData.dishes),
-              if(showAddRecipeCard)
-                SizedBox(
-                  height: 10.h,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                    HomeCategoryTab(dishes: PlaceHolderData.dishes),
+                    if(showAddRecipeCard)
+                      SizedBox(
+                        height: 15.h,
+                      ),
+                    if(showAddRecipeCard)
+                      AddRecipeCard(
+                        onRemove: () {
+                          setState(() {
+                            showAddRecipeCard = false;
+                          });
+                        },
+                      ),
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                    CategoryCarousel(dishes: PlaceHolderData.dishes),
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                    RecentDishes(
+                      dishes: PlaceHolderData.dishes,
+                    ),
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                  ],
                 ),
-              if(showAddRecipeCard)
-                AddRecipeCard(
-                  onRemove: () {
-                    setState(() {
-                      showAddRecipeCard = false;
-                    });
-                  },
-                ),
-              SizedBox(
-                height: 10.h,
-              ),
-              CategoryCarousel(dishes: PlaceHolderData.dishes),
-              RecentDishes(
-                dishes: PlaceHolderData.dishes,
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-            ],
+              )
+            ],)
           ),
 
       ),

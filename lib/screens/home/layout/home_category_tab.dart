@@ -5,6 +5,7 @@ import 'package:ethio_chef/utils/place_holder_data.dart';
 import 'package:ethio_chef/widgets/header.dart';
 import 'package:ethio_chef/widgets/horizontal_food_carousel.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeCategoryTab extends StatelessWidget {
   final List<Food> dishes;
@@ -23,7 +24,10 @@ class HomeCategoryTab extends StatelessWidget {
       length: tabs.length,
       child: Column(
         children: [
-          Header(title: "category".tr()),
+          Header(title: "meal".tr()),
+          SizedBox(
+            height: 10.h,
+          ),
           ButtonsTabBar(
             backgroundColor: theme.colorScheme.primary,
             unselectedBackgroundColor: Colors.transparent,
@@ -36,7 +40,7 @@ class HomeCategoryTab extends StatelessWidget {
             tabs: tabs,
           ),
           SizedBox(
-            height: 250,
+            height: 200,
             child: TabBarView(children: getTabs()),
           ),
         ],

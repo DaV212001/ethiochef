@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/widgets/notification_icon.dart';
 import 'package:ethio_chef/widgets/search_input_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ScreenHead extends StatelessWidget {
   final int screen;
@@ -50,6 +51,9 @@ class ScreenHead extends StatelessWidget {
           SearchInputField(
             enabled: true,
             hint: searchHint,
+          ),
+          SizedBox(
+            width: 15.w,
           ),
           NotificationIcon(
             hasNotification: hasNotification,

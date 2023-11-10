@@ -73,16 +73,21 @@ class PlaceHolderData {
   static Food food = Food(
       thumbnail:
           "https://ethiochef.com/storage/app/public/food/96Bz0NqAKx9PksMzm1qg24AxwI2wz5KwgyaLQ7N3.jpeg",
+
       name: "Zucchini Bread",
+
       description:
           "Savor the simplicity of Moist Zucchini Bread—a perfect fusion of fresh zucchini, aromatic spices, and tender crumb. A guilt-free, comforting treat for any time of day. Enjoy the homemade goodness!",
+
       categories: categories,
       menuTimes: menuTimes,
+
       video: "",
       ingredient: ingredients,
       steps: steps,
       servings: 2,
-      preparationTime: 1.5);
+      preparationTime: 1.5
+  );
   static List<Food> dishes = List.filled(10, food);
 
   static String videoLink = 'https://youtu.be/Z4Uf25pHpDM';

@@ -12,11 +12,11 @@ class HorizontalFoodCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double height = 285;
-    double width = 220;
+    double height = 265;
+    double width = 200;
     if(type == ImageFoodCard.foodCardType){
-      height = 275;
-      width = 255;
+      height = 255;
+      width = 235;
     } else if (type == ImageHeadFoodCard.foodCardType){
       height = 180;
       width = 165;
