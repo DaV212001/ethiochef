@@ -19,28 +19,30 @@ class CompetitionScreen extends StatefulWidget {
 class _CompetitionScreenState extends State<CompetitionScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: DefaultTabController(
-          length: 2,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CompetitionHeaderImage(
-                image: widget.competition.image,
-              ),
-              CompetitionHeader(
-                competition: widget.competition,
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              if (widget.competition.video != null)
-                YoutubeVideoPlayer(
-                  link: PlaceHolderData.videoLink,
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: DefaultTabController(
+            length: 2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CompetitionHeaderImage(
+                  image: widget.competition.image.toString(),
                 ),
-              ShareButton(food: PlaceHolderData.food)
-            ],
+                CompetitionHeader(
+                  competition: widget.competition,
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                if (widget.competition.video != null)
+                  YoutubeVideoPlayer(
+                    link: PlaceHolderData.videoLink,
+                  ),
+                // ShareButton(food: PlaceHolderData.food)
+              ],
+            ),
           ),
         ),
       ),

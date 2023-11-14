@@ -60,7 +60,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
               searchHint: "search_for_competition".tr(),
             ),
             SizedBox(
-                height: 700.h,
+                height: 930.h,
                 child: VerticalCompetitionList(
                     pagingController: _pagingController))
           ])),

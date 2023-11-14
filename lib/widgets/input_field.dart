@@ -41,12 +41,12 @@ class InputField extends StatelessWidget {
       case 1:
         validator = validateNameType;
         break;
-      case 2:
-        validator = validateEmailType;
-        break;
-      case 3:
-        validator = validatePromoCodeType;
-        break;
+      // case 2:
+      //   validator = validateEmailType;
+      //   break;
+      // case 3:
+      //   validator = validatePromoCodeType;
+      //   break;
       default:
         validator = null;
     }
@@ -86,23 +86,23 @@ class InputField extends StatelessWidget {
     return null;
   }
 
-  String? validateEmailType(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Email is required';
-    } else
-    if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$').hasMatch(value)) {
-      return 'Invalid email format';
-    }
-    return null;
-  }
-
-  String? validatePromoCodeType(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Promo code is required';
-    } else if (value.length != 6) {
-      return 'Promo code must be 6 characters';
-    }
-    return null;
-  }
+  // String? validateEmailType(String? value) {
+  //   if (value == null || value.isEmpty) {
+  //     return 'Email is required';
+  //   } else
+  //   if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$').hasMatch(value)) {
+  //     return 'Invalid email format';
+  //   }
+  //   return null;
+  // }
+  //
+  // String? validatePromoCodeType(String? value) {
+  //   if (value == null || value.isEmpty) {
+  //     return 'Promo code is required';
+  //   } else if (value.length != 6) {
+  //     return 'Promo code must be 6 characters';
+  //   }
+  //   return null;
+  // }
 
 }

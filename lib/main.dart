@@ -91,7 +91,7 @@ class _EthioChefState extends State<EthioChef> {
               darkTheme: AppTheme.darkTheme,
               initialRoute: '/',
               routes: {
-                '/': (context) => homeScreen,
+                '/': (context) => SplashScreen(),
                 '/main': (context) => const MainScreen()
               }),
         );

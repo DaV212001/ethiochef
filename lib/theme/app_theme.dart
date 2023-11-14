@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ThemeProvider extends ChangeNotifier{
   ThemeMode themeMode = ThemeMode.dark;
 
@@ -56,6 +57,10 @@ class AppTheme {
           fontSize: 15,
           color: russet,
         ),
+        displaySmall: TextStyle(
+          fontSize: 10,
+          color: russet,
+        ),
         labelMedium: TextStyle(
           fontSize: 13,
           color: white,
@@ -109,4 +114,7 @@ class AppTheme {
       topLeft: Radius.circular(5), topRight: Radius.circular(5));
 
   static BorderRadius allBorderRadius = BorderRadius.all(Radius.circular(5));
+
+  static TextStyle snackBarStyleTablet = TextStyle(fontSize: 13.sp);
+  static TextStyle snackBarStyle = TextStyle(fontSize: 15.sp);
 }

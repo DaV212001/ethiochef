@@ -52,7 +52,8 @@ class _IngredientsStepState extends State<IngredientsStep> {
                 removeIngredient(i);
               },
             ),
-          AddButton(text: "add_ingredient".tr(), onPress: addIngredient),
+          AddButton(text: "add_ingredient".tr(),
+              onPress: addIngredients),
           StepperControlButtons(
             next: () {
               if (!_formKey.currentState!.validate()) {
@@ -70,12 +71,16 @@ class _IngredientsStepState extends State<IngredientsStep> {
       ),
     );
   }
-
+  void addIngredients(){
+    print("addIngredients");
+    addIngredient();
+  }
   void addIngredient() {
+    print("addIngredient");
     widget.quantityControllers.add(TextEditingController());
     widget.itemControllers.add(TextEditingController());
     widget.updateControllers(
-        widget.quantityControllers, widget.itemControllers);
+        widget.itemControllers, widget.quantityControllers);
     setState(() {
       hasOneIngredient = widget.quantityControllers.length == 1;
     });

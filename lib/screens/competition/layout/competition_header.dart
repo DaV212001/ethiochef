@@ -23,7 +23,7 @@ class CompetitionHeader extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                competition.name,
+                competition.name.toString(),
                 style: theme.textTheme.headlineLarge
                     ?.copyWith(color: theme.colorScheme.primary),
               ),
@@ -62,7 +62,7 @@ class CompetitionHeader extends StatelessWidget {
           height: 5.h,
         ),
         Text(
-          competition.description,
+          competition.description.toString(),
           style:
               theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w300),
         ),

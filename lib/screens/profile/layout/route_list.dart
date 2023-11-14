@@ -1,14 +1,18 @@
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/screens/profile/layout/recipe_status/my_recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 
+import '../../../theme/app_theme.dart';
 import '../../../theme/model_theme.dart';
 import '../../../widgets/auth/language_selector_button.dart';
 import '../../../widgets/change_theme.dart';
 import '../../../widgets/profile/route_card.dart';
+import '../../../widgets/profile/route_container.dart';
 import '../../../widgets/profile/route_labels_card.dart';
+import 'competition_status/my_competition.dart';
 
 
 class RouteList extends StatefulWidget {
@@ -23,12 +27,12 @@ class _RouteListState extends State<RouteList> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ModelTheme>(context);
     ThemeData theme = Theme.of(context);
-    final List<Map<String, dynamic>> itemList = [
+    final List<Map<String, dynamic>> general = [
       {
-        "title": "change_profile".tr(),
-        "leadingIcon": Icons.account_circle_outlined,
+        "title": "extend_subscription".tr(),
+        "leadingIcon": Icons.subscriptions_outlined,
         "onTap": () {
-          print("change_profile");
+          print("extend_subscription");
           // pushNewScreen(
           //   context,
           //   screen: UpdateProfileScreen(),
@@ -38,36 +42,6 @@ class _RouteListState extends State<RouteList> {
         },
         "trailing": Icon(Icons.chevron_right_outlined,
             color: theme.colorScheme.primary),
-      },
-      {
-        "title": "recipe_status".tr(),
-        "leadingIcon": Icons.dinner_dining,
-        "onTap": () {
-          print("change_password");
-          // pushNewScreen(
-          //   context,
-          //   screen: ChangePassword(),
-          //   withNavBar: false,
-          //   pageTransitionAnimation: PageTransitionAnimation.cupertino,
-          // );
-        },
-        "trailing":
-        Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary)
-      },
-      {
-        "title": "competition_status".tr(),
-        "leadingIcon": Icons.incomplete_circle,
-        "onTap": () {
-          print("change_password");
-          // pushNewScreen(
-          //   context,
-          //   screen: ChangePassword(),
-          //   withNavBar: false,
-          //   pageTransitionAnimation: PageTransitionAnimation.cupertino,
-          // );
-        },
-        "trailing":
-        Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary)
       },
       {
         "title": "change_theme".tr(),
@@ -85,7 +59,41 @@ class _RouteListState extends State<RouteList> {
         },
         "trailing": Text(""),
 
+      }
+    ];
+    final List<Map<String, dynamic>> status = [
+      {
+        "title": "recipe_status".tr(),
+        "leadingIcon": Icons.dinner_dining,
+        "onTap": () {
+          print("change_password");
+          pushNewScreen(
+            context,
+            screen: MyRecipes(),
+            withNavBar: false,
+            pageTransitionAnimation: PageTransitionAnimation.cupertino,
+          );
+        },
+        "trailing":
+        Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary)
       },
+      {
+        "title": "competition_status".tr(),
+        "leadingIcon": Icons.incomplete_circle,
+        "onTap": () {
+          print("change_password");
+          pushNewScreen(
+            context,
+            screen: MyCompetition(),
+            withNavBar: false,
+            pageTransitionAnimation: PageTransitionAnimation.cupertino,
+          );
+        },
+        "trailing":
+        Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary)
+      }
+    ];
+    final List<Map<String, dynamic>> other = [
       {
         "title": "privacy_policy".tr(),
         "leadingIcon": Icons.privacy_tip_outlined,
@@ -150,43 +158,27 @@ class _RouteListState extends State<RouteList> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Container(
-        decoration: BoxDecoration(
-            color: theme.buttonTheme.colorScheme?.primaryContainer,
-            borderRadius: BorderRadius.circular(10)),
-        child: ListView.builder(
+        child: ListView(
           shrinkWrap: true,
+          scrollDirection: Axis.vertical,
           physics: BouncingScrollPhysics(),
-          itemCount: itemList.length,
-          itemBuilder: (context, index) {
-            final item = itemList[index];
-            final specialIcon = item["special_icon"];
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    child: index==0?RouteLabelCards(text: tr("profile")):
-                    index==1?RouteLabelCards(text: tr("recipe")):
-                    index==3?RouteLabelCards(text: tr("general")):
-                    index==5?RouteLabelCards(text: tr("documentation"))
-                  :null,
-                  ),
-                  RouteCard(
-                    onTap: item["onTap"],
-                    title: item["title"],
-                    icon: item["leadingIcon"],
-                  ),
-                  index != itemList.length - 1
-                      ? Divider(
-                    thickness: 1,
-                    height: 1,
-                  )
-                      : SizedBox()
-                ],
-              ),
-            );
-          },
+          children: [
+            RouteContainer(
+              routePart: general,
+              indexTwo: 2,
+              routeName: tr("general"),
+            ),
+            RouteContainer(
+              routePart: status,
+              indexTwo: 1,
+              routeName: tr("status"),
+            ),
+            RouteContainer(
+              routePart: other,
+              indexTwo: 3,
+              routeName: tr("other"),
+            )
+          ],
         ),
       ),
     );

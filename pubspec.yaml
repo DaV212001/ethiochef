@@ -66,6 +66,8 @@ dependencies:
   carousel_slider: ^4.2.1
   profile: ^0.0.1
   avatar_glow: ^2.0.2
+  flutter_secure_storage: ^9.0.0
+  url_launcher: ^6.2.1
 
 dev_dependencies:
   flutter_test:

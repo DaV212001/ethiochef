@@ -62,7 +62,7 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
                Text("$formattedName",
                    style: TextStyle(color: theme.colorScheme.tertiary, fontSize: 20.sp)),
                SizedBox(height: 5.h),
-               Text("Email",
+               Text("Abebe@gmail.com",
                    style:
                    TextStyle(color: theme.colorScheme.tertiary.withOpacity(0.5), fontSize: 15.sp)),
              ],
@@ -75,10 +75,10 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
                   imagePath: User.profilePicture,
                   hasEditButton: false,
                   isFile: isFile,
-                  email: "Email",
+                  email: "Abebe@gmail.com",
                   firstName: "Abebe",
                   lastName: "Lema",
-                  phone: "091121212",
+                  phone: "91121212",
                 ));
           }, child: Text("Edit"))
         ],

@@ -8,6 +8,7 @@ import 'package:ethio_chef/widgets/youtube_video_player.dart';
 import 'package:ethio_chef/utils/place_holder_data.dart';
 import 'package:ethio_chef/widgets/recipe/share_button.dart';
 import 'package:flutter/material.dart';
+import 'layout/recipe_tabs.dart';
 
 class RecipeScreen extends StatefulWidget {
   final Food food;
@@ -40,6 +41,9 @@ class _RecipeScreenState extends State<RecipeScreen> {
                 YoutubeVideoPlayer(
                   link: PlaceHolderData.videoLink,
                 ),
+              RecipeScreenTab(
+                dishes: PlaceHolderData.dishes,
+              ),
               RecipeIngredients(ingredients: widget.food.ingredient!),
               RecipeSteps(
                 steps: widget.food.steps!,

@@ -87,5 +87,7 @@
   "recipe": "Recipe",
   "submit_a": "Submit a {}",
   "meal": "Meals",
-  "update": "Update"
+  "update": "Update",
+  "other": "Other",
+  "status": "Status"
 }

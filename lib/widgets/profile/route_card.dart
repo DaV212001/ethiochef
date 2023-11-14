@@ -27,7 +27,7 @@ class _RouteCardState extends State<RouteCard> {
             Icon(widget.icon, color: theme.primaryColor),
             SizedBox(width: 10,),
             Expanded(
-              child: Text(widget.title),
+              child: Text(widget.title, style: TextStyle(color: Colors.black),),
             ),
             Container(
               child: widget.title == "change_language".tr()? LanguageSelectorButton():
