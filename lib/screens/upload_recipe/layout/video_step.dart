@@ -43,7 +43,11 @@ class _VideoStepState extends State<VideoStep> {
           video: currentVideo,
           invalid: videoInvalid,
           onVideoSelected: (File? video) {
-            widget.updateVideo(video);
+            setState(() {
+              videoInvalid = false;
+              currentVideo = video;
+              widget.updateVideo(video);
+            });
           },
         ),
         if(videoInvalid)

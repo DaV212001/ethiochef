@@ -5,9 +5,11 @@ class MainButton extends StatelessWidget {
   final double width;
   final String text;
   final Function() onPress;
+  final bool isLoading;
 
   const MainButton(
       {super.key,
+        this.isLoading = false,
       this.height = 65,
       this.width = double.infinity,
       required this.text,
@@ -21,11 +23,15 @@ class MainButton extends StatelessWidget {
       height: height,
       padding: EdgeInsets.symmetric(vertical: 10),
       child: ElevatedButton(
-        onPressed: onPress,
-        child: Text(
-          text,
-          style: theme.textTheme.headlineMedium
-              ?.copyWith(color: theme.colorScheme.background),
+        onPressed: isLoading ? null : onPress,
+        child: Visibility(
+          visible: isLoading,
+          child: CircularProgressIndicator(),
+          replacement: Text(
+            text,
+            style: theme.textTheme.headlineMedium
+                ?.copyWith(color: theme.colorScheme.background),
+          ),
         ),
         style: ButtonStyle(
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(

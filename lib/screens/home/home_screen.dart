@@ -30,11 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 5.h,
               ),
-              // ScreenHead(
-              //   hasNotification: true,
-              //   screen: 0,
-              //   searchHint: "search".tr(),
-              // ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: Column(
@@ -55,9 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           });
                         },
                       ),
-                    SizedBox(
-                      height: 15.h,
-                    ),
                     CategoryCarousel(dishes: PlaceHolderData.dishes),
                     SizedBox(
                       height: 15.h,

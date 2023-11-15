@@ -7,6 +7,9 @@ import 'package:ethio_chef/screens/upload_recipe/layout/steps_step.dart';
 import 'package:ethio_chef/screens/upload_recipe/layout/video_step.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/competition.dart';
+import '../../models/recipe.dart';
+
 class UploadRecipeScreen extends StatefulWidget {
   String type;
   UploadRecipeScreen({super.key, required this.type});
@@ -23,6 +26,8 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
   List<TextEditingController> itemControllers = [TextEditingController()];
   List<TextEditingController> quantityControllers = [TextEditingController()];
   List<TextEditingController> stepControllers = [TextEditingController()];
+  List<Map<String, String>> ingredients = [];
+  List<String> step = [];
   int activeStep = 0;
   File? image = null;
   File? video = null;
@@ -114,7 +119,81 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
            this.video = video;
           },
           next: (){
+           if(widget.type == "recipe"){
+             Map<String, String> ingredientMap = {
+               'ingredient': 'ingredient',
+               'quantity': 'quantity',
+             };
+             print("ingredientMap = $ingredientMap");
+             for (int i = 0; i < itemControllers.length; i++) {
+               String ingredient = itemControllers[i].text;
+               String quantity = quantityControllers[i].text;
+               print("ingredient = $ingredient");
+               print("quantity = $quantity");
 
+               ingredientMap = {
+                 'ingredient': quantity,
+                 'quantity': ingredient,
+               };
+               ingredients.add(ingredientMap);
+
+             }
+             for(int i=0;i<stepControllers.length;i++){
+               String stepString = stepControllers[i].text;
+               step.add(stepString);
+             }
+             Recipe newRecipe = Recipe(
+                 name: nameController.text,
+                 description: descriptionController.text,
+                 prepTime: prepTimeController.text,
+                 servingSize: servingSizeController.text,
+                 steps: step,
+                 image: image,
+                 video: video,
+                 ingredient: ingredients
+             );
+
+
+             Recipe.addRecipe(newRecipe);
+             Navigator.of(context).pop();
+           }else{
+             Map<String, String> ingredientMap = {
+               'ingredient': 'ingredient',
+               'quantity': 'quantity',
+             };
+             print("ingredientMap = $ingredientMap");
+             for (int i = 0; i < itemControllers.length; i++) {
+               String ingredient = itemControllers[i].text;
+               String quantity = quantityControllers[i].text;
+               print("ingredient = $ingredient");
+               print("quantity = $quantity");
+
+               ingredientMap = {
+                 'ingredient': quantity,
+                 'quantity': ingredient,
+               };
+               ingredients.add(ingredientMap);
+
+             }
+             for(int i=0;i<stepControllers.length;i++){
+               String stepString = stepControllers[i].text;
+               step.add(stepString);
+             }
+             Competition newRecipe = Competition(
+                 name: nameController.text,
+                 description: descriptionController.text,
+                 prepTime: prepTimeController.text,
+                 servingSize: servingSizeController.text,
+                 steps: step,
+                 imageFile: image,
+                 videoFile: video,
+                 ingredient: ingredients
+             );
+
+
+             Competition.addCompetition(newRecipe);
+             Navigator.of(context).pop();
+           }
           },
           back: decrementStep,
         ),

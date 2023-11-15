@@ -31,7 +31,13 @@ class _CategoryCarouselState extends State<CategoryCarousel> {
       itemBuilder: (context, index) {
       return Column(
         children: [
+          SizedBox(
+            height: 15.h,
+          ),
           Header(title: PlaceHolderData.categories[index].name),
+          SizedBox(
+            height: 15.h,
+          ),
           SizedBox(
             height:height,
             width: double.infinity,

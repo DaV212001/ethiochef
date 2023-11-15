@@ -37,12 +37,15 @@ class _SearchInputFieldState extends State<SearchInputField> {
         textAlignVertical: TextAlignVertical.center,
         onTap: (){
           widget.screen != 9?
-          pushNewScreen(context,
+          pushNewScreen(
+              context,
               screen: SearchScreen(
                   homescreen:widget.screen ==0? true:false,
                   categoryscreen: widget.screen ==1?true:false,
                   competitionscreen: widget.screen ==2?true:false,
-                  nutritionscreen: false)
+                  nutritionscreen: false),
+            pageTransitionAnimation: PageTransitionAnimation.slideUp,
+            withNavBar: false
           ): print('tapped');
         },
         decoration: InputDecoration(

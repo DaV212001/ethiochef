@@ -38,7 +38,7 @@ class CompetitionsCard extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: AppTheme.topBorderRadius,
                   child: CachedImage(
-                    url: competition.image,
+                    url: competition.image.toString(),
                     fit: BoxFit.fill,
                   ),
                 )),
@@ -56,7 +56,7 @@ class CompetitionsCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        competition.name,
+                        competition.name.toString(),
                         style: theme.textTheme.headlineMedium,
                         textAlign: TextAlign.start,
                       ),

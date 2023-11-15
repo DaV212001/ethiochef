@@ -7,7 +7,12 @@ import 'package:ethio_chef/widgets/auth/auth_link.dart';
 import 'package:ethio_chef/widgets/auth/phone_input_field.dart';
 import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+
+import '../../../services/user_service.dart';
+import '../../../theme/app_theme.dart';
+import '../../../utils/screen_utils.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -19,7 +24,7 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController phoneController = TextEditingController();
-
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +42,21 @@ class _SignInState extends State<SignIn> {
               title: "sign_in_title".tr(),
               body: "sign_in_body".tr()),
           PhoneInputField(controller: phoneController),
-          MainButton(text: "sign_in".tr(), onPress: signIn),
+          MainButton(
+              isLoading: isLoading,
+              text: "sign_in".tr(),
+              onPress: ()async{
+                if (_formKey.currentState!.validate()) {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  await login(phoneController.text);
+                  // var response =
+
+
+                  // pushNewScreen(context, screen: MainScreen());
+                }
+              }),
           AuthLink(
               text: "sign_in_auth_link_text".tr(),
               buttonText: "sign_up".tr(),
@@ -51,15 +70,49 @@ class _SignInState extends State<SignIn> {
       ),
     );
   }
-
-  Future<void> signIn() async {
-    if (_formKey.currentState!.validate()) {
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(
-              builder: (BuildContext context)=>MainScreen())
-      );
-      // pushNewScreen(context, screen: MainScreen());
+  Future<void> login(String phone) async {
+    var response;
+    final bool isTablet = ScreenUtils.isTablet(context);
+    SnackBar success = SnackBar(
+        content: Text(
+          'login_successful'.tr()
+        ));
+    SnackBar failed = SnackBar(
+        content: Text(
+          "login_failed".tr()
+        ));
+    try {
+      print("1");
+      UserService service = UserService();
+      print("2");
+      response = await service.login(phone);
+      print("3");
+      // Check the response status code.
+      if (response.statusCode == 200) {
+        // The login was successful.
+        setState(() {
+          isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(success);
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(
+                builder: (BuildContext context)=>MainScreen())
+        );
+      } else {
+        // The login failed.
+        setState(() {
+          isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(failed);
+      }
+    } catch (e) {
+      print(e);
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(failed);
     }
+    // return response;
   }
 
 }

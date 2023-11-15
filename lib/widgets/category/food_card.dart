@@ -25,7 +25,7 @@ class _FoodCardState extends State<FoodCard> {
     ThemeData theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
-        color: theme.colorScheme.primary.withOpacity(0.5),
+        color: theme.colorScheme.secondaryContainer.withOpacity(0.8),
         borderRadius: AppTheme.allBorderRadius,
       ),
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),

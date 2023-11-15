@@ -8,7 +8,17 @@ import 'package:ethio_chef/widgets/auth/phone_input_field.dart';
 import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:http/http.dart' as http;
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+
+import '../../../models/user.dart';
+import '../../../services/user_service.dart';
+import '../../../theme/app_theme.dart';
+import '../../../utils/screen_utils.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../../../widgets/info_card.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -24,7 +34,49 @@ class _SignUpState extends State<SignUp> {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController promoCodeController = TextEditingController();
+  late bool isLoading = false;
+  Future<http.Response?> _registration() async {
+    final bool isTablet = ScreenUtils.isTablet(context);
+    SnackBar success = SnackBar(
+        content: Text(
+          "registration_successful".tr(),
+        ));
+    SnackBar failed = SnackBar(
+        content: Text(
+          "registration_failed".tr(),
+        ));
+    try {
+      User user = User(
+          firstName: firstNameController.text,
+          lastName: lastNameController.text,
+          phone: "0"+phoneController.text);
 
+      UserService service = UserService();
+      var response = await service.registerUser(user);
+      if (response.statusCode == 200) {
+        setState(() {
+          isLoading = false;
+        });
+        await ScaffoldMessenger.of(context).showSnackBar(success);
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(
+                builder: (BuildContext context)=>MainScreen())
+        );
+      } else {
+        setState(() {
+          isLoading = false;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(failed);
+      }
+    } catch (e) {
+      print(e);
+      setState(() {
+        isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(failed);
+    }
+    return null;
+  }
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -53,29 +105,70 @@ class _SignUpState extends State<SignUp> {
             hint: "your_last_name".tr(),
             type: InputField.NameType,
           ),
-          InputField(
-            controller: emailController,
-            icon: CupertinoIcons.mail,
-            label: "email".tr(),
-            hint: "your_email".tr(),
-            type: InputField.EmailType,
-          ),
-          InputField(
-            controller: promoCodeController,
-            icon: Icons.password_outlined,
-            type: InputField.PromoCodeType,
-            label: "promo_code".tr(),
-            hint: "your_promo_code".tr(),
-          ),
+
+          // InputField(
+          //   controller: emailController,
+          //   icon: CupertinoIcons.mail,
+          //   label: "email".tr(),
+          //   hint: "your_email".tr(),
+          //   type: InputField.EmailType,
+          // ),
+          // InputField(
+          //   controller: promoCodeController,
+          //   icon: Icons.password_outlined,
+          //   type: InputField.PromoCodeType,
+          //   label: "promo_code".tr(),
+          //   hint: "your_promo_code".tr(),
+          // ),
           PhoneInputField(controller: phoneController),
           MainButton(
+              isLoading: isLoading,
+              text: "Pay subscription".tr(),
+              onPress: () async {
+                _launchUrl(
+                    "http://checkout.chapa.co/checkout/web/payment/PL-ueFSJ9MF623g",
+                    ScreenUtils.isTablet(context));
+              }),
+          MainButton(
+            isLoading: isLoading,
               text: "sign_up".tr(),
-              onPress: () {
+              onPress: () async {
+
                 if (_formKey.currentState!.validate()) {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context)=>MainScreen())
+                  await showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) {
+                      return WillPopScope(
+                        onWillPop: () async {
+                          return true;
+                        },
+                        child: Dialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.r),
+                          ),
+                          backgroundColor: Theme.of(context).cardColor,
+                          child: InfoCard(
+                            onPress: (){
+                              _launchUrl(
+                                  "http://checkout.chapa.co/checkout/web/payment/PL-ueFSJ9MF623g",
+                                  ScreenUtils.isTablet(context));
+                            },
+                            buttonText: "Pay Subscription",
+                            closeText: "Pay Later",
+                            infoBody: "",
+                            infoTitle: "Pay your monthly, yearly or weekly subscription",
+                            infoImage: "",
+                          ),
+                        ),
+                      );
+                    },
                   );
+                  setState(() {
+                    isLoading = true;
+                  });
+                  await _registration();
+
                   // pushNewScreen(context, screen: MainScreen());
                 }
               }),
@@ -88,5 +181,15 @@ class _SignUpState extends State<SignUp> {
         ],
       ),
     );
+  }
+  Future<void> _launchUrl(String url, bool isTablet) async {
+    final Uri _url = Uri.parse(url);
+    if (!await launchUrl(_url)) {
+      SnackBar(
+          content: Text(
+            'open_link_failed'.tr(),
+            style: isTablet ? AppTheme.snackBarStyleTablet : AppTheme.snackBarStyle,
+          ));
+    }
   }
 }

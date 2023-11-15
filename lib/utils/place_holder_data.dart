@@ -53,6 +53,33 @@ class PlaceHolderData {
         image:
             "https://ethiochef.com/storage/app/public/category/OB4TdWDy7aFkuDTboMWTHXAaHqmMG5pSl6CQw4go.png"),
   ];
+  static List<Category> nutrition = [
+    Category(
+        id: 1,
+        name: "Protein",
+        image:
+        "https://ethiochef.com/storage/app/public/category/hCiVLS8e3sHKspdE3za6IRiS8hZac5hhgU0Xl7w3.jpeg"),
+    Category(
+        id: 2,
+        name: "Carbohydrate",
+        image:
+        "https://ethiochef.com/storage/app/public/category/VPNVHJqrWu1iD4mmJBxhhrgPsPellVa90ot41O52.jpeg"),
+    Category(
+        id: 3,
+        name: "Fat and Oil",
+        image:
+        "https://ethiochef.com/storage/app/public/category/lr0s3semDLLRLvVLZVCzHy5BEAdIbxSpOrgeB0en.jpeg"),
+    Category(
+        id: 4,
+        name: "Vitamins",
+        image:
+        "https://ethiochef.com/storage/app/public/category/j1ARKQllfTQ8w23XIKrhPW8aRVSC2MNwQD30nime.jpeg"),
+    Category(
+        id: 5,
+        name: "Mineral",
+        image:
+        "https://ethiochef.com/storage/app/public/category/OB4TdWDy7aFkuDTboMWTHXAaHqmMG5pSl6CQw4go.png"),
+  ];
   static List<String> ingredients = [
     "¾ cup milk",
     "2 tablespoons white vinegar ",

@@ -79,7 +79,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     tabs: tabs,
                   ),
                   SizedBox(
-                      height: 630.h,
+                      height: 930.h,
                       child: TabBarView(children: getTabs())),
                 ]),
               )),

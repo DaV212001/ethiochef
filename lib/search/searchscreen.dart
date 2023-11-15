@@ -62,9 +62,9 @@ class _SearchScreenState extends State<SearchScreen> {
                   }
                   if(widget.competitionscreen==true){
                     return ListTile(
-                      leading: CircleAvatar(backgroundImage: NetworkImage(PlaceHolderData.foodCompetitionList[index].image)),
-                      title: Text(PlaceHolderData.foodCompetitionList[index].name),
-                      subtitle: Text(PlaceHolderData.foodCompetitionList[index].description),
+                      leading: CircleAvatar(backgroundImage: NetworkImage(PlaceHolderData.foodCompetitionList[index].image!)),
+                      title: Text(PlaceHolderData.foodCompetitionList[index].name!),
+                      subtitle: Text(PlaceHolderData.foodCompetitionList[index].description!),
                       onTap: () {},
                     );
                   }

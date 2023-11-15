@@ -119,8 +119,11 @@ class RecipeHeader extends StatelessWidget {
             ),
             Text(
               food.description!,
-              style: theme.textTheme.bodyMedium
-                  ?.copyWith(fontWeight: FontWeight.w300),
+              style: TextStyle(
+                fontSize: 20,
+                color: theme.colorScheme.tertiary,
+                  fontWeight: FontWeight.w300
+              ),
             ),
           ],
         ));

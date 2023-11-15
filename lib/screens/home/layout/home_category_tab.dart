@@ -24,7 +24,7 @@ class HomeCategoryTab extends StatelessWidget {
       length: tabs.length,
       child: Column(
         children: [
-          Header(title: "meal".tr()),
+          // Header(title: "meal".tr()),
           SizedBox(
             height: 10.h,
           ),
