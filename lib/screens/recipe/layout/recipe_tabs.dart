@@ -1,6 +1,8 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/food.dart';
+import 'package:ethio_chef/screens/recipe/layout/recipe_ingredients.dart';
+import 'package:ethio_chef/screens/recipe/layout/recipe_steps.dart';
 import 'package:ethio_chef/utils/place_holder_data.dart';
 import 'package:ethio_chef/widgets/header.dart';
 import 'package:ethio_chef/widgets/horizontal_food_carousel.dart';
@@ -21,7 +23,7 @@ class RecipeScreenTab extends StatelessWidget {
         .toList();
     ThemeData theme = Theme.of(context);
     return DefaultTabController(
-      length: tabs.length,
+      length: 2,
       child: Column(
         children: [
           // Header(title: "meal".tr()),
@@ -37,12 +39,29 @@ class RecipeScreenTab extends StatelessWidget {
                 ?.copyWith(color: theme.colorScheme.onTertiary),
             contentPadding: EdgeInsets.symmetric(horizontal: 10),
             radius: 5,
-            tabs: tabs,
+            tabs: [
+              Tab(
+                text: "Ingredients"
+              ),
+              Tab(
+                  text: "Steps"
+              )
+            ]
           ),
           SizedBox(
-            height: 200,
-            child: TabBarView(children: getTabs()),
-          ),
+            height: 350.h,
+            child: TabBarView(
+                physics: BouncingScrollPhysics(),
+                children: [
+              IntrinsicHeight(
+                child: RecipeIngredients(ingredients: PlaceHolderData.food.ingredient!),
+              ),
+              IntrinsicHeight(
+                child: RecipeSteps(steps: PlaceHolderData.food.steps!),
+              ),
+            ]),
+          )
+
         ],
       ),
     );

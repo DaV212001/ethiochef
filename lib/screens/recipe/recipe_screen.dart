@@ -34,21 +34,24 @@ class _RecipeScreenState extends State<RecipeScreen> {
                 isFavorite: widget.food.isSaved,
                 onFavorite: () {},
               ),
-              RecipeHeader(
-                food: widget.food,
-              ),
-              if (widget.food.video != null)
-                YoutubeVideoPlayer(
-                  link: PlaceHolderData.videoLink,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+                child: Column(
+                  children: [
+                    RecipeHeader(
+                      food: widget.food,
+                    ),
+                    if (widget.food.video != null)
+                      YoutubeVideoPlayer(
+                        link: PlaceHolderData.videoLink,
+                      ),
+                    RecipeScreenTab(
+                      dishes: PlaceHolderData.dishes,
+                    ),
+                    RecipeRelated(dishes: PlaceHolderData.dishes),
+                  ],
                 ),
-              RecipeScreenTab(
-                dishes: PlaceHolderData.dishes,
-              ),
-              RecipeIngredients(ingredients: widget.food.ingredient!),
-              RecipeSteps(
-                steps: widget.food.steps!,
-              ),
-              RecipeRelated(dishes: PlaceHolderData.dishes),
+              )
               // ShareButton(food: widget.food)
             ],
           ),

@@ -48,13 +48,13 @@ class _EthioChefState extends State<EthioChef> {
   Future<void> _checkFirstTimeUser() async {
     print("Checking First TimeUser");
     final prefs = await SharedPreferences.getInstance();
-    final hasLaunchedBefore = prefs.getBool('hasLaunchedBefore') ?? false;
+    final hasLaunchedBefore = prefs.getBool('hasLaunchedEthioChefBefore') ?? false;
     if (hasLaunchedBefore) {
       setState(() {
         isFirstTimeUser = false;
       });
     } else {
-      await prefs.setBool('hasLaunchedBefore', true);
+      await prefs.setBool('hasLaunchedEthioChefBefore', true);
     }
   }
   @override
@@ -91,8 +91,8 @@ class _EthioChefState extends State<EthioChef> {
               darkTheme: AppTheme.darkTheme,
               initialRoute: '/',
               routes: {
-                '/': (context) => SplashScreen(),
-                '/main': (context) => const MainScreen()
+                '/': (context) => homeScreen,
+                '/main': (context) => homeScreen
               }),
         );
       }),

@@ -26,23 +26,19 @@ class _AuthScreenState extends State<AuthScreen> {
           backgroundColor: Colors.transparent,
           actions: [LanguageSelectorButton()],
         ),
-        body: Center(
-          child: SingleChildScrollView(
-            child: SafeArea(
-              child: Container(
-                width: width,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(
-                      color: theme.colorScheme.secondaryContainer,
-                      width: 1.0,
-                    )),
-                margin: EdgeInsets.symmetric(horizontal: 15),
-                padding: EdgeInsets.symmetric(horizontal: 15),
-                child: widget.isSignIn ? SignIn() : SignUp(),
-              ),
-            ),
+        body: SingleChildScrollView(
+          child: Container(
+            width: double.infinity,
+            // decoration: BoxDecoration(
+            //     color: Colors.white,
+            //     borderRadius: BorderRadius.circular(10),
+            //     border: Border.all(
+            //       color: theme.colorScheme.secondaryContainer,
+            //       width: 1.0,
+            //     )),
+            // margin: EdgeInsets.symmetric(horizontal: 15),
+            // padding: EdgeInsets.symmetric(horizontal: 15),
+            child: widget.isSignIn ? SignIn() : SignUp(),
           ),
         ));
   }

@@ -24,6 +24,7 @@ class Assets {
   static const String iconsPlus = 'assets/images/icons/plus.svg';
   static const String iconsProfile = 'assets/images/icons/profile.svg';
   static const String iconsTime = 'assets/images/icons/time.svg';
+  static const String imagesAuthBtnBackground = 'assets/images/auth_btn_background.png';
   static const String imagesChapa = 'assets/images/chapa.png';
   static const String imagesEthiopianFlag = 'assets/images/ethiopian_flag.svg';
   static const String imagesLogo = 'assets/images/logo.png';
@@ -31,6 +32,8 @@ class Assets {
   static const String imagesPhoto2 = 'assets/images/photo_2.jpg';
   static const String imagesPhoto3 = 'assets/images/photo_3.jpg';
   static const String imagesPhoto4 = 'assets/images/photo_4.jpg';
+  static const String imagesSignInImage = 'assets/images/sign_in_image.png';
+  static const String imagesSignUpImage = 'assets/images/sign_up_image.png';
   static const String imagesSplashScreenOne = 'assets/images/splash_screen_one.jpg';
   static const String imagesSplashScreenThree = 'assets/images/splash_screen_three.jpg';
   static const String imagesSplashScreenTwo = 'assets/images/splash_screen_two.jpg';

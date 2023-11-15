@@ -21,7 +21,7 @@ class PhoneInputField extends StatelessWidget {
           prefixIcon: Icon(CupertinoIcons.phone),
           labelText: "phone_number".tr(),
           prefixText: '+251 ',
-          border: OutlineInputBorder(),
+          // border: OutlineInputBorder(),
         ),
         validator: (value) {
           if (value == null || value.isEmpty) {

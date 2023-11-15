@@ -13,6 +13,8 @@ import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import '../../../services/user_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/screen_utils.dart';
+import '../../../widgets/auth/auth_btn.dart';
+import '../../../widgets/auth/auth_image_header.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -31,32 +33,37 @@ class _SignInState extends State<SignIn> {
     return Form(
       key: _formKey,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        // mainAxisAlignment: MainAxisAlignment.center,
+        // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(
-              width: 150,
-              height: 150,
-              child: Image.asset(Assets.imagesLogo)),
-          AuthHeader(
-              title: "sign_in_title".tr(),
-              body: "sign_in_body".tr()),
-          PhoneInputField(controller: phoneController),
-          MainButton(
-              isLoading: isLoading,
-              text: "sign_in".tr(),
-              onPress: ()async{
-                if (_formKey.currentState!.validate()) {
-                  setState(() {
-                    isLoading = true;
-                  });
-                  await login(phoneController.text);
-                  // var response =
+
+          Image.asset("assets/images/sign_in_image.png", fit: BoxFit.fill,),
+
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30),
+            child: Column(
+              children: [
+                PhoneInputField(controller: phoneController)
+              ]
+            )
+          ),
+
+          AuthBtn(
+            isLoading: isLoading,
+            text: "sign_in".tr(),
+            onPress: ()async{
+              if (_formKey.currentState!.validate()) {
+                setState(() {
+                  isLoading = true;
+                });
+                await login(phoneController.text);
+                // var response =
 
 
-                  // pushNewScreen(context, screen: MainScreen());
-                }
-              }),
+                // pushNewScreen(context, screen: MainScreen());
+              }
+            },
+          ),
           AuthLink(
               text: "sign_in_auth_link_text".tr(),
               buttonText: "sign_up".tr(),
@@ -74,10 +81,12 @@ class _SignInState extends State<SignIn> {
     var response;
     final bool isTablet = ScreenUtils.isTablet(context);
     SnackBar success = SnackBar(
+        padding: EdgeInsets.symmetric(vertical: 20),
         content: Text(
           'login_successful'.tr()
         ));
     SnackBar failed = SnackBar(
+        padding: EdgeInsets.symmetric(vertical: 20),
         content: Text(
           "login_failed".tr()
         ));

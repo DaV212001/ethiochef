@@ -25,40 +25,65 @@ class RecipeIngredients extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         children: [
-          SizedBox(height: 10,),
-          Row(
-            children: [
-              SvgIcon(
-                image: Assets.iconsIngredients,
-                color: theme.colorScheme.tertiary,
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Text(
-                "ingredients".tr(),
-                style: theme.textTheme.headlineMedium
-                    ?.copyWith(color: theme.colorScheme.tertiary),
-              )
-            ],
-          ),
-          GridView.builder(
-            padding: EdgeInsets.only(top: 10),
+          // SizedBox(height: 10,),
+          // Row(
+          //   children: [
+          //     SvgIcon(
+          //       image: Assets.iconsIngredients,
+          //       color: theme.colorScheme.tertiary,
+          //     ),
+          //     SizedBox(
+          //       width: 10,
+          //     ),
+          //     Text(
+          //       "ingredients".tr(),
+          //       style: theme.textTheme.headlineMedium
+          //           ?.copyWith(color: theme.colorScheme.tertiary),
+          //     )
+          //   ],
+          // ),
+          ListView.builder(
+            padding: EdgeInsets.only(top: 8),
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            physics: BouncingScrollPhysics(),
             itemCount: ingredients.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: crossAxisCount,
-              childAspectRatio: childAspectRatio,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10
-            ),
             itemBuilder: (context, index) {
-              return IngredientCard(
-                ingredient: ingredients[index],
+              return Padding(
+                padding: EdgeInsets.symmetric(vertical: 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+
+                    Text(
+                      ingredients[index],
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                        color: theme.colorScheme.tertiary,
+                      ),
+                    ),
+                    Divider(height: 1,thickness: 1)
+                  ],
+                ),
               );
             },
           ),
+          // GridView.builder(
+          //   padding: EdgeInsets.only(top: 10),
+          //   shrinkWrap: true,
+          //   physics: NeverScrollableScrollPhysics(),
+          //   itemCount: ingredients.length,
+          //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          //     crossAxisCount: crossAxisCount,
+          //     childAspectRatio: childAspectRatio,
+          //     mainAxisSpacing: 10,
+          //     crossAxisSpacing: 10
+          //   ),
+          //   itemBuilder: (context, index) {
+          //     return IngredientCard(
+          //       ingredient: ingredients[index],
+          //     );
+          //   },
+          // ),
         ],
       ),
     );

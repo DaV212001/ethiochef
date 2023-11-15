@@ -10,7 +10,7 @@ class Language {
   static List<Language> languages = [
         Language('አማርኛ', const Locale('am')),
         Language('Afan Oromoo', const Locale('en', 'GB')),
-        Language('ትግርኛ', const Locale('en', 'AU')),
+        // Language('ትግርኛ', const Locale('en', 'AU')),
         Language('English', const Locale('en'))
       ];
 
@@ -28,11 +28,13 @@ class Language {
       return "am";
     } else if (selectedLanguage == languages[1]){
       return "om";
-    } else if (selectedLanguage == languages[2]){
-      return "ti";
     } else {
       return "en";
     }
+
+    // else if (selectedLanguage == languages[2]){
+    //   return "ti";
+    // }
   }
 
   
