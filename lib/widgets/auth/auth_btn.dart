@@ -1,0 +1,51 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+
+import '../../generated/assets.dart';
+
+class AuthBtn extends StatelessWidget {
+  final String text;
+  final Function() onPress;
+  final bool isLoading;
+
+  AuthBtn({super.key, required this.onPress, required this.text, this.isLoading = false});
+
+  @override
+  Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Image.asset(Assets.imagesAuthBtnBackground, fit: BoxFit.fill,),
+        Align(
+          alignment: Alignment.center,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            child: Container(
+              height: 50,
+                width: double.infinity,
+                child: ElevatedButton(
+                    onPressed: isLoading ? null : onPress,
+                    child: Visibility(
+                      visible: isLoading,
+                      child: CircularProgressIndicator(),
+                      replacement: Text(
+                        text,
+                        style: theme.textTheme.headlineMedium
+                            ?.copyWith(color: theme.colorScheme.background)
+                      )
+                    ),style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(40.0)
+                    )
+                  )
+                )
+                )
+            ),
+          ),
+        )
+      ],
+    );
+  }
+}

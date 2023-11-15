@@ -71,7 +71,7 @@ class _MainScreenState extends State<MainScreen> {
       HomeScreen(),
       CategoriesScreen(),
       // SavedRecipesScreen(),
-      NutritionScreen(),
+      // NutritionScreen(),
       CompetitionsScreen(),
       ProfileScreen()
     ];
@@ -121,20 +121,20 @@ class _MainScreenState extends State<MainScreen> {
       //   activeColorPrimary: activeColor,
       //   inactiveColorPrimary: inactiveColor,
       // ),
-      PersistentBottomNavBarItem(
-        icon: SvgIcon(
-          image: Assets.iconsIngredients,
-          color: activeColor,
-        ),
-        inactiveIcon: SvgIcon(
-          size: 30,
-          image: Assets.iconsIngredients,
-          color: inactiveColor,
-        ),
-        title: ("Nutrition".tr()),
-        activeColorPrimary: activeColor,
-        inactiveColorPrimary: inactiveColor,
-      ),
+      // PersistentBottomNavBarItem(
+      //   icon: SvgIcon(
+      //     image: Assets.iconsIngredients,
+      //     color: activeColor,
+      //   ),
+      //   inactiveIcon: SvgIcon(
+      //     size: 30,
+      //     image: Assets.iconsIngredients,
+      //     color: inactiveColor,
+      //   ),
+      //   title: ("Nutrition".tr()),
+      //   activeColorPrimary: activeColor,
+      //   inactiveColorPrimary: inactiveColor,
+      // ),
       // PersistentBottomNavBarItem(
       //     icon: SvgIcon(
       //       image: Assets.iconsIngredients,

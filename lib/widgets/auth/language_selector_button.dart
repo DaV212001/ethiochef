@@ -24,7 +24,7 @@ class _LanguageSelectorButtonState extends State<LanguageSelectorButton> {
             children: [
               SvgIcon(
                 image: Assets.iconsLanguage,
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.surface,
               )
             ],
           ),

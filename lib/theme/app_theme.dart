@@ -68,7 +68,7 @@ class AppTheme {
         labelSmall: TextStyle(
           fontSize: 10,
           color: white,
-        )
+        ),
     ),
     buttonTheme: ButtonThemeData(
       buttonColor: cocoaBrown,

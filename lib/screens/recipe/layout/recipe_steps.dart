@@ -15,29 +15,30 @@ class RecipeSteps extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Column(
         children: [
-          SizedBox(height: 10,),
-          Row(
-            children: [
-              SvgIcon(
-                image: Assets.iconsCooking,
-                color: theme.colorScheme.tertiary,
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Text(
-                "cooking_steps".tr(),
-                style: theme.textTheme.headlineMedium?.copyWith(
-                    color: theme.colorScheme.tertiary
-                ),
-              )
-            ],
-          ),
+          // SizedBox(height: 10,),
+          // Row(
+          //   children: [
+          //     SvgIcon(
+          //       image: Assets.iconsCooking,
+          //       color: theme.colorScheme.tertiary,
+          //     ),
+          //     SizedBox(
+          //       width: 10,
+          //     ),
+          //     Text(
+          //       "cooking_steps".tr(),
+          //       style: theme.textTheme.headlineMedium?.copyWith(
+          //           color: theme.colorScheme.tertiary
+          //       ),
+          //     )
+          //   ],
+          // ),
           ListView.builder(
             padding: EdgeInsets.only(top: 8),
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             itemCount: steps.length,
+            scrollDirection: Axis.vertical,
             itemBuilder: (context, index) {
               return Padding(
                 padding: EdgeInsets.symmetric(vertical: 5),
@@ -65,7 +66,7 @@ class RecipeSteps extends StatelessWidget {
                     Expanded(
                       child: Text(
                         steps[index],
-                        style: theme.textTheme.labelMedium?.copyWith(
+                        style: theme.textTheme.headlineSmall?.copyWith(
                           color: theme.colorScheme.tertiary,
                         ),
                       ),

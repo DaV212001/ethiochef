@@ -1,6 +1,7 @@
 import 'package:ethio_chef/widgets/cached_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RecipeHeaderImage extends StatefulWidget {
   final String image;
@@ -55,6 +56,30 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
                       color: theme.colorScheme.background,
                     ),
                   )),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isFavorite = !isFavorite;
+                        });
+                        widget.onFavorite();
+                      },
+                      child: circularBackground(
+                        child: Icon(
+                          CupertinoIcons.text_bubble,
+                          color: theme.colorScheme.secondary,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 5.h,
+              ),
               GestureDetector(
                 onTap: () {
                   setState(() {

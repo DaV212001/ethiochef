@@ -14,9 +14,9 @@ class AuthLink extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return Wrap(
-      alignment: WrapAlignment.center,
-      crossAxisAlignment: WrapCrossAlignment.center,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           text,
@@ -29,6 +29,7 @@ class AuthLink extends StatelessWidget {
           child: Text(
             buttonText,
             style: TextStyle(
+              fontSize: 19,
               color: theme.colorScheme.primary,
               fontWeight: FontWeight.bold,
             ),

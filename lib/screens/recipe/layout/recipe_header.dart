@@ -33,7 +33,7 @@ class RecipeHeader extends StatelessWidget {
                 height: 35,
                 child: Row(children: [
                   SvgIcon(
-                      size: 35,
+                      size: 25,
                       color: theme.colorScheme.tertiary,
                       image: Assets.iconsPeople),
                   SizedBox(
@@ -50,7 +50,7 @@ class RecipeHeader extends StatelessWidget {
                 height: 35,
                 child: Row(children: [
                   SvgIcon(
-                      size: 35,
+                      size: 25,
                       color: theme.colorScheme.tertiary,
                       image: Assets.iconsCookingTime),
                   SizedBox(
@@ -64,12 +64,12 @@ class RecipeHeader extends StatelessWidget {
                 ])),
           ],
         ),
-        SizedBox(height: 5),
+        SizedBox(height: 10),
         Container(
             height: 35,
             child: Row(children: [
               SvgIcon(
-                  size: 35,
+                  size: 25,
                   color: theme.colorScheme.tertiary,
                   image: Assets.iconsMealTime),
               SizedBox(
@@ -80,12 +80,12 @@ class RecipeHeader extends StatelessWidget {
                 color: theme.colorScheme.primary.withOpacity(0.85),
               )
             ])),
-        SizedBox(height: 5),
+        SizedBox(height: 10),
         Container(
             height: 35,
             child: Row(children: [
               SvgIcon(
-                  size: 35,
+                  size: 25,
                   color: theme.colorScheme.tertiary,
                   image: Assets.iconsCategoryOutlined),
               SizedBox(
@@ -115,7 +115,7 @@ class RecipeHeader extends StatelessWidget {
                   fontWeight: FontWeight.w500),
             ),
             SizedBox(
-              height: 5,
+              height: 10,
             ),
             Text(
               food.description!,

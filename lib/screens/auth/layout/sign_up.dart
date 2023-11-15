@@ -18,6 +18,7 @@ import '../../../theme/app_theme.dart';
 import '../../../utils/screen_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../widgets/auth/auth_btn.dart';
 import '../../../widgets/info_card.dart';
 
 class SignUp extends StatefulWidget {
@@ -38,10 +39,12 @@ class _SignUpState extends State<SignUp> {
   Future<http.Response?> _registration() async {
     final bool isTablet = ScreenUtils.isTablet(context);
     SnackBar success = SnackBar(
+        padding: EdgeInsets.symmetric(vertical: 20),
         content: Text(
           "registration_successful".tr(),
         ));
     SnackBar failed = SnackBar(
+      padding: EdgeInsets.symmetric(vertical: 20),
         content: Text(
           "registration_failed".tr(),
         ));
@@ -58,10 +61,7 @@ class _SignUpState extends State<SignUp> {
           isLoading = false;
         });
         await ScaffoldMessenger.of(context).showSnackBar(success);
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(
-                builder: (BuildContext context)=>MainScreen())
-        );
+        Navigator.pop(context);
       } else {
         setState(() {
           isLoading = false;
@@ -85,99 +85,105 @@ class _SignUpState extends State<SignUp> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
-              width: 150,
-              height: 150,
-              child: Image.asset(Assets.imagesLogo)),
-          AuthHeader(title: "sign_up_title".tr(), body: "sign_up_body".tr()),
-          InputField(
-            controller: firstNameController,
-            icon: CupertinoIcons.person,
-            label: 'first_name'.tr(),
-            hint: "your_first_name".tr(),
-            type: InputField.NameType,
-          ),
-          // SizedBox(height: 100,),
-          InputField(
-            controller: lastNameController,
-            icon: CupertinoIcons.person,
-            label: 'last_name'.tr(),
-            hint: "your_last_name".tr(),
-            type: InputField.NameType,
-          ),
+          // SizedBox(
+          //     width: 150,
+          //     height: 150,
+          //     child: Image.asset(Assets.imagesLogo)),
+          // AuthHeader(title: "sign_up_title".tr(), body: "sign_up_body".tr()),
+          Image.asset("assets/images/sign_up_image.png", fit: BoxFit.fill,),
 
-          // InputField(
-          //   controller: emailController,
-          //   icon: CupertinoIcons.mail,
-          //   label: "email".tr(),
-          //   hint: "your_email".tr(),
-          //   type: InputField.EmailType,
-          // ),
-          // InputField(
-          //   controller: promoCodeController,
-          //   icon: Icons.password_outlined,
-          //   type: InputField.PromoCodeType,
-          //   label: "promo_code".tr(),
-          //   hint: "your_promo_code".tr(),
-          // ),
-          PhoneInputField(controller: phoneController),
-          MainButton(
-              isLoading: isLoading,
-              text: "Pay subscription".tr(),
-              onPress: () async {
-                _launchUrl(
-                    "http://checkout.chapa.co/checkout/web/payment/PL-ueFSJ9MF623g",
-                    ScreenUtils.isTablet(context));
-              }),
-          MainButton(
+
+
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30),
+            child: Column(
+              children: [
+                InputField(
+                  controller: firstNameController,
+                  icon: CupertinoIcons.person,
+                  label: 'first_name'.tr(),
+                  hint: "your_first_name".tr(),
+                  type: InputField.NameType,
+                ),
+                // SizedBox(height: 100,),
+                InputField(
+                  controller: lastNameController,
+                  icon: CupertinoIcons.person,
+                  label: 'last_name'.tr(),
+                  hint: "your_last_name".tr(),
+                  type: InputField.NameType,
+                ),
+                InputField(
+                  controller: emailController,
+                  icon: CupertinoIcons.mail,
+                  label: "email".tr(),
+                  hint: "your_email".tr(),
+                  type: InputField.EmailType,
+                ),
+                InputField(
+                  controller: promoCodeController,
+                  icon: Icons.password_outlined,
+                  type: InputField.PromoCodeType,
+                  label: "promo_code".tr(),
+                  hint: "your_promo_code".tr(),
+                ),
+                PhoneInputField(controller: phoneController),
+
+
+              ],
+            ),
+
+          ),
+          AuthBtn(
             isLoading: isLoading,
-              text: "sign_up".tr(),
-              onPress: () async {
+            text: "sign_up".tr(),
+            onPress: () async {
 
-                if (_formKey.currentState!.validate()) {
-                  await showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (context) {
-                      return WillPopScope(
-                        onWillPop: () async {
-                          return true;
-                        },
-                        child: Dialog(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.r),
-                          ),
-                          backgroundColor: Theme.of(context).cardColor,
-                          child: InfoCard(
-                            onPress: (){
-                              _launchUrl(
-                                  "http://checkout.chapa.co/checkout/web/payment/PL-ueFSJ9MF623g",
-                                  ScreenUtils.isTablet(context));
-                            },
-                            buttonText: "Pay Subscription",
-                            closeText: "Pay Later",
-                            infoBody: "",
-                            infoTitle: "Pay your monthly, yearly or weekly subscription",
-                            infoImage: "",
-                          ),
+              if (_formKey.currentState!.validate()) {
+                await showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (context) {
+                    return WillPopScope(
+                      onWillPop: () async {
+                        return true;
+                      },
+                      child: Dialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.r),
                         ),
-                      );
-                    },
-                  );
-                  setState(() {
-                    isLoading = true;
-                  });
-                  await _registration();
+                        backgroundColor: Theme.of(context).cardColor,
+                        child: InfoCard(
+                          onPress: () async {
+                            await _launchUrl(
+                                "http://checkout.chapa.co/checkout/web/payment/PL-ueFSJ9MF623g",
+                                ScreenUtils.isTablet(context));
+                          },
+                          buttonText: "Pay Subscription",
+                          closeText: "Pay Later",
+                          infoBody: "Pay your monthly, yearly or weekly subscription",
+                          infoTitle: "Subscriptions payment",
+                          infoImage: "assets/images/chapa.png",
+                        ),
+                      ),
+                    );
+                  },
+                );
+                setState(() {
+                  isLoading = true;
+                });
+                await _registration();
 
-                  // pushNewScreen(context, screen: MainScreen());
-                }
-              }),
-          AuthLink(
-              text: "sign_up_auth_link_text".tr(),
-              buttonText: "sign_in".tr(),
-              onPress: () {
-                Navigator.pop(context);
-              })
+                // pushNewScreen(context, screen: MainScreen());
+              }
+            }
+          ),
+          // AuthLink(
+          //     text: "sign_up_auth_link_text".tr(),
+          //     buttonText: "sign_in".tr(),
+          //     onPress: () {
+          //       Navigator.pop(context);
+          //     })
         ],
       ),
     );
