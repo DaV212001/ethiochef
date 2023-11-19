@@ -13,6 +13,8 @@ import 'package:http/http.dart' as http;
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../../../models/user.dart';
+import '../../../models/verification.dart';
+import '../../../services/payment_service.dart';
 import '../../../services/user_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/screen_utils.dart';
@@ -155,10 +157,19 @@ class _SignUpState extends State<SignUp> {
                         backgroundColor: Theme.of(context).cardColor,
                         child: InfoCard(
                           onPress: () async {
-                            // String link = await service.getChapaCheckoutLink(100, emailController.text, firstNameController.text, lastNameController.text, "0"+phoneController.text);
+
+
+                            ///Uncomment this code to fully integrate chapa payment with sign up.
+                            // Verification verification = await PaymentService().getChapaCheckoutLink(100, 'a@gmail.com', firstNameController.text, lastNameController.text, "0"+phoneController.text);
                             // await _launchUrl(
-                            //     link,
+                            //     verification.checkoutUrl!,
                             //     ScreenUtils.isTablet(context));
+                            // bool notpaid = await PaymentService().verifyChapaPayment(verification.txref!);
+                            ///"notpaid" holds the status of the payment, if it is true, the payment is not done yet, if it is false, the payment is done.
+                            // print(notpaid);
+
+
+
                             await _launchUrl(
                                 "http://checkout.chapa.co/checkout/web/payment/PL-ueFSJ9MF623g",
                                 ScreenUtils.isTablet(context));
