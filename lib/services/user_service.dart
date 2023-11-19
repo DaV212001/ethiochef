@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ethio_chef/constants/constants.dart';
 import 'package:ethio_chef/models/subscriptionplans.dart';
+import 'package:ethio_chef/models/verification.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 
@@ -145,46 +146,67 @@ class UserService {
 
   Future<List<SubscriptionPlans>> fetchUserSubscriptions() async {
     List<SubscriptionPlans> subscriptionPlans = [];
+    var access_token = await AuthService.getAuthorizationToken();
+    User user = await fetchLoggedInUser();
+    print(user.id);
     final response = await http
-        .get(Uri.parse("${Constants.url}/user/subscription/user"), headers: {
+        .get(Uri.parse("${Constants.url}/user/subscription/${user.id}"), headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'JWT ${await AuthService.getAuthorizationToken()}',
+      'Authorization': 'JWT ${access_token}',
     });
     print(response.body);
+    print(response.statusCode);
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
-      print("Subscriptions Retrieved ${jsonData['data']}");
-      var subscriptionPlansData = jsonData['data'] as List;
-      subscriptionPlans = subscriptionPlansData
-          .map((subscriptionPlansData) =>
-              SubscriptionPlans.fromJson(subscriptionPlansData))
-          .toList();
+      print("Subscriptions Retrieved ${jsonData['data']['subscription']}");
+      var subscriptionPlansData = jsonData['data']['subscription'];
+      print('Breakpoint 1');
+      if (subscriptionPlansData is List) {
+        subscriptionPlans = subscriptionPlansData
+            .map((subscriptionPlansData) =>
+            SubscriptionPlans.fromJson(subscriptionPlansData))
+            .toList();
+      } else if (subscriptionPlansData is Map) {
+        print('map');
+        subscriptionPlans = [SubscriptionPlans.fromJson(subscriptionPlansData)];
+        print('map2');
+        print(subscriptionPlans.length);
+      }
+      print('Breakpoint 2');
+      print('CHECKING POPULATION ${subscriptionPlans.length}');
       return subscriptionPlans;
     } else {
       throw Exception(response.statusCode.toString());
     }
   }
 
-  Future<String> getChapaCheckoutLink(int amount, String email,
-      String first_name, String last_name, String phone_number) async {
-    final response =
-        await http.post(Uri.parse("${Constants.url}/payment/chapa"),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: jsonEncode({
-              "amount": amount,
-              "email": email,
-              "first_name": first_name,
-              "last_name": last_name,
-              "phone_number": phone_number
-            }));
+  Future<bool> deleteUserSubscription () async {
+    var access_token = await AuthService.getAuthorizationToken();
+    User user = await fetchLoggedInUser();
+    print(user.id);
+    final response = await http
+        .get(Uri.parse("${Constants.url}/user/subscription/${user.id}"), headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'JWT ${access_token}',
+    });
+    print(response.statusCode);
+    var jsonData1;
     if (response.statusCode == 200) {
-      return jsonDecode(
-          jsonDecode(response.body)['data']['data'])['checkout_url'];
-    } else {
-      throw Exception(
-          'statuscode: ${response.statusCode.toString()}, message: ${response.body}');
-    }
+      jsonData1 = json.decode(response.body);}
+    print(jsonData1['data']["id"]);
+    final Uri url = Uri.parse("${Constants.url}/user/subscription/delete/${jsonData1['data']["id"]}");
+
+    final response1 = await http.delete(
+      url,
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': 'JWT ${access_token}',
+      },
+    );
+    print(response1.body);
+    final jsonData = json.decode(response1.body);
+    return jsonData['message'] == 'User subscription deleted successfully';
   }
+
+
 }

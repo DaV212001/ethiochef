@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:ethio_chef/models/subscriptionplans.dart' as h;
 import 'package:ethio_chef/services/user_service.dart' as u;
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../models/user.dart';
@@ -40,6 +41,7 @@ List<h.SubscriptionPlans> userSubscriptionPlans = [];
 
 int user_id = 2;
 late String duration;
+late String durationu;
 int currentYear = DateTime.now().year;
 int currentMonth = DateTime.now().month;
 Future<void>? _subscriptionPlansFuture;
@@ -87,7 +89,7 @@ Widget build(BuildContext context) {
                     height: 20.h,
                   ),
                   Text(
-                    'Subscribe to a plan',
+                    userSubscriptionPlans.isEmpty ? 'Subscribe to a plan' :'Subscribe to a new plan',
                     style: Theme
                         .of(context)
                         .textTheme
@@ -114,6 +116,7 @@ Widget build(BuildContext context) {
                             :
                         //subscription duration is null
                         '0';
+
                         return Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20.w),
                           child: Card(
@@ -148,16 +151,25 @@ Widget build(BuildContext context) {
                                     text: 'Subscribe',
                                     onPress: () async {
                                       print('Subscribe');
-                                      var response = await u
+                                      var response = userSubscriptionPlans.isEmpty?
+                                      await u
                                           .UserService()
                                           .createUserSubscription(
-                                          subscriptionPlans[index].id!, user_id);
+                                          subscriptionPlans[index].id!, user_id)
+                                      :
+                                      await u.UserService().updateUserSubscription(subscriptionPlans[index].id!, user_id)
+                                      ;
+                                      print('Sub: ${subscriptionPlans[index].id}, user: $user_id');
                                       print(response.statusCode);
                                       if (response.statusCode == 200) {
+                                        setState(() {
+                                          userSubscriptionPlans.isEmpty?userSubscriptionPlans.add(
+                                              subscriptionPlans[index]): userSubscriptionPlans.forEach((element) {element = subscriptionPlans[index];});
+                                        });
                                         ScaffoldMessenger.of(context).showSnackBar(
                                             SnackBar(
                                                 content: Text(
-                                                  "Subscribed successfully",
+                                                  userSubscriptionPlans.isEmpty? "Subscribed successfully": "Updated successfully",
                                                 )
                                             )
                                         );
@@ -184,7 +196,7 @@ Widget build(BuildContext context) {
                     height: 20.h,
                   ),
                   if(userSubscriptionPlans.isNotEmpty)Text(
-                    'Update your subscriptions',
+                    'Your subscription',
                       style: Theme
                           .of(context)
                           .textTheme
@@ -197,7 +209,22 @@ Widget build(BuildContext context) {
                     shrinkWrap: true,
                       itemCount: userSubscriptionPlans.length,
                       itemBuilder: (context, index) {
-
+                        durationu =
+                        userSubscriptionPlans.isNotEmpty?
+                        userSubscriptionPlans[index].duration != null ?
+                        //subscription duration is not null
+                        userSubscriptionPlans[index].plan == 'Yearly' ?
+                        //subscription duration is not null and subscription is yearly
+                        '${currentYear -
+                            userSubscriptionPlans[index].duration!.year} years'
+                            :
+                        //subscription duration is not null and subscription is monthly
+                        '${currentMonth -
+                            userSubscriptionPlans[index].duration!.month} months'
+                            :
+                        //subscription duration is null
+                        '0'
+                            : '0';
                         return Padding(
                           padding: EdgeInsets.symmetric(horizontal: 20.w),
                           child: Card(
@@ -215,19 +242,30 @@ Widget build(BuildContext context) {
                                   Text(
                                     'Price: ${userSubscriptionPlans[index].price}'
                                   ),
+                                  
+                                  if(durationu != '0')Text('Duration: ${durationu}'),
                                   SizedBox(
                                     height: 20.h,
                                   ),
                                   MainButton(
-                                    text: 'Update',
+                                    text: 'Delete',
                                     onPress: () async{
-                                      print('Update');
+                                      print('Delete');
                                       u.UserService service = u.UserService();
-                                      User user = await service.fetchLoggedInUser();
-                                      String link = await service.getChapaCheckoutLink(userSubscriptionPlans[index].price!, user.email!, user.firstName, user.lastName, user.phone!);
-                                      await _launchUrl(
-                                          link,
-                                          ScreenUtils.isTablet(context));
+                                      bool deleted = await service.deleteUserSubscription();
+                                      if(deleted){
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(
+                                                content: Text(
+                                                  'Deleted successfully',
+                                                )
+                                            )
+                                        );
+                                        setState(() {
+                                          userSubscriptionPlans.removeAt(index);
+                                        });
+
+                                      }
                                     }
                                   )
                                 ]
