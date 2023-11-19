@@ -1,10 +1,11 @@
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/profile/layout/recipe_status/my_recipe.dart';
+import 'package:ethio_chef/services/user_service.dart';
+import 'package:ethio_chef/subscription/subscriptionscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
-
 import '../../../theme/app_theme.dart';
 import '../../../theme/model_theme.dart';
 import '../../../widgets/auth/language_selector_button.dart';
@@ -27,18 +28,19 @@ class _RouteListState extends State<RouteList> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ModelTheme>(context);
     ThemeData theme = Theme.of(context);
+    var response;
+    bool isLoading = false;
     final List<Map<String, dynamic>> general = [
       {
-        "title": "extend_subscription".tr(),
+        "title": "Subscription plans",
         "leadingIcon": Icons.subscriptions_outlined,
-        "onTap": () {
-          print("extend_subscription");
-          // pushNewScreen(
-          //   context,
-          //   screen: UpdateProfileScreen(),
-          //   withNavBar: false,
-          //   pageTransitionAnimation: PageTransitionAnimation.cupertino,
-          // );
+        "onTap": () async {
+          pushNewScreen(
+            context,
+            screen: SubscriptionScreen(),
+            withNavBar: false,
+            pageTransitionAnimation: PageTransitionAnimation.cupertino,
+          );
         },
         "trailing": Icon(Icons.chevron_right_outlined,
             color: theme.colorScheme.primary),

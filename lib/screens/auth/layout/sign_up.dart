@@ -155,6 +155,10 @@ class _SignUpState extends State<SignUp> {
                         backgroundColor: Theme.of(context).cardColor,
                         child: InfoCard(
                           onPress: () async {
+                            // String link = await service.getChapaCheckoutLink(100, emailController.text, firstNameController.text, lastNameController.text, "0"+phoneController.text);
+                            // await _launchUrl(
+                            //     link,
+                            //     ScreenUtils.isTablet(context));
                             await _launchUrl(
                                 "http://checkout.chapa.co/checkout/web/payment/PL-ueFSJ9MF623g",
                                 ScreenUtils.isTablet(context));

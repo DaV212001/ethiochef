@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:ethio_chef/constants/constants.dart';
+import 'package:ethio_chef/models/subscriptionplans.dart';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../models/user.dart';
 import 'authorization_service.dart';
@@ -29,54 +31,37 @@ class UserService {
 
   Future<User> fetchLoggedInUser() async {
     final access_token = await AuthService.getAuthorizationToken();
-    final response = await http.get(
-      Uri.parse("${Constants.url}/account"),
-      headers: {
-        "Content-type": "application/json",
-        'Authorization': 'Bearer $access_token',
-      },
-    );
 
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      print("User Date Retrieved ${jsonData['data']}");
-      final user = User.fromJson(jsonData['data']);
-      return user;
-    } else {
-      throw Exception(response.statusCode.toString());
-    }
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(access_token!);
+    print(decodedToken);
+    print("User Data Retrieved ${decodedToken['user']}");
+    final user = User.fromJson(decodedToken['user']);
+    return user;
   }
 
   Future<http.Response> login(String phone) async {
     print("Logging in");
     print(phone);
-    String phone_number = "0"+phone;
+    String phone_number = "0" + phone;
     print("phone_number $phone_number");
-    var body = json.encode({
-      "phone_number": phone_number
-    });
+    var body = json.encode({"phone_number": phone_number});
     print(body);
     final response = await http.post(
         Uri.parse("https://apiv2.ethiochef.com/user/login"),
-      body: {
-        "phone_number": phone_number
-      }
-    );
+        body: {"phone_number": phone_number});
     print(response);
     print(response.body);
     print(response.statusCode);
-    // var access_token = jsonDecode(response.body)['token'];
-    // await AuthService.setAuthorizationToken(access_token);
-    // print("Login token = ${access_token}");
+    var access_token = jsonDecode(response.body)['data']['session_token'];
+    print("Login token = ${access_token}");
+    await AuthService.setAuthorizationToken(access_token);
+    print("Login token = ${access_token}");
     return response;
   }
 
-
-
   Future<http.Response> updateUserAccount(
       String first_name, String last_name) async {
-    final Uri url =
-        Uri.parse("${Constants.url}/change_password");
+    final Uri url = Uri.parse("${Constants.url}/change_password");
 
     final access_token = await AuthService.getAuthorizationToken();
 
@@ -98,5 +83,108 @@ class UserService {
     return response;
   }
 
+  Future<http.Response> updateUserSubscription(
+      int subscription_id, int user_id) async {
+    final Uri url = Uri.parse("${Constants.url}/user/subscription/update/5");
 
+    final access_token = await AuthService.getAuthorizationToken();
+    print(access_token);
+    final body = {
+      "subscription_id": subscription_id,
+      "user_id": user_id,
+      "status": "authenticated"
+    };
+
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'JWT $access_token'
+      },
+      body: jsonEncode(body),
+    );
+
+    return response;
+  }
+
+  Future<List<SubscriptionPlans>> fetchSubscriptionPlans() async {
+    List<SubscriptionPlans> subscriptionPlans = [];
+    final response = await http.get(
+      Uri.parse("${Constants.url}/pay/plans"),
+    );
+    print(response.body);
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      print("Subscriptions Retrieved ${jsonData['data']}");
+      var subscriptionPlansData = jsonData['data'] as List;
+      subscriptionPlans = subscriptionPlansData
+          .map((subscriptionPlansData) =>
+              SubscriptionPlans.fromJson(subscriptionPlansData))
+          .toList();
+      return subscriptionPlans;
+    } else {
+      throw Exception(response.statusCode.toString());
+    }
+  }
+
+  Future<http.Response> createUserSubscription(
+      int subscription_id, int user_id) async {
+    final Uri url = Uri.parse("${Constants.url}/user/subscription/create");
+    print(subscription_id);
+    print(user_id);
+    final body = {"subscription_id": subscription_id, "user_id": user_id};
+    print(jsonEncode(body));
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(body),
+    );
+    print(response.body);
+    return response;
+  }
+
+  Future<List<SubscriptionPlans>> fetchUserSubscriptions() async {
+    List<SubscriptionPlans> subscriptionPlans = [];
+    final response = await http
+        .get(Uri.parse("${Constants.url}/user/subscription/user"), headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'JWT ${await AuthService.getAuthorizationToken()}',
+    });
+    print(response.body);
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      print("Subscriptions Retrieved ${jsonData['data']}");
+      var subscriptionPlansData = jsonData['data'] as List;
+      subscriptionPlans = subscriptionPlansData
+          .map((subscriptionPlansData) =>
+              SubscriptionPlans.fromJson(subscriptionPlansData))
+          .toList();
+      return subscriptionPlans;
+    } else {
+      throw Exception(response.statusCode.toString());
+    }
+  }
+
+  Future<String> getChapaCheckoutLink(int amount, String email,
+      String first_name, String last_name, String phone_number) async {
+    final response =
+        await http.post(Uri.parse("${Constants.url}/payment/chapa"),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: jsonEncode({
+              "amount": amount,
+              "email": email,
+              "first_name": first_name,
+              "last_name": last_name,
+              "phone_number": phone_number
+            }));
+    if (response.statusCode == 200) {
+      return jsonDecode(
+          jsonDecode(response.body)['data']['data'])['checkout_url'];
+    } else {
+      throw Exception(
+          'statuscode: ${response.statusCode.toString()}, message: ${response.body}');
+    }
+  }
 }

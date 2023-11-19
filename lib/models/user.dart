@@ -23,10 +23,10 @@ class User{
         this.updatedAt});
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json['id'] as int?,
-    firstName: json['firstName'] as String,
-    lastName: json['lastName'] as String,
+    firstName: json['first_name'] as String,
+    lastName: json['last_name'] as String,
     email: json['email'] as String?,
-    phone: json['phone'] as String?,
+    phone: json['phone_number'] as String?,
     profile_picture: json['profilePicture'] as String?,
     emailVerifiedAt: json['emailVerifiedAt'] as String?,
     createdAt: json['createdAt'] as String?,
