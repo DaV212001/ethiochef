@@ -115,20 +115,20 @@ class _SignUpState extends State<SignUp> {
                   hint: "your_last_name".tr(),
                   type: InputField.NameType,
                 ),
-                InputField(
-                  controller: emailController,
-                  icon: CupertinoIcons.mail,
-                  label: "email".tr(),
-                  hint: "your_email".tr(),
-                  type: InputField.EmailType,
-                ),
-                InputField(
-                  controller: promoCodeController,
-                  icon: Icons.password_outlined,
-                  type: InputField.PromoCodeType,
-                  label: "promo_code".tr(),
-                  hint: "your_promo_code".tr(),
-                ),
+                // InputField(
+                //   controller: emailController,
+                //   icon: CupertinoIcons.mail,
+                //   label: "email".tr(),
+                //   hint: "your_email".tr(),
+                //   type: InputField.EmailType,
+                // ),
+                // InputField(
+                //   controller: promoCodeController,
+                //   icon: Icons.password_outlined,
+                //   type: InputField.PromoCodeType,
+                //   label: "promo_code".tr(),
+                //   hint: "your_promo_code".tr(),
+                // ),
                 PhoneInputField(controller: phoneController),
 
 
@@ -158,15 +158,14 @@ class _SignUpState extends State<SignUp> {
                         child: InfoCard(
                           onPress: () async {
 
-
-                            ///Uncomment this code to fully integrate chapa payment with sign up.
-                            // Verification verification = await PaymentService().getChapaCheckoutLink(100, 'a@gmail.com', firstNameController.text, lastNameController.text, "0"+phoneController.text);
-                            // await _launchUrl(
-                            //     verification.checkoutUrl!,
-                            //     ScreenUtils.isTablet(context));
-                            // bool notpaid = await PaymentService().verifyChapaPayment(verification.txref!);
-                            ///"notpaid" holds the status of the payment, if it is true, the payment is not done yet, if it is false, the payment is done.
-                            // print(notpaid);
+                            // /Uncomment this code to fully integrate chapa payment with sign up.
+                            Verification verification = await PaymentService().getChapaCheckoutLink(100, 'a@gmail.com', firstNameController.text, lastNameController.text, "0"+phoneController.text);
+                            await _launchUrl(
+                                verification.checkoutUrl!,
+                                ScreenUtils.isTablet(context));
+                            bool notpaid = await PaymentService().verifyChapaPayment(verification.txref!);
+                            // /"notpaid" holds the status of the payment, if it is true, the payment is not done yet, if it is false, the payment is done.
+                            print(notpaid);
 
 
 
