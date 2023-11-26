@@ -4,7 +4,7 @@ import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 
 class RecipeSteps extends StatelessWidget {
-  final List<String> steps;
+  final Map<String, dynamic> steps;
 
   const RecipeSteps({Key? key, required this.steps}) : super(key: key);
 
@@ -14,69 +14,22 @@ class RecipeSteps extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Column(
-        children: [
-          // SizedBox(height: 10,),
-          // Row(
-          //   children: [
-          //     SvgIcon(
-          //       image: Assets.iconsCooking,
-          //       color: theme.colorScheme.tertiary,
-          //     ),
-          //     SizedBox(
-          //       width: 10,
-          //     ),
-          //     Text(
-          //       "cooking_steps".tr(),
-          //       style: theme.textTheme.headlineMedium?.copyWith(
-          //           color: theme.colorScheme.tertiary
-          //       ),
-          //     )
-          //   ],
-          // ),
-          ListView.builder(
-            padding: EdgeInsets.only(top: 8),
-            shrinkWrap: true,
-            physics: BouncingScrollPhysics(),
-            itemCount: steps.length,
-            scrollDirection: Axis.vertical,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.symmetric(vertical: 5),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: 35,
-                      width: 35, // Set the width as per your requirement
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.primary.withOpacity(0.9),
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                      ),
-                      child: Center(
-                        child: Text(
-                          (index + 1).toString(),
-                          textAlign: TextAlign.center,
-                          style: theme.textTheme.headlineMedium?.copyWith(
-                            color: theme.colorScheme.onPrimaryContainer,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10), // Add spacing between leading and title
-                    Expanded(
-                      child: Text(
-                        steps[index],
-                        style: theme.textTheme.headlineSmall?.copyWith(
-                          color: theme.colorScheme.tertiary,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ],
+        children: steps!.entries.map((ingredient) {
+          return Card(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(ingredient.key),
+                  const SizedBox(height: 8.0),
+                  Text(ingredient.value),
+                ],
+              ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }

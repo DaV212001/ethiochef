@@ -7,10 +7,20 @@ import 'package:ethio_chef/widgets/horizontal_food_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class HomeCategoryTab extends StatelessWidget {
-  final List<Food> dishes;
+import '../../../widgets/horizontal_food_carousel2.dart';
 
-  const HomeCategoryTab({super.key, required this.dishes});
+class HomeCategoryTab extends StatelessWidget {
+  final List<Food> breakfast;
+  final List<Food> lunch;
+  final List<Food> superMeal;
+  final List<Food> dinner;
+
+  const HomeCategoryTab({
+    super.key,
+    required this.breakfast,
+    required this.lunch,
+    required this.superMeal,
+    required this.dinner});
 
   @override
   Widget build(BuildContext context) {
@@ -41,20 +51,31 @@ class HomeCategoryTab extends StatelessWidget {
           ),
           SizedBox(
             height: 200,
-            child: TabBarView(children: getTabs()),
+            child: TabBarView(children: [
+              for(int i=1;i<5;i++)
+                HorizontalFoodCarousel2(
+                  type: i,
+                  breakfast: breakfast,
+                  dinner: dinner,
+                  lunch: lunch,
+                  superMeal: superMeal,
+                )
+            ]),
           ),
         ],
       ),
     );
   }
 
-  List<Widget> getTabs() {
-    return List.filled(
-      4,
-      HorizontalFoodCarousel(
-        dishes: dishes,
-        type: 2,
-      ),
-    );
-  }
+  // List<Widget> getTabs() {
+  //   return List.filled(
+  //     4,
+  //     HorizontalFoodCarousel2(
+  //       breakfast: breakfast,
+  //       dinner: dinner,
+  //       lunch: lunch,
+  //       superMeal: superMeal,
+  //     ),
+  //   );
+  // }
 }

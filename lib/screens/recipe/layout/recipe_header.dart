@@ -75,10 +75,15 @@ class RecipeHeader extends StatelessWidget {
               SizedBox(
                 width: 5,
               ),
-              CategoryLabelCarousel(
-                categories: food.menuTimes,
-                color: theme.colorScheme.primary.withOpacity(0.85),
-              )
+              SmallLabelButton(
+                  text:
+                  food.mealTime!.toString(),
+                  color: theme.colorScheme.primary.withOpacity(0.9),
+                  onTap: () {})
+              // CategoryLabelCarousel(
+              //   categories: food.menuTimes,
+              //   color: theme.colorScheme.primary.withOpacity(0.85),
+              // )
             ])),
         SizedBox(height: 10),
         Container(
@@ -91,10 +96,10 @@ class RecipeHeader extends StatelessWidget {
               SizedBox(
                 width: 5,
               ),
-              CategoryLabelCarousel(
-                categories: food.categories,
-                color: theme.colorScheme.primary.withOpacity(0.9),
-              )
+              // CategoryLabelCarousel(
+              //   categories: food.categories,
+              //   color: theme.colorScheme.primary.withOpacity(0.9),
+              // )
             ])),
         food.description != null ? description(context) : SizedBox.shrink(),
       ]),

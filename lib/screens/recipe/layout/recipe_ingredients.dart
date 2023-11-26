@@ -5,8 +5,10 @@ import 'package:ethio_chef/widgets/recipe/Ingredient_card.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 
+import '../../../models/food.dart';
+
 class RecipeIngredients extends StatelessWidget {
-  final List<String> ingredients;
+  final Map<String, dynamic> ingredients;
 
   const RecipeIngredients({super.key, required this.ingredients});
 
@@ -24,67 +26,22 @@ class RecipeIngredients extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10),
       child: Column(
-        children: [
-          // SizedBox(height: 10,),
-          // Row(
-          //   children: [
-          //     SvgIcon(
-          //       image: Assets.iconsIngredients,
-          //       color: theme.colorScheme.tertiary,
-          //     ),
-          //     SizedBox(
-          //       width: 10,
-          //     ),
-          //     Text(
-          //       "ingredients".tr(),
-          //       style: theme.textTheme.headlineMedium
-          //           ?.copyWith(color: theme.colorScheme.tertiary),
-          //     )
-          //   ],
-          // ),
-          ListView.builder(
-            padding: EdgeInsets.only(top: 8),
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            physics: BouncingScrollPhysics(),
-            itemCount: ingredients.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.symmetric(vertical: 5),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-
-                    Text(
-                      ingredients[index],
-                      style: theme.textTheme.headlineSmall?.copyWith(
-                        color: theme.colorScheme.tertiary,
-                      ),
-                    ),
-                    Divider(height: 1,thickness: 1)
-                  ],
-                ),
-              );
-            },
-          ),
-          // GridView.builder(
-          //   padding: EdgeInsets.only(top: 10),
-          //   shrinkWrap: true,
-          //   physics: NeverScrollableScrollPhysics(),
-          //   itemCount: ingredients.length,
-          //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          //     crossAxisCount: crossAxisCount,
-          //     childAspectRatio: childAspectRatio,
-          //     mainAxisSpacing: 10,
-          //     crossAxisSpacing: 10
-          //   ),
-          //   itemBuilder: (context, index) {
-          //     return IngredientCard(
-          //       ingredient: ingredients[index],
-          //     );
-          //   },
-          // ),
-        ],
+        children: ingredients!.entries.map((ingredient) {
+          return Card(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(ingredient.key),
+                  const SizedBox(height: 8.0),
+                  Text(ingredient.value),
+                ],
+              ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }

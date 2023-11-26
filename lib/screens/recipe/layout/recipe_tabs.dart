@@ -10,9 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RecipeScreenTab extends StatelessWidget {
-  final List<Food> dishes;
+  final Food food;
 
-  const RecipeScreenTab({super.key, required this.dishes});
+  const RecipeScreenTab({super.key, required this.food});
 
   @override
   Widget build(BuildContext context) {
@@ -54,10 +54,10 @@ class RecipeScreenTab extends StatelessWidget {
                 physics: BouncingScrollPhysics(),
                 children: [
               IntrinsicHeight(
-                child: RecipeIngredients(ingredients: PlaceHolderData.food.ingredient!),
+                child: RecipeIngredients(ingredients: food.ingredients!),
               ),
               IntrinsicHeight(
-                child: RecipeSteps(steps: PlaceHolderData.food.steps!),
+                child: RecipeSteps(steps: food.stepsList!),
               ),
             ]),
           )
@@ -67,13 +67,13 @@ class RecipeScreenTab extends StatelessWidget {
     );
   }
 
-  List<Widget> getTabs() {
-    return List.filled(
-      4,
-      HorizontalFoodCarousel(
-        dishes: dishes,
-        type: 2,
-      ),
-    );
-  }
+  // List<Widget> getTabs() {
+  //   return List.filled(
+  //     4,
+  //     HorizontalFoodCarousel(
+  //       dishes: dishes,
+  //       type: 2,
+  //     ),
+  //   );
+  // }
 }

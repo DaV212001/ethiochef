@@ -17,11 +17,6 @@ class UserService {
   // }
   // "first_name":"Abebe","last_name":"Lema","email":null,"phone_number":"0911223344",
   Future<http.Response> registerUser(User user) async {
-    print(user);
-    print(user.firstName);
-    print(user.lastName);
-    print(user.phone);
-    print(json.encode(user.toJson()));
 
     var response = await http.post(Uri.parse("${Constants.url}/user/signup"),
         headers: {"Content-type": "application/json"},

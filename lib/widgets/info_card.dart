@@ -14,13 +14,15 @@ class InfoCard extends StatelessWidget {
   final String infoTitle;
   final String infoBody;
   final String? infoImage;
+  final bool closeBtn;
   const InfoCard({super.key,
     required this.onPress,
     required this.buttonText,
     required this.closeText,
     required this.infoTitle,
     required this.infoBody,
-    this.infoImage
+    this.infoImage,
+    this.closeBtn = false
   });
 
   @override
@@ -65,6 +67,7 @@ class InfoCard extends StatelessWidget {
                 onPress: onPress,
                   text: buttonText),
               SizedBox(height: 10.h),
+              if(closeBtn)
               MainButton(
                   onPress: () {
                     Navigator.of(context).pop();

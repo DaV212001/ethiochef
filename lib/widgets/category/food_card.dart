@@ -69,10 +69,10 @@ class _FoodCardState extends State<FoodCard> {
   }
 
   Widget info(ThemeData theme) {
-    List<String> menuTimes = [];
-    widget.food.menuTimes.forEach((element) {
-      menuTimes.add(element.name);
-    });
+    // List<String> menuTimes = [];
+    // widget.food.menuTimes.forEach((element) {
+    //   menuTimes.add(element.name);
+    // });
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -130,7 +130,7 @@ class _FoodCardState extends State<FoodCard> {
               SizedBox(
                 width: 150.w,
                 child: Text(
-                  menuTimes.join(", "),
+                  widget.food.mealTime.toString(),
                   style: theme.textTheme.labelMedium?.copyWith(
                     color: theme.colorScheme.tertiary,
                   ),

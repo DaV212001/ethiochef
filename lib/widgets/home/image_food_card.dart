@@ -63,7 +63,15 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
                     SizedBox(
                       height: 5.h,
                     ),
-                    CategoryLabelCarousel(categories: widget.food.menuTimes)
+                    Text(
+                      widget.food.mealTime.toString(),
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                          color: theme.colorScheme.onTertiary,
+                          fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.start,
+                    ),
+
+                    // CategoryLabelCarousel(categories: widget.food.menuTimes)
                   ],
                 ),
               ),

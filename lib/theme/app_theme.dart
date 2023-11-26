@@ -117,4 +117,7 @@ class AppTheme {
 
   static TextStyle snackBarStyleTablet = TextStyle(fontSize: 13.sp);
   static TextStyle snackBarStyle = TextStyle(fontSize: 15.sp);
+
+  static TextStyle inputFieldStyleTablet = TextStyle(fontSize: 10.sp);
+  static TextStyle inputFieldErrorStyleTablet = TextStyle(fontSize: 10.sp);
 }
