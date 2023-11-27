@@ -1,10 +1,5 @@
-// import 'package:ethio_chef/models/category.dart';
-import 'dart:convert';
-
-import 'package:ethio_chef/models/category.dart';
-
+import '../constants/constants.dart';
 import 'language.dart';
-
 
 class Food {
   final int? id;
@@ -20,8 +15,8 @@ class Food {
   final String? posterImage;
   final String thumbnail;
   final String? video;
-  bool? isSaved;
-  final List<dynamic>? likes;
+  bool? isLiked;
+  final List<Likes>? likes;
   final List<dynamic>? comments;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -50,9 +45,16 @@ class Food {
     this.nextPage,
     this.prevPage,
     this.page,
-    this.isSaved = false
+    this.isLiked
   });
   factory Food.fromSingleFoodJson(Map<String, dynamic> json) {
+    String clearPath(String path) {
+      final parts = path.split('/public_html');
+      return parts.last;
+    }
+    String image = json['image'];
+    String i = clearPath(image);
+    print("============================== $i");
     String meal = '';
     if(json['meal_time']['breakfast']==true){
       meal = "Breakfast";
@@ -63,10 +65,8 @@ class Food {
     }else{
       meal = "dinner";
     }
-    print("====================================================================================================");
-    print(json['steps']);
-    print("====================================================================================================");
-
+    String thumbnail = Constants.ImageAPI + i;
+    print("thumbnail $thumbnail");
     return Food(
       id: json['id'],
       subcategoriesId: json['subcategories_id'],
@@ -78,8 +78,8 @@ class Food {
       servings: json['serving'],
       stepsList: json['steps'][Language.getLocaleCode()]?? json['name']["en"],
       ingredients: json['ingredients'][Language.getLocaleCode()] ?? json['name']["en"],
-      thumbnail: json['image'],
-      likes: json['likes'],
+      thumbnail: thumbnail,
+      likes: List<Likes>.from(json['likes']?.map((dynamic like) => Likes.fromFood(like)) ?? []),
       comments: json['comments'],
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
@@ -89,6 +89,15 @@ class Food {
     );
   }
   factory Food.fromJson(Map<String, dynamic> json) {
+    String clearPath(String path) {
+      final parts = path.split('/public_html');
+      return parts.last;
+    }
+    String image = json['image'];
+    String i = clearPath(image);
+    String thumbnail = Constants.ImageAPI + i;
+    print("thumbnail $thumbnail");
+    print("============================== $i");
     String meal = '';
     if(json['meal_time']['breakfast']==true){
       meal = "Breakfast";
@@ -99,12 +108,6 @@ class Food {
     }else{
       meal = "dinner";
     }
-    print(json);
-    final nullstep = {
-      "one":"add"
-    };
-    print(json['image']);
-    print(json['meal_time']);
     return Food(
       id: json['id'],
       subcategoriesId: json['subcategories_id'],
@@ -114,8 +117,8 @@ class Food {
       mealTime: meal,
       preparationTime: json['cooking_time'],
       servings: json['serving'],
-      thumbnail: json['image'],
-      likes: json['likes'],
+      thumbnail: thumbnail,
+      likes: List<Likes>.from(json['likes']?.map((dynamic like) => Likes.fromFood(like)) ?? []),
       comments: json['comments'],
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
@@ -125,6 +128,15 @@ class Food {
     );
   }
   factory Food.fromMealJson(Map<String, dynamic> json, int type) {
+    String clearPath(String path) {
+      final parts = path.split('/public_html');
+      return parts.last;
+    }
+    String image = json['image'];
+    String i = clearPath(image);
+    String thumbnail = Constants.ImageAPI + i;
+    print("thumbnail $thumbnail");
+    print("============================== $i");
     String meal = '';
     if(type==1){
       meal = "Breakfast";
@@ -144,8 +156,8 @@ class Food {
       mealTime: meal,
       preparationTime: json['cooking_time'],
       servings: json['serving'],
-      thumbnail: json['image'],
-      likes: json['likes'],
+      thumbnail: thumbnail,
+      likes: List<Likes>.from(json['likes']?.map((dynamic like) => Likes.fromFood(like)) ?? []),
       comments: json['comments'],
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
@@ -155,35 +167,72 @@ class Food {
     );
   }
   factory Food.fromCommentJson(Map<String, dynamic> json) {
+    print("fromCommentJson $json");
+    String clearPath(String path) {
+      final parts = path.split('/public_html');
+      return parts.last;
+    }
+    String image = json['image'];
+    String i = clearPath(image);
+    String thumbnail = Constants.ImageAPI + i;
+    print("thumbnail $thumbnail");
+    print("============================== $i");
     String meal = '';
-    if(json['meal_time']['breakfast']==true){
+    if(json['breakfast']==true){
       meal = "Breakfast";
-    }else if(json['meal_time']['lunch']==true){
+    }else if(json['lunch']==true){
       meal = "Lunch";
-    }else if(json['meal_time']['super']==true){
+    }else if(json['super']==true){
       meal = "Super";
     }else{
       meal = "dinner";
     }
-    print(json);
-    final nullstep = {
-      "one":"add"
-    };
-    print(json['image']);
-    print(json['meal_time']);
-
+    String name = '';
+    String description = '';
+    if(Language.getLocaleCode() == 'en'){
+      name = json['name_en'];
+      description = json['description_en'];
+    }
+    else if(Language.getLocaleCode() == 'am'){
+      name = json['name_am'];
+      description = json['description_am'];
+    }
+    else if(Language.getLocaleCode() == 'tr'){
+      name = json['name_tr'];
+      description = json['description_tr'];
+    }else{
+      name = json['name_or'];
+      description = json['description_or'];
+    }
     return Food(
       id: json['id'],
-      subcategoriesId: json['subcategories_id'],
+      subcategoriesId: json['sub_category_id'],
       categoryId: json['category_id'] ?? 0,
-      name: json['name'][Language.getLocaleCode()]?? "no localisation",
-      description: json['description'][Language.getLocaleCode()]?? "no localisation",
+      name: name,
+      description: description,
       mealTime: meal,
-      thumbnail: json['image']
+      thumbnail: thumbnail
     );
   }
 }
 
+class Likes{
+  int id;
+  int user_id;
+  int food_id;
+  Likes({
+    required this.id,
+    required this.user_id,
+    required this.food_id,
+  });
+  factory Likes.fromFood(Map<String, dynamic> json) {
+    return Likes(
+      id: json['id'],
+      user_id: json['user_id'],
+      food_id: json['food_id'],
+    );
+  }
+}
 /*
 *
 * Map<String, String> myMap = {

@@ -33,10 +33,9 @@ class CategoryService {
       if (response.statusCode == 200) {
         print("3");
         print(response.statusCode);
-        print("4");
         final List<dynamic> responseData = jsonDecode(response.body)['data'];
         print(jsonDecode(response.body));
-        // print("responseData $responseData");
+        print("responseData $responseData");
         return responseData.map((json) => Category.fromJson(json)).toList();
       } else {
         throw Exception('Failed to fetch categories');

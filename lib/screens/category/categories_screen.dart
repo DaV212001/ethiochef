@@ -89,10 +89,12 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 return Center(
                     child: InfoCard(
                         onPress: (){
-                          _future = fetchSubCatData();
+                          setState(() {
+                            _future = fetchSubCatData();
+                          });
                         },
                         infoTitle: "Error",
-                        infoBody: "",
+                        infoBody: "Error getting categories",
                         closeText: "",
                         buttonText: "Reload",
                         infoImage: "",

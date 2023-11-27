@@ -1,9 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
+
 import 'package:ethio_chef/screens/home/layout/add_recipe_card.dart';
-import 'package:ethio_chef/screens/home/layout/meal_tabs.dart';
-import 'package:ethio_chef/widgets/screen_head.dart';
-import 'package:ethio_chef/screens/home/layout/recent_dishes.dart';
-import 'package:ethio_chef/utils/place_holder_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -64,10 +60,12 @@ class _HomeScreenState extends State<HomeScreen> {
               return Center(
                   child: InfoCard(
                       onPress: (){
-                        _future = fetchData();
+                        setState(() {
+                          _future = fetchData();
+                        });
                       },
                       infoTitle: "Error",
-                      infoBody: "",
+                      infoBody: "Getting failed",
                       closeText: "",
                       buttonText: "Reload",
                       infoImage: "",
@@ -86,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget buildHomePage(List<Category> category, List<Food> breakfast,
       List<Food> lunch,List<Food> superMeal,List<Food> dinner
       ){
-    return   SafeArea(
+    return SafeArea(
       child: SingleChildScrollView(
           child: Column(
             children: [

@@ -16,7 +16,7 @@ class MealService{
         'Authorization': 'JWT $access_token',
       },
     );
-
+    print(response.body);
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       final List<dynamic> foodList = data['data'];

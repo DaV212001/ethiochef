@@ -88,6 +88,22 @@ class _SubCategoryFoodsState extends State<SubCategoryFoods> {
   }
   Widget buildSubCategoryScreen(List<Food> food){
     double height = 255;
+    if (food.length == 0){
+      return Center(
+          child: InfoCard(
+              onPress: (){
+                setState(() {
+                  _future = fetchData();
+                });
+              },
+              infoTitle: "No Food",
+              infoBody: "There is no food in this sub category",
+              closeText: "",
+              buttonText: "Reload",
+              infoImage: "",
+              closeBtn: false
+          ));
+    }
     return ListView.builder(
       shrinkWrap: true,
       scrollDirection: Axis.vertical,

@@ -30,12 +30,12 @@ class RecipeIngredients extends StatelessWidget {
           return Card(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Column(
+              child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(ingredient.key),
-                  const SizedBox(height: 8.0),
+                  const SizedBox(width: 8.0),
                   Text(ingredient.value),
                 ],
               ),

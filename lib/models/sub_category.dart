@@ -28,20 +28,23 @@ class SubCategory {
   });
 
   factory SubCategory.fromJson(Map<String, dynamic> json) {
-    String image = Constants.url;
-    print(image);
-    String url = json['image'];
-    print(url);
-    print(json['image']);
-    for(int i=2;i<url.length;i++){
-      image+=url[i];
+    String clearPath(String path) {
+      final parts = path.split('/public_html');
+      return parts.last;
     }
-    print(image);
+    String image = json['image'];
+    String i = clearPath(image);
+    print("============================== $i");
+    print(json['id']);
+    print(json['name']);
+    String thumbnail = Constants.ImageAPI + i;
+    print("============================== $thumbnail");
+
     return SubCategory(
         id: json['id'] ?? 0,
         categoryId: json['category_id'],
         name: json['name'][Language.getLocaleCode()] == ""?json['name']["en"]:json['name'][Language.getLocaleCode()]?? json['name']["en"],
-        thumbnail: image,
+        thumbnail: thumbnail,
         description: json['description'][Language.getLocaleCode()]?? json['name']["en"],
         createdAt: DateTime.parse(json['created_at']),
         updatedAt: DateTime.parse(json['updated_at']),

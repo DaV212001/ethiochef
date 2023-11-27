@@ -1,29 +1,56 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/services/food_service.dart';
 import 'package:ethio_chef/widgets/cached_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+
+import '../../../models/comment.dart';
+import '../../../models/food.dart';
+import '../../../models/user.dart';
+import '../../comment/add_edit_comment.dart';
 
 class RecipeHeaderImage extends StatefulWidget {
   final String image;
-  final bool isFavorite;
-  final Function() onFavorite;
+  final bool isLiked;
+  final Function() onLike;
+  final int foodId;
+  final Comments? comments;
+  final Function() refresh;
+  final User user;
+  final List<Likes> likes;
 
   const RecipeHeaderImage(
       {super.key,
-      required this.image,
-      required this.onFavorite,
-      required this.isFavorite});
+        required this.image,
+        required this.onLike,
+        required this.isLiked,
+        this.comments,
+        required this.refresh,
+        required this.foodId,
+        required this.user,
+        required this.likes
+      });
 
   @override
   State<RecipeHeaderImage> createState() => _RecipeHeaderImageState();
 }
 
 class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
-  late bool isFavorite;
+  late bool isLiked;
 
   @override
   void initState() {
-    isFavorite = widget.isFavorite;
+    for(int i=0;i<widget.likes.length;i++){
+      if(widget.user.id == widget.likes[i].user_id){
+        setState(() {
+          isLiked = true;
+        });
+        break;
+      }
+    }
+    isLiked = widget.isLiked;
     super.initState();
   }
 
@@ -62,10 +89,14 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        setState(() {
-                          isFavorite = !isFavorite;
-                        });
-                        widget.onFavorite();
+                        pushNewScreen(
+                            context,
+                            screen: AddEditComment(
+                                isEditing: false,
+                                foodId: widget.foodId,
+                                refresh: widget.refresh
+                            )
+                        );
                       },
                       child: circularBackground(
                         child: Icon(
@@ -83,15 +114,15 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    isFavorite = !isFavorite;
+                    isLiked = !isLiked;
+                    print("isLiked $isLiked");
                   });
-                  widget.onFavorite();
                 },
                 child: circularBackground(
                   child: Icon(
-                    isFavorite
-                        ? CupertinoIcons.bookmark_solid
-                        : CupertinoIcons.bookmark,
+                    isLiked
+                        ? CupertinoIcons.hand_thumbsup_fill
+                        : CupertinoIcons.hand_thumbsup,
                     color: theme.colorScheme.secondary,
                   ),
                 ),
@@ -112,4 +143,51 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
       child: child,
     );
   }
+  void likeFood() async {
+      FoodService service = FoodService();
+      try {
+        var response =
+        await service.likeFood(widget.foodId);
+        if (response.statusCode == 200) {
+          widget.refresh();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('liked_food_successful'.tr())),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('liked_food_failed'.tr())),
+          );
+          throw Exception();
+        }
+      } catch (e) {
+        print(e);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('liked_food_failed'.tr())),
+        );
+      }
+  }
+  void unLikeFood() async {
+      print("widget.foodId ${widget.foodId}");
+      FoodService service = FoodService();
+      try {
+        var response =
+        await service.unLikeFood(widget.foodId);
+        if (response == true) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('unliked_food_successful'.tr())),
+          );
+          widget.refresh();
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('unliked_food_successful'.tr())),
+          );
+          throw Exception();
+        }
+      } catch (e) {
+        print(e);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('unliked_food_successful'.tr())),
+        );
+      }
+    }
 }

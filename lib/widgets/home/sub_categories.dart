@@ -1,12 +1,3 @@
-import 'package:ethio_chef/models/food.dart';
-import 'package:ethio_chef/screens/recipe/layout/recipe_header.dart';
-import 'package:ethio_chef/screens/recipe/layout/recipe_header_image.dart';
-import 'package:ethio_chef/screens/recipe/layout/recipe_ingredients.dart';
-import 'package:ethio_chef/screens/recipe/layout/recipe_related.dart';
-import 'package:ethio_chef/screens/recipe/layout/recipe_steps.dart';
-import 'package:ethio_chef/widgets/youtube_video_player.dart';
-import 'package:ethio_chef/utils/place_holder_data.dart';
-import 'package:ethio_chef/widgets/recipe/share_button.dart';
 import 'package:flutter/material.dart';
 import '../../models/sub_category.dart';
 import '../../services/sub_category_service.dart';
@@ -38,6 +29,8 @@ class _SubCategoryCarouselState extends State<SubCategoryCarousel> {
       final subCategoryService = SubCategoryService();
       var subCategoryData =
       await subCategoryService.fetchSubCategoriesByCategoryId(widget.categoryId);
+      print('=============================');
+      print(subCategoryData.length);
       return subCategoryData;
     } catch (error) {
       rethrow;

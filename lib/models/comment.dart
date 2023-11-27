@@ -37,7 +37,7 @@ class Comments {
       comment: json['comment'],
       foodId: json['food_id'],
       user: User.fromJson(userJson),
-      food: Food.fromJson(foodJson),
+      food: Food.fromCommentJson(foodJson),
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
     );

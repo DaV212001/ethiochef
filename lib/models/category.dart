@@ -26,19 +26,22 @@ class Category {
   });
 
   factory Category.fromJson(Map<String, dynamic> json) {
-    // print("json $json");
-    print(json['id']);
-    print(json['name']);
-    String image = Constants.url + json['image'];
+    String clearPath(String path) {
+      final parts = path.split('/public_html');
+      return parts.last;
+    }
+    String image = json['image'];
+    String i = clearPath(image);
+    print("============================== $i");
+    String thumbnail = Constants.ImageAPI + i;
+    print("============================== $thumbnail");
     return Category(
         id: json['id'],
-        name: json['name'][Language.getLocaleCode()] == ""?json['name']["en"]:json['name'][Language.getLocaleCode()]?? "no localisation",
-        description: json['description'][Language.getLocaleCode()]?? "no localisation",
-        image: image,
+        name: json['name'][Language.getLocaleCode()] == ""?json['name']["en"]:json['name'][Language.getLocaleCode()]?? json['name']["en"],
+        description: json['description'][Language.getLocaleCode()]?? json['description']['en'],
+        image: thumbnail,
         createdAt: DateTime.parse(json['created_at']),
         updatedAt: DateTime.parse(json['updated_at']),
-        nextPage: json['next_page'] ?? 0,
-        prevPage: json['prev_page'] ?? 0,
         page: json['page']
     );
   }

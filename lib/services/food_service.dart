@@ -3,8 +3,6 @@ import 'package:ethio_chef/utils/place_holder_data.dart';
 
 import 'dart:convert';
 
-import 'package:ethio_chef/models/food.dart';
-import 'package:ethio_chef/utils/place_holder_data.dart';
 
 import '../constants/constants.dart';
 import 'authorization_service.dart';
@@ -79,14 +77,32 @@ class FoodService{
       throw Exception('Failed to fetch food');
     }
   }
-  Future<http.Response> createComment(String comment, int foodId) async {
-    var response = await http.post(Uri.parse("${Constants.url}/user/signup"),
-        headers: {"Content-type": "application/json"},
-        body: {
-          "food_id": foodId,
-          "comment": comment
-        }
+  Future<http.Response> likeFood(int foodId) async {
+    final accessToken = await AuthService.getAuthorizationToken();
+    print("access_token $accessToken");
+
+    var requestBody = jsonEncode({
+      "food_id": foodId
+    });
+    var response = await http.post(Uri.parse("${Constants.url}/user/food/like"),
+        headers: {
+          'Authorization': 'JWT $accessToken',
+        },
+        body: requestBody
     );
+    print("Response Body  == ${response.body} == Response Body");
+    print(response.statusCode);
+    return response;
+  }
+  Future<http.Response> unLikeFood(int foodId) async {
+    final accessToken = await AuthService.getAuthorizationToken();
+    print("access_token $accessToken");
+
+    var response = await http.delete(
+        Uri.parse("${Constants.url}/user/food/unlike/$foodId"),
+        headers: {
+          'Authorization': 'JWT $accessToken',
+        });
     print("Response Body  == ${response.body} == Response Body");
     print(response.statusCode);
     return response;

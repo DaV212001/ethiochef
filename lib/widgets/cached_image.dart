@@ -15,11 +15,17 @@ class CachedImage extends StatelessWidget {
       fit: fit,
       fadeInDuration: const Duration(milliseconds: 250),
       errorBuilder: (context, exception, stacktrace) {
-        return Expanded(
-            child: Icon(
-          Icons.broken_image_outlined,
-          color: Theme.of(context).colorScheme.onSecondary,
-        ));
+        // return Expanded(
+        //     child: Icon(
+        //   Icons.broken_image_outlined,
+        //   color: Theme.of(context).colorScheme.onSecondary,
+        // ));
+        return Center(
+          child: Icon(
+            Icons.broken_image_outlined,
+            color: Theme.of(context).colorScheme.onSecondary,
+          ),
+        );
       },
       loadingBuilder: (context, progress) {
         return Container(

@@ -16,20 +16,11 @@ class RecipeScreenTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Tab> tabs = PlaceHolderData.menuTimes
-        .map((e) => Tab(
-      text: e.name,
-    ))
-        .toList();
     ThemeData theme = Theme.of(context);
     return DefaultTabController(
       length: 2,
       child: Column(
         children: [
-          // Header(title: "meal".tr()),
-          SizedBox(
-            height: 10.h,
-          ),
           ButtonsTabBar(
             backgroundColor: theme.colorScheme.primary,
             unselectedBackgroundColor: Colors.transparent,
@@ -67,13 +58,4 @@ class RecipeScreenTab extends StatelessWidget {
     );
   }
 
-  // List<Widget> getTabs() {
-  //   return List.filled(
-  //     4,
-  //     HorizontalFoodCarousel(
-  //       dishes: dishes,
-  //       type: 2,
-  //     ),
-  //   );
-  // }
 }
