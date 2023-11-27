@@ -167,7 +167,6 @@ class Food {
     );
   }
   factory Food.fromCommentJson(Map<String, dynamic> json) {
-    print("fromCommentJson $json");
     String clearPath(String path) {
       final parts = path.split('/public_html');
       return parts.last;

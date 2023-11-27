@@ -61,7 +61,8 @@ class CommentService{
   }
 
   Future<http.Response> updateComment(int comment_id, int food_id, String comment) async {
-    print("comment ${comment}");
+    print("comment_id ===========  ${comment_id}");
+    print("comment ================= ${comment}");
     var requestBody = jsonEncode({
       "food_id": food_id,
       "comment": comment
@@ -69,13 +70,17 @@ class CommentService{
     print(requestBody);
   final accessToken = await AuthService.getAuthorizationToken();
   print("access_token $accessToken");
-  var response = await http.post(Uri.parse('${Constants.url}/user/food/comment/update/$comment_id'),
+  var response = await http.post(
+      Uri.parse('${Constants.url}/user/food/comment/update/$comment_id'),
       headers: {
-      'Authorization': 'JWT $accessToken'
+      'Authorization': 'JWT $accessToken',
+        'Content-type': 'application/json'
       },
-      body: requestBody
+      body: jsonEncode({
+        "food_id": food_id,
+        "comment": comment
+      })
   );
-  print("Response Body  == ${response.body} == Response Body");
   return response;
 
   }
@@ -83,13 +88,13 @@ class CommentService{
 
   final accessToken = await AuthService.getAuthorizationToken();
   print("access_token $accessToken");
+
   var response = await http.delete(
         Uri.parse('${Constants.url}/user/food/comment/delete/$food_id'),
       headers: {
         'Authorization': 'JWT $accessToken'
       },
   );
-    print("Response Body  == ${response.body} == Response Body");
     return response;
   }
 }

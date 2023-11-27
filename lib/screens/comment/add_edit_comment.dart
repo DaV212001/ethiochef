@@ -99,7 +99,7 @@ class _AddEditCommentState extends State<AddEditComment> {
       CommentService service = CommentService();
       try {
         var response =
-        await service.updateComment(widget.comments!.id!,
+        await    service.updateComment( widget.comments!.id!,
             widget.comments!.food.id!, commentController.text);
         if (response.statusCode == 200) {
           widget.refresh();

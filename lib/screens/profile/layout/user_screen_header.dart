@@ -12,8 +12,8 @@ import '../../../models/user.dart';
 import '../../../widgets/profile/profile_widget.dart';
 
 class UserScreenHeader extends StatefulWidget {
-
-  UserScreenHeader({super.key});
+  final User user;
+  UserScreenHeader({super.key, required this.user});
 
   @override
   State<UserScreenHeader> createState() => _UserScreenHeaderState();
@@ -35,10 +35,10 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    String firstName = "Abebe";
-    String lastName = "Lema";
-    String formattedName =
-        "${firstName[0].toUpperCase()}${firstName.substring(1).toLowerCase()} ${lastName[0].toUpperCase()}${lastName.substring(1).toLowerCase()}";
+    String firstName = widget.user.firstName;
+    String lastName = widget.user.lastName;
+    String formattedName = "${firstName} ${lastName}";
+        // "${firstName[0].toUpperCase()}${firstName.substring(1).toLowerCase()} ${lastName[0].toUpperCase()}${lastName.substring(1).toLowerCase()}";
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -62,7 +62,7 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
                Text("$formattedName",
                    style: TextStyle(color: theme.colorScheme.tertiary, fontSize: 20.sp)),
                SizedBox(height: 5.h),
-               Text("Abebe@gmail.com",
+               Text(widget.user.email??'email@gmail.com',
                    style:
                    TextStyle(color: theme.colorScheme.tertiary.withOpacity(0.5), fontSize: 15.sp)),
              ],
@@ -75,10 +75,10 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
                   imagePath: User.profilePicture,
                   hasEditButton: false,
                   isFile: isFile,
-                  email: "Abebe@gmail.com",
-                  firstName: "Abebe",
-                  lastName: "Lema",
-                  phone: "91121212",
+                  email: widget.user.email ?? '',
+                  firstName: widget.user.firstName,
+                  lastName: widget.user.lastName,
+                  phone: widget.user.phone.toString(),
                 ));
           }, child: Text("Edit"))
         ],

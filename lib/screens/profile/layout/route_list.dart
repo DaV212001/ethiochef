@@ -6,6 +6,7 @@ import 'package:ethio_chef/subscription/subscriptionscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
+import '../../../models/faqs.dart';
 import '../../../theme/app_theme.dart';
 import '../../../theme/model_theme.dart';
 import '../../../widgets/auth/language_selector_button.dart';
@@ -13,6 +14,9 @@ import '../../../widgets/change_theme.dart';
 import '../../../widgets/profile/route_card.dart';
 import '../../../widgets/profile/route_container.dart';
 import '../../../widgets/profile/route_labels_card.dart';
+import '../../app_documentation/faq_screen.dart';
+import '../../app_documentation/privacy_policies_screen.dart';
+import '../../app_documentation/terms_and_conditions_screen.dart';
 import 'competition_status/my_competition.dart';
 
 
@@ -101,12 +105,12 @@ class _RouteListState extends State<RouteList> {
         "leadingIcon": Icons.privacy_tip_outlined,
         "onTap": () {
           print("privacy_policy");
-          // pushNewScreen(
-          //   context,
-          //   screen: PrivacyPolicyScreen(),
-          //   withNavBar: false,
-          //   pageTransitionAnimation: PageTransitionAnimation.cupertino,
-          // );
+          pushNewScreen(
+            context,
+            screen: PrivacyPolicyScreen(),
+            withNavBar: false,
+            pageTransitionAnimation: PageTransitionAnimation.cupertino,
+          );
         },
         "trailing":
         Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary)
@@ -116,12 +120,12 @@ class _RouteListState extends State<RouteList> {
         "leadingIcon": Icons.question_mark,
         "onTap": () {
           print("faq");
-          // pushNewScreen(
-          //   context,
-          //   screen: FAQScreen(),
-          //   withNavBar: false,
-          //   pageTransitionAnimation: PageTransitionAnimation.cupertino,
-          // );
+          pushNewScreen(
+            context,
+            screen: FaqScreen(),
+            withNavBar: false,
+            pageTransitionAnimation: PageTransitionAnimation.cupertino,
+          );
         },
         "trailing":
         Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary)
@@ -131,12 +135,12 @@ class _RouteListState extends State<RouteList> {
         "leadingIcon": Icons.error,
         "onTap": () {
           print("terms_and_conditions");
-          // pushNewScreen(
-          //   context,
-          //   screen: TermsAndConditionScreen(),
-          //   withNavBar: false,
-          //   pageTransitionAnimation: PageTransitionAnimation.cupertino,
-          // );
+          pushNewScreen(
+            context,
+            screen: TermsAndConditionsScreen(),
+            withNavBar: false,
+            pageTransitionAnimation: PageTransitionAnimation.cupertino,
+          );
         },
         "trailing":
         Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary)

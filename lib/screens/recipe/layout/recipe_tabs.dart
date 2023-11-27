@@ -40,7 +40,7 @@ class RecipeScreenTab extends StatelessWidget {
             ]
           ),
           SizedBox(
-            height: 350.h,
+            height: 250.h,
             child: TabBarView(
                 physics: BouncingScrollPhysics(),
                 children: [

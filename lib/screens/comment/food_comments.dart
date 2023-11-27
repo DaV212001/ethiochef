@@ -38,7 +38,6 @@ class CommentScreen extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: CommentCard(
-
                   comment: comments[index],
                   user: user,
                   refresh: (){

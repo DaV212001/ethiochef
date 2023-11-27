@@ -86,21 +86,21 @@ class RecipeHeader extends StatelessWidget {
               // )
             ])),
         SizedBox(height: 10),
-        Container(
-            height: 35,
-            child: Row(children: [
-              SvgIcon(
-                  size: 25,
-                  color: theme.colorScheme.tertiary,
-                  image: Assets.iconsCategoryOutlined),
-              SizedBox(
-                width: 5,
-              ),
-              // CategoryLabelCarousel(
-              //   categories: food.categories,
-              //   color: theme.colorScheme.primary.withOpacity(0.9),
-              // )
-            ])),
+        // Container(
+        //     height: 35,
+        //     child: Row(children: [
+        //       SvgIcon(
+        //           size: 25,
+        //           color: theme.colorScheme.tertiary,
+        //           image: Assets.iconsCategoryOutlined),
+        //       SizedBox(
+        //         width: 5,
+        //       ),
+        //       // CategoryLabelCarousel(
+        //       //   categories: food.categories,
+        //       //   color: theme.colorScheme.primary.withOpacity(0.9),
+        //       // )
+        //     ])),
         food.description != null ? description(context) : SizedBox.shrink(),
       ]),
     );

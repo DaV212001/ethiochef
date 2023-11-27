@@ -115,6 +115,10 @@ class _RecipeScreenState extends State<RecipeScreen> {
                   YoutubeVideoPlayer(
                     link: PlaceHolderData.videoLink,
                   ),
+                YoutubeVideoPlayer(
+                  link: PlaceHolderData.videoLink,
+                ),
+                SizedBox(height: 10),
                 RecipeScreenTab(
                   food: food,
                 ),
