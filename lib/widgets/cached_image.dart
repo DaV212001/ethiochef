@@ -21,10 +21,7 @@ class CachedImage extends StatelessWidget {
         //   color: Theme.of(context).colorScheme.onSecondary,
         // ));
         return Center(
-          child: Icon(
-            Icons.broken_image_outlined,
-            color: Theme.of(context).colorScheme.onSecondary,
-          ),
+          child: Image.asset('assets/images/logo.png'),
         );
       },
       loadingBuilder: (context, progress) {

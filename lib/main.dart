@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/language.dart';
+import 'package:ethio_chef/screens/auth/auth_screen.dart';
 import 'package:ethio_chef/screens/main_screen.dart';
 import 'package:ethio_chef/screens/splash_screen.dart';
+import 'package:ethio_chef/services/authorization_service.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:ethio_chef/theme/model_theme.dart';
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
@@ -39,10 +41,19 @@ class EthioChef extends StatefulWidget {
 }
 
 class _EthioChefState extends State<EthioChef> {
+  bool isLoggedIn = false;
+  void getUserStatus() async {
+    bool status = await AuthService.isUserLoggedIn();
+    print("Logged in status = $status");
+    setState(() {
+      isLoggedIn = status;
+    });
+  }
   @override
   void initState() {
     super.initState();
     _checkFirstTimeUser();
+    getUserStatus();
   }
   bool isFirstTimeUser = true;
   Future<void> _checkFirstTimeUser() async {
@@ -73,7 +84,7 @@ class _EthioChefState extends State<EthioChef> {
               homeScreen = SplashScreen();
             } else {
               print("To SignupScreen $isFirstTimeUser");
-              homeScreen = MainScreen();
+              homeScreen = isLoggedIn ? MainScreen() : AuthScreen(isSignIn: true);
             }
         return ScreenUtilInit(
           designSize: const Size(412, 892),//Never change this value

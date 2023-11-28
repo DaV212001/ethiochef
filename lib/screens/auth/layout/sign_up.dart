@@ -157,7 +157,6 @@ class _SignUpState extends State<SignUp> {
                         backgroundColor: Theme.of(context).cardColor,
                         child: InfoCard(
                           onPress: () async {
-
                             // /Uncomment this code to fully integrate chapa payment with sign up.
                             Verification verification = await PaymentService().getChapaCheckoutLink(100, 'a@gmail.com', firstNameController.text, lastNameController.text, "0"+phoneController.text);
                             await _launchUrl(
@@ -178,6 +177,7 @@ class _SignUpState extends State<SignUp> {
                           infoBody: "Pay your monthly, yearly or weekly subscription",
                           infoTitle: "Subscriptions payment",
                           infoImage: "assets/images/chapa.png",
+                          closeBtn: true,
                         ),
                       ),
                     );

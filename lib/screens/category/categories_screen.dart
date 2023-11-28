@@ -25,7 +25,7 @@ class CategoriesScreen extends StatefulWidget {
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
   Future? _future;
-
+bool isLoading = false;
 
   Future<dynamic> fetchSubCatData() async {
     try {

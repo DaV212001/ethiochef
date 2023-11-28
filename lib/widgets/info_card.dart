@@ -15,6 +15,7 @@ class InfoCard extends StatelessWidget {
   final String infoBody;
   final String? infoImage;
   final bool closeBtn;
+  final bool? isLoading;
   const InfoCard({super.key,
     required this.onPress,
     required this.buttonText,
@@ -22,6 +23,7 @@ class InfoCard extends StatelessWidget {
     required this.infoTitle,
     required this.infoBody,
     this.infoImage,
+    this.isLoading = false,
     this.closeBtn = false
   });
 

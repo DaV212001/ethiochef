@@ -3,10 +3,12 @@ import 'package:ethio_chef/screens/home/layout/add_recipe_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../models/promotion.dart';
 import '../../models/category.dart';
 import '../../models/food.dart';
 import '../../services/category_service.dart';
 import '../../services/meal_service.dart';
+import '../../services/promotion_service.dart';
 import '../../widgets/info_card.dart';
 import 'layout/ads_carusel.dart';
 import 'layout/category_carousel.dart';
@@ -34,11 +36,13 @@ class _HomeScreenState extends State<HomeScreen> {
       print('fetchData');
       final categoryService = CategoryService();
       final mealService = MealService();
+      // final promotionService = PromotionService();
       final categoryData = await categoryService.fetchCategories();
       final breakFast = await mealService.fetchAllBreakfast();
       final lunch = await mealService.fetchAllLunch();
       final superMeal = await mealService.fetchAllSuper();
       final dinner = await mealService.fetchAllDinner();
+      // final promotionsData = await promotionService.fetchPromotions();
       return [categoryData, breakFast, lunch, superMeal, dinner];
     } catch (error) {
       rethrow;

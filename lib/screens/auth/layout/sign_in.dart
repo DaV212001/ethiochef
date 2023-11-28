@@ -52,6 +52,7 @@ class _SignInState extends State<SignIn> {
             isLoading: isLoading,
             text: "sign_in".tr(),
             onPress: ()async{
+              print("phoneController.text ${phoneController.text}");
               if (_formKey.currentState!.validate()) {
                 setState(() {
                   isLoading = true;

@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:ethio_chef/widgets/screen_head.dart';
 
+import '../../../models/promotion.dart';
 import '../../../theme/app_theme.dart';
 import '../../../widgets/cached_image.dart';
 import '../../../widgets/home/ad_carousel_component.dart';
