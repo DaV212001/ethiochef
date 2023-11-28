@@ -40,8 +40,7 @@ class _AdsCarouselState extends State<AdsCarousel> {
   List imageList = [
     {"id": 1, "image_path": 'assets/images/photo_1.jpg'},
     {"id": 2, "image_path": 'assets/images/photo_2.jpg'},
-    {"id": 3, "image_path": 'assets/images/photo_3.jpg'},
-    {"id": 4, "image_path": 'assets/images/photo_4.jpg'}
+    {"id": 3, "image_path": 'assets/images/photo_3.jpg'}
   ];
 
   final CarouselController carouselController = CarouselController();
@@ -67,7 +66,7 @@ class _AdsCarouselState extends State<AdsCarousel> {
                       Container(
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage("assets/images/photo_1.jpg"),
+                            image: AssetImage("assets/images/ads_one.jpg"),
                             fit: BoxFit.cover,
                           ),
 
@@ -98,43 +97,7 @@ class _AdsCarouselState extends State<AdsCarousel> {
                       Container(
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage("assets/images/photo_2.jpg"),
-                            fit: BoxFit.cover,
-                          ),
-
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Container(
-                          height: 75,
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              // BoxShadow(
-                              //   color: Colors.black,
-                              //   offset: Offset(0, 40),
-                              //     blurRadius: 10,
-                              // ),
-                            ],),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage("assets/images/photo_3.jpg"),
+                            image: AssetImage("assets/images/ads_two.jpg"),
                             fit: BoxFit.cover,
                           ),
 
@@ -170,7 +133,7 @@ class _AdsCarouselState extends State<AdsCarousel> {
                         Container(
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage("assets/images/photo_4.jpg"),
+                              image: AssetImage("assets/images/ads_three.jpg"),
                               fit: BoxFit.cover,
                             ),
 
