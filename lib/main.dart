@@ -53,7 +53,6 @@ class _EthioChefState extends State<EthioChef> {
   void initState() {
     super.initState();
     _checkFirstTimeUser();
-    getUserStatus();
   }
   bool isFirstTimeUser = true;
   Future<void> _checkFirstTimeUser() async {
@@ -67,6 +66,15 @@ class _EthioChefState extends State<EthioChef> {
     } else {
       await prefs.setBool('hasLaunchedEthioChefBefore', true);
     }
+  }
+  Future<Widget> screenToStart() async {
+
+    bool status = await AuthService.isUserLoggedIn();
+    print("Logged in status = $status");
+    setState(() {
+      isLoggedIn = status;
+    });
+    return isLoggedIn ? MainScreen() : AuthScreen(isSignIn: true);
   }
   @override
   Widget build(BuildContext context) {
@@ -84,6 +92,7 @@ class _EthioChefState extends State<EthioChef> {
               homeScreen = SplashScreen();
             } else {
               print("To SignupScreen $isFirstTimeUser");
+              getUserStatus();
               homeScreen = isLoggedIn ? MainScreen() : AuthScreen(isSignIn: true);
             }
         return ScreenUtilInit(
