@@ -86,7 +86,7 @@ class _EthioChefState extends State<EthioChef> {
           builder: (context, ModelTheme themeNotifier, child) {
         // themeNotifier.isDark = false; // using to check dark theme
             Widget homeScreen;
-            print("First Time User status $isFirstTimeUser");
+            print("First Time User status $isFirstTimeUser")
             if (isFirstTimeUser) {
               print("To SplashScreen $isFirstTimeUser");
               homeScreen = SplashScreen();
