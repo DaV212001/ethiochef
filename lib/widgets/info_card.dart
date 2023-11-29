@@ -16,6 +16,8 @@ class InfoCard extends StatelessWidget {
   final String? infoImage;
   final bool closeBtn;
   final bool? isLoading;
+  final bool hasWidget;
+  final Widget? widget;
   const InfoCard({super.key,
     required this.onPress,
     required this.buttonText,
@@ -23,7 +25,9 @@ class InfoCard extends StatelessWidget {
     required this.infoTitle,
     required this.infoBody,
     this.infoImage,
+    this.widget,
     this.isLoading = false,
+    this.hasWidget = false,
     this.closeBtn = false
   });
 
@@ -45,6 +49,12 @@ class InfoCard extends StatelessWidget {
             infoImage==""?"assets/images/logo.png":infoImage!,
             height: isTablet ? 250.h : 200.h,
           ),
+          if(hasWidget)
+            Column(
+              children: [
+
+              ],
+            ),
           Text(
             infoTitle,
             textAlign: TextAlign.start,

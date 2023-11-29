@@ -67,15 +67,7 @@ class _EthioChefState extends State<EthioChef> {
       await prefs.setBool('hasLaunchedEthioChefBefore', true);
     }
   }
-  Future<Widget> screenToStart() async {
 
-    bool status = await AuthService.isUserLoggedIn();
-    print("Logged in status = $status");
-    setState(() {
-      isLoggedIn = status;
-    });
-    return isLoggedIn ? MainScreen() : AuthScreen(isSignIn: true);
-  }
   @override
   Widget build(BuildContext context) {
     Language.selectedLanguage = Language.getSelectedLanguage(context);
@@ -86,14 +78,13 @@ class _EthioChefState extends State<EthioChef> {
           builder: (context, ModelTheme themeNotifier, child) {
         // themeNotifier.isDark = false; // using to check dark theme
             Widget homeScreen;
-            print("First Time User status $isFirstTimeUser")
+            print("First Time User status $isFirstTimeUser");
             if (isFirstTimeUser) {
               print("To SplashScreen $isFirstTimeUser");
               homeScreen = SplashScreen();
             } else {
               print("To SignupScreen $isFirstTimeUser");
-              getUserStatus();
-              homeScreen = isLoggedIn ? MainScreen() : AuthScreen(isSignIn: true);
+              homeScreen = MainScreen();
             }
         return ScreenUtilInit(
           designSize: const Size(412, 892),//Never change this value

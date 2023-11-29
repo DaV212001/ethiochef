@@ -12,7 +12,7 @@ class Comments {
   final String comment;
   final int foodId;
   final User user;
-  final Food food;
+  // final Food food;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -22,14 +22,14 @@ class Comments {
     required this.comment,
     required this.foodId,
     required this.user,
-    required this.food,
+    // required this.food,
     required this.createdAt,
     required this.updatedAt,
   });
 
   factory Comments.fromJson(Map<String, dynamic> json) {
     final userJson = json['user'] as Map<String, dynamic>;
-    final foodJson = json['food'] as Map<String, dynamic>;
+    // final foodJson = json['food'] as Map<String, dynamic>;
 
     return Comments(
       id: json['id'],
@@ -37,7 +37,7 @@ class Comments {
       comment: json['comment'],
       foodId: json['food_id'],
       user: User.fromJson(userJson),
-      food: Food.fromCommentJson(foodJson),
+      // food: Food.fromCommentJson(foodJson),
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
     );

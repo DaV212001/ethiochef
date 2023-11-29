@@ -10,12 +10,14 @@ import '../../utils/screen_utils.dart';
 import '../../widgets/main_app_bar.dart';
 
 class CommentScreen extends StatelessWidget {
+  final int foodId;
   final List<Comments> comments;
   final Function() refresh;
   final User user;
   const CommentScreen({super.key,
     required this.comments,
     required this.refresh,
+    required this.foodId,
     required this.user
   });
 
@@ -38,6 +40,7 @@ class CommentScreen extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: CommentCard(
+                fooId: foodId,
                   comment: comments[index],
                   user: user,
                   refresh: (){

@@ -29,7 +29,6 @@ class UserService {
     final access_token = await AuthService.getAuthorizationToken();
 
     Map<String, dynamic> decodedToken = JwtDecoder.decode(access_token!);
-    print(decodedToken);
     print("User Data Retrieved ${decodedToken['user']}");
     final user = User.fromJson(decodedToken['user']);
     return user;
@@ -182,7 +181,7 @@ class UserService {
     final response = await http
         .get(Uri.parse("${Constants.url}/user/subscription/${user.id}"), headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'JWT ${access_token}',
+      'Authorization': 'JWT ${access_token}'
     });
     print(response.statusCode);
     var jsonData1;

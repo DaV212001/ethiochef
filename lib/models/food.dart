@@ -48,6 +48,9 @@ class Food {
     this.isLiked
   });
   factory Food.fromSingleFoodJson(Map<String, dynamic> json) {
+    print(json['image']);
+    print(json['ingredients']);
+    print(json['steps']);
     String clearPath(String path) {
       final parts = path.split('/public_html');
       return parts.last;

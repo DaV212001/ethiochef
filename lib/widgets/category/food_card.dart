@@ -10,6 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
+import '../../screens/auth/auth_screen.dart';
+import '../../services/authorization_service.dart';
+
 class FoodCard extends StatefulWidget {
   static int foodCardType = 1;
   final Food food;
@@ -21,6 +24,22 @@ class FoodCard extends StatefulWidget {
 }
 
 class _FoodCardState extends State<FoodCard> {
+
+  bool isLoggedIn = false;
+  bool isLoading = true;
+  void getUserStatus() async {
+    bool status = await AuthService.isUserLoggedIn();
+    print("Logged in status = $status");
+    setState(() {
+      isLoading = false;
+      isLoggedIn = status;
+    });
+  }
+  @override
+  void initState() {
+    getUserStatus();
+    super.initState();
+  }
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Container(
@@ -51,16 +70,32 @@ class _FoodCardState extends State<FoodCard> {
                   child: info(theme)),
             ],
           ),
+          if(isLoading == false)
           MainButton(
             height: 60.h,
             width: 200.w,
             text: "show_recipe".tr(),
             onPress: () {
-              pushNewScreen(
-                context,
-                withNavBar: false,
-                screen: RecipeScreen(food: widget.food),
-              );
+
+              if(isLoggedIn) {
+                pushNewScreen(
+                  context,
+                  withNavBar: false,
+                  screen: RecipeScreen(food: widget.food),
+                );
+              }else{
+                SnackBar logIn =SnackBar(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    content: Text(
+                        'Please log in to see ingredients and steps'.tr()
+                    ));
+                ScaffoldMessenger.of(context).showSnackBar(logIn);
+                pushNewScreen(
+                  context,
+                  withNavBar: false,
+                  screen: AuthScreen(isSignIn: true),
+                );
+              }
             },
           )
         ],

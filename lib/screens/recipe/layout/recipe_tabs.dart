@@ -40,16 +40,13 @@ class RecipeScreenTab extends StatelessWidget {
             ]
           ),
           SizedBox(
-            height: 250.h,
+            height: 350.h,
+            width: double.infinity,
             child: TabBarView(
                 physics: BouncingScrollPhysics(),
                 children: [
-              IntrinsicHeight(
-                child: RecipeIngredients(ingredients: food.ingredients!),
-              ),
-              IntrinsicHeight(
-                child: RecipeSteps(steps: food.stepsList!),
-              ),
+                  RecipeIngredients(ingredients: food.ingredients!),
+                  RecipeSteps(steps: food.stepsList!)
             ]),
           )
 

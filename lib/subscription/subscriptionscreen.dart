@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/widgets/main_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:ethio_chef/models/subscriptionplans.dart' as h;
 import 'package:ethio_chef/services/user_service.dart' as u;
@@ -78,6 +79,10 @@ void initState() {
 @override
 Widget build(BuildContext context) {
   return Scaffold(
+    appBar: MainAppBar(
+      title: userSubscriptionPlans.isEmpty ? 'Subscribe to a plan' :'Subscribe to a new plan',
+      hasMainIcons: false,
+    ),
     body: SafeArea(
         child: FutureBuilder(
             future: _subscriptionPlansFuture,
@@ -85,19 +90,6 @@ Widget build(BuildContext context) {
             if (snapshot.connectionState == ConnectionState.done) {
               return Column(
                 children: [
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  Text(
-                    userSubscriptionPlans.isEmpty ? 'Subscribe to a plan' :'Subscribe to a new plan',
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .headlineLarge,
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
                   ListView.builder(
                     shrinkWrap: true,
                       itemCount: subscriptionPlans.length,

@@ -5,6 +5,13 @@ import '../models/verification.dart';
 class PaymentService {
   Future<Verification> getChapaCheckoutLink(int amount, String email,
       String first_name, String last_name, String phone_number) async {
+    print({
+      "amount": amount,//
+      "email": email,
+      "first_name": first_name,
+      "last_name": last_name,
+      "phone_number": phone_number//
+    });
     Verification verification = Verification();
     print(jsonEncode({
       "amount": amount,

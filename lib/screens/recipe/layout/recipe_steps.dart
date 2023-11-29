@@ -11,26 +11,27 @@ class RecipeSteps extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Column(
-        children: steps!.entries.map((ingredient) {
-          return Card(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(ingredient.key),
-                  const SizedBox(width: 8.0),
-                  Text(ingredient.value),
-                ],
-              ),
-            ),
-          );
-        }).toList(),
-      ),
+    return Column(
+      children: steps!.entries.map((ingredient) {
+        return Flex(
+          direction: Axis.vertical,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            // Text(ingredient.key),
+            // const SizedBox(width: 8.0),
+            Text(
+              ingredient.value,
+              softWrap: true,
+              overflow: TextOverflow.visible,
+              style: TextStyle(
+                  fontSize: 19,
+                  fontWeight: FontWeight.w500,
+                  color: theme.buttonTheme.colorScheme?.secondary),
+            )
+          ],
+        );
+      }).toList(),
     );
   }
 }

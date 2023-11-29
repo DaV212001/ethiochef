@@ -12,6 +12,7 @@ import '../../utils/screen_utils.dart';
 
 class CommentCard extends StatelessWidget {
   final Comments comment;
+  final int? fooId;
   final User user;
   final Function() refresh;
 
@@ -19,6 +20,7 @@ class CommentCard extends StatelessWidget {
       {super.key,
         required this.comment,
         required this.refresh,
+        required this.fooId,
         required this.user});
 
   @override
@@ -82,7 +84,7 @@ class CommentCard extends StatelessWidget {
                 context,
                 screen: AddEditComment(
                     isEditing: true,
-                    foodId: comment.food.id!,
+                    foodId: fooId!,
                     comments: comment,
                     refresh: (){
                       refresh();

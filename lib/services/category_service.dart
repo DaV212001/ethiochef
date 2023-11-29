@@ -18,15 +18,10 @@ class CategoryService {
   }
   Future<List<Category>> fetchCategories() async {
     print("fetchCategories");
-    final access_token = await AuthService.getAuthorizationToken();
-    print("access_token $access_token");
     try {
       print("1");
       final response = await http.get(
-        Uri.parse('${Constants.url}/user/category'),
-        headers: {
-          'Authorization': 'JWT $access_token',
-        },
+        Uri.parse('${Constants.url}/user/category')
       );
       print("2");
       print(response.body);

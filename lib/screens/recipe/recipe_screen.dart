@@ -1,13 +1,9 @@
 import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/screens/recipe/layout/recipe_header.dart';
 import 'package:ethio_chef/screens/recipe/layout/recipe_header_image.dart';
-import 'package:ethio_chef/screens/recipe/layout/recipe_ingredients.dart';
-import 'package:ethio_chef/screens/recipe/layout/recipe_related.dart';
-import 'package:ethio_chef/screens/recipe/layout/recipe_steps.dart';
 import 'package:ethio_chef/services/user_service.dart';
 import 'package:ethio_chef/widgets/youtube_video_player.dart';
 import 'package:ethio_chef/utils/place_holder_data.dart';
-import 'package:ethio_chef/widgets/recipe/share_button.dart';
 import 'package:flutter/material.dart';
 import '../../models/comment.dart';
 import '../../models/user.dart';
@@ -45,9 +41,6 @@ class _RecipeScreenState extends State<RecipeScreen> {
       var commentData = await commentService.fetchComments(widget.food.id!);
       final userService = UserService();
       var userData = await userService.fetchLoggedInUser();
-      print("========================================================================");
-      print(commentData[0].comment);
-      print("======================================================================== ");
       return [foodData, commentData, userData];
     } catch (error) {
       rethrow;
@@ -87,58 +80,61 @@ class _RecipeScreenState extends State<RecipeScreen> {
     );
   }
   Widget buildRecipeScreen(Food food, List<Comments> comment, User user){
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          RecipeHeaderImage(
-            likes: food.likes!,
-            user: user,
-            image: food.thumbnail,
-            isLiked: food.isLiked ?? false,
-            onLike: () {},
-            refresh: (){
-              setState(() {
-                _future = fetchData();
-              });
-            },
-            foodId: food.id!,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-            child: Column(
-              children: [
-                RecipeHeader(
-                  food: food,
-                ),
-                if (food.video != null)
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            RecipeHeaderImage(
+              likes: food.likes!,
+              user: user,
+              image: food.thumbnail,
+              isLiked: food.isLiked ?? false,
+              onLike: () {},
+              refresh: (){
+                setState(() {
+                  _future = fetchData();
+                });
+              },
+              foodId: food.id!,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+              child: Column(
+                children: [
+                  RecipeHeader(
+                    food: food,
+                  ),
+                  if (food.video != null)
+                    YoutubeVideoPlayer(
+                      link: PlaceHolderData.videoLink,
+                    ),
                   YoutubeVideoPlayer(
                     link: PlaceHolderData.videoLink,
                   ),
-                YoutubeVideoPlayer(
-                  link: PlaceHolderData.videoLink,
-                ),
-                SizedBox(height: 10),
-                RecipeScreenTab(
-                  food: food,
-                ),
-                CommentScreen(
-                  comments: comment,
-                  refresh: (){
-                    print("Should call this guy");
-                    setState(() {
-                      _future = fetchData();
-                    });
-                  },
-                  user: user,
-                ),
-                // RecipeRelated(dishes: PlaceHolderData.dishes),
-              ],
-            ),
-          )
-          // ShareButton(food: widget.food)
-        ],
-      )
+                  SizedBox(height: 10),
+                  RecipeScreenTab(
+                    food: food,
+                  ),
+                  CommentScreen(
+                    foodId: food.id!,
+                    comments: comment,
+                    refresh: (){
+                      print("Should call this guy");
+                      setState(() {
+                        _future = fetchData();
+                      });
+                    },
+                    user: user,
+                  ),
+                  // RecipeRelated(dishes: PlaceHolderData.dishes),
+                ],
+              ),
+            )
+            // ShareButton(food: widget.food)
+          ],
+        )
+      ),
     );
   }
 }

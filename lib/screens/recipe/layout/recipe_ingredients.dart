@@ -23,26 +23,27 @@ class RecipeIngredients extends StatelessWidget {
     final int crossAxisCount = (screenWidth / desiredItemWidth).floor();
     final double childAspectRatio = desiredItemWidth / desiredItemHeight;
 
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Column(
+    return Column(
         children: ingredients!.entries.map((ingredient) {
-          return Card(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(ingredient.key),
-                  const SizedBox(width: 8.0),
-                  Text(ingredient.value),
-                ],
-              ),
-            ),
+          return Flex(
+            direction: Axis.vertical,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              // Text(ingredient.key),
+              // const SizedBox(width: 8.0),
+               Text(
+                  ingredient.value,
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
+                  style: TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.w500,
+                      color: theme.buttonTheme.colorScheme?.secondary),
+                )
+            ],
           );
         }).toList(),
-      ),
     );
   }
 }

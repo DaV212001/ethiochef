@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/generated/assets.dart';
+import 'package:ethio_chef/screens/auth/layout/payment_screen.dart';
 import 'package:ethio_chef/screens/main_screen.dart';
 import 'package:ethio_chef/widgets/auth/auth_header.dart';
 import 'package:ethio_chef/widgets/auth/auth_link.dart';
@@ -16,6 +17,7 @@ import '../../../models/user.dart';
 import '../../../models/verification.dart';
 import '../../../services/payment_service.dart';
 import '../../../services/user_service.dart';
+import '../../../subscription/all_subscriptions.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/screen_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -37,6 +39,7 @@ class _SignUpState extends State<SignUp> {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController promoCodeController = TextEditingController();
+  int amount = 0;
   late bool isLoading = false;
   Future<http.Response?> _registration() async {
     final bool isTablet = ScreenUtils.isTablet(context);
@@ -157,20 +160,24 @@ class _SignUpState extends State<SignUp> {
                         backgroundColor: Theme.of(context).cardColor,
                         child: InfoCard(
                           onPress: () async {
-                            // /Uncomment this code to fully integrate chapa payment with sign up.
-                            Verification verification = await PaymentService().getChapaCheckoutLink(100, 'a@gmail.com', firstNameController.text, lastNameController.text, "0"+phoneController.text);
-                            await _launchUrl(
-                                verification.checkoutUrl!,
-                                ScreenUtils.isTablet(context));
+                            await pushNewScreen(context,
+                                screen: AllSubscriptions(returnPrice: (price){
+                                  setState(() {
+                                    amount = price;
+                                  });
+                                },)
+                            );
+                            print("amount $amount");
+                            Verification verification =
+                            await PaymentService().getChapaCheckoutLink(amount, '', firstNameController.text, lastNameController.text, "0"+phoneController.text);
+
+                            print("PaymentService");
+                            pushNewScreen(context,
+                                screen: PaymentScreen(url: verification.checkoutUrl!)
+                            );
+
                             bool notpaid = await PaymentService().verifyChapaPayment(verification.txref!);
-                            // /"notpaid" holds the status of the payment, if it is true, the payment is not done yet, if it is false, the payment is done.
                             print(notpaid);
-
-
-
-                            await _launchUrl(
-                                "http://checkout.chapa.co/checkout/web/payment/PL-ueFSJ9MF623g",
-                                ScreenUtils.isTablet(context));
                           },
                           buttonText: "Pay Subscription",
                           closeText: "Pay Later",

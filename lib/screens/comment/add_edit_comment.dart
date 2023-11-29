@@ -100,7 +100,7 @@ class _AddEditCommentState extends State<AddEditComment> {
       try {
         var response =
         await    service.updateComment( widget.comments!.id!,
-            widget.comments!.food.id!, commentController.text);
+            widget.foodId, commentController.text);
         if (response.statusCode == 200) {
           widget.refresh();
           ScaffoldMessenger.of(context).showSnackBar(

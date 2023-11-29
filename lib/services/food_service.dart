@@ -9,7 +9,6 @@ import 'authorization_service.dart';
 import 'package:http/http.dart' as http;
 
 class FoodService{
- // https://apiv2.ethiochef.com/user/food
   Future<List<Food>> fetchDishesForCategory(int id,int pageKey) async{
     if(pageKey > 5) {
       throw Exception();
@@ -18,13 +17,8 @@ class FoodService{
     return PlaceHolderData.dishes;
   }
   Future<List<Food>> fetchAllFood() async {
-    final access_token = await AuthService.getAuthorizationToken();
-    print("access_token $access_token");
     final response = await http.get(
-      Uri.parse('${Constants.url}/user/food'),
-      headers: {
-        'Authorization': 'JWT $access_token',
-      },
+      Uri.parse('${Constants.url}/user/food')
     );
 
     if (response.statusCode == 200) {
@@ -36,13 +30,8 @@ class FoodService{
     }
   }
   Future<List<Food>> fetchFoodBySubCategoryId(int subCategoryId) async {
-    final access_token = await AuthService.getAuthorizationToken();
-    print("access_token $access_token");
     final response = await http.get(
-      Uri.parse('${Constants.url}/user/food/sub-category/$subCategoryId'),
-      headers: {
-        'Authorization': 'JWT $access_token',
-      },
+      Uri.parse('${Constants.url}/user/food/sub-category/$subCategoryId')
     );
     print(response.body);
     print(response.statusCode);
