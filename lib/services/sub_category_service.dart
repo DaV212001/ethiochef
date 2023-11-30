@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../constants/constants.dart';
+import '../utils/constants.dart';
 import '../models/sub_category.dart';
 import 'package:http/http.dart' as http;
 

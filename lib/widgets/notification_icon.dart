@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+
+import '../screens/notification/notification_screen.dart';
 
 class NotificationIcon extends StatelessWidget {
   final bool hasNotification;
@@ -22,7 +25,13 @@ class NotificationIcon extends StatelessWidget {
               top: 0,
               right: 3,
               child: GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  // pushNewScreen(
+                  //   context,
+                  //   withNavBar: false,
+                  //   screen: NotificationScreen(),
+                  // );
+                },
                 child: GlowingOverscrollIndicator(
                   axisDirection: AxisDirection.up,
                   color: theme.colorScheme.primary,

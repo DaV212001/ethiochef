@@ -46,7 +46,7 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
         foregroundColor: theme.colorScheme.primary,
         elevation: 0,
         title: Text(
-          "Submit a ${widget.type}",
+          "submit_a_recipe".tr(),
           style: theme.textTheme.headlineLarge
               ?.copyWith(color: theme.colorScheme.primary),
         ),
@@ -128,8 +128,6 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
              for (int i = 0; i < itemControllers.length; i++) {
                String ingredient = itemControllers[i].text;
                String quantity = quantityControllers[i].text;
-               print("ingredient = $ingredient");
-               print("quantity = $quantity");
 
                ingredientMap = {
                  'ingredient': quantity,
@@ -161,12 +159,9 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
                'ingredient': 'ingredient',
                'quantity': 'quantity',
              };
-             print("ingredientMap = $ingredientMap");
              for (int i = 0; i < itemControllers.length; i++) {
                String ingredient = itemControllers[i].text;
                String quantity = quantityControllers[i].text;
-               print("ingredient = $ingredient");
-               print("quantity = $quantity");
 
                ingredientMap = {
                  'ingredient': quantity,

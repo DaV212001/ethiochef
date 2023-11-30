@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 
-import '../constants/constants.dart';
+import '../utils/constants.dart';
 import '../models/food.dart';
 import 'authorization_service.dart';
 import 'package:http/http.dart' as http;

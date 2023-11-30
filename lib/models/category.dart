@@ -1,5 +1,5 @@
 
-import 'package:ethio_chef/constants/constants.dart';
+import 'package:ethio_chef/utils/constants.dart';
 import 'package:ethio_chef/models/language.dart';
 
 class Category {

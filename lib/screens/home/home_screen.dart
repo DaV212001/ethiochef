@@ -10,6 +10,7 @@ import '../../services/category_service.dart';
 import '../../services/meal_service.dart';
 import '../../services/promotion_service.dart';
 import '../../widgets/info_card.dart';
+import '../recipe/layout/recipe_tabs.dart';
 import 'layout/ads_carusel.dart';
 import 'layout/category_carousel.dart';
 import 'layout/home_category_tab.dart';

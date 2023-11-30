@@ -109,62 +109,82 @@ bool isLoading = false;
   Widget buildCategoryScreen(
   List<SubCategory> subCategory, List<Food> food, List<Category> category
       ) {
-    ThemeData theme = Theme.of(context);
-    List<Tab> tabs = category
-        .map((e) =>
-        Tab(
-          text: e.name,
-        ))
-        .toList();
-    return Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
-             physics: NeverScrollableScrollPhysics(),
-              child: DefaultTabController(
-                length: tabs.length,
-                child: Column(children: [
-                  ScreenHead(
-                    hasNotification: true,
-                    screen: 1,
-                    searchHint: "search_for_category".tr(),
-                  ),
-                  ButtonsTabBar(
-                    backgroundColor: theme.colorScheme.primary,
-                    unselectedBackgroundColor: Colors.transparent,
-                    unselectedLabelStyle: theme.textTheme.labelMedium?.copyWith(
-                        color: theme.colorScheme.tertiary
+    if(category.length==0) {
+      return Center(
+          child: InfoCard(
+              onPress: (){
+                setState(() {
+                  _future = fetchSubCatData();
+                });
+              },
+              infoTitle: "No Category",
+              infoBody: "There is no Category",
+              closeText: "",
+              buttonText: "Reload",
+              infoImage: "",
+              closeBtn: false
+          ));
+    }
+      ThemeData theme = Theme.of(context);
+      List<Tab> tabs = category
+          .map((e) =>
+          Tab(
+            text: e.name,
+          ))
+          .toList();
+      return Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
+                physics: NeverScrollableScrollPhysics(),
+                child: DefaultTabController(
+                  length: tabs.length,
+                  child: Column(children: [
+                    ScreenHead(
+                      hasNotification: true,
+                      screen: 1,
+                      searchHint: "search_for_category".tr(),
                     ),
-                    labelStyle: theme.textTheme.bodyMedium
-                        ?.copyWith(color: theme.colorScheme.onTertiary),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                    radius: 5,
-                    tabs: tabs,
-                  ),
-                  SizedBox(
-                      height: 930.h,
-                      child: TabBarView(children:
-                      [
-                        for(int i=0;i<tabs.length;i++)
-                          ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: food.length,
-                            physics: BouncingScrollPhysics(),
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                  child: category[i].id == food[index].categoryId?
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-                                    child: FoodCard(
-                                        food:food[index]
-                                    ),
-                                  ):SizedBox.shrink()
-                              );
-                            })
-                      ])),
-                ]),
-              )),
-        ));
+                    ButtonsTabBar(
+                      backgroundColor: theme.colorScheme.primary,
+                      unselectedBackgroundColor: Colors.transparent,
+                      unselectedLabelStyle: theme.textTheme.labelMedium
+                          ?.copyWith(
+                          color: theme.colorScheme.tertiary
+                      ),
+                      labelStyle: theme.textTheme.bodyMedium
+                          ?.copyWith(color: theme.colorScheme.onTertiary),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                      radius: 5,
+                      tabs: tabs,
+                    ),
+                    SizedBox(
+                        height: 930.h,
+                        child: TabBarView(children:
+                        [
+                          for(int i = 0; i < tabs.length; i++)
+                            ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: food.length,
+                                physics: BouncingScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                      child: category[i].id ==
+                                          food[index].categoryId ?
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10.w, vertical: 10.h),
+                                        child: FoodCard(
+                                            food: food[index]
+                                        ),
+                                      ) : SizedBox.shrink()
+                                  );
+                                })
+                        ])),
+                  ]),
+                )),
+          ));
+
   }
 
   // @override

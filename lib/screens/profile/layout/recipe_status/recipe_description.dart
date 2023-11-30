@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:chewie/chewie.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pod_player/pod_player.dart';
@@ -64,22 +65,22 @@ class _RecipeDescriptionState extends State<RecipeDescription> {
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> orderList = [
       {
-        "title": "Name",
+        "title": "dish_name".tr(),
         "leadingIcon": Icons.category,
         "trailing": widget.res.name
       },
       {
-        "title": "Description",
+        "title": "dish_description".tr(),
         "leadingIcon": Icons.list_alt,
         "trailing": widget.res.description.toString()
       },
       {
-        "title": "Size",
+        "title": "serving_sizes".tr(),
         "leadingIcon": Icons.people_outline,
         "trailing": widget.res.servingSize.toString()
       },
       {
-        "title": "Prepare time",
+        "title": "preparation_times".tr(),
         "leadingIcon": Icons.timer_outlined,
         "trailing": widget.res.prepTime.toString()
       },

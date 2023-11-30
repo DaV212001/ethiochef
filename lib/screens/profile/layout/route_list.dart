@@ -36,7 +36,7 @@ class _RouteListState extends State<RouteList> {
     bool isLoading = false;
     final List<Map<String, dynamic>> general = [
       {
-        "title": "Subscription plans",
+        "title": "subscription_plans".tr(),
         "leadingIcon": Icons.subscriptions_outlined,
         "onTap": () async {
           pushNewScreen(
@@ -69,10 +69,9 @@ class _RouteListState extends State<RouteList> {
     ];
     final List<Map<String, dynamic>> status = [
       {
-        "title": "recipe_status".tr(),
+        "title": "saved_recipes".tr(),
         "leadingIcon": Icons.dinner_dining,
         "onTap": () {
-          print("change_password");
           pushNewScreen(
             context,
             screen: MyRecipes(),

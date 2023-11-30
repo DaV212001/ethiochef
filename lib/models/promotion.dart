@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import '../constants/constants.dart';
+import '../utils/constants.dart';
 
 class Promotion {
   final int id;

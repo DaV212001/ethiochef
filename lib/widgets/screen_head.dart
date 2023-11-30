@@ -33,21 +33,6 @@ class ScreenHead extends StatelessWidget {
             : MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          //   Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //
-          //       // SizedBox(
-          //       //   height: 10,
-          //       // ),
-          //       // Text(
-          //       //   "lets_make_dinner".tr(),
-          //       //   style: theme.textTheme.headlineSmall
-          //       //       ?.copyWith(color: theme.colorScheme.shadow),
-          //       // )
-          //     ],
-          //   ),
-
           SearchInputField(
             enabled: true,
             hint: searchHint, screen: screen,

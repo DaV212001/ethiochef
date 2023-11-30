@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/models/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,11 +19,19 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-
+  bool isLoggedIn = false;
+  void getUserStatus() async {
+    bool status = await AuthService.isUserLoggedIn();
+    print("Logged in status = $status");
+    setState(() {
+      isLoggedIn = status;
+    });
+  }
   Future? _future;
   bool isLoading = false;
   @override
   void initState() {
+    getUserStatus();
     _future = fetchData();
     super.initState();
   }
@@ -39,6 +46,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
     } catch (error) {
       rethrow;
     }
+
+      try {
+        print('fetch user');
+        final userService = UserService();
+        var userData = await userService.fetchLoggedInUser();
+        print("User data $userData");
+        return userData;
+
+      } catch (error) {
+        rethrow;
+      }
   }
   @override
   Widget build(BuildContext context) {
@@ -66,6 +84,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       closeBtn: false
                   ));
             }
+            if(snapshot.data == null){
+              print("snapshot data ${snapshot.data}");
+              return Center(
+                  child: InfoCard(
+                      onPress: ()async{
+                        await pushNewScreen(context, screen: AuthScreen(isSignIn: true));
+                        setState(() {
+                          _future = fetchData();
+                        });
+                      },
+                      infoTitle: "welcome_back_title".tr(),
+                      infoBody: "lets_get_back_to_cooking_masterpiece".tr(),
+                      closeText: "",
+                      buttonText: "sign_in_button".tr(),
+                      infoImage: "",
+                      closeBtn: false
+                  ));
+            }
+            return buildUserScreen(snapshot.data as User);
             if(userData.user == null){
             print('I AM NULL');}
             return buildUserScreen(
@@ -73,7 +110,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }),
     );
   }
+  @override
   Widget buildUserScreen(User user) {
+
     return SafeArea(
       child: Scaffold(
           body: ListView(
