@@ -1,4 +1,4 @@
-import '../constants/constants.dart';
+import '../utils/constants.dart';
 import 'language.dart';
 
 class Food {

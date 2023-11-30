@@ -1,7 +1,8 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/recipe.dart';
-import 'package:ethio_chef/screens/profile/layout/recipe_status/recipeDescription.dart';
+import 'package:ethio_chef/screens/profile/layout/recipe_status/recipe_description.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
@@ -49,7 +50,7 @@ class _MyRecipesState extends State<MyRecipes> {
     final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("My Recipe(s)",style: TextStyle(
+        title: Text("saved_recipes".tr(),style: TextStyle(
             color: theme.colorScheme.primary
         )),
         backgroundColor: Colors.transparent,
@@ -63,15 +64,16 @@ class _MyRecipesState extends State<MyRecipes> {
               color: theme.colorScheme.primary,
             )),
       ),
-      body: isLoading ==true?
+      body:  Recipe.savedRecipes.length == 0?Center(
+        child: Column(
+          children: [
+            Text("submit_a_recipe".tr())
+          ],
+        ),
+      ):isLoading ==true?
           Center(
-            child: Column(
-              children: [
-                Text("Add recipe")
-              ],
-            ),
-          )
-          :
+            child: CircularProgressIndicator()
+          ):
       ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,

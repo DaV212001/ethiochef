@@ -41,7 +41,7 @@ class RecipeHeader extends StatelessWidget {
                   ),
                   SmallLabelButton(
                       text:
-                          "number_people".tr(args: [food.servings!.toString()]),
+                          "serving_size".tr(args: [food.servings!.toString()]),
                       color: theme.colorScheme.primary.withOpacity(0.9),
                       onTap: () {})
                 ])),
@@ -57,7 +57,7 @@ class RecipeHeader extends StatelessWidget {
                     width: 5,
                   ),
                   SmallLabelButton(
-                      text: "number_hours"
+                      text: "preparation_time"
                           .tr(args: [food.preparationTime!.toString()]),
                       color: theme.colorScheme.primary.withOpacity(0.9),
                       onTap: () {})
@@ -114,7 +114,7 @@ class RecipeHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "description".tr(),
+              "dish_description".tr(),
               style: theme.textTheme.headlineMedium?.copyWith(
                   color: theme.colorScheme.tertiary,
                   fontWeight: FontWeight.w500),

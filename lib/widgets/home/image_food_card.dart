@@ -1,8 +1,8 @@
+
 import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/screens/recipe/recipe_screen.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:ethio_chef/widgets/cached_image.dart';
-import 'package:ethio_chef/widgets/home/category_label_carousel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,6 +22,13 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    if(widget.food == null){
+      print("====================================================================================================");
+      print(widget.food);
+      return Center(
+        child: Text("No Food")
+      );
+    }
     return GestureDetector(
       onTap: () {
         pushNewScreenWithRouteSettings(

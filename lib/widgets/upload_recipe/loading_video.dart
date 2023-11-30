@@ -60,7 +60,7 @@ class _LoadingVideoState extends State<LoadingVideo> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "video_is_loading".tr(),
+                  "video_is_loading_body".tr(),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.unselectedWidgetColor.withOpacity(0.85),
                   ),

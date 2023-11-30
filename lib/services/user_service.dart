@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:ethio_chef/constants/constants.dart';
+import 'package:ethio_chef/utils/constants.dart';
 import 'package:ethio_chef/models/subscriptionplans.dart';
 import 'package:ethio_chef/models/verification.dart';
 import 'package:http/http.dart' as http;
@@ -25,13 +25,19 @@ class UserService {
     return response;
   }
 
-  Future<User> fetchLoggedInUser() async {
-    final access_token = await AuthService.getAuthorizationToken();
+  Future<dynamic> fetchLoggedInUser() async {
+    bool status = await AuthService.isUserLoggedIn();
+    print("Logged in status = $status");
+   if(status == true){
+     final access_token = await AuthService.getAuthorizationToken();
 
-    Map<String, dynamic> decodedToken = JwtDecoder.decode(access_token!);
-    print("User Data Retrieved ${decodedToken['user']}");
-    final user = User.fromJson(decodedToken['user']);
-    return user;
+     Map<String, dynamic> decodedToken = JwtDecoder.decode(access_token!);
+     print("User Data Retrieved ${decodedToken['user']}");
+     final user = User.fromJson(decodedToken['user']);
+     return user;
+   }
+    print("Returning null");
+   return null;
   }
 
   Future<http.Response> login(String phone) async {
@@ -44,13 +50,14 @@ class UserService {
     final response = await http.post(
         Uri.parse("https://apiv2.ethiochef.com/user/login"),
         body: {"phone_number": phone_number});
-    print(response);
     print(response.body);
     print(response.statusCode);
-    var access_token = jsonDecode(response.body)['data']['session_token'];
-    print("Login token = ${access_token}");
-    await AuthService.setAuthorizationToken(access_token);
-    print("Login token = ${access_token}");
+    if(response.statusCode == 200){
+      var access_token = jsonDecode(response.body)['data']['session_token'];
+      print("Login token = ${access_token}");
+      await AuthService.setAuthorizationToken(access_token);
+      print("Login token = ${access_token}");
+    }
     return response;
   }
 

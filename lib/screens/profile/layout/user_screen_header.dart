@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/profile/layout/update_profile_screen.dart';
 import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:flutter/cupertino.dart';
@@ -62,7 +63,7 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
                Text("$formattedName",
                    style: TextStyle(color: theme.colorScheme.tertiary, fontSize: 20.sp)),
                SizedBox(height: 5.h),
-               Text(widget.user.email??'email@gmail.com',
+               Text(widget.user.email ?? '',
                    style:
                    TextStyle(color: theme.colorScheme.tertiary.withOpacity(0.5), fontSize: 15.sp)),
              ],
@@ -80,7 +81,7 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
                   lastName: widget.user.lastName,
                   phone: widget.user.phone.toString(),
                 ));
-          }, child: Text("Edit"))
+          }, child: Text("edit".tr()))
         ],
       ),
     );
@@ -118,7 +119,7 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
         actions: [
           CupertinoActionSheetAction(
             child: Text(
-              'Photo Gallery',
+              'photo_gallery'.tr(),
               style: TextStyle(fontSize: 20.sp),
             ),
             onPressed: () {
@@ -130,7 +131,7 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
           ),
           CupertinoActionSheetAction(
             child: Text(
-              'Camera',
+              'camera'.tr(),
               style: TextStyle(fontSize: 20.sp),
             ),
             onPressed: () {

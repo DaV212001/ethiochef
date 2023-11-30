@@ -90,15 +90,7 @@ class _SignUpState extends State<SignUp> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // SizedBox(
-          //     width: 150,
-          //     height: 150,
-          //     child: Image.asset(Assets.imagesLogo)),
-          // AuthHeader(title: "sign_up_title".tr(), body: "sign_up_body".tr()),
           Image.asset("assets/images/sign_up_image.png", fit: BoxFit.fill,),
-
-
-
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 30),
             child: Column(
@@ -118,32 +110,15 @@ class _SignUpState extends State<SignUp> {
                   hint: "your_last_name".tr(),
                   type: InputField.NameType,
                 ),
-                // InputField(
-                //   controller: emailController,
-                //   icon: CupertinoIcons.mail,
-                //   label: "email".tr(),
-                //   hint: "your_email".tr(),
-                //   type: InputField.EmailType,
-                // ),
-                // InputField(
-                //   controller: promoCodeController,
-                //   icon: Icons.password_outlined,
-                //   type: InputField.PromoCodeType,
-                //   label: "promo_code".tr(),
-                //   hint: "your_promo_code".tr(),
-                // ),
                 PhoneInputField(controller: phoneController),
-
-
               ],
             ),
 
           ),
           AuthBtn(
             isLoading: isLoading,
-            text: "sign_up".tr(),
+            text: "sign_up_button".tr(),
             onPress: () async {
-
               if (_formKey.currentState!.validate()) {
                 await showDialog(
                   context: context,
@@ -194,29 +169,11 @@ class _SignUpState extends State<SignUp> {
                   isLoading = true;
                 });
                 await _registration();
-
-                // pushNewScreen(context, screen: MainScreen());
               }
             }
           ),
-          // AuthLink(
-          //     text: "sign_up_auth_link_text".tr(),
-          //     buttonText: "sign_in".tr(),
-          //     onPress: () {
-          //       Navigator.pop(context);
-          //     })
         ],
       ),
     );
-  }
-  Future<void> _launchUrl(String url, bool isTablet) async {
-    final Uri _url = Uri.parse(url);
-    if (!await launchUrl(_url)) {
-      SnackBar(
-          content: Text(
-            'open_link_failed'.tr(),
-            style: isTablet ? AppTheme.snackBarStyleTablet : AppTheme.snackBarStyle,
-          ));
-    }
   }
 }

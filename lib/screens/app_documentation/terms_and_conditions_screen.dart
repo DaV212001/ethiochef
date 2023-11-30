@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../models/terms_and_conditions.dart';
 import '../../services/app_doc_services.dart';
 import '../../utils/screen_utils.dart';
+import '../../widgets/info_card.dart';
 import '../../widgets/main_app_bar.dart';
 
 
@@ -17,6 +18,7 @@ class TermsAndConditionsScreen extends StatefulWidget {
 
 class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
   List<TermsAndConditions> termsAndConditions = [];
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -26,11 +28,43 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
 
   Future<void> fetchTermsAndConditions() async {
     termsAndConditions = await AppDocServices().fetchTermsAndConditions();
-    setState(() {});
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if(isLoading) {
+      return Scaffold(
+        appBar: MainAppBar(
+          title: "Terms and conditions".tr(),
+          hasMainIcons: false,
+        ),
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+    if(termsAndConditions.length == 0) {
+      return Scaffold(
+        appBar: MainAppBar(
+          title: "Terms and conditions".tr(),
+          hasMainIcons: false,
+        ),
+        body: Center(
+            child: InfoCard(
+                onPress: () {
+                  setState(() {
+                    fetchTermsAndConditions();
+                  });
+                },
+                infoTitle: "No terms and conditions",
+                infoBody: "No terms and conditions currently",
+                closeText: "",
+                buttonText: "Reload",
+                infoImage: "",
+                closeBtn: false))
+      );
+    }
     final bool isTablet = ScreenUtils.isTablet(context);
     return Scaffold(
         appBar: MainAppBar(

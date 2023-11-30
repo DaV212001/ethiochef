@@ -4,16 +4,12 @@ import 'package:ethio_chef/screens/category/categories_screen.dart';
 import 'package:ethio_chef/screens/competition/competitions_screen.dart';
 import 'package:ethio_chef/screens/home/home_screen.dart';
 import 'package:ethio_chef/screens/profile/profile_screen.dart';
-import 'package:ethio_chef/screens/saved_recipes_screen.dart';
-import 'package:ethio_chef/screens/upload_recipe/upload_recipe_screen.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
-import '../services/authorization_service.dart';
-import 'nutrition/nutrition_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-import '../constants/constants.dart';
+import '../utils/constants.dart';
 import '../models/comment.dart';
 import 'authorization_service.dart';
 

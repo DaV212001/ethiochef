@@ -63,15 +63,15 @@ class _AddEditCommentState extends State<AddEditComment> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CustomFormField(
-                      name: "Comment",
+                      name: "comment".tr(),
                       controller: commentController,
-                      hint: 'comment',
+                      hint: 'comment'.tr(),
                       maxLines: 10,
                       minLines: 3,
                       required: true,
                     ),
                     MainButton(
-                      text: widget.isEditing ? 'Edit Comment' : 'Add Comment',
+                      text: widget.isEditing ? 'edit_comment'.tr() : 'add_comment'.tr(),
                       onPress: () {
                         if (widget.isEditing) {
                           editComment();

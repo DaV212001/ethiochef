@@ -179,15 +179,6 @@ class _AdsCarouselState extends State<AdsCarousel> {
                 ),
               ),
             ),
-            // Positioned(
-            //     bottom: 0,
-            //     right: 0,
-            //     left: 0,
-            //     child: ScreenHead(
-            //   hasNotification: true,
-            //   screen: 0,
-            //   searchHint: "search".tr(),
-            // )),
             Positioned(
                 bottom: 10,
                 right: 0,

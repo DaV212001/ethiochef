@@ -79,7 +79,7 @@ class _BasicsStepState extends State<BasicsStep> {
           InputField(
             icon: Icons.timer_outlined,
             controller: widget.prepTimeController,
-            label: "preparation_time".tr(),
+            label: "preparation_times".tr(),
             hint: "enter_dish_preparation_in_minutes".tr(),
             inputType: TextInputType.number,
           ),
@@ -89,8 +89,8 @@ class _BasicsStepState extends State<BasicsStep> {
           InputField(
             icon: Icons.people_outline,
             controller: widget.servingSizeController,
-            label: "Serving size",
-            hint: "Enter dish serving size",
+            label: "serving_sizes".tr(),
+            hint: "enter_dish_serving_size".tr(),
             inputType: TextInputType.number,
           ),
           StepperControlButtons(

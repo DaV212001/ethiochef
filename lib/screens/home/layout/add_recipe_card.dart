@@ -60,7 +60,7 @@ class AddRecipeCard extends StatelessWidget {
                       style: theme.textTheme.labelSmall),
                   SizedBox(height: 15.h),
                   SizedBox(
-                    width: 120.w,
+                    width: double.infinity/2,
                     height: 45.h,
                     child: OutlinedButton(
                         onPressed: () {
@@ -78,14 +78,14 @@ class AddRecipeCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "submit".tr(),
+                              "submit_a_recipe".tr(),
                               style: theme.textTheme.headlineSmall?.copyWith(
                                   color: theme.colorScheme.onTertiary,
                                   fontWeight: FontWeight.w600),
                             ),
                             Icon(
                               Icons.arrow_forward,
-                              size: 25.sp,
+                              size: 20.sp,
                               color: theme.colorScheme.onTertiary,
                             )
                           ],

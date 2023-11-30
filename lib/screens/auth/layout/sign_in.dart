@@ -33,12 +33,8 @@ class _SignInState extends State<SignIn> {
     return Form(
       key: _formKey,
       child: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
-        // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-
           Image.asset("assets/images/sign_in_image.png", fit: BoxFit.fill,),
-
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 30),
             child: Column(
@@ -50,7 +46,7 @@ class _SignInState extends State<SignIn> {
 
           AuthBtn(
             isLoading: isLoading,
-            text: "sign_in".tr(),
+            text: "sign_in_button".tr(),
             onPress: ()async{
               print("phoneController.text ${phoneController.text}");
               if (_formKey.currentState!.validate()) {
@@ -58,16 +54,12 @@ class _SignInState extends State<SignIn> {
                   isLoading = true;
                 });
                 await login(phoneController.text);
-                // var response =
-
-
-                // pushNewScreen(context, screen: MainScreen());
               }
             },
           ),
           AuthLink(
-              text: "sign_in_auth_link_text".tr(),
-              buttonText: "sign_up".tr(),
+              text: "dont_have_an_account".tr(),
+              buttonText: "sign_up_button".tr(),
               onPress: () {
                 pushNewScreen(context,
                     screen: AuthScreen(
@@ -92,14 +84,10 @@ class _SignInState extends State<SignIn> {
           "login_failed".tr()
         ));
     try {
-      print("1");
       UserService service = UserService();
-      print("2");
       response = await service.login(phone);
-      print("3");
-      // Check the response status code.
+
       if (response.statusCode == 200) {
-        // The login was successful.
         setState(() {
           isLoading = false;
         });
