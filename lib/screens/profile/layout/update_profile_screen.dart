@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/services/user_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -36,6 +37,8 @@ class UpdateProfileScreen extends StatefulWidget {
 }
 
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
+  File? updatedProfilePicture;
+
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final emailController = TextEditingController();
@@ -51,8 +54,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     // User.profilePicture = null;
     firstNameController.text = widget.firstName;
     lastNameController.text = widget.lastName;
-    emailController.text = widget.email!;
-    phoneNumberController.text = widget.phone!;
+    emailController.text = widget.email;
+    phoneNumberController.text = widget.phone;
     super.initState();
   }
 
@@ -122,7 +125,15 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 PhoneInputField(controller: phoneNumberController),
                 SizedBox(height: 20.h),
                 MainButton(text: "update".tr(), onPress: (){
-                  // updateUserAccount();
+                  UserService userService = UserService();
+                  userService.updateUserProfile(
+                    firstNameController.text,
+                    lastNameController.text,
+                    emailController.text,
+                    phoneNumberController.text,
+                    updatedProfilePicture!
+                  );
+
                 }),
               ],
             ),
@@ -169,7 +180,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
     setState(() {
       if (pickedFile != null) {
-        User.profilePicture = File(pickedFile.path);
+        updatedProfilePicture = File(pickedFile.path);
         isFile = true;
       }
     });
@@ -181,7 +192,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
     setState(() {
       if (pickedFile != null) {
-        User.profilePicture = File(pickedFile.path);
+        updatedProfilePicture = File(pickedFile.path);
         isFile = true;
       }
     });

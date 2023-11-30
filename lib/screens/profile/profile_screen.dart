@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/models/user_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,12 +28,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _future = fetchData();
     super.initState();
   }
-
+  UserProfile userData = UserProfile();
   Future<dynamic> fetchData() async {
     try {
       print('fetch user');
       final userService = UserService();
-      var userData = await userService.fetchLoggedInUser();
+      userData = await userService.fetchUserProfile();
+      print('CHECKING DATA: ${userData.user?.firstName}');
       return userData;
     } catch (error) {
       rethrow;
@@ -64,12 +66,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       closeBtn: false
                   ));
             }
+            if(userData.user == null){
+            print('I AM NULL');}
             return buildUserScreen(
-                snapshot.data as User);
+                userData.user as User);
           }),
     );
   }
-  @override
   Widget buildUserScreen(User user) {
     return SafeArea(
       child: Scaffold(

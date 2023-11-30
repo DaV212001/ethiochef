@@ -27,10 +27,10 @@ class User{
     lastName: json['last_name'] as String,
     email: json['email'] as String?,
     phone: json['phone_number'] as String?,
-    profile_picture: json['profilePicture'] as String?,
-    emailVerifiedAt: json['emailVerifiedAt'] as String?,
-    createdAt: json['createdAt'] as String?,
-    updatedAt: json['updatedAt'] as String?,
+    profile_picture: json.containsKey(['profile_picture'])?json['profile_picture'] as String?:null,
+    emailVerifiedAt: json.containsKey(['email_verified_at'])?json['email_verified_at'] as String?:null,
+    createdAt: json.containsKey(['created_at'])?json['created_at'] as String?:null,
+    updatedAt: json.containsKey(['updated_at'])?json['updated_at'] as String?:null,
   );
   // {
   // "first_name": "Mohammed",

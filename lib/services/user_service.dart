@@ -1,12 +1,14 @@
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:ethio_chef/constants/constants.dart';
 import 'package:ethio_chef/models/subscriptionplans.dart';
 import 'package:ethio_chef/models/verification.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:path/path.dart';
 
 import '../models/user.dart';
+import '../models/user_profile.dart';
 import 'authorization_service.dart';
 
 class UserService {
@@ -55,7 +57,7 @@ class UserService {
   }
 
   Future<http.Response> updateUserAccount(
-      String first_name, String last_name) async {
+      String first_name, String last_name, String? email, String? phone) async {
     final Uri url = Uri.parse("${Constants.url}/change_password");
 
     final access_token = await AuthService.getAuthorizationToken();
@@ -77,6 +79,51 @@ class UserService {
 
     return response;
   }
+
+
+
+  Future<http.StreamedResponse> updateUserProfile(String firstName, String lastName, String email, String phoneNumber, File profilePicture) async {
+    User user = await fetchLoggedInUser();
+    final access_token = await AuthService.getAuthorizationToken();
+    print('ID ${user.id}');
+    print('Phone: ${user.phone}');
+    var url = '${Constants.url}/user/profile/update/${user.id}';
+
+    // Create a multipart request
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+
+    // Add other fields
+    request.fields['first_name'] = firstName;
+    request.fields['last_name'] = lastName;
+    request.fields['email'] = email;
+    request.fields['phone_number'] = phoneNumber;
+
+    // Add file
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'profile_picture', // key for the file field
+        profilePicture.path,
+        filename: basename(profilePicture.path), // optional
+      ),
+    );
+
+    // Add headers
+    request.headers.addAll({
+      'Authorization': 'JWT $access_token'
+    });
+
+    // Send the request
+    var response = await request.send();
+
+    if (response.statusCode == 200) {
+      print('Profile updated successfully');
+    } else {
+      print('Failed to update profile');
+    }
+
+    return response;
+  }
+
 
   Future<http.Response> updateUserSubscription(
       int subscription_id, int user_id) async {
@@ -200,6 +247,29 @@ class UserService {
     print(response1.body);
     final jsonData = json.decode(response1.body);
     return jsonData['message'] == 'User subscription deleted successfully';
+  }
+
+
+  Future<UserProfile> fetchUserProfile() async {
+    var access_token = await AuthService.getAuthorizationToken();
+    print('ACCESS TOKEN ${access_token}');
+    User user = await fetchLoggedInUser();
+    print('USER ID ${user.id}');
+    print('User Phone Number ${user.phone}');
+    final response = await http.get(
+      Uri.parse('${Constants.url}/user/profile'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'JWT $access_token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      return UserProfile.fromJson(jsonData['data']);
+    } else {
+      throw Exception('Failed to load user profile: ${response.statusCode}');
+    }
   }
 
 
