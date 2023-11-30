@@ -26,11 +26,11 @@ class NotificationIcon extends StatelessWidget {
               right: 3,
               child: GestureDetector(
                 onTap: () {
-                  pushNewScreen(
-                    context,
-                    withNavBar: false,
-                    screen: NotificationScreen(),
-                  );
+                  // pushNewScreen(
+                  //   context,
+                  //   withNavBar: false,
+                  //   screen: NotificationScreen(),
+                  // );
                 },
                 child: GlowingOverscrollIndicator(
                   axisDirection: AxisDirection.up,
