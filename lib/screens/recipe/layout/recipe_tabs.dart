@@ -1,4 +1,5 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/screens/recipe/layout/recipe_ingredients.dart';
 import 'package:ethio_chef/screens/recipe/layout/recipe_steps.dart';
@@ -29,15 +30,15 @@ class RecipeScreenTab extends StatelessWidget {
             radius: 5,
             tabs: [
               Tab(
-                text: "Ingredients"
+                text: "ingredients".tr()
               ),
               Tab(
-                  text: "Steps"
+                  text: "steps".tr()
               )
             ]
           ),
           SizedBox(
-            height: 350.h,
+            height: 450.h,
             width: double.infinity,
             child: TabBarView(
                 physics: BouncingScrollPhysics(),

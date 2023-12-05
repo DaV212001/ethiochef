@@ -10,6 +10,7 @@ import '../../services/category_service.dart';
 import '../../services/meal_service.dart';
 import '../../services/promotion_service.dart';
 import '../../widgets/info_card.dart';
+import '../recipe/layout/recipe_new_tabs.dart';
 import '../recipe/layout/recipe_tabs.dart';
 import 'layout/ads_carusel.dart';
 import 'layout/category_carousel.dart';
@@ -22,14 +23,21 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin{
 
   Future? _future;
 
   @override
   void initState() {
+    _tabController = TabController(length: 4, vsync: this);
     _future = fetchData();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   Future<dynamic> fetchData() async {
@@ -37,14 +45,14 @@ class _HomeScreenState extends State<HomeScreen> {
       print('fetchData');
       final categoryService = CategoryService();
       final mealService = MealService();
-      // final promotionService = PromotionService();
+      final promotionService = PromotionService();
       final categoryData = await categoryService.fetchCategories();
       final breakFast = await mealService.fetchAllBreakfast();
       final lunch = await mealService.fetchAllLunch();
       final superMeal = await mealService.fetchAllSuper();
       final dinner = await mealService.fetchAllDinner();
-      // final promotionsData = await promotionService.fetchPromotions();
-      return [categoryData, breakFast, lunch, superMeal, dinner];
+      final promotionsData = await promotionService.fetchPromotions();
+      return [categoryData, breakFast, lunch, superMeal, dinner,promotionsData];
     } catch (error) {
       rethrow;
     }
@@ -82,18 +90,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 snapshot.data[1] as List<Food>,
                 snapshot.data[2] as List<Food>,
                 snapshot.data[3] as List<Food>,
-                snapshot.data[4] as List<Food>);
+                snapshot.data[4] as List<Food>,
+                snapshot.data[5] as List<Promotion>);
           }),
     );
   }
+  late final TabController _tabController;
+
   Widget buildHomePage(List<Category> category, List<Food> breakfast,
-      List<Food> lunch,List<Food> superMeal,List<Food> dinner
+      List<Food> lunch,List<Food> superMeal,List<Food> dinner, List<Promotion> promotion
       ){
     return SafeArea(
       child: SingleChildScrollView(
           child: Column(
             children: [
-              AdsCarousel(),
+              AdsCarousel(promotion: promotion),
               SizedBox(
                 height: 5.h,
               ),

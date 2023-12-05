@@ -96,5 +96,24 @@
   "general": "Waliigala",
   "status": "Sadarkaa",
   "other": "Kan biraa",
-  "edit": "Gulaaluu"
+  "edit": "Gulaaluu",
+
+  "breakfast": "Ciree",
+  "lunch": "Laaqana",
+  "supper": "Dhiyaana",
+  "dinner": "Irbaata",
+  "home": "Mana",
+  "tap_here_to_add_an_image": "Fakkii dabaluudhaaf as tuqi",
+  "search": "Barbaaduu",
+  "mark_as_read": "Dubbisuu",
+  "log_out": "Ba'aa",
+  "mark_all_as_read": "Hundaa akka dubbifameetti mallatteessi",
+  "read": "Dubbisuu",
+  "unread": "Hin dubbifamne",
+  "all": "Hunda",
+  "please_subscribe_to_get_full_access_of_the_app": "Appicha guutuu argachuuf subscribe gochuu hin dagatinaa",
+  "subscribe": "Subscribe godhaa",
+  "no_food_in_this_category": "Nyaata gosa kana keessa hin jiru",
+  "ingredients": "Mi'a dheedhii",
+  "steps": "Tarkaanfiiwwan"
 }

@@ -9,13 +9,14 @@ import 'authorization_service.dart';
 class NotificationService {
   Future<List<NotificationData>> fetchNotifications() async {
     try {
-      final Uri url = Uri.parse(
-          '${Constants.url}/user/notifications/');
       final access_token = await AuthService.getAuthorizationToken();
-      final response = await http.get(url, headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $access_token'
+      final response = await http.get(
+          Uri.parse(
+          '${Constants.url}/user/notifications/'),
+          headers: {
+        'Authorization': 'JWT $access_token'
       });
+      print("fetch notifications ${response.body}");
       if (response.statusCode == 200) {
         final Map<String, dynamic> jsonData = json.decode(response.body);
         final List<dynamic> products = jsonData["data"];
@@ -35,12 +36,12 @@ class NotificationService {
 
   void markAllNotificationAsRead() async {
     try {
-      final Uri url = Uri.parse(
-          '${Constants.url}/read_all_product_notifications');
       final access_token = await AuthService.getAuthorizationToken();
-      final response = await http.post(url, headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $access_token'
+      final response = await http.post(
+          Uri.parse(
+              '${Constants.url}/user/notifications/read'),
+          headers: {
+        'Authorization': 'JWT $access_token'
       });
       print(access_token);
       if (response.statusCode == 200) {
@@ -53,14 +54,18 @@ class NotificationService {
     }
   }
 
-  void markNotificationAsRead(String id) async {
+  void markNotificationAsRead(int id) async {
+    print("id $id");
     try {
-      final Uri url = Uri.parse(
-          '${Constants.url}/user/notifications/$id');
       final access_token = await AuthService.getAuthorizationToken();
-      final response = await http.post(url, headers: {
-        'Authorization': 'Bearer $access_token'
+      final response = await http.post(
+          Uri.parse(
+              '${Constants.url}/user/notifications/read/$id'),
+          headers: {
+        'Authorization': 'JWT $access_token'
       });
+      print("response.body== ${response.body}==response.body");
+      print("response.statusCode ${response.statusCode}");
       if (response.statusCode == 200) {
         print(response.body);
       } else {

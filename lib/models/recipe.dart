@@ -9,9 +9,11 @@ class Recipe {
   String? prepTime;
   String? servingSize;
   List<String>? steps;
+  Map<String, String>? stepToCreate = {};
   File? image;
   File? video;
   List<Map<String, String>>? ingredient = [];
+  Map<String, String>? ingredientToCreate = {};
 
   Recipe(
       {
@@ -68,6 +70,18 @@ class Recipe {
     };
   }
 
+  Map<String, dynamic> toServiceJson() {
+
+    return {
+      'title': name,
+      'description': description,
+      'cooking_time': prepTime,
+      'servingSize': servingSize,
+      'steps': stepToCreate,
+      'image': image?.path, // Store the file path instead of the File object
+      'ingredients': ingredientToCreate ?? []
+    };
+  }
   static List<Recipe> savedRecipes = [];
 
   static void addRecipe(Recipe recipe) {

@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../models/user.dart';
 import '../../../utils/screen_utils.dart';
 import '../../../widgets/auth/phone_input_field.dart';
 import '../../../widgets/input_field.dart';
+import '../../../widgets/main_app_bar.dart';
 import '../../../widgets/main_button.dart';
 import '../../../widgets/profile/profile_widget.dart';
 
@@ -22,6 +22,7 @@ class UpdateProfileScreen extends StatefulWidget {
   final String lastName;
   final String email;
   final String phone;
+  final Function() reFresh;
   const UpdateProfileScreen({super.key,
     required this.firstName,
     required this.lastName,
@@ -30,6 +31,7 @@ class UpdateProfileScreen extends StatefulWidget {
     required this.hasEditButton,
     required this.imagePath,
     required this.isFile,
+    required this.reFresh
   });
 
   @override
@@ -47,15 +49,15 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final picker = ImagePicker();
   // late var profilePicture;
   bool isFile = false;
-  bool awaitResponse = false;
+  bool isLoading = false;
 
   @override
   void initState() {
     // User.profilePicture = null;
-    firstNameController.text = widget.firstName;
-    lastNameController.text = widget.lastName;
-    emailController.text = widget.email;
-    phoneNumberController.text = widget.phone;
+    firstNameController.text = widget.firstName ?? '';
+    lastNameController.text = widget.lastName ?? '';
+    emailController.text = widget.email ?? '';
+    phoneNumberController.text = widget.phone ?? '';
     super.initState();
   }
 
@@ -64,17 +66,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     final ThemeData theme = Theme.of(context);
     final bool isTablet = ScreenUtils.isTablet(context);
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Icon(
-                Icons.arrow_back,
-                color: theme.colorScheme.primary,
-              )),
+        appBar: MainAppBar(
+          title: "Update profile".tr(),
+          hasMainIcons: false,
         ),
         body: Form(
           key: formKey,
@@ -124,16 +118,40 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 ),
                 PhoneInputField(controller: phoneNumberController),
                 SizedBox(height: 20.h),
-                MainButton(text: "update".tr(), onPress: (){
+                MainButton(
+                    isLoading: isLoading,
+                    text: "update".tr(), onPress: () async {
+                      setState(() {
+                        isLoading = true;
+                      });
                   UserService userService = UserService();
-                  userService.updateUserProfile(
+                  var response = await userService.updateUserAccount(
                     firstNameController.text,
                     lastNameController.text,
                     emailController.text,
                     phoneNumberController.text,
-                    updatedProfilePicture!
+                    // updatedProfilePicture!
                   );
-
+                  if(response.statusCode == 200){
+                    SnackBar success = SnackBar(
+                        padding: EdgeInsets.symmetric(vertical: 20),
+                        content: Text(
+                          "profile_update_successful".tr(),
+                        ));
+                    await ScaffoldMessenger.of(context).showSnackBar(success);
+                    widget.reFresh();
+                    Navigator.pop(context);
+                  }else{
+                    SnackBar failed = SnackBar(
+                        padding: EdgeInsets.symmetric(vertical: 20),
+                        content: Text(
+                          "profile_update_failed".tr(),
+                        ));
+                    await ScaffoldMessenger.of(context).showSnackBar(failed);
+                  }
+                      setState(() {
+                        isLoading = false;
+                      });
                 }),
               ],
             ),
@@ -142,37 +160,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   }
 
 
-  // Future<http.Response> updateUserAccount(
-  //     String first_name, String last_name) async {
-  //   //TODO: MOVE TO USER SERVICE
-  //   // Set the API endpoint
-  //   final Uri url = Uri.https("");
-  //   // Get the access token from shared preferences
-  //   final SharedPreferences shared = await SharedPreferences.getInstance();
-  //   var access_token = shared.getString('access_token');
-  //
-  //   // Create the request body
-  //   final body = {
-  //     'first_name': first_name,
-  //     'last_name': last_name,
-  //     'profile_picture': "profile_picture"
-  //   };
-  //
-  //   // Add the access token to the request headers
-  //   final headers = {
-  //     'Content-Type': 'application/json',
-  //     'Authorization': 'Bearer $access_token'
-  //   };
-  //
-  //   // Make the POST request
-  //   final response = await http.post(
-  //     url,
-  //     headers: headers,
-  //     body: jsonEncode(body),
-  //   );
-  //
-  //   return response;
-  // }
+
 
   //Image Picker function to get image from gallery
   Future getImageFromGallery() async {

@@ -1,3 +1,4 @@
+import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +10,7 @@ import '../../utils/screen_utils.dart';
 import '../../widgets/info_card.dart';
 import '../../widgets/main_app_bar.dart';
 import '../../widgets/notification/notification_card.dart';
+import '../../widgets/svg_icon.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
@@ -23,6 +25,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   PagingController(firstPageKey: 1);
 
   Future<List<NotificationData>> fetchData() async {
+    print("fetch notifications");
     try {
       final service = NotificationService();
       final data = await service.fetchNotifications();
@@ -96,38 +99,151 @@ class _NotificationScreenState extends State<NotificationScreen> {
                       closeBtn: false
                   ));
             }
-            return buildSlidableCards(snapshot.data as List<NotificationData>);
+            return buildTabs(snapshot.data as List<NotificationData>);
           }),
     );
   }
 
+  @override
+  Widget buildTabs(List<NotificationData> notification) {
+    List<NotificationData> readNotifications = [];
+    List<NotificationData> unreadNotifications = [];
 
-  Widget buildSlidableCards(List<NotificationData> notification) {
-    return ListView.builder(
-      shrinkWrap: true,
-      scrollDirection: Axis.vertical,
-      physics: BouncingScrollPhysics(),
-      itemCount: notification.length,
-      itemExtent: 255,
-      itemBuilder: (BuildContext context, int index) {
-        return Ink(
-          child: InkWell(
-            onTap: () {
-              setState(() {
-                notification[index].isRead = true;
-              });
-              markNotificationAsRead(notification[index].id.toString());
-            },
-            child: NotificationCard(
-              data: notification[index],
-            ),
-          ),
-        );
-      },
-    );
+    for (NotificationData notification in notification) {
+      if (notification.isRead) {
+        readNotifications.add(notification);
+      } else {
+        unreadNotifications.add(notification);
+      }
+    }
+    if(notification.length==0) {
+      return Center(
+          child: InfoCard(
+              onPress: (){
+                setState(() {
+                  notifications = fetchData();
+                });
+              },
+              infoTitle: "No Notification",
+              infoBody: "There is no Notification",
+              closeText: "",
+              buttonText: "Reload",
+              infoImage: "",
+              closeBtn: false
+          ));
+    }
+    ThemeData theme = Theme.of(context);
+    return Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+              physics: NeverScrollableScrollPhysics(),
+              child: DefaultTabController(
+                length: 3,
+                child: Column(children: [
+                  ButtonsTabBar(
+                    backgroundColor: theme.colorScheme.primary,
+                    unselectedBackgroundColor: Colors.transparent,
+                    unselectedLabelStyle: theme.textTheme.labelMedium
+                        ?.copyWith(
+                        color: theme.colorScheme.tertiary
+                    ),
+                    labelStyle: theme.textTheme.bodyMedium
+                        ?.copyWith(color: theme.colorScheme.onTertiary),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                    radius: 5,
+                    tabs: [
+                      Tab(text: 'read'.tr()),
+                      Tab(text: 'unread'.tr(),),
+                      Tab(text: 'all'.tr(),)
+                    ],
+                  ),
+                  SizedBox(
+                      height: 930.h,
+                      child: TabBarView(children:
+                      [
+                        ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: readNotifications.length,
+                            physics: BouncingScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemBuilder: (context, index) {
+                                return NotificationCard(
+                                  isRead: true,
+                                  reFresh: (){
+                                    setState(() {
+                                      notifications = fetchData();
+                                    });
+                                  },
+                                  delete: (){
+                                    print("Delete at Screen");
+                                  },
+                                  data: notification[index],
+                                );
+                            }),
+                        ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: unreadNotifications.length,
+                            physics: BouncingScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemBuilder: (context, index) {
+                                print("notification[index].isRead true ${notification[index].isRead}");
+                                return NotificationCard(
+                                  isRead: false,
+                                  reFresh: (){
+                                    setState(() {
+                                      notifications = fetchData();
+                                    });
+                                  },
+                                  delete: (){
+                                    print("Delete at Screen");
+                                    markNotificationAsRead(notification[index].id);
+                                  },
+                                  data: notification[index],
+                                );
+                            }),
+                        ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: notification.length,
+                            physics: BouncingScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemBuilder: (context, index) {
+                              return NotificationCard(
+                                isRead: true,
+                                reFresh: (){
+                                  setState(() {
+                                    notifications = fetchData();
+                                  });
+                                },
+                                delete: (){
+                                  print("Delete at Screen");
+                                },
+                                data: notification[index],
+                              );
+                            })
+                      ])),
+                ]),
+              )),
+        ));
+
   }
 
-  void markNotificationAsRead(String id) {
+  // Widget buildSlidableCards(List<NotificationData> notification) {
+  //   return ListView.builder(
+  //     shrinkWrap: true,
+  //     scrollDirection: Axis.vertical,
+  //     physics: BouncingScrollPhysics(),
+  //     itemCount: notification.length,
+  //     itemExtent: 255,
+  //     itemBuilder: (BuildContext context, int index) {
+  //       return NotificationCard(
+  //         data: notification[index],
+  //       );
+  //     },
+  //   );
+  // }
+
+  void markNotificationAsRead(int id) {
+    print("id $id");
     NotificationService service = NotificationService();
     service.markNotificationAsRead(id);
   }

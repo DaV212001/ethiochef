@@ -10,11 +10,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../../../models/user.dart';
+import '../../../models/user_profile.dart';
 import '../../../widgets/profile/profile_widget.dart';
 
 class UserScreenHeader extends StatefulWidget {
-  final User user;
-  UserScreenHeader({super.key, required this.user});
+  final UserProfile user;
+  final Function() reFresh;
+  UserScreenHeader({super.key, required this.user, required this.reFresh});
 
   @override
   State<UserScreenHeader> createState() => _UserScreenHeaderState();
@@ -36,8 +38,8 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    String firstName = widget.user.firstName;
-    String lastName = widget.user.lastName;
+    String? firstName = widget.user.user?.firstName;
+    String? lastName = widget.user.user?.lastName;
     String formattedName = "${firstName} ${lastName}";
         // "${firstName[0].toUpperCase()}${firstName.substring(1).toLowerCase()} ${lastName[0].toUpperCase()}${lastName.substring(1).toLowerCase()}";
 
@@ -63,7 +65,7 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
                Text("$formattedName",
                    style: TextStyle(color: theme.colorScheme.tertiary, fontSize: 20.sp)),
                SizedBox(height: 5.h),
-               Text(widget.user.email ?? '',
+               Text(widget.user.user?.email ?? '',
                    style:
                    TextStyle(color: theme.colorScheme.tertiary.withOpacity(0.5), fontSize: 15.sp)),
              ],
@@ -71,15 +73,19 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
          ),
           SizedBox(width: 5.h),
           ElevatedButton(onPressed: (){
+            String? str = widget.user.user?.phone.toString();
+            String? phone = str?.substring(1);
+            print(phone);
             pushNewScreen(context,
                 screen: UpdateProfileScreen(
                   imagePath: User.profilePicture,
                   hasEditButton: false,
                   isFile: isFile,
-                  email: widget.user.email ?? '',
-                  firstName: widget.user.firstName,
-                  lastName: widget.user.lastName,
-                  phone: widget.user.phone.toString(),
+                  email: widget.user.user?.email ?? '',
+                  firstName: widget.user.user!.firstName,
+                  lastName: widget.user.user!.lastName,
+                  phone: phone.toString(),
+                  reFresh: widget.reFresh
                 ));
           }, child: Text("edit".tr()))
         ],

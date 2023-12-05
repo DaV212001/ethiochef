@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
+import '../../../generated/assets.dart';
+
 class AddRecipeCard extends StatelessWidget {
   final Function() onRemove;
 
@@ -22,7 +24,12 @@ class AddRecipeCard extends StatelessWidget {
           ClipRRect(
             borderRadius: AppTheme.allBorderRadius,
             child: Container(
-              decoration: BoxDecoration(color: theme.colorScheme.tertiary),
+              decoration: BoxDecoration(
+                border: Border.all(color: theme.colorScheme.onSecondary, width: 1),
+                  image: DecorationImage(
+                      image: AssetImage(Assets.imagesAuthBtnBackground)
+                  )
+              ),
             ),
           ),
           Positioned(
@@ -43,7 +50,7 @@ class AddRecipeCard extends StatelessWidget {
                       Text(
                         "add_your_own_recipe".tr(),
                         style: theme.textTheme.headlineSmall?.copyWith(
-                            color: theme.colorScheme.onTertiary,
+                            color: theme.colorScheme.onSecondary,
                             fontWeight: FontWeight.w600),
                       ),
                       GestureDetector(
@@ -51,13 +58,14 @@ class AddRecipeCard extends StatelessWidget {
                           child: Icon(
                             Icons.highlight_remove_rounded,
                             size: 25.sp,
-                            color: theme.colorScheme.onTertiary,
+                            color: theme.colorScheme.onSecondary,
                           ))
                     ],
                   ),
                   SizedBox(height: 10.h),
                   Text("add_your_own_recipe_body".tr(),
-                      style: theme.textTheme.labelSmall),
+                      style: theme.textTheme.labelSmall?.copyWith(
+                          color: theme.colorScheme.onSecondary)),
                   SizedBox(height: 15.h),
                   SizedBox(
                     width: double.infinity/2,
@@ -70,7 +78,7 @@ class AddRecipeCard extends StatelessWidget {
                         style: ButtonStyle(
                           side: MaterialStateProperty.all<BorderSide>(
                             BorderSide(
-                                color: theme.colorScheme.onTertiary,
+                                color: theme.colorScheme.onSecondary,
                                 width: 1.w),
                           ),
                         ),
@@ -80,13 +88,13 @@ class AddRecipeCard extends StatelessWidget {
                             Text(
                               "submit_a_recipe".tr(),
                               style: theme.textTheme.headlineSmall?.copyWith(
-                                  color: theme.colorScheme.onTertiary,
+                                  color: theme.colorScheme.onSecondary,
                                   fontWeight: FontWeight.w600),
                             ),
                             Icon(
                               Icons.arrow_forward,
                               size: 20.sp,
-                              color: theme.colorScheme.onTertiary,
+                              color: theme.colorScheme.onSecondary,
                             )
                           ],
                         )),

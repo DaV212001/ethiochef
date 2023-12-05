@@ -17,13 +17,13 @@ import '../../../models/user.dart';
 import '../../../models/verification.dart';
 import '../../../services/payment_service.dart';
 import '../../../services/user_service.dart';
-import '../../../subscription/all_subscriptions.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/screen_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../widgets/auth/auth_btn.dart';
 import '../../../widgets/info_card.dart';
+import '../../subscription/all_subscriptions.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});

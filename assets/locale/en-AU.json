@@ -99,5 +99,24 @@
   "general": "ሓፈሻዊ",
   "status": "ኩነታት",
   "other": "ካልእ",
-  "edit": "ምዕራይ"
+  "edit": "ምዕራይ",
+
+  "breakfast": "ቁርሲ",
+  "lunch": "ምሳሕ",
+  "supper": "ድራር",
+  "dinner": "ድራር",
+  "home": "ገዛ",
+  "tap_here_to_add_an_image": "ምስሊ ንምውሳኽ ኣብዚ ጠውቕ",
+  "search": "ምድላይ",
+  "mark_as_read": "ኣንብብ",
+  "log_out": "ውጻእ",
+  "mark_all_as_read": "ንኹሉ ከምቲ ዝተነበበ ምልክት ግበር",
+  "read": "ኣንብብ",
+  "unread": "ዘይተነበበ",
+  "all": "ኩሎም",
+  "please_subscribe_to_get_full_access_of_the_app": "ምሉእ ትሕዝቶ ናይቲ ኣፕ ንምርካብ ሳብስክራይብ ክትገብሩ ንላቦ",
+  "subscribe": "ሳብስክራይብ ግበሩ",
+  "no_food_in_this_category": "ኣብዚ ምድብ መግቢ የለን",
+  "ingredients": "ንጥረ ነገራት",
+  "steps": "ስጉምትታት"
 }

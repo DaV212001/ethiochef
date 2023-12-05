@@ -8,29 +8,17 @@ import 'package:ethio_chef/services/user_service.dart' as u;
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../models/user.dart';
-import '../theme/app_theme.dart';
-import '../utils/screen_utils.dart';
-import '../widgets/main_button.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../models/user.dart';
+import '../../widgets/main_button.dart';
 
-
-Future<void> _launchUrl(String url, bool isTablet) async {
-  final Uri _url = Uri.parse(url);
-  if (!await launchUrl(_url)) {
-    SnackBar(
-        content: Text(
-          'open_link_failed'.tr(),
-          style: isTablet ? AppTheme.snackBarStyleTablet : AppTheme.snackBarStyle,
-        ));
-  }
-}
 
 
 class SubscriptionScreen extends StatefulWidget {
-  const SubscriptionScreen({super.key});
+  final Function()? onRefresh;
+  const SubscriptionScreen({super.key, required this.onRefresh});
 
   @override
   State<SubscriptionScreen> createState() => _SubscriptionScreenState();
@@ -165,6 +153,8 @@ Widget build(BuildContext context) {
                                                 )
                                             )
                                         );
+                                        widget.onRefresh!();
+                                        Navigator.of(context).pop();
                                       }
                                       else {
                                         ScaffoldMessenger.of(context).showSnackBar(

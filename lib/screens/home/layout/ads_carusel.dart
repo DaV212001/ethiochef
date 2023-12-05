@@ -9,7 +9,8 @@ import '../../../widgets/cached_image.dart';
 import '../../../widgets/home/ad_carousel_component.dart';
 
 class AdsCarousel extends StatefulWidget {
-  const AdsCarousel({super.key});
+  final List<Promotion> promotion;
+  const AdsCarousel({super.key, required this.promotion});
 
   @override
   State<AdsCarousel> createState() => _AdsCarouselState();

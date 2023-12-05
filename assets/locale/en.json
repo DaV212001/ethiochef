@@ -99,5 +99,24 @@
   "general": "General",
   "status": "Status",
   "other": "Other",
-  "edit": "Edit"
+  "edit": "Edit",
+
+  "breakfast": "Breakfast",
+  "lunch": "Lunch",
+  "supper": "Supper",
+  "dinner": "Dinner",
+  "home": "Home",
+  "tap_here_to_add_an_image": "Tap here to add an image",
+  "search": "Search",
+  "mark_as_read": "Read",
+  "log_out": "Log out",
+  "mark_all_as_read": "Mark all as read",
+  "read": "Read",
+  "unread": "Unread",
+  "all": "All",
+  "please_subscribe_to_get_full_access_of_the_app": "Please subscribe to get full access of the app",
+  "subscribe": "Subscribe",
+  "no_food_in_this_category": "No food in this category",
+  "ingredients": "Ingredients",
+  "steps": "Steps"
 }

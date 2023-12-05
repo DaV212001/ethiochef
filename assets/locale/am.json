@@ -98,5 +98,24 @@
   "general": "አጠቃላይ",
   "status": "ሁኔታ",
   "other": "ሌላ",
-  "edit": "አርትዕ"
+  "edit": "አርትዕ",
+
+  "breakfast": "ቁርስ",
+  "lunch": "ምሳ",
+  "supper": "እራት",
+  "dinner": "እራት",
+  "home": "ቤት",
+  "tap_here_to_add_an_image": "ምስል ለመጨመር እዚህ ይንኩ።",
+  "search": "ፈልግ",
+  "mark_as_read": "አንብብ",
+  "log_out": "ውጣ",
+  "mark_all_as_read": "ሁሉንም እንደተነበቡ ምልክት ያድርጉበት",
+  "read": "አንብብ",
+  "unread": "ያልተነበበ",
+  "all": "ሁሉም",
+  "please_subscribe_to_get_full_access_of_the_app": "የመተግበሪያውን ሙሉ መዳረሻ ለማግኘት እባክዎን ሰብስክራይብ ያድርጉ",
+  "subscribe": "ሰብስክራይብ ያድርጉ",
+  "no_food_in_this_category": "በዚህ ምድብ ውስጥ ምንም ምግብ የለም",
+  "ingredients": "ንጥረ ነገሮች",
+  "steps": "እርምጃዎች"
 }

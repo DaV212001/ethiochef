@@ -43,6 +43,20 @@ class FoodService{
       throw Exception('Failed to fetch food');
     }
   }
+  Future<List<Food>> fetchFoodByCategoryId(int categoryId) async {
+    final response = await http.get(
+        Uri.parse('${Constants.url}/user/food/category/$categoryId')
+    );
+    print(response.body);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final List<dynamic> foodList = data['data'];
+      return foodList.map((json) => Food.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to fetch food');
+    }
+  }
   Future<Food> fetchFoodById(int foodId) async {
 
     final accessToken = await AuthService.getAuthorizationToken();
