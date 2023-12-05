@@ -122,7 +122,6 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
            if(widget.type == "recipe"){
              Map<String, String> ingredientMap = {
                'ingredient': 'ingredient',
-               'quantity': 'quantity',
              };
              print("ingredientMap = $ingredientMap");
              for (int i = 0; i < itemControllers.length; i++) {
@@ -130,8 +129,7 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
                String quantity = quantityControllers[i].text;
 
                ingredientMap = {
-                 'ingredient': quantity,
-                 'quantity': ingredient,
+                 '${i+1}': quantity,
                };
                ingredients.add(ingredientMap);
 

@@ -28,7 +28,6 @@ class Recipe {
       });
 
   factory Recipe.fromJson(Map<String, dynamic> json) {
-    print("json $json");
     String? imagePath = json['image'];
     String videoPath = json['video'];
     File? image;

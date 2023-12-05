@@ -2,10 +2,12 @@
 import 'package:ethio_chef/screens/home/layout/add_recipe_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/promotion.dart';
 import '../../models/category.dart';
 import '../../models/food.dart';
+import '../../services/authorization_service.dart';
 import '../../services/category_service.dart';
 import '../../services/meal_service.dart';
 import '../../services/promotion_service.dart';
@@ -47,11 +49,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       final mealService = MealService();
       final promotionService = PromotionService();
       final categoryData = await categoryService.fetchCategories();
+      print("fetch category done");
       final breakFast = await mealService.fetchAllBreakfast();
+      print("fetch breakFast done");
       final lunch = await mealService.fetchAllLunch();
+      print("fetch lunch done");
       final superMeal = await mealService.fetchAllSuper();
+      print("fetch superMeal done");
       final dinner = await mealService.fetchAllDinner();
+      print("fetch dinner done");
       final promotionsData = await promotionService.fetchPromotions();
+      print("fetch promotionsData done");
       return [categoryData, breakFast, lunch, superMeal, dinner,promotionsData];
     } catch (error) {
       rethrow;
@@ -72,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             if (snapshot.hasError) {
               return Center(
                   child: InfoCard(
-                      onPress: (){
+                      onPress: () async {
                         setState(() {
                           _future = fetchData();
                         });

@@ -49,7 +49,6 @@ class _FoodCardState extends State<FoodCard> {
         isLoading = false;
         hasSubscribed = true;
         print("hasSubscribed $hasSubscribed");
-        user = loggedInData[0];
 
         print("========================================================================================");
         print(user.firstName);

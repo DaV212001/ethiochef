@@ -3,6 +3,7 @@ import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/screens/category/categories_screen.dart';
 import 'package:ethio_chef/screens/competition/competitions_screen.dart';
 import 'package:ethio_chef/screens/home/home_screen.dart';
+import 'package:ethio_chef/screens/profile/layout/recipe_status/my_recipe.dart';
 import 'package:ethio_chef/screens/profile/profile_screen.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/cupertino.dart';
@@ -69,7 +70,8 @@ class _MainScreenState extends State<MainScreen> {
       // SavedRecipesScreen(),
       // NutritionScreen(),
       CompetitionsScreen(),
-      ProfileScreen()
+      // ProfileScreen()
+      MyRecipes()
     ];
   }
 

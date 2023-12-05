@@ -32,9 +32,7 @@ class Category {
     }
     String image = json['image'];
     String i = clearPath(image);
-    print("============================== $i");
     String thumbnail = Constants.ImageAPI + i;
-    print("============================== $thumbnail");
     return Category(
         id: json['id'],
         name: json['name'][Language.getLocaleCode()] == ""?json['name']["en"]:json['name'][Language.getLocaleCode()]?? json['name']["en"],

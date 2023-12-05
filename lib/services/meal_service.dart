@@ -8,7 +8,9 @@ import 'package:http/http.dart' as http;
 
 class MealService{
   Future<List<Food>> fetchAllBreakfast() async {
+    print("fetch breakfast");
     final access_token = await AuthService.getAuthorizationToken();
+    print("fetch access_token");
     print("access_token $access_token");
     final response = await http.get(
       Uri.parse('${Constants.url}/user/food/breakfast'),

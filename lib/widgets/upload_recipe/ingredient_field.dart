@@ -31,12 +31,12 @@ class IngredientField extends StatelessWidget {
             controller: itemController,
             hint: "ingredient".tr(),
           ),
-          InputField(
-            height: 75,
-            width: 135,
-            controller: quantityController,
-            hint: "Quantity",
-          ),
+          // InputField(
+          //   height: 75,
+          //   width: 135,
+          //   controller: quantityController,
+          //   hint: "Quantity",
+          // ),
           IconButton(
             icon: SvgIcon(
                 color: isOnlyIngredient
