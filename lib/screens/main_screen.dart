@@ -71,7 +71,7 @@ class _MainScreenState extends State<MainScreen> {
       // NutritionScreen(),
       CompetitionsScreen(),
       // ProfileScreen()
-      MyRecipes()
+      MyRecipes()// TODO MAKE PROFILE SCREEN THE BUILD SCREEN WHEN DONE
     ];
   }
 
