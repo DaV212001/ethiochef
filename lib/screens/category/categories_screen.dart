@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 import '../../models/category.dart';
@@ -14,9 +15,11 @@ class CategoriesScreen extends StatefulWidget {
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
   Future? _future;
+bool isLoading = false;
 
   Future<dynamic> fetchSubCatData() async {
     try {
+      print('subCategoryService');
       final categoryService = CategoryService();
       final categoryData = await categoryService.fetchCategories();
       return categoryData;
@@ -27,8 +30,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   @override
   void initState() {
     _future = fetchSubCatData();
+
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -59,4 +64,5 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               return CategoryCustomTab(category: snapshot.data as List<Category>);
             }));
   }
+
 }

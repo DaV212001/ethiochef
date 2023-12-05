@@ -59,7 +59,7 @@ class _MainScreenState extends State<MainScreen> {
         duration: Duration(milliseconds: 200),
       ),
       navBarHeight: 60.h,
-      navBarStyle: NavBarStyle.style14,
+      navBarStyle: NavBarStyle.style2,
     );
   }
 
