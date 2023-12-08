@@ -13,7 +13,7 @@ class SmallLabelButton extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10)),
-        // color: color ?? theme.colorScheme.primaryContainer.withOpacity(0.8),
+        color: color ?? theme.colorScheme.primaryContainer.withOpacity(0.5),
       ),
       child: Ink(
         child: InkWell(
@@ -22,13 +22,12 @@ class SmallLabelButton extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
             child: Text(
               text,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.black,
-              ),
+              style: theme.textTheme.headlineSmall?.copyWith(
+                  color: theme.colorScheme.onTertiary,
+                  fontWeight: FontWeight.w500),
               textAlign: TextAlign.center,
             ),
           ),

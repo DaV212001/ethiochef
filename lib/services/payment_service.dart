@@ -21,7 +21,8 @@ class PaymentService {
       "phone_number": phone_number
     }));
     final response =
-    await http.post(Uri.parse("https://apiv2.ethiochef.com/pay/chapa"),
+    await http.post(
+        Uri.parse("https://apiv2.ethiochef.com/pay/chapa"),
         headers: {
           'Content-Type': 'application/json',
         },

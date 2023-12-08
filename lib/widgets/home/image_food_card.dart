@@ -12,6 +12,8 @@ import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import '../../screens/auth/auth_screen.dart';
 import '../../services/authorization_service.dart';
 import '../../services/user_service.dart';
+import '../small_label_button.dart';
+import 'category_label_carousel.dart';
 
 class ImageFoodCard extends StatefulWidget {
   static int foodCardType = 2;
@@ -62,40 +64,32 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
       );
     }
     return GestureDetector(
-      onTap: () {
-        print("====================================================================================================");
-      print("isLoggedIn $isLoggedIn");
-        print("hasSubscribed $hasSubscribed"); print("====================================================================================================");
-
-      if(isLoggedIn == true && hasSubscribed == true) {
-          pushNewScreen(
-            context,
-            withNavBar: false,
-            screen: RecipeScreen(food: widget.food),
-          );
-        }else if(hasSubscribed == false) {
+      onTap: () async {
+        print("Clicked show recipe");
+        setState(() {
+          isLoading = true;
+        });
+        bool status = await AuthService.isUserLoggedIn();
+        print("Logged in status = $status");
+        if(status == false){
+          setState(() {
+            isLoading = false;
+          });
           SnackBar logIn =SnackBar(
               padding: EdgeInsets.symmetric(vertical: 20),
               content: Text(
                   'Please subscribe to see ingredients and steps'.tr()
               ));
           ScaffoldMessenger.of(context).showSnackBar(logIn);
-          pushNewScreen(
-            context,
-            withNavBar: false,
-            screen: AuthScreen(isSignIn: true),
-          );
+          loginFunction();
         }else{
-          SnackBar logIn =SnackBar(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              content: Text(
-                  'Please log in to see ingredients and steps'.tr()
-              ));
-          ScaffoldMessenger.of(context).showSnackBar(logIn);
+          setState(() {
+            isLoading = false;
+          });
           pushNewScreen(
             context,
             withNavBar: false,
-            screen: AuthScreen(isSignIn: true),
+            screen: RecipeScreen(food: widget.food),
           );
         }
 
@@ -114,14 +108,16 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
               right: 0,
               child: Container(
                 height: 75,
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
                 decoration: BoxDecoration(
                     color: theme.colorScheme.onSecondaryContainer.withOpacity(0.7)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(height: 5),
+                    SizedBox(
+                      height: 1.h
+                    ),
                     Text(
                       widget.food.name,
                       softWrap: true,
@@ -129,20 +125,12 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
                       style: theme.textTheme.headlineSmall?.copyWith(
                           color: theme.colorScheme.onTertiary,
                           fontWeight: FontWeight.w500),
-                      textAlign: TextAlign.start,
+                      textAlign: TextAlign.start
                     ),
                     SizedBox(
-                      height: 5.h,
+                      height: 2.h
                     ),
-                    Text(
-                      widget.food.mealTime.toString(),
-                      style: theme.textTheme.headlineSmall?.copyWith(
-                          color: theme.colorScheme.onTertiary,
-                          fontWeight: FontWeight.w500),
-                      textAlign: TextAlign.start,
-                    ),
-
-                    // CategoryLabelCarousel(categories: widget.food.menuTimes)
+                    SmallLabelButton(text: widget.food.mealTime.toString(),onTap: (){},)
                   ],
                 ),
               ),
@@ -150,6 +138,14 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
           ],
         ),
       ),
+    );
+  }
+
+  void loginFunction(){
+    pushNewScreen(
+      context,
+      withNavBar: false,
+      screen: AuthScreen(isSignIn: true),
     );
   }
 }

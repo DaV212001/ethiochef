@@ -35,7 +35,6 @@ class _NotificationCardState extends State<NotificationCard> {
 
       startActionPane: ActionPane(
         motion: const ScrollMotion(),
-
         dismissible: DismissiblePane(onDismissed: () {}),
 
         children: widget.isRead == false? [
@@ -46,7 +45,7 @@ class _NotificationCardState extends State<NotificationCard> {
               widget.delete();
               widget.reFresh();
             },
-            backgroundColor: Color(0xFFFE4A49),
+            backgroundColor: theme.colorScheme.primaryContainer,
             foregroundColor: Colors.white,
             icon: Icons.check_circle,
             label: 'mark_as_read'.tr(),

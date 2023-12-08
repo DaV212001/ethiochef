@@ -9,11 +9,11 @@ class Recipe {
   String? prepTime;
   String? servingSize;
   List<String>? steps;
-  Map<String, String>? stepToCreate = {};
+  Map<String, dynamic> stepToCreate;
   File? image;
   File? video;
   List<Map<String, String>>? ingredient = [];
-  Map<String, String>? ingredientToCreate = {};
+  Map<String, dynamic> ingredientToCreate;
 
   Recipe(
       {
@@ -24,7 +24,9 @@ class Recipe {
         this.prepTime,
         this.servingSize,
         this.image,
-        this.video
+        this.video,
+        required this.ingredientToCreate,
+        required this.stepToCreate,
       });
 
   factory Recipe.fromJson(Map<String, dynamic> json) {
@@ -52,7 +54,9 @@ class Recipe {
       steps: List<String>.from(json['steps']),
       image: image,
       ingredient: ingredientList,
-      video: video
+      video: video,
+      ingredientToCreate: json['ingredientToCreate'],
+      stepToCreate: json['stepToCreate']
     );
   }
 
@@ -65,7 +69,9 @@ class Recipe {
       'steps': steps,
       'image': image?.path, // Store the file path instead of the File object
       'ingredient': ingredient ?? [],
-      'video': video?.path
+      'video': video?.path,
+      'ingredientToCreate': ingredientToCreate,
+      'stepToCreate': stepToCreate
     };
   }
 
@@ -74,11 +80,11 @@ class Recipe {
     return {
       'title': name,
       'description': description,
-      'cooking_time': prepTime,
-      'servingSize': servingSize,
+      'cooking_time': int.parse(prepTime!),
+      'serving': int.parse(servingSize!),
       'steps': stepToCreate,
-      'image': image?.path, // Store the file path instead of the File object
-      'ingredients': ingredientToCreate ?? []
+      'image': image?.path,
+      'ingredients': ingredientToCreate
     };
   }
   static List<Recipe> savedRecipes = [];
@@ -90,7 +96,6 @@ class Recipe {
 
 
   static List<Recipe> getSavedRecipes() {
-
     return savedRecipes;
   }
   static void deleteRecipe(Recipe recipe) {

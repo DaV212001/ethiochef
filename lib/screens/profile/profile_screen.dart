@@ -28,6 +28,9 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool isLoggedIn = false;
+  String first_name = '';
+  String last_name = '';
+  String phone = '';
   late User user = User(lastName: '', firstName: '');
   void getUserStatus() async {
     bool status = await AuthService.isUserLoggedIn();
@@ -40,28 +43,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool isLoading = false;
   @override
   void initState() {
-    getUserStatus();
+    print("Fetch data");
     _future = fetchData();
     super.initState();
   }
   Future<dynamic> fetchData() async {
+    print("Fetching data");
     try {
       print('fetch user');
       final userService = UserService();
       var userData = await userService.fetchUserProfile();
-      print("userData $userData");
-      if(userData[1] == false ){
-        setState(() {
-          isLoading = false;
-          print("userData ${userData[0]}");
-          user = userData[0];
-          print("========================================================================================");
-          print(user.firstName);
-          print(user.lastName);
-          print(user.phone);
-          print("========================================================================================");
-        });
-      }
       print("userData $userData");
       return userData;
     } catch (error) {
@@ -97,67 +88,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       closeBtn: false
                   ));
             }
-            if(snapshot.data[1] == false){
-              print("snapshot data ${snapshot.data[1]}");
+            if(snapshot.data == "User is not subscribed"){
+              print("snapshot data ${snapshot.data}");
               return Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('please_subscribe_to_get_full_access_of_the_app'.tr()),
-                    MainButton(
-                        width: 200,
-                        text: 'subscribe'.tr(),
-                        onPress: ()async{
-                          await showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (context) {
-                              return WillPopScope(
-                                onWillPop: () async {
-                                  return true;
-                                },
-                                child: Dialog(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.r),
-                                  ),
-                                  backgroundColor: Theme.of(context).cardColor,
-                                  child: InfoCard(
-                                    onPress: () async {
-                                      await pushNewScreen(context,
-                                          screen: AllSubscriptions(returnPrice: (price){
-                                            setState(() {
-                                              amount = price;
-                                            });
-                                          },)
-                                      );
-                                      print("amount $amount");
-                                      Verification verification =
-                                      await PaymentService().getChapaCheckoutLink(amount, '', user.firstName, user.lastName, user.phone.toString());
-
-                                      print("PaymentService");
-                                      pushNewScreen(context,
-                                          screen: PaymentScreen(url: verification.checkoutUrl!)
-                                      );
-
-                                      bool notpaid = await PaymentService().verifyChapaPayment(verification.txref!);
-                                      print(notpaid);
-                                    },
-                                    buttonText: "Pay Subscription",
-                                    closeText: "Pay Later",
-                                    infoBody: "Pay your monthly, yearly or weekly subscription",
-                                    infoTitle: "Subscriptions payment",
-                                    infoImage: "assets/images/chapa.png",
-                                    closeBtn: true,
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        })
-                  ],
-                ),
-              );
+                  child: InfoCard(
+                      onPress: ()async{
+                        await  getUserData();
+                        await pushNewScreen(context,
+                            screen: AllSubscriptions(
+                              first_name: first_name,
+                              last_name: last_name,
+                              phone: phone,
+                              isSignUp: true,
+                              returnPrice: (price){
+                                setState(() {
+                                  amount = price;
+                                });
+                              },)
+                        );
+                      },
+                      infoTitle: "User is not subscribed".tr(),
+                      infoBody: "subscribe".tr(),
+                      closeText: "",
+                      buttonText: "subscribe".tr(),
+                      infoImage: "",
+                      closeBtn: false
+                  ));
             }
             if(snapshot.data == null){
               print("snapshot data ${snapshot.data}");
@@ -208,7 +164,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     isLoading: isLoading,
                     text: "log_out".tr(),
                     onPress: () async {
-
+                      UserService service = UserService();
+                      service.logOut(user.id!);
                     }
                     ),
               ),
@@ -225,5 +182,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       ),
     );
+  }
+  Future<void> getUserData() async {
+    UserService service = UserService();
+    User user = await service.fetchLoggedInUser();
+    setState(() {
+      first_name = user.firstName;
+      last_name = user.lastName;
+      phone = user.phone!;
+    });
   }
 }

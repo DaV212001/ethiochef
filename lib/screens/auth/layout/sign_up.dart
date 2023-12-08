@@ -120,54 +120,21 @@ class _SignUpState extends State<SignUp> {
             text: "sign_up_button".tr(),
             onPress: () async {
               if (_formKey.currentState!.validate()) {
-                await showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (context) {
-                    return WillPopScope(
-                      onWillPop: () async {
-                        return true;
-                      },
-                      child: Dialog(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.r),
-                        ),
-                        backgroundColor: Theme.of(context).cardColor,
-                        child: InfoCard(
-                          onPress: () async {
-                            await pushNewScreen(context,
-                                screen: AllSubscriptions(returnPrice: (price){
-                                  setState(() {
-                                    amount = price;
-                                  });
-                                },)
-                            );
-                            print("amount $amount");
-                            Verification verification =
-                            await PaymentService().getChapaCheckoutLink(amount, '', firstNameController.text, lastNameController.text, "0"+phoneController.text);
-
-                            print("PaymentService");
-                            pushNewScreen(context,
-                                screen: PaymentScreen(url: verification.checkoutUrl!)
-                            );
-
-                            bool notpaid = await PaymentService().verifyChapaPayment(verification.txref!);
-                            print(notpaid);
-                          },
-                          buttonText: "Pay Subscription",
-                          closeText: "Pay Later",
-                          infoBody: "Pay your monthly, yearly or weekly subscription",
-                          infoTitle: "Subscriptions payment",
-                          infoImage: "assets/images/chapa.png",
-                          closeBtn: true,
-                        ),
-                      ),
-                    );
-                  },
-                );
                 setState(() {
                   isLoading = true;
                 });
+                await pushNewScreen(context,
+                    screen: AllSubscriptions(
+                      first_name: firstNameController.text,
+                      last_name: lastNameController.text,
+                      phone: "0"+phoneController.text,
+                      isSignUp: true,
+                      returnPrice: (price){
+                        setState(() {
+                          amount = price;
+                        });
+                      },)
+                );
                 await _registration();
               }
             }

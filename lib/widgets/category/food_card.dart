@@ -8,6 +8,7 @@ import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:overflow_text_animated/overflow_text_animated.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../../models/user.dart';
@@ -31,47 +32,9 @@ class FoodCard extends StatefulWidget {
 }
 
 class _FoodCardState extends State<FoodCard> {
-
-  bool isLoggedIn = false;
-  bool hasSubscribed = false;
-  bool isLoading = true;
-  int amount = 0;
-  late User user = User(lastName: '', firstName: '');
-  void getUserStatus() async {
-    bool status = await AuthService.isUserLoggedIn();
-    print("Logged in status = $status");
-    print('fetch user');
-    final userService = UserService();
-    var loggedInData = await userService.fetchUserProfile();
-    print("loggedInData = $loggedInData");
-    if(loggedInData[1] == false ){
-      setState(() {
-        isLoading = false;
-        hasSubscribed = true;
-        print("hasSubscribed $hasSubscribed");
-
-        print("========================================================================================");
-        print(user.firstName);
-        print(user.lastName);
-        print(user.phone);
-        print("========================================================================================");
-      });
-    }
-    if(loggedInData == null ){
-      setState(() {
-        isLoading = false;
-        isLoggedIn = false;
-      });
-    }
-    setState(() {
-      isLoading = false;
-    });
-  }
+  bool isLoading = false;
   @override
   void initState() {
-    print("Get status");
-    getUserStatus();
-    print("Get status Complete");
     super.initState();
   }
   Widget build(BuildContext context) {
@@ -104,87 +67,37 @@ class _FoodCardState extends State<FoodCard> {
                   child: info(theme)),
             ],
           ),
-          isLoading == true?CircularProgressIndicator():
           MainButton(
+            isLoading: isLoading,
             height: 60.h,
             width: 200.w,
             text: "show_recipe".tr(),
             onPress: () async {
-              if(hasSubscribed == true ) {
-                pushNewScreen(
-                  context,
-                  withNavBar: false,
-                  screen: RecipeScreen(food: widget.food),
-                );
-              }else if(hasSubscribed == false) {
-                print(user.firstName);
-                print(user.lastName);
-                print(user.phone);
+              print("Clicked show recipe button");
+              setState(() {
+                isLoading = true;
+              });
+              bool status = await AuthService.isUserLoggedIn();
+              print("Logged in status = $status");
+              if(status == false){
+                setState(() {
+                  isLoading = false;
+                });
                 SnackBar logIn =SnackBar(
                     padding: EdgeInsets.symmetric(vertical: 20),
                     content: Text(
                         'Please subscribe to see ingredients and steps'.tr()
                     ));
                 ScaffoldMessenger.of(context).showSnackBar(logIn);
-                await showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (context) {
-                  return WillPopScope(
-                    onWillPop: () async {
-                      return true;
-                    },
-                    child: Dialog(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.r),
-                      ),
-                      backgroundColor: Theme.of(context).cardColor,
-                      child: InfoCard(
-                        onPress: () async {
-
-                          await pushNewScreen(context,
-                              screen: AllSubscriptions(returnPrice: (price){
-                                setState(() {
-                                  amount = price;
-                                });
-                              },)
-                          );
-
-
-                          print("amount $amount");
-                          Verification verification =
-                          await PaymentService().getChapaCheckoutLink(amount, '', user.firstName, user.lastName, user.phone.toString());
-
-                          print("PaymentService");
-                          pushNewScreen(context,
-                              screen: PaymentScreen(url: verification.checkoutUrl!)
-                          );
-
-                          bool notpaid = await PaymentService().verifyChapaPayment(verification.txref!);
-                          print(notpaid);
-                        },
-                        buttonText: "Pay Subscription",
-                        closeText: "Pay Later",
-                        infoBody: "Pay your monthly, yearly or weekly subscription",
-                        infoTitle: "Subscriptions payment",
-                        infoImage: "assets/images/chapa.png",
-                        closeBtn: true,
-                      ),
-                    ),
-                  );
-                },
-                );
-              }else if(isLoggedIn == false) {
-                SnackBar logIn =SnackBar(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    content: Text(
-                        'Please log in to see ingredients and steps'.tr()
-                    ));
-                ScaffoldMessenger.of(context).showSnackBar(logIn);
+                loginFunction();
+              }else{
+                setState(() {
+                  isLoading = false;
+                });
                 pushNewScreen(
                   context,
                   withNavBar: false,
-                  screen: AuthScreen(isSignIn: true),
+                  screen: RecipeScreen(food: widget.food),
                 );
               }
             },
@@ -199,12 +112,26 @@ class _FoodCardState extends State<FoodCard> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Text(widget.food.name,
-            softWrap: true,
-            overflow: TextOverflow.visible,
+        RichText(
+          text: TextSpan(
             style: theme.textTheme.headlineMedium?.copyWith(
-                color: theme.colorScheme.tertiary,
-                fontWeight: FontWeight.w500)),
+              color: theme.colorScheme.tertiary,
+              fontWeight: FontWeight.w500,
+            ),
+            children: [
+              TextSpan(text: widget.food.name.substring(0, 11)),
+              TextSpan(text: '\n', style: TextStyle(color: Colors.transparent)),
+              TextSpan(text: widget.food.name.substring(12)),
+            ],
+          ),
+        ),
+        // Text(widget.food.name,
+        //     maxLines: widget.food.name.length > 10 ? 2 : 1,
+        //     softWrap: true,
+        //     overflow: TextOverflow.visible,
+        //     style: theme.textTheme.headlineMedium?.copyWith(
+        //         color: theme.colorScheme.tertiary,
+        //         fontWeight: FontWeight.w500)),
 
         Container(
             height: 35.h,
@@ -265,6 +192,13 @@ class _FoodCardState extends State<FoodCard> {
               )
             ])),
       ],
+    );
+  }
+  void loginFunction(){
+    pushNewScreen(
+      context,
+      withNavBar: false,
+      screen: AuthScreen(isSignIn: true),
     );
   }
 }

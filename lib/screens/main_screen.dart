@@ -11,6 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
+import '../services/authorization_service.dart';
+import 'auth/auth_screen.dart';
+
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -59,7 +62,7 @@ class _MainScreenState extends State<MainScreen> {
         duration: Duration(milliseconds: 200),
       ),
       navBarHeight: 60.h,
-      navBarStyle: NavBarStyle.style2,
+      navBarStyle: NavBarStyle.style8,
     );
   }
 
@@ -67,11 +70,8 @@ class _MainScreenState extends State<MainScreen> {
     return [
       HomeScreen(),
       CategoriesScreen(),
-      // SavedRecipesScreen(),
-      // NutritionScreen(),
       CompetitionsScreen(),
-      // ProfileScreen()
-      MyRecipes()// TODO MAKE PROFILE SCREEN THE BUILD SCREEN WHEN DONE
+      ProfileScreen()
     ];
   }
 

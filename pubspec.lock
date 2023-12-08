@@ -693,6 +693,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  overflow_text_animated:
+    dependency: "direct main"
+    description:
+      name: overflow_text_animated
+      sha256: "0679a0449cd8623cc746ffb9425397f42d42d354611b4ec6adb68fb81343982a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.5"
   package_info_plus:
     dependency: transitive
     description:

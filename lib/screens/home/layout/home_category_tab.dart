@@ -51,7 +51,7 @@ class HomeCategoryTab extends StatelessWidget {
               Tab(text: 'breakfast'.tr()),
               Tab(text: 'lunch'.tr()),
               Tab(text: 'supper'.tr()),
-              Tab(text: 'dinner'.tr()),
+              Tab(text: 'dinner'.tr())
             ],
           ),
           SizedBox(
@@ -72,10 +72,11 @@ class HomeCategoryTab extends StatelessWidget {
     );
   }
 
-  // List<Widget> getTabs() {
+  // List<Widget> getTabs(int index) {
   //   return List.filled(
   //     4,
   //     HorizontalFoodCarousel2(
+  //       type: index,
   //       breakfast: breakfast,
   //       dinner: dinner,
   //       lunch: lunch,

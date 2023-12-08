@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/language.dart';
+import 'package:ethio_chef/screens/auth/auth_screen.dart';
 import 'package:ethio_chef/screens/main_screen.dart';
 import 'package:ethio_chef/screens/splash_screen.dart';
 import 'package:ethio_chef/services/authorization_service.dart';
@@ -83,7 +84,7 @@ class _EthioChefState extends State<EthioChef> {
               homeScreen = SplashScreen();
             } else {
               print("To SignupScreen $isFirstTimeUser");
-              homeScreen = MainScreen();
+              homeScreen = AuthScreen();
             }
         return ScreenUtilInit(
           designSize: const Size(412, 892),//Never change this value

@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:crypto/crypto.dart' as crypto;
 import 'package:chewie/chewie.dart';
 import 'package:cloudinary_flutter/cloudinary_context.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -36,26 +36,65 @@ class _RecipeDescriptionState extends State<RecipeDescription> {
   @override
   void initState() {
     setVideo(widget.res.video);
-    CloudinaryContext.cloudinary = Cloudinary.fromCloudName(cloudName: '<cloud_name>');
+    var cloudinary =
+    Cloudinary.fromStringUrl('cloudinary://941176959166696:7rCaVVbh-f77NPgMEGZdIG8gUBA@ttreeadvert');
     super.initState();
   }
-  // upload() async{
-  //   var url = Uri.parse('https://api.cloudinary.com/v1_1/ttreeadvert/upload');
-  //
-  //   final request = http.MultipartRequest('POST', url)
-  //   ..fields['upload_preset'] = '<preset_name>'
-  //   ..fields.add(await http.MultipartFile.fromPath('file', widget.res.video!.path));
-  //   final response = await request.send();
-  //   if (response.statusCode == 200) {
-  //   final responseData = await response.stream.toBytes();
-  //   final responseString = String.fromCharCodes(responseData);
-  //   final jasonMap = jsonDecode(responseString);
-  //   // setState(() {
-  //   // final url = jasonMap['url'];
-  //   // _imageUrl = url;
-  //   // });
-  //   // }
-  // }
+  String generateSignature(String apiKey, String apiSecret, String timestamp, String path) {
+    final dataToSign = '$apiKey$timestamp$path';
+    print("dataToSign    $dataToSign");
+    final signatureBytes = crypto.Hmac(crypto.sha256, utf8.encode(apiSecret)).convert(utf8.encode(dataToSign));
+    print("signatureBytes    $signatureBytes");
+    return base64Encode(signatureBytes.bytes);
+  }
+  Future<void> upload() async {
+    print("uploading 1");
+    final url = Uri.parse('https://api.cloudinary.com/v1_1/ttreeadvert/upload');
+    print("uploading 2");
+    final request = http.MultipartRequest('POST', url)
+    ..fields['upload_preset'] = '<present>'
+      ..fields['api_key'] = "941176959166696"
+      ..fields['public_id'] = "olympic_flag"
+      ..fields['timestamp'] = DateTime.now().millisecondsSinceEpoch.toString()
+      ..fields['signature'] = generateSignature(
+          "941176959166696", "7rCaVVbh-f77NPgMEGZdIG8gUBA", DateTime.now().millisecondsSinceEpoch.toString(), url.path
+      )
+    ..files.add(await http.MultipartFile.fromPath('file', widget.res.video!.path));
+
+
+    print("uploading 3");
+
+
+    final response = await request.send();
+
+
+
+    print("uploading 4");
+
+
+    try {
+      final responseData = await response.stream.toBytes();
+      print("uploading 5");
+      final responseString = String.fromCharCodes(responseData);
+      print("uploading 6");
+      print("Response body: $responseString");
+      print("uploading 7");
+    } catch (error) {
+      print("Error 1");
+      print("Error reading response body: $error");
+    }
+    print("uploading 8");
+    print("Response body == ${response.statusCode} == Response body");
+    if (response.statusCode == 200) {
+      final responseData = await response.stream.toBytes();
+      final responseString = String.fromCharCodes(responseData);
+      final jasonMap = jsonDecode(responseString);
+      // setState(() {
+      //   final url = jasonMap['url'];
+      //   _imageUrl = url;
+      // });
+    }
+  }
   void setVideo(File? video) {
     if (widget.res.video == null) {
       print("widget.res.video is Null");
@@ -271,6 +310,9 @@ class _RecipeDescriptionState extends State<RecipeDescription> {
                   MainButton(
                     text: 'Submit',
                     onPress: ()async{
+                      print("Submit");
+                      await upload();
+                      print("upload");
                       RecipeService service = RecipeService();
                       service.createFood(widget.res);
                     },

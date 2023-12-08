@@ -24,7 +24,16 @@ class UserService {
     print("Response Body  == ${response.body} == Response Body");
     return response;
   }
-
+  Future<http.Response> logOut(int index) async {
+    var response = await http.post(
+        Uri.parse("${Constants.url}/user/logout"),
+        headers: {"Content-type": "application/json"},
+        body: {
+          "user_id": index
+        });
+    print("Response Body  == ${response.body} == Response Body");
+    return response;
+  }
   Future<dynamic> fetchLoggedInUser() async {
     bool status = await AuthService.isUserLoggedIn();
     print("Logged in status = $status");
@@ -265,12 +274,8 @@ class UserService {
     bool status = await AuthService.isUserLoggedIn();
     print("Logged in status = $status");
     print('fetch user');
-    final userService = UserService();
-    var loggedInData = await userService.fetchLoggedInUser();
-    print("User data $loggedInData");
     if(status == true){
     var access_token = await AuthService.getAuthorizationToken();
-    User user = await fetchLoggedInUser();
     final response = await http.get(
       Uri.parse('${Constants.url}/user/profile'),
       headers: {
@@ -284,7 +289,7 @@ class UserService {
     if(jsonData['message'] == "User is not subscribed"){
       print("jsonData['message']");
       print(jsonData['message']);
-      return [loggedInData, false];
+      return "User is not subscribed";
     }
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
