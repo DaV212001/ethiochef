@@ -101,7 +101,7 @@ class _VideoFieldState extends State<VideoField> {
             color: theme.unselectedWidgetColor.withOpacity(0.85),
           ),
           SizedBox(width: 10),
-          Text("Tap here to add a video.",
+          Text("tap_here_to_add_a_video".tr(),
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.unselectedWidgetColor.withOpacity(0.85),
               ))
@@ -143,7 +143,7 @@ class _VideoFieldState extends State<VideoField> {
     var fileSize = videoPath.length; // Get the file size in bytes
     if (fileSize >= maxFileSizeInBytes) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("video_size_limit_text".tr())),
+        SnackBar(content: Text("video_file_size_limit".tr())),
       );
       setState(() {
         isLoadingVideo = false;

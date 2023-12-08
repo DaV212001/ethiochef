@@ -105,7 +105,7 @@ class _ImageFieldState extends State<ImageField> {
                                   theme.unselectedWidgetColor.withOpacity(0.85),
                             ),
                             SizedBox(width: 10),
-                            Text("Tap here to add an image.",
+                            Text("tap_here_to_add_an_image".tr(),
                                 style: theme.textTheme.bodyMedium?.copyWith(
                                   color: theme.unselectedWidgetColor
                                       .withOpacity(0.85),

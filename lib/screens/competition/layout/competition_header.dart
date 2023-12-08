@@ -28,7 +28,7 @@ class CompetitionHeader extends StatelessWidget {
                     ?.copyWith(color: theme.colorScheme.primary),
               ),
               Text(
-                "_votes".tr(args: [competition.votes.toString()]),
+                "votes".tr(args: [competition.votes.toString()]),
                 style: theme.textTheme.labelMedium
                     ?.copyWith(color: theme.unselectedWidgetColor),
                 textAlign: TextAlign.start,
@@ -37,7 +37,7 @@ class CompetitionHeader extends StatelessWidget {
           ),
         ),
         Text(
-          "_days_left".tr(args: [competition.daysLeft.toString()]),
+          "days_left".tr(args: [competition.daysLeft.toString()]),
           style: theme.textTheme.labelMedium
               ?.copyWith(color: theme.unselectedWidgetColor),
           textAlign: TextAlign.start,

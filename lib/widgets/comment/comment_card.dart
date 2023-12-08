@@ -36,8 +36,7 @@ class CommentCard extends StatelessWidget {
           left: isTablet ? 5.w : 10.w),
       decoration: BoxDecoration(
         color: theme.cardColor,
-        borderRadius: BorderRadius.all(Radius.circular(10.r)),
-        border: Border.all(color: theme.primaryColor.withOpacity(0.3))
+        borderRadius: BorderRadius.all(Radius.circular(5.r)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

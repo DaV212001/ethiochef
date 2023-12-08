@@ -12,14 +12,16 @@ class RecipeSteps extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: steps!.entries.map((ingredient) {
         return Flex(
           direction: Axis.vertical,
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            // Text(ingredient.key),
-            // const SizedBox(width: 8.0),
+            Text(ingredient.key),
+            const SizedBox(width: 8.0),
             Text(
               ingredient.value,
               softWrap: true,

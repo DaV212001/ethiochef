@@ -9,6 +9,7 @@ import '../../../utils/place_holder_data.dart';
 import '../../../utils/screen_utils.dart';
 import '../../../widgets/header.dart';
 import '../../../widgets/home/image_food_card.dart';
+import 'food_carousel.dart';
 
 class CategoryCarousel extends StatefulWidget {
   final List<Category> category;
@@ -43,7 +44,7 @@ class _CategoryCarouselState extends State<CategoryCarousel> {
           SizedBox(
             height:height,
             width: double.infinity,
-            child: SubCategoryCarousel(
+            child: FoodCarousel(
               categoryId: widget.category[index].id,
             ),
           )

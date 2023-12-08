@@ -10,8 +10,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
+import '../../models/user.dart';
+import '../../models/verification.dart';
 import '../../screens/auth/auth_screen.dart';
+import '../../screens/auth/layout/payment_screen.dart';
+import '../../screens/subscription/all_subscriptions.dart';
 import '../../services/authorization_service.dart';
+import '../../services/payment_service.dart';
+import '../../services/user_service.dart';
+import '../info_card.dart';
 
 class FoodCard extends StatefulWidget {
   static int foodCardType = 1;
@@ -26,18 +33,45 @@ class FoodCard extends StatefulWidget {
 class _FoodCardState extends State<FoodCard> {
 
   bool isLoggedIn = false;
+  bool hasSubscribed = false;
   bool isLoading = true;
+  int amount = 0;
+  late User user = User(lastName: '', firstName: '');
   void getUserStatus() async {
     bool status = await AuthService.isUserLoggedIn();
     print("Logged in status = $status");
+    print('fetch user');
+    final userService = UserService();
+    var loggedInData = await userService.fetchUserProfile();
+    print("loggedInData = $loggedInData");
+    if(loggedInData?.message == "User is not subscribed" ){
+      setState(() {
+        isLoading = false;
+        hasSubscribed = true;
+        print("hasSubscribed $hasSubscribed");
+
+        print("========================================================================================");
+        print(user.firstName);
+        print(user.lastName);
+        print(user.phone);
+        print("========================================================================================");
+      });
+    }
+    if(loggedInData == null ){
+      setState(() {
+        isLoading = false;
+        isLoggedIn = false;
+      });
+    }
     setState(() {
       isLoading = false;
-      isLoggedIn = status;
     });
   }
   @override
   void initState() {
+    print("Get status");
     getUserStatus();
+    print("Get status Complete");
     super.initState();
   }
   Widget build(BuildContext context) {
@@ -70,20 +104,77 @@ class _FoodCardState extends State<FoodCard> {
                   child: info(theme)),
             ],
           ),
-          if(isLoading == false)
+          isLoading == true?CircularProgressIndicator():
           MainButton(
             height: 60.h,
             width: 200.w,
             text: "show_recipe".tr(),
-            onPress: () {
-
-              if(isLoggedIn) {
+            onPress: () async {
+              if(hasSubscribed == true ) {
                 pushNewScreen(
                   context,
                   withNavBar: false,
                   screen: RecipeScreen(food: widget.food),
                 );
-              }else{
+              }else if(hasSubscribed == false) {
+                print(user.firstName);
+                print(user.lastName);
+                print(user.phone);
+                SnackBar logIn =SnackBar(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    content: Text(
+                        'Please subscribe to see ingredients and steps'.tr()
+                    ));
+                ScaffoldMessenger.of(context).showSnackBar(logIn);
+                await showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) {
+                  return WillPopScope(
+                    onWillPop: () async {
+                      return true;
+                    },
+                    child: Dialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.r),
+                      ),
+                      backgroundColor: Theme.of(context).cardColor,
+                      child: InfoCard(
+                        onPress: () async {
+
+                          await pushNewScreen(context,
+                              screen: AllSubscriptions(returnPrice: (price){
+                                setState(() {
+                                  amount = price;
+                                });
+                              },)
+                          );
+
+
+                          print("amount $amount");
+                          Verification verification =
+                          await PaymentService().getChapaCheckoutLink(amount, '', user.firstName, user.lastName, user.phone.toString());
+
+                          print("PaymentService");
+                          pushNewScreen(context,
+                              screen: PaymentScreen(url: verification.checkoutUrl!)
+                          );
+
+                          bool notpaid = await PaymentService().verifyChapaPayment(verification.txref!);
+                          print(notpaid);
+                        },
+                        buttonText: "Pay Subscription",
+                        closeText: "Pay Later",
+                        infoBody: "Pay your monthly, yearly or weekly subscription",
+                        infoTitle: "Subscriptions payment",
+                        infoImage: "assets/images/chapa.png",
+                        closeBtn: true,
+                      ),
+                    ),
+                  );
+                },
+                );
+              }else if(isLoggedIn == false) {
                 SnackBar logIn =SnackBar(
                     padding: EdgeInsets.symmetric(vertical: 20),
                     content: Text(
@@ -104,18 +195,17 @@ class _FoodCardState extends State<FoodCard> {
   }
 
   Widget info(ThemeData theme) {
-    // List<String> menuTimes = [];
-    // widget.food.menuTimes.forEach((element) {
-    //   menuTimes.add(element.name);
-    // });
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Text(widget.food.name,
+            softWrap: true,
+            overflow: TextOverflow.visible,
             style: theme.textTheme.headlineMedium?.copyWith(
                 color: theme.colorScheme.tertiary,
                 fontWeight: FontWeight.w500)),
+
         Container(
             height: 35.h,
             child: Row(children: [

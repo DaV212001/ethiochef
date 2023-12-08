@@ -4,14 +4,15 @@ import 'package:ethio_chef/models/user.dart';
 class UserProfile {
   final int? id;
   final int? userId;
-  final User? user;
+   User? user;
   final int? subscriptionId;
   final SubscriptionPlans? subscription;
   final String? status;
   final DateTime? dueDate;
   final DateTime? lastPaidDate;
+  String? message;
 
-  UserProfile({
+  UserProfile( {
     this.id,
     this.userId,
     this.user,
@@ -19,7 +20,7 @@ class UserProfile {
     this.subscription,
     this.status,
     this.dueDate,
-    this.lastPaidDate,
+    this.lastPaidDate, this. message = 'User is subscribed',
   });
 
   factory UserProfile.fromJson(Map<String, dynamic> json) {

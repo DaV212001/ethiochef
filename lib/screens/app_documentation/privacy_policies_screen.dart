@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../models/privacy_policies.dart';
 import '../../services/app_doc_services.dart';
 import '../../utils/screen_utils.dart';
+import '../../widgets/info_card.dart';
 import '../../widgets/main_app_bar.dart';
 
 class PrivacyPolicyScreen extends StatefulWidget {
@@ -16,6 +17,7 @@ class PrivacyPolicyScreen extends StatefulWidget {
 
 class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
   List<PrivacyPolicy> privacyPolicies = [];
+  bool isLoading = true;
 
 
   @override
@@ -26,11 +28,41 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
 
   Future<void> fetchPrivacyPolicies() async {
     privacyPolicies = await AppDocServices().fetchPrivacyPolicies();
-    setState(() {});
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if(isLoading) {
+      return Scaffold(
+        appBar: MainAppBar(
+          title: "Privacy Policy".tr(),
+          hasMainIcons: false,
+        ),
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+    if(privacyPolicies.length == 0) {
+      return Scaffold(
+        appBar: MainAppBar(
+          title: "Privacy Policy".tr(),
+          hasMainIcons: false,
+        ),
+        body: Center(
+            child: InfoCard(
+                onPress: () {
+                  fetchPrivacyPolicies();
+                },
+                infoTitle: "No privacy policies",
+                infoBody: "No privacy policies currently",
+                closeText: "",
+                buttonText: "Reload",
+                infoImage: "",
+                closeBtn: false)),
+      );
+    }
     final bool isTablet = ScreenUtils.isTablet(context);
     return Scaffold(
         appBar: MainAppBar(
@@ -45,7 +77,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
           shrinkWrap: true,
           itemCount: privacyPolicies.length,
           itemBuilder: (context, index) {
-            return Column(
+                return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

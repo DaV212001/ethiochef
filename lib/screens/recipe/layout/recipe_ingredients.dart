@@ -24,14 +24,14 @@ class RecipeIngredients extends StatelessWidget {
     final double childAspectRatio = desiredItemWidth / desiredItemHeight;
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: ingredients!.entries.map((ingredient) {
           return Flex(
             direction: Axis.vertical,
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              // Text(ingredient.key),
-              // const SizedBox(width: 8.0),
                Text(
                   ingredient.value,
                   softWrap: true,

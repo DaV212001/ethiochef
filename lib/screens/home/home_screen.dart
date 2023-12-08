@@ -2,14 +2,18 @@
 import 'package:ethio_chef/screens/home/layout/add_recipe_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/promotion.dart';
 import '../../models/category.dart';
 import '../../models/food.dart';
+import '../../services/authorization_service.dart';
 import '../../services/category_service.dart';
 import '../../services/meal_service.dart';
 import '../../services/promotion_service.dart';
 import '../../widgets/info_card.dart';
+import '../recipe/layout/recipe_new_tabs.dart';
+import '../recipe/layout/recipe_tabs.dart';
 import 'layout/ads_carusel.dart';
 import 'layout/category_carousel.dart';
 import 'layout/home_category_tab.dart';
@@ -21,14 +25,21 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin{
 
   Future? _future;
 
   @override
   void initState() {
+    _tabController = TabController(length: 4, vsync: this);
     _future = fetchData();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   Future<dynamic> fetchData() async {
@@ -36,14 +47,20 @@ class _HomeScreenState extends State<HomeScreen> {
       print('fetchData');
       final categoryService = CategoryService();
       final mealService = MealService();
-      // final promotionService = PromotionService();
+      final promotionService = PromotionService();
       final categoryData = await categoryService.fetchCategories();
+      print("fetch category done");
       final breakFast = await mealService.fetchAllBreakfast();
+      print("fetch breakFast done");
       final lunch = await mealService.fetchAllLunch();
+      print("fetch lunch done");
       final superMeal = await mealService.fetchAllSuper();
+      print("fetch superMeal done");
       final dinner = await mealService.fetchAllDinner();
-      // final promotionsData = await promotionService.fetchPromotions();
-      return [categoryData, breakFast, lunch, superMeal, dinner];
+      print("fetch dinner done");
+      final promotionsData = await promotionService.fetchPromotions();
+      print("fetch promotionsData done");
+      return [categoryData, breakFast, lunch, superMeal, dinner,promotionsData];
     } catch (error) {
       rethrow;
     }
@@ -63,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
             if (snapshot.hasError) {
               return Center(
                   child: InfoCard(
-                      onPress: (){
+                      onPress: () async {
                         setState(() {
                           _future = fetchData();
                         });
@@ -81,18 +98,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 snapshot.data[1] as List<Food>,
                 snapshot.data[2] as List<Food>,
                 snapshot.data[3] as List<Food>,
-                snapshot.data[4] as List<Food>);
+                snapshot.data[4] as List<Food>,
+                snapshot.data[5] as List<Promotion>);
           }),
     );
   }
+  late final TabController _tabController;
+
   Widget buildHomePage(List<Category> category, List<Food> breakfast,
-      List<Food> lunch,List<Food> superMeal,List<Food> dinner
+      List<Food> lunch,List<Food> superMeal,List<Food> dinner, List<Promotion> promotion
       ){
     return SafeArea(
       child: SingleChildScrollView(
           child: Column(
             children: [
-              AdsCarousel(),
+              AdsCarousel(promotion: promotion),
               SizedBox(
                 height: 5.h,
               ),

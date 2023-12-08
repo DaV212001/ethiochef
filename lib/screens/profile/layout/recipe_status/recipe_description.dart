@@ -1,14 +1,20 @@
 import 'dart:io';
 
-import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:chewie/chewie.dart';
+import 'package:cloudinary_flutter/cloudinary_context.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pod_player/pod_player.dart';
 
 import '../../../../generated/assets.dart';
 import '../../../../models/recipe.dart';
+import '../../../../services/recipe_service.dart';
 import '../../../../widgets/main_button.dart';
+import 'package:cloudinary_url_gen/cloudinary.dart';
+import 'package:cloudinary_flutter/image/cld_image.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class RecipeDescription extends StatefulWidget {
   Recipe res;
@@ -30,8 +36,26 @@ class _RecipeDescriptionState extends State<RecipeDescription> {
   @override
   void initState() {
     setVideo(widget.res.video);
+    CloudinaryContext.cloudinary = Cloudinary.fromCloudName(cloudName: '<cloud_name>');
     super.initState();
   }
+  // upload() async{
+  //   var url = Uri.parse('https://api.cloudinary.com/v1_1/ttreeadvert/upload');
+  //
+  //   final request = http.MultipartRequest('POST', url)
+  //   ..fields['upload_preset'] = '<preset_name>'
+  //   ..fields.add(await http.MultipartFile.fromPath('file', widget.res.video!.path));
+  //   final response = await request.send();
+  //   if (response.statusCode == 200) {
+  //   final responseData = await response.stream.toBytes();
+  //   final responseString = String.fromCharCodes(responseData);
+  //   final jasonMap = jsonDecode(responseString);
+  //   // setState(() {
+  //   // final url = jasonMap['url'];
+  //   // _imageUrl = url;
+  //   // });
+  //   // }
+  // }
   void setVideo(File? video) {
     if (widget.res.video == null) {
       print("widget.res.video is Null");
@@ -64,22 +88,22 @@ class _RecipeDescriptionState extends State<RecipeDescription> {
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> orderList = [
       {
-        "title": "Name",
+        "title": "dish_name".tr(),
         "leadingIcon": Icons.category,
         "trailing": widget.res.name
       },
       {
-        "title": "Description",
+        "title": "dish_description".tr(),
         "leadingIcon": Icons.list_alt,
         "trailing": widget.res.description.toString()
       },
       {
-        "title": "Size",
+        "title": "serving_sizes".tr(),
         "leadingIcon": Icons.people_outline,
         "trailing": widget.res.servingSize.toString()
       },
       {
-        "title": "Prepare time",
+        "title": "preparation_times".tr(),
         "leadingIcon": Icons.timer_outlined,
         "trailing": widget.res.prepTime.toString()
       },
@@ -178,38 +202,30 @@ class _RecipeDescriptionState extends State<RecipeDescription> {
                         ),
                         trailing: Text('',
                             style: TextStyle(fontSize: 12.sp))),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(8),
+                  ),Padding(
+                    padding: EdgeInsets.only(left: 10.w, right: 10.w),
                     child: ListView.builder(
-                        physics: BouncingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: widget.res.ingredient!.length,
-                        itemBuilder: (context, index) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(widget.res.ingredient![index]['ingredient'].toString(),
-                                    style:
-                                    Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                        fontSize: 16.sp,
-                                        fontWeight: FontWeight.normal)
-                                ),
+                      physics: BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: widget.res.ingredient!.length,
+                      itemBuilder: (context, index)  {
+                        Map<String, String> item = widget.res.ingredient![index];
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(top:10.h,left: 10.w, right: 10.w),
+                              child: Text("${item.keys.first}. ${item.values.first}",
+                                  style:
+                                  Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.normal)
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(widget.res.ingredient![index]['quantity'].toString(),
-                                    style:
-                                    Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                        fontSize: 15.sp,
-                                        fontWeight: FontWeight.normal)
-                                ),
-                              )
-                            ],
-                          );
-                        }),
+                            )
+                          ],
+                        );
+                      },
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 10.w, right: 10.w),
@@ -229,7 +245,6 @@ class _RecipeDescriptionState extends State<RecipeDescription> {
                   Padding(
                     padding: EdgeInsets.only(left: 10.w, right: 10.w),
                     child: Container(
-                      padding: const EdgeInsets.all(8),
                       child: ListView.builder(
                           physics: BouncingScrollPhysics(),
                           shrinkWrap: true,
@@ -255,8 +270,9 @@ class _RecipeDescriptionState extends State<RecipeDescription> {
                   ),
                   MainButton(
                     text: 'Submit',
-                    onPress: (){
-
+                    onPress: ()async{
+                      RecipeService service = RecipeService();
+                      service.createFood(widget.res);
                     },
                   )
             ])));

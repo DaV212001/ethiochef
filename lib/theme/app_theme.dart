@@ -43,7 +43,7 @@ class AppTheme {
           fontWeight: FontWeight.bold,
         ),
         headlineMedium: TextStyle(
-          fontSize: 18,
+          fontSize: 16,
           color: cocoaBrown,
           fontWeight: FontWeight.w400,
         ),

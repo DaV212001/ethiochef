@@ -17,6 +17,8 @@ class _VerticalFoodListState extends State<VerticalFoodList> {
   @override
   Widget build(BuildContext context) {
     return PagedListView<int, Food>(
+      physics: BouncingScrollPhysics(),
+      scrollDirection: Axis.vertical,
       shrinkWrap: true,
       itemExtent: 275.h,
       pagingController: widget.pagingController,

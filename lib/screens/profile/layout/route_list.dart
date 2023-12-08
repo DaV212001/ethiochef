@@ -2,7 +2,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/profile/layout/recipe_status/my_recipe.dart';
 import 'package:ethio_chef/services/user_service.dart';
-import 'package:ethio_chef/subscription/subscriptionscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
@@ -17,11 +16,13 @@ import '../../../widgets/profile/route_labels_card.dart';
 import '../../app_documentation/faq_screen.dart';
 import '../../app_documentation/privacy_policies_screen.dart';
 import '../../app_documentation/terms_and_conditions_screen.dart';
+import '../../subscription/subscriptionscreen.dart';
 import 'competition_status/my_competition.dart';
 
 
 class RouteList extends StatefulWidget {
-  const RouteList({super.key});
+  final Function()? onRefresh;
+  const RouteList({super.key, this.onRefresh});
 
   @override
   State<RouteList> createState() => _RouteListState();
@@ -36,12 +37,14 @@ class _RouteListState extends State<RouteList> {
     bool isLoading = false;
     final List<Map<String, dynamic>> general = [
       {
-        "title": "Subscription plans",
+        "title": "subscription_plans".tr(),
         "leadingIcon": Icons.subscriptions_outlined,
         "onTap": () async {
           pushNewScreen(
             context,
-            screen: SubscriptionScreen(),
+            screen: SubscriptionScreen(
+              onRefresh: widget.onRefresh,
+            ),
             withNavBar: false,
             pageTransitionAnimation: PageTransitionAnimation.cupertino,
           );
@@ -69,10 +72,9 @@ class _RouteListState extends State<RouteList> {
     ];
     final List<Map<String, dynamic>> status = [
       {
-        "title": "recipe_status".tr(),
+        "title": "saved_recipes".tr(),
         "leadingIcon": Icons.dinner_dining,
         "onTap": () {
-          print("change_password");
           pushNewScreen(
             context,
             screen: MyRecipes(),

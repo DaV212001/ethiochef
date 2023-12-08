@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:ethio_chef/models/privacy_policies.dart';
 import 'package:ethio_chef/models/terms_and_conditions.dart';
 
-import '../constants/constants.dart';
+import '../utils/constants.dart';
 import '../models/faqs.dart';
 import 'package:http/http.dart' as http;
 

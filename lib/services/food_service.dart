@@ -4,7 +4,7 @@ import 'package:ethio_chef/utils/place_holder_data.dart';
 import 'dart:convert';
 
 
-import '../constants/constants.dart';
+import '../utils/constants.dart';
 import 'authorization_service.dart';
 import 'package:http/http.dart' as http;
 
@@ -32,6 +32,34 @@ class FoodService{
   Future<List<Food>> fetchFoodBySubCategoryId(int subCategoryId) async {
     final response = await http.get(
       Uri.parse('${Constants.url}/user/food/sub-category/$subCategoryId')
+    );
+    print(response.body);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final List<dynamic> foodList = data['data'];
+      return foodList.map((json) => Food.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to fetch food');
+    }
+  }
+  Future<List<Food>> fetchFoodByCategoryIdPaginated(int categoryId, int pageKey) async {
+    final response = await http.get(
+        Uri.parse('${Constants.url}/user/food/category/$categoryId?page=${pageKey}&limit=15')
+    );
+    print(response.body);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final List<dynamic> foodList = data['data'];
+      return foodList.map((json) => Food.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to fetch food');
+    }
+  }
+  Future<List<Food>> fetchFoodByCategoryId(int categoryId) async {
+    final response = await http.get(
+        Uri.parse('${Constants.url}/user/food/category/$categoryId')
     );
     print(response.body);
     print(response.statusCode);

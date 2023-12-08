@@ -47,7 +47,12 @@ class HomeCategoryTab extends StatelessWidget {
                 ?.copyWith(color: theme.colorScheme.onTertiary),
             contentPadding: EdgeInsets.symmetric(horizontal: 10),
             radius: 5,
-            tabs: tabs,
+            tabs: [
+              Tab(text: 'breakfast'.tr()),
+              Tab(text: 'lunch'.tr()),
+              Tab(text: 'supper'.tr()),
+              Tab(text: 'dinner'.tr()),
+            ],
           ),
           SizedBox(
             height: 200,

@@ -1,7 +1,12 @@
 
+import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import '../generated/assets.dart';
+import '../screens/notification/notification_screen.dart';
 import '../utils/screen_utils.dart';
+import 'app_bar_icon.dart';
 
 class MainAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
@@ -110,24 +115,23 @@ class _MainAppBarState extends State<MainAppBar> {
     final bool isTablet = ScreenUtils.isTablet(context);
     if (widget.specialAction == null && widget.hasMainIcons) {
       return [
-        // AppBarIcon(
-        //   icon: SvgIcon(
-        //     image: Assets.iconsNotification,
-        //     color: theme.colorScheme.tertiary,
-        //     size: isTablet ? 40.sp : 35.sp,
-        //   ),
-        //   number: notificationNum,
-        //   showNum: false,
-        //   onPress: () {
-        //     pushNewScreen(
-        //       context,
-        //       screen: NotificationScreen(),
-        //       withNavBar: false,
-        //       pageTransitionAnimation: PageTransitionAnimation.cupertino,
-        //     );
-        //   },
-        // )
-        SizedBox(width: 10.w),
+        AppBarIcon(
+          icon: SvgIcon(
+            image: Assets.iconsNotification,
+            color: theme.colorScheme.tertiary,
+            size: isTablet ? 40.sp : 35.sp,
+          ),
+          number: 0,
+          showNum: false,
+          onPress: () {
+            pushNewScreen(
+              context,
+              screen: NotificationScreen(),
+              withNavBar: false,
+              pageTransitionAnimation: PageTransitionAnimation.cupertino,
+            );
+          },
+        )
       ];
     } else {
       return widget.specialAction;

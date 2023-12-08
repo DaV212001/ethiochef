@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../models/faqs.dart';
 import '../../services/app_doc_services.dart';
+import '../../widgets/info_card.dart';
 import '../../widgets/main_app_bar.dart';
 
 class FaqScreen extends StatefulWidget {
@@ -13,7 +14,7 @@ class FaqScreen extends StatefulWidget {
 
 class _FaqScreenState extends State<FaqScreen> {
   List<FAQ> faqs = [];
-
+  bool isLoading = true;
   @override
   void initState() {
     super.initState();
@@ -22,19 +23,45 @@ class _FaqScreenState extends State<FaqScreen> {
 
   Future<void> fetchFaqs() async {
     faqs = await AppDocServices().fetchFaqs();
-    setState(() {});
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if(isLoading)
     return Scaffold(
       appBar: MainAppBar(
         title: "FAQ".tr(),
         hasMainIcons: false,
       ),
-      body: faqs.isEmpty
-          ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
+      body: Center(child: CircularProgressIndicator()),
+    );
+    if(faqs.length== 0)
+      return Scaffold(
+        appBar: MainAppBar(
+          title: "FAQ".tr(),
+          hasMainIcons: false,
+        ),
+        body: Center(
+            child: InfoCard(
+                onPress: () {
+                  fetchFaqs();
+                },
+                infoTitle: "No faq",
+                infoBody: "No Frequently Asked Questions currently",
+                closeText: "",
+                buttonText: "Reload",
+                infoImage: "",
+                closeBtn: false))
+      );
+    return Scaffold(
+      appBar: MainAppBar(
+        title: "FAQ".tr(),
+        hasMainIcons: false,
+      ),
+      body: ListView.builder(
         itemCount: faqs.length,
         itemBuilder: (context, index) {
           return ExpansionTile(

@@ -28,7 +28,7 @@ class PhoneInputField extends StatelessWidget {
             return "phone_number_required".tr();
           } else if (value.length != 9 ||
               !RegExp(r'^[0-9]+$').hasMatch(value)) {
-            return "phone_number_invalid".tr();
+            return "invalid_phone_number".tr();
           }
           return null;
         },

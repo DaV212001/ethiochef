@@ -5,7 +5,7 @@ import 'package:ethio_chef/models/category.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import '../constants/constants.dart';
+import '../utils/constants.dart';
 import 'authorization_service.dart';
 
 class CategoryService {
