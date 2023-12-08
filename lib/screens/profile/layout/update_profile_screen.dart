@@ -124,16 +124,22 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 ),
                 PhoneInputField(controller: phoneNumberController),
                 SizedBox(height: 20.h),
-                MainButton(text: "update".tr(), onPress: (){
+                MainButton(text: "update".tr(), onPress: () async{
                   UserService userService = UserService();
-                  userService.updateUserProfile(
+                  String trial = await userService.updateUserProfile(
                     firstNameController.text,
                     lastNameController.text,
                     emailController.text,
                     phoneNumberController.text,
                     updatedProfilePicture!
                   );
-
+ScaffoldMessenger.of(context).showSnackBar(
+  SnackBar(
+    content: Text(
+      trial
+    )
+  )
+);
                 }),
               ],
             ),

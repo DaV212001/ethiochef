@@ -82,7 +82,7 @@ class UserService {
 
 
 
-  Future<http.StreamedResponse> updateUserProfile(String firstName, String lastName, String email, String phoneNumber, File profilePicture) async {
+  Future<String> updateUserProfile(String firstName, String lastName, String email, String phoneNumber, File profilePicture) async {
     User user = await fetchLoggedInUser();
     final access_token = await AuthService.getAuthorizationToken();
     print('ID ${user.id}');
@@ -116,12 +116,12 @@ class UserService {
     var response = await request.send();
 
     if (response.statusCode == 200) {
-      print('Profile updated successfully');
+      return 'Profile updated successfully';
     } else {
-      print('Failed to update profile');
+      return 'Failed to update profile';
     }
 
-    return response;
+
   }
 
 
