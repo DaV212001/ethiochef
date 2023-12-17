@@ -6,6 +6,8 @@ import 'package:ethio_chef/widgets/small_label_button.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 
+import '../../../models/language.dart';
+
 class RecipeHeader extends StatelessWidget {
   final Food food;
 
@@ -23,7 +25,7 @@ class RecipeHeader extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: 20, bottom: 5),
           child: Text(
-            food.name,
+            food.name[Language.getLocaleCode()].toString(),
             style: theme.textTheme.headlineLarge,
           ),
         ),
@@ -33,34 +35,39 @@ class RecipeHeader extends StatelessWidget {
                 height: 35,
                 child: Row(children: [
                   SvgIcon(
-                      size: 25,
-                      color: theme.colorScheme.tertiary,
+                      size: 20,
+                      color: theme.colorScheme.tertiary.withOpacity(0.8),
                       image: Assets.iconsPeople),
                   SizedBox(
                     width: 5,
                   ),
-                  SmallLabelButton(
-                      text:
-                          "serving_size".tr(args: [food.servings!.toString()]),
-                      color: theme.colorScheme.primary.withOpacity(0.9),
-                      onTap: () {})
+                  Text(
+                      "serving_size".tr(args: [food.servings!.toString()]),
+                      style: TextStyle(
+                          fontSize: 15,
+                          color: theme.colorScheme.tertiary.withOpacity(0.7),
+                          fontWeight: FontWeight.w300
+                      ))
                 ])),
             SizedBox(width: 20),
             Container(
                 height: 35,
                 child: Row(children: [
                   SvgIcon(
-                      size: 25,
-                      color: theme.colorScheme.tertiary,
+                      size: 20,
+                      color: theme.colorScheme.tertiary.withOpacity(0.8),
                       image: Assets.iconsCookingTime),
                   SizedBox(
                     width: 5,
                   ),
-                  SmallLabelButton(
-                      text: "preparation_time"
-                          .tr(args: [food.preparationTime!.toString()]),
-                      color: theme.colorScheme.primary.withOpacity(0.9),
-                      onTap: () {})
+                Text(
+                    "preparation_time"
+                        .tr(args: [food.preparationTime!.toString()]),
+                    style: TextStyle(
+                        fontSize: 15,
+                        color: theme.colorScheme.tertiary.withOpacity(0.7),
+                        fontWeight: FontWeight.w300
+                    ))
                 ])),
           ],
         ),
@@ -69,39 +76,26 @@ class RecipeHeader extends StatelessWidget {
             height: 35,
             child: Row(children: [
               SvgIcon(
-                  size: 25,
-                  color: theme.colorScheme.tertiary,
+                  size: 20,
+                  color: theme.colorScheme.tertiary.withOpacity(0.8),
                   image: Assets.iconsMealTime),
               SizedBox(
                 width: 5,
               ),
-              SmallLabelButton(
-                  text:
-                  food.mealTime!.toString(),
-                  color: theme.colorScheme.primary.withOpacity(0.9),
-                  onTap: () {})
-              // CategoryLabelCarousel(
-              //   categories: food.menuTimes,
-              //   color: theme.colorScheme.primary.withOpacity(0.85),
-              // )
+              Text(
+                food.mealTime!.toString(),
+                style: TextStyle(
+                    fontSize: 15,
+                    color: theme.colorScheme.tertiary.withOpacity(0.7),
+                    fontWeight: FontWeight.w300
+                ),
+              ),
             ])),
         SizedBox(height: 10),
-        // Container(
-        //     height: 35,
-        //     child: Row(children: [
-        //       SvgIcon(
-        //           size: 25,
-        //           color: theme.colorScheme.tertiary,
-        //           image: Assets.iconsCategoryOutlined),
-        //       SizedBox(
-        //         width: 5,
-        //       ),
-        //       // CategoryLabelCarousel(
-        //       //   categories: food.categories,
-        //       //   color: theme.colorScheme.primary.withOpacity(0.9),
-        //       // )
-        //     ])),
         food.description != null ? description(context) : SizedBox.shrink(),
+        // SizedBox(height: 15),
+        // rowedInformation("serving_size".tr(), food.servings!.toString(), context),
+        // rowedInformation("preparation_time".tr(), food.preparationTime!.toString(), context)
       ]),
     );
   }
@@ -117,7 +111,7 @@ class RecipeHeader extends StatelessWidget {
               "dish_description".tr(),
               style: theme.textTheme.headlineMedium?.copyWith(
                   color: theme.colorScheme.tertiary,
-                  fontWeight: FontWeight.w500),
+                  fontWeight: FontWeight.w800),
             ),
             SizedBox(
               height: 10,
@@ -126,11 +120,31 @@ class RecipeHeader extends StatelessWidget {
               food.description!,
               style: TextStyle(
                 fontSize: 20,
-                color: theme.colorScheme.tertiary,
+                color: theme.colorScheme.tertiary.withOpacity(0.7),
                   fontWeight: FontWeight.w300
               ),
             ),
           ],
         ));
+  }
+  Widget rowedInformation(String name, String value, BuildContext context){
+    ThemeData theme = Theme.of(context);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          name,
+          style: theme.textTheme.headlineMedium?.copyWith(
+              color: theme.colorScheme.tertiary,
+              fontWeight: FontWeight.w500),
+        ),
+        Text(
+          value,
+          style: theme.textTheme.headlineMedium?.copyWith(
+              color: theme.colorScheme.tertiary,
+              fontWeight: FontWeight.w500),
+        ),
+      ],
+    );
   }
 }

@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:overflow_text_animated/overflow_text_animated.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
+import '../../models/language.dart';
 import '../../models/user.dart';
 import '../../models/verification.dart';
 import '../../screens/auth/auth_screen.dart';
@@ -112,27 +113,18 @@ class _FoodCardState extends State<FoodCard> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        RichText(
-          text: TextSpan(
+        Container(
+          width: 160,
+          child: OverflowTextAnimated(
+            text: widget.food.name[Language.getLocaleCode()].toString(),
             style: theme.textTheme.headlineMedium?.copyWith(
               color: theme.colorScheme.tertiary,
               fontWeight: FontWeight.w500,
             ),
-            children: [
-              TextSpan(text: widget.food.name.substring(0, 11)),
-              TextSpan(text: '\n', style: TextStyle(color: Colors.transparent)),
-              TextSpan(text: widget.food.name.substring(12)),
-            ],
+            animation: OverFlowTextAnimations.scrollOpposite,
+            animateDuration: Duration(milliseconds: 500),
           ),
         ),
-        // Text(widget.food.name,
-        //     maxLines: widget.food.name.length > 10 ? 2 : 1,
-        //     softWrap: true,
-        //     overflow: TextOverflow.visible,
-        //     style: theme.textTheme.headlineMedium?.copyWith(
-        //         color: theme.colorScheme.tertiary,
-        //         fontWeight: FontWeight.w500)),
-
         Container(
             height: 35.h,
             child: Row(children: [

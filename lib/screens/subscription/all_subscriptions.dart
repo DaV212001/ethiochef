@@ -39,6 +39,7 @@ class AllSubscriptions extends StatefulWidget {
 class _AllSubscriptionsState extends State<AllSubscriptions> {
   List<h.SubscriptionPlans> subscriptionPlans = [];
   List<h.SubscriptionPlans> userSubscriptionPlans = [];
+  late String duration_user;
 
   int user_id = 2;
   String first_name = "";
@@ -67,16 +68,25 @@ class _AllSubscriptionsState extends State<AllSubscriptions> {
       print(phone);
     }
   }
-
   Future<void> getSubscriptionPlans() async {
     u.UserService service = u.UserService();
+    User user = await service.fetchLoggedInUser();
+    setState(() {
+      user_id = user.id!;
+    });
 
     var response = await service.fetchSubscriptionPlans();
     setState(() {
       subscriptionPlans = response;
     });
 
+    var response1 = await service.fetchUserSubscriptions();
+    setState(() {
+      userSubscriptionPlans = response1;
+    });
+
   }
+
 Future<void> getUserData() async {
   UserService service = u.UserService();
   User user = await service.fetchLoggedInUser();
@@ -107,6 +117,49 @@ Future<void> getUserData() async {
                     physics: BouncingScrollPhysics(),
                     child: Column(
                       children: [
+                        if(userSubscriptionPlans.isNotEmpty)Text(
+                          'Your subscription',
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .headlineLarge,
+                        ),
+                        SizedBox(
+                          height: 20.h,
+                        ),
+                        ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: userSubscriptionPlans.length,
+                            scrollDirection: Axis.vertical,
+                            physics: BouncingScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              duration_user =
+                              userSubscriptionPlans.isNotEmpty?
+                              userSubscriptionPlans[index].duration != null ?
+                              //subscription duration is not null
+                              userSubscriptionPlans[index].plan == 'Yearly' ?
+                              //subscription duration is not null and subscription is yearly
+                              '${currentYear -
+                                  userSubscriptionPlans[index].duration!.year} years'
+                                  :
+                              //subscription duration is not null and subscription is monthly
+                              '${currentMonth -
+                                  userSubscriptionPlans[index].duration!.month} months'
+                                  :
+                              //subscription duration is null
+                              '0'
+                                  : '0';
+                              return SubscriptionCard(
+                                buttonName: 'Delete',
+                                plan: userSubscriptionPlans[index].plan!,
+                                price: userSubscriptionPlans[index].price.toString(),
+                                duration: duration_user,
+                                onTap: (){
+                                  deleteSubscription(index);
+                                },
+                              );
+                            }
+                        ),
                         ListView.builder(
                             shrinkWrap: true,
                             itemCount: subscriptionPlans.length,
@@ -141,8 +194,8 @@ Future<void> getUserData() async {
                                       screen: PaymentScreen(url: verification.checkoutUrl!)
                                   );
 
-                                  bool notpaid = await PaymentService().verifyChapaPayment(verification.txref!);
-                                  print(notpaid);
+                                  // bool notpaid = await PaymentService().verifyChapaPayment(verification.txref!);
+                                  // print(notpaid);
                                   print("amount ${subscriptionPlans[index].price}");
                                   widget.returnPrice(subscriptionPlans[index].price!);
                                   Navigator.of(context).pop();
@@ -163,5 +216,23 @@ Future<void> getUserData() async {
           )
       ),
     );
+  }
+  void deleteSubscription(int index) async {
+    print('Delete');
+    u.UserService service = u.UserService();
+    bool deleted = await service.deleteUserSubscription();
+    if(deleted){
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text(
+                'Deleted successfully',
+              )
+          )
+      );
+      setState(() {
+        userSubscriptionPlans.removeAt(index);
+      });
+
+    }
   }
 }

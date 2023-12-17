@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 
 import '../../models/category.dart';
 import '../../services/category_service.dart';
+import '../../widgets/error_card.dart';
 import '../../widgets/info_card.dart';
+import '../../widgets/loading.dart';
 import 'layout/category_tab.dart';
 
 class CategoriesScreen extends StatefulWidget {
@@ -42,23 +44,17 @@ bool isLoading = false;
             future: _future,
             builder: (context, AsyncSnapshot<dynamic> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                    child: CircularProgressIndicator());
+                return Loading();
               }
               if (snapshot.hasError) {
                 return Center(
-                    child: InfoCard(
-                        onPress: (){
-                          setState(() {
-                            _future = fetchSubCatData();
-                          });
-                        },
-                        infoTitle: "Error",
-                        infoBody: "Error getting categories",
-                        closeText: "",
-                        buttonText: "Reload",
-                        infoImage: "",
-                        closeBtn: false
+                    child: ErrorCard(
+                      errorType: snapshot.error.toString(),
+                      refresh: () {
+                        setState(() {
+                          _future = fetchSubCatData();
+                        });
+                      },
                     ));
               }
               return CategoryCustomTab(category: snapshot.data as List<Category>);

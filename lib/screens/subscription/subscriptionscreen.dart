@@ -77,86 +77,88 @@ Widget build(BuildContext context) {
             future: _subscriptionPlansFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return Column(
-                children: [
-                  ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      physics: BouncingScrollPhysics(),
-                      itemCount: subscriptionPlans.length,
-                      itemBuilder: (context, index) {
-                        duration =
-                        subscriptionPlans[index].duration != null ?
-                        //subscription duration is not null
-                        subscriptionPlans[index].plan == 'Yearly' ?
-                        //subscription duration is not null and subscription is yearly
-                        '${currentYear -
-                            subscriptionPlans[index].duration!.year} years'
-                            :
-                        //subscription duration is not null and subscription is monthly
-                        '${currentMonth -
-                            subscriptionPlans[index].duration!.month} months'
-                            :
-                        //subscription duration is null
-                        '0';
-                        return SubscriptionCard(
-                          buttonName: 'Subscribe',
-                          plan: subscriptionPlans[index].plan!,
-                          price: subscriptionPlans[index].price.toString(),
-                          duration: duration,
-                          onTap: () async {
-                            subscribeUser(index);
-                          },
-                        );
-                      }
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  if(userSubscriptionPlans.isNotEmpty)Text(
-                    'Your subscription',
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .headlineLarge,
-                  ),
-                  SizedBox(
-                    height: 20.h,
-                  ),
-                  ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      physics: BouncingScrollPhysics(),
-                      itemCount: userSubscriptionPlans.length,
-                      itemBuilder: (context, index) {
-                        durationu =
-                        userSubscriptionPlans.isNotEmpty?
-                        userSubscriptionPlans[index].duration != null ?
-                        //subscription duration is not null
-                        userSubscriptionPlans[index].plan == 'Yearly' ?
-                        //subscription duration is not null and subscription is yearly
-                        '${currentYear -
-                            userSubscriptionPlans[index].duration!.year} years'
-                            :
-                        //subscription duration is not null and subscription is monthly
-                        '${currentMonth -
-                            userSubscriptionPlans[index].duration!.month} months'
-                            :
-                        //subscription duration is null
-                        '0'
-                            : '0';
-                        return SubscriptionCard(
-                          buttonName: 'Delete',
-                          plan: userSubscriptionPlans[index].plan!,
-                          price: userSubscriptionPlans[index].price.toString(),
-                          duration: durationu,
-                          onTap: (){
-                            deleteSubscription(index);
-                          },
-                        );
-                      }
-                  )
-                ],
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: subscriptionPlans.length,
+                        scrollDirection: Axis.vertical,
+                        physics: BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          duration =
+                          subscriptionPlans[index].duration != null ?
+                          //subscription duration is not null
+                          subscriptionPlans[index].plan == 'Yearly' ?
+                          //subscription duration is not null and subscription is yearly
+                          '${currentYear -
+                              subscriptionPlans[index].duration!.year} years'
+                              :
+                          //subscription duration is not null and subscription is monthly
+                          '${currentMonth -
+                              subscriptionPlans[index].duration!.month} months'
+                              :
+                          //subscription duration is null
+                          '0';
+                          return SubscriptionCard(
+                            buttonName: 'Subscribe',
+                            plan: subscriptionPlans[index].plan!,
+                            price: subscriptionPlans[index].price.toString(),
+                            duration: duration,
+                            onTap: () async {
+                              subscribeUser(index);
+                            },
+                          );
+                        }
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    if(userSubscriptionPlans.isNotEmpty)Text(
+                      'Your subscription',
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .headlineLarge,
+                    ),
+                    SizedBox(
+                      height: 20.h,
+                    ),
+                    ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: userSubscriptionPlans.length,
+                        scrollDirection: Axis.vertical,
+                        physics: BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          durationu =
+                          userSubscriptionPlans.isNotEmpty?
+                          userSubscriptionPlans[index].duration != null ?
+                          //subscription duration is not null
+                          userSubscriptionPlans[index].plan == 'Yearly' ?
+                          //subscription duration is not null and subscription is yearly
+                          '${currentYear -
+                              userSubscriptionPlans[index].duration!.year} years'
+                              :
+                          //subscription duration is not null and subscription is monthly
+                          '${currentMonth -
+                              userSubscriptionPlans[index].duration!.month} months'
+                              :
+                          //subscription duration is null
+                          '0'
+                              : '0';
+                          return SubscriptionCard(
+                            buttonName: 'Delete',
+                            plan: userSubscriptionPlans[index].plan!,
+                            price: userSubscriptionPlans[index].price.toString(),
+                            duration: durationu,
+                            onTap: (){
+                              deleteSubscription(index);
+                            },
+                          );
+                        }
+                    )
+                  ],
+                ),
               );
             }
             else {

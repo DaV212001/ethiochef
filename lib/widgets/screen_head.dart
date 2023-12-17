@@ -22,7 +22,7 @@ class ScreenHead extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Color(0xFFF8FAFC),
           borderRadius:  BorderRadius.only(
             topLeft:  Radius.circular(isHomeScreen==true ? 20:0),
             topRight: Radius.circular(isHomeScreen==true ? 20:0),

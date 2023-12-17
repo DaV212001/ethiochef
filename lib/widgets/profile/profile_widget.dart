@@ -59,16 +59,16 @@ class ProfileWidget extends StatelessWidget {
         child: Ink(
           width: isUpdateScreen?128.w :68.w,
           height: isUpdateScreen? isTablet ? 145.h : 128.h:isTablet ? 75.h : 68.h,
-          child: InkWell(
+          child:  InkWell(
               child: isFile
                   ? Image.file(
                 imagePath,
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
               )
                   : imagePath != null
                   ? CachedImage(
                 url: imagePath!,
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
               )
                   : IconButton(
                   onPressed: onClicked,

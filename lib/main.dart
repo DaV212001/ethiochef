@@ -12,14 +12,15 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 15));
   await EasyLocalization.ensureInitialized();
 
   runApp(
-    EasyLocalization(
+      Phoenix(
+        child: EasyLocalization(
         supportedLocales: const [
           // needed to use these locales because om,ti  where not supported
           Locale('en', 'AU'),
@@ -29,7 +30,8 @@ void main() async {
         ],
         path: 'assets/locale',
         fallbackLocale: const Locale('en'),
-        child: const EthioChef()),
+        child: EthioChef()),
+  )
   );
 }
 
@@ -72,8 +74,11 @@ class _EthioChefState extends State<EthioChef> {
   Widget build(BuildContext context) {
     Language.selectedLanguage = Language.getSelectedLanguage(context);
 
-    return ChangeNotifierProvider(
-      create: (_) => ModelTheme(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ModelTheme())
+      ],
+      // create: (_) => ModelTheme(),
       child: Consumer<ModelTheme>(
           builder: (context, ModelTheme themeNotifier, child) {
         // themeNotifier.isDark = false; // using to check dark theme

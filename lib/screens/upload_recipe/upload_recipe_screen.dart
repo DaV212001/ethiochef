@@ -165,9 +165,24 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
                 stepToCreate: stepToCreate
              );
 
-
+             print("Add RECIPE");
              Recipe.addRecipe(newRecipe);
-             Navigator.of(context).pop();
+             setState(() {
+               nameController.text = '';
+             descriptionController.text = '';
+             prepTimeController.text = '';
+             servingSizeController.text = '';
+             itemControllers = [TextEditingController()];
+             stepControllers = [TextEditingController()];
+             quantityControllers = [TextEditingController()];
+               image = null;
+               video = null;
+             ingredients = [];
+               step = [];
+             ingredientToCreate = {};
+               stepToCreate = {};
+               activeStep = 0;
+             });
            }else{
              Map<String, String> ingredientMap = {
                'ingredient': 'ingredient',
@@ -201,7 +216,9 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
 
 
              Competition.addCompetition(newRecipe);
-             Navigator.of(context).pop();
+             setState(() {
+               activeStep = 0;
+             });
            }
           },
           back: decrementStep,

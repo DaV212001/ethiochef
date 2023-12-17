@@ -11,10 +11,12 @@ import '../../services/authorization_service.dart';
 import '../../services/category_service.dart';
 import '../../services/meal_service.dart';
 import '../../services/promotion_service.dart';
+import '../../widgets/error_card.dart';
 import '../../widgets/info_card.dart';
+import '../../widgets/loading.dart';
 import '../recipe/layout/recipe_new_tabs.dart';
 import '../recipe/layout/recipe_tabs.dart';
-import 'layout/ads_carusel.dart';
+import 'layout/ads_carousel.dart';
 import 'layout/category_carousel.dart';
 import 'layout/home_category_tab.dart';
 
@@ -31,16 +33,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   @override
   void initState() {
-    _tabController = TabController(length: 4, vsync: this);
     _future = fetchData();
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
 
   Future<dynamic> fetchData() async {
     try {
@@ -74,23 +70,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           future: _future,
           builder: (context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                  child: CircularProgressIndicator());
+              return Loading();
             }
             if (snapshot.hasError) {
               return Center(
-                  child: InfoCard(
-                      onPress: () async {
-                        setState(() {
-                          _future = fetchData();
-                        });
-                      },
-                      infoTitle: "Error",
-                      infoBody: "Getting failed",
-                      closeText: "",
-                      buttonText: "Reload",
-                      infoImage: "",
-                      closeBtn: false
+                  child: ErrorCard(
+                    errorType: snapshot.error.toString(),
+                    refresh: () {
+                      setState(() {
+                        _future = fetchData();
+                      });
+                    },
                   ));
             }
             return buildHomePage(
@@ -103,7 +93,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           }),
     );
   }
-  late final TabController _tabController;
 
   Widget buildHomePage(List<Category> category, List<Food> breakfast,
       List<Food> lunch,List<Food> superMeal,List<Food> dinner, List<Promotion> promotion
@@ -129,18 +118,18 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       superMeal: superMeal,
                       dinner: dinner,
                     ),
-                    if(showAddRecipeCard)
-                      SizedBox(
-                        height: 15.h,
-                      ),
-                    if(showAddRecipeCard)
-                      AddRecipeCard(
-                        onRemove: () {
-                          setState(() {
-                            showAddRecipeCard = false;
-                          });
-                        },
-                      ),
+                    // if(showAddRecipeCard)
+                    //   SizedBox(
+                    //     height: 15.h,
+                    //   ),
+                    // if(showAddRecipeCard)
+                    //   AddRecipeCard(
+                    //     onRemove: () {
+                    //       setState(() {
+                    //         showAddRecipeCard = false;
+                    //       });
+                    //     },
+                    //   ),
                     CategoryCarousel(category: category),
                     SizedBox(
                       height: 15.h,

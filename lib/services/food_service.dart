@@ -5,93 +5,112 @@ import 'dart:convert';
 
 
 import '../utils/constants.dart';
+import '../utils/error_util.dart';
 import 'authorization_service.dart';
 import 'package:http/http.dart' as http;
 
 class FoodService{
-  Future<List<Food>> fetchDishesForCategory(int id,int pageKey) async{
-    if(pageKey > 5) {
-      throw Exception();
-    }
-    await Future.delayed(Duration(seconds: 1));
-    return PlaceHolderData.dishes;
-  }
   Future<List<Food>> fetchAllFood() async {
-    final response = await http.get(
-      Uri.parse('${Constants.url}/user/food')
-    );
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final List<dynamic> foodList = data['data'];
-      return foodList.map((json) => Food.fromJson(json)).toList();
-    } else {
-      throw Exception('Failed to fetch food');
+    try{
+      await ErrorUtil.checkConnection();
+      final response = await http.get(
+          Uri.parse('${Constants.url}/user/food')
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final List<dynamic> foodList = data['data'];
+        return foodList.map((json) => Food.fromJson(json)).toList();
+      } else {
+        throw Exception(response.statusCode.toString());
+      }
+    } catch (error) {
+      throw Exception('Failed to fetch all foods: $error');
     }
   }
   Future<List<Food>> fetchFoodBySubCategoryId(int subCategoryId) async {
-    final response = await http.get(
-      Uri.parse('${Constants.url}/user/food/sub-category/$subCategoryId')
-    );
-    print(response.body);
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final List<dynamic> foodList = data['data'];
-      return foodList.map((json) => Food.fromJson(json)).toList();
-    } else {
-      throw Exception('Failed to fetch food');
+    try{
+      await ErrorUtil.checkConnection();
+      final response = await http.get(
+          Uri.parse('${Constants.url}/user/food/sub-category/$subCategoryId')
+      );
+      print(response.body);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final List<dynamic> foodList = data['data'];
+        return foodList.map((json) => Food.fromJson(json)).toList();
+      } else {
+        throw Exception(response.statusCode.toString());
+      }
+    }catch (error) {
+      throw Exception('Failed to fetch foods by sub category: $error');
     }
   }
   Future<List<Food>> fetchFoodByCategoryIdPaginated(int categoryId, int pageKey) async {
-    final response = await http.get(
-        Uri.parse('${Constants.url}/user/food/category/$categoryId?page=${pageKey}&limit=15')
-    );
-    print(response.body);
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final List<dynamic> foodList = data['data'];
-      return foodList.map((json) => Food.fromJson(json)).toList();
-    } else {
-      throw Exception('Failed to fetch food');
+    try{
+      await ErrorUtil.checkConnection();
+      final response = await http.get(
+          Uri.parse('${Constants.url}/user/food/category/$categoryId?page=$pageKey&limit=30')
+      );
+      print(response.body);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final List<dynamic> foodList = data['data'];
+        return foodList.map((json) => Food.fromJson(json)).toList();
+      } else {
+        throw Exception(response.statusCode.toString());
+      }
+    }catch (error) {
+      throw Exception('Failed to fetch paginated foods: $error');
     }
   }
   Future<List<Food>> fetchFoodByCategoryId(int categoryId) async {
-    final response = await http.get(
-        Uri.parse('${Constants.url}/user/food/category/$categoryId')
-    );
-    print(response.body);
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final List<dynamic> foodList = data['data'];
-      return foodList.map((json) => Food.fromJson(json)).toList();
-    } else {
-      throw Exception('Failed to fetch food');
+    try {
+      await ErrorUtil.checkConnection();
+      final response = await http.get(
+          Uri.parse('${Constants.url}/user/food/category/$categoryId')
+      );
+      print(response.body);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final List<dynamic> foodList = data['data'];
+        return foodList.map((json) => Food.fromJson(json)).toList();
+      } else {
+        throw Exception(response.statusCode.toString());
+      }
+    } catch (error) {
+      throw Exception('Failed to fetch all foods: $error');
     }
   }
   Future<Food> fetchFoodById(int foodId) async {
+    try{
+      await ErrorUtil.checkConnection();
+      final accessToken = await AuthService.getAuthorizationToken();
+      print("access_token $accessToken");
 
-    final accessToken = await AuthService.getAuthorizationToken();
-    print("access_token $accessToken");
+      final response = await http.get(
+        Uri.parse('${Constants.url}/user/food/$foodId'),
+        headers: {
+          'Authorization': 'JWT $accessToken',
+        },
+      );
 
-    final response = await http.get(
-      Uri.parse('${Constants.url}/user/food/$foodId'),
-      headers: {
-        'Authorization': 'JWT $accessToken',
-      },
-    );
+      print(response.body);
+      print(response.statusCode);
 
-    print(response.body);
-    print(response.statusCode);
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      final foodData = data['data'];
-      return Food.fromSingleFoodJson(foodData);
-    } else {
-      throw Exception('Failed to fetch food');
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final foodData = data['data'];
+        return Food.fromSingleFoodJson(foodData);
+      } else {
+        throw Exception(response.statusCode.toString());
+      }
+    }catch (error) {
+      throw Exception('Failed to fetch food: $error');
     }
   }
   Future<http.Response> likeFood(int foodId) async {

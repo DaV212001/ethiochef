@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+
 import '../utils/constants.dart';
 import 'language.dart';
 
@@ -5,7 +7,7 @@ class Food {
   final int? id;
   final int subcategoriesId;
   final int categoryId;
-  final String name;
+  final Map<String, dynamic> name;
   final String? description;
   final String? mealTime;
   final Map<String, dynamic>? stepsList;
@@ -48,33 +50,29 @@ class Food {
     this.isLiked
   });
   factory Food.fromSingleFoodJson(Map<String, dynamic> json) {
-    print(json['image']);
-    print(json['ingredients']);
-    print(json['steps']);
     String clearPath(String path) {
       final parts = path.split('/public_html');
       return parts.last;
     }
     String image = json['image'];
     String i = clearPath(image);
-    print("============================== $i");
     String meal = '';
+
     if(json['meal_time']['breakfast']==true){
-      meal = "Breakfast";
+      meal = 'breakfast'.tr();
     }else if(json['meal_time']['lunch']==true){
-      meal = "Lunch";
+      meal = 'lunch'.tr();
     }else if(json['meal_time']['super']==true){
-      meal = "Super";
+      meal = 'supper'.tr();
     }else{
-      meal = "dinner";
+      meal = 'dinner'.tr();
     }
     String thumbnail = Constants.ImageAPI + i;
-    print("thumbnail $thumbnail");
     return Food(
       id: json['id'],
       subcategoriesId: json['subcategories_id'],
       categoryId: json['category_id'] ?? 0,
-      name: json['name'][Language.getLocaleCode()] == ""?json['name']["en"]:json['name'][Language.getLocaleCode()]?? json['name']["en"],
+      name: json['name'],
       description: json['description'][Language.getLocaleCode()]?? json['name']["en"],
       mealTime: meal,
       preparationTime: json['cooking_time'],
@@ -99,24 +97,22 @@ class Food {
     String image = json['image'];
     String i = clearPath(image);
     String thumbnail = Constants.ImageAPI + i;
-    print("thumbnail $thumbnail");
-    print("============================== $i");
     String meal = '';
     if(json['meal_time']['breakfast']==true){
-      meal = "Breakfast";
+      meal = 'breakfast'.tr();
     }else if(json['meal_time']['lunch']==true){
-      meal = "Lunch";
+      meal = 'lunch'.tr();
     }else if(json['meal_time']['super']==true){
-      meal = "Super";
+      meal = 'supper'.tr();
     }else{
-      meal = "dinner";
+      meal = 'dinner'.tr();
     }
     return Food(
       id: json['id'],
       subcategoriesId: json['subcategories_id'],
       categoryId: json['category_id'] ?? 0,
-      name: json['name'][Language.getLocaleCode()]?? "no localisation",
-      description: json['description'][Language.getLocaleCode()]?? "no localisation",
+      name: json['name'],
+      description: json['description'][Language.getLocaleCode()]?? json['description']['en']??'',
       mealTime: meal,
       preparationTime: json['cooking_time'],
       servings: json['serving'],
@@ -138,24 +134,22 @@ class Food {
     String image = json['image'];
     String i = clearPath(image);
     String thumbnail = Constants.ImageAPI + i;
-    print("thumbnail $thumbnail");
-    print("============================== $i");
     String meal = '';
     if(type==1){
-      meal = "Breakfast";
+      meal = 'breakfast'.tr();
     }else if(type==2){
-      meal = "Lunch";
+      meal = 'lunch'.tr();
     }else if(type==3){
-      meal = "Super";
+      meal = 'supper'.tr();
     }else{
-      meal = "dinner";
+      meal = 'dinner'.tr();
     }
     return Food(
       id: json['id'],
       subcategoriesId: json['subcategories_id'],
       categoryId: json['category_id'] ?? 0,
-      name: json['name'][Language.getLocaleCode()]?? "no localisation",
-      description: json['description'][Language.getLocaleCode()]?? "no localisation",
+      name: json['name'],
+      description: json['description'][Language.getLocaleCode()]?? json['name']['en'],
       mealTime: meal,
       preparationTime: json['cooking_time'],
       servings: json['serving'],
@@ -177,33 +171,33 @@ class Food {
     String image = json['image'];
     String i = clearPath(image);
     String thumbnail = Constants.ImageAPI + i;
-    print("thumbnail $thumbnail");
-    print("============================== $i");
     String meal = '';
     if(json['breakfast']==true){
-      meal = "Breakfast";
+      meal = 'breakfast'.tr();
     }else if(json['lunch']==true){
-      meal = "Lunch";
+      meal = 'lunch'.tr();
     }else if(json['super']==true){
-      meal = "Super";
+      meal = 'supper'.tr();
     }else{
-      meal = "dinner";
+      meal = 'dinner'.tr();
     }
-    String name = '';
+    Map<String, dynamic> name = {
+      'name': '',
+    };
     String description = '';
     if(Language.getLocaleCode() == 'en'){
-      name = json['name_en'];
+      name['name'] = json['name_en'];
       description = json['description_en'];
     }
     else if(Language.getLocaleCode() == 'am'){
-      name = json['name_am'];
+      name['name'] = json['name_am'];
       description = json['description_am'];
     }
     else if(Language.getLocaleCode() == 'tr'){
-      name = json['name_tr'];
+      name['name'] = json['name_tr'];
       description = json['description_tr'];
     }else{
-      name = json['name_or'];
+      name['name'] = json['name_or'];
       description = json['description_or'];
     }
     return Food(
@@ -235,18 +229,3 @@ class Likes{
     );
   }
 }
-/*
-*
-* Map<String, String> myMap = {
-    "0": "Animi est dolore ir",
-    "1": "Distinctio Est ut o",
-    "2": "Eaque expedita fugit",
-    "3": "Provident perferend"
-  };
-
-  // Using forEach method
-  print("Using forEach method:");
-  myMap.forEach((key, value) {
-    print("$key: $value");
-  });
-* */

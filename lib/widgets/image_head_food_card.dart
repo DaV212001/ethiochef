@@ -6,6 +6,7 @@ import 'package:ethio_chef/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
+import '../models/language.dart';
 import '../screens/auth/auth_screen.dart';
 import '../services/authorization_service.dart';
 import '../services/user_service.dart';
@@ -82,7 +83,7 @@ class _ImageHeadFoodCardState extends State<ImageHeadFoodCard> {
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 5),
               child: Text(
-                widget.food.name,
+                widget.food.name[Language.getLocaleCode()].toString(),
                 style: TextStyle(
                   color: theme.colorScheme.tertiary,
                   fontWeight: FontWeight.bold,

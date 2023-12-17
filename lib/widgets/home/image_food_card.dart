@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
+import '../../models/language.dart';
 import '../../screens/auth/auth_screen.dart';
 import '../../services/authorization_service.dart';
 import '../../services/user_service.dart';
@@ -31,7 +32,6 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
   bool isLoading = true;
   void getUserStatus() async {
     bool status = await AuthService.isUserLoggedIn();
-    print("Logged in status = $status");
     setState(() {
       isLoggedIn = status;
     });
@@ -110,7 +110,7 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
                 height: 75,
                 padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
                 decoration: BoxDecoration(
-                    color: theme.colorScheme.onSecondaryContainer.withOpacity(0.7)),
+                    color: theme.colorScheme.primary.withOpacity(0.5)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -119,16 +119,13 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
                       height: 1.h
                     ),
                     Text(
-                      widget.food.name,
+                      widget.food.name[Language.getLocaleCode()].toString(),
                       softWrap: true,
                       overflow: TextOverflow.visible,
                       style: theme.textTheme.headlineSmall?.copyWith(
                           color: theme.colorScheme.onTertiary,
                           fontWeight: FontWeight.w500),
                       textAlign: TextAlign.start
-                    ),
-                    SizedBox(
-                      height: 2.h
                     ),
                     SmallLabelButton(text: widget.food.mealTime.toString(),onTap: (){},)
                   ],

@@ -103,19 +103,83 @@ class _NotificationScreenState extends State<NotificationScreen> {
           }),
     );
   }
+  int selectedIndex = 0;
 
   @override
   Widget buildTabs(List<NotificationData> notification) {
     List<NotificationData> readNotifications = [];
     List<NotificationData> unreadNotifications = [];
-
-    for (NotificationData notification in notification) {
-      if (notification.isRead) {
-        readNotifications.add(notification);
-      } else {
-        unreadNotifications.add(notification);
+    if(notification.length!=0){
+      print("Organized");
+      for (NotificationData notification in notification) {
+        if (notification.isRead) {
+          readNotifications.add(notification);
+        } else {
+          unreadNotifications.add(notification);
+        }
       }
     }
+    List<Widget> tabViews = [
+      ListView.builder(
+          shrinkWrap: true,
+          itemCount: readNotifications.length,
+          physics: BouncingScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          itemBuilder: (context, index) {
+            return NotificationCard(
+              isRead: true,
+              reFresh: (){
+                setState(() {
+                  notifications = fetchData();
+                });
+              },
+              delete: (){
+                print("Delete at Screen");
+              },
+              data: notification[index],
+            );
+          }),
+      ListView.builder(
+          shrinkWrap: true,
+          itemCount: unreadNotifications.length,
+          physics: BouncingScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          itemBuilder: (context, index) {
+            print("notification[index].isRead true ${notification[index].isRead}");
+            return NotificationCard(
+              isRead: false,
+              reFresh: (){
+                setState(() {
+                  notifications = fetchData();
+                });
+              },
+              delete: (){
+                print("Delete at Screen");
+                markNotificationAsRead(notification[index].id);
+              },
+              data: notification[index],
+            );
+          }),
+      ListView.builder(
+          shrinkWrap: true,
+          itemCount: notification.length,
+          physics: BouncingScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          itemBuilder: (context, index) {
+            return NotificationCard(
+              isRead: true,
+              reFresh: (){
+                setState(() {
+                  notifications = fetchData();
+                });
+              },
+              delete: (){
+                print("Delete at Screen");
+              },
+              data: notification[index],
+            );
+          })
+    ];
     if(notification.length==0) {
       return Center(
           child: InfoCard(
@@ -133,114 +197,45 @@ class _NotificationScreenState extends State<NotificationScreen> {
           ));
     }
     ThemeData theme = Theme.of(context);
-    return Scaffold(
-        body: SafeArea(
-          child: SingleChildScrollView(
-              physics: NeverScrollableScrollPhysics(),
-              child: DefaultTabController(
-                length: 3,
-                child: Column(children: [
-                  ButtonsTabBar(
-                    backgroundColor: theme.colorScheme.primary,
-                    unselectedBackgroundColor: Colors.transparent,
-                    unselectedLabelStyle: theme.textTheme.labelMedium
-                        ?.copyWith(
-                        color: theme.colorScheme.tertiary
-                    ),
-                    labelStyle: theme.textTheme.bodyMedium
-                        ?.copyWith(color: theme.colorScheme.onTertiary),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                    radius: 5,
-                    tabs: [
-                      Tab(text: 'read'.tr()),
-                      Tab(text: 'unread'.tr(),),
-                      Tab(text: 'all'.tr(),)
-                    ],
-                  ),
-                  SizedBox(
-                      height: 930.h,
-                      child: TabBarView(children:
-                      [
-                        ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: readNotifications.length,
-                            physics: BouncingScrollPhysics(),
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (context, index) {
-                                return NotificationCard(
-                                  isRead: true,
-                                  reFresh: (){
-                                    setState(() {
-                                      notifications = fetchData();
-                                    });
-                                  },
-                                  delete: (){
-                                    print("Delete at Screen");
-                                  },
-                                  data: notification[index],
-                                );
-                            }),
-                        ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: unreadNotifications.length,
-                            physics: BouncingScrollPhysics(),
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (context, index) {
-                                print("notification[index].isRead true ${notification[index].isRead}");
-                                return NotificationCard(
-                                  isRead: false,
-                                  reFresh: (){
-                                    setState(() {
-                                      notifications = fetchData();
-                                    });
-                                  },
-                                  delete: (){
-                                    print("Delete at Screen");
-                                    markNotificationAsRead(notification[index].id);
-                                  },
-                                  data: notification[index],
-                                );
-                            }),
-                        ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: notification.length,
-                            physics: BouncingScrollPhysics(),
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (context, index) {
-                              return NotificationCard(
-                                isRead: true,
-                                reFresh: (){
-                                  setState(() {
-                                    notifications = fetchData();
-                                  });
-                                },
-                                delete: (){
-                                  print("Delete at Screen");
-                                },
-                                data: notification[index],
-                              );
-                            })
-                      ])),
-                ]),
-              )),
-        ));
+    return SafeArea(
+      child: DefaultTabController(
+        length: 3,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            ButtonsTabBar(
+              onTap: (index) {
+                print("selectedIndex $selectedIndex");
+                print("index $index");
+                setState(() {
+                  selectedIndex = index;
+                });
+                print("selectedIndex $selectedIndex");
+                print("index $index");
+              },
+              backgroundColor: theme.colorScheme.primary,
+              unselectedBackgroundColor: Colors.transparent,
+              unselectedLabelStyle: theme.textTheme.labelMedium
+                  ?.copyWith(
+                  color: theme.colorScheme.tertiary
+              ),
+              labelStyle: theme.textTheme.bodyMedium
+                  ?.copyWith(color: theme.colorScheme.onTertiary),
+              contentPadding: EdgeInsets.symmetric(horizontal: 10),
+              radius: 5,
+              tabs: [
+                Tab(text: 'read'.tr()),
+                Tab(text: 'unread'.tr(),),
+                Tab(text: 'all'.tr(),)
+              ],
+            ),
+            Expanded(child: tabViews[selectedIndex])
+          ],
+        ),
+      ),
+    );
 
   }
-
-  // Widget buildSlidableCards(List<NotificationData> notification) {
-  //   return ListView.builder(
-  //     shrinkWrap: true,
-  //     scrollDirection: Axis.vertical,
-  //     physics: BouncingScrollPhysics(),
-  //     itemCount: notification.length,
-  //     itemExtent: 255,
-  //     itemBuilder: (BuildContext context, int index) {
-  //       return NotificationCard(
-  //         data: notification[index],
-  //       );
-  //     },
-  //   );
-  // }
 
   void markNotificationAsRead(int id) {
     print("id $id");

@@ -1,4 +1,6 @@
 
+import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/widgets/screen_head.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,7 +27,7 @@ class MainAppBar extends StatefulWidget implements PreferredSizeWidget {
         this.specialAction,
         this.hasMainIcons = true,
         this.hasBackButton = true,
-        this.hasSearchField = true,
+        this.hasSearchField = false,
         this.onSearchQueryChange,
         this.focusNode,
         this.color,
@@ -100,6 +102,13 @@ class _MainAppBarState extends State<MainAppBar> {
 
   Widget? buildTitle(ThemeData theme) {
     final bool isTablet = ScreenUtils.isTablet(context);
+    if(widget.hasSearchField == true){
+      return ScreenHead(
+          hasNotification: true,
+          screen: 1,
+          searchHint: "search_for_category".tr(),
+        );
+    }
     if (widget.title != "") {
       return Text(widget.title,
           style: TextStyle(

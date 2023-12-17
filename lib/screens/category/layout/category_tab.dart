@@ -10,6 +10,8 @@ import '../../../models/food.dart';
 import '../../../services/food_service.dart';
 import '../../../widgets/category/category_button.dart';
 import '../../../widgets/screen_head.dart';
+import 'package:ethio_chef/models/language.dart';
+
 class CategoryCustomTab extends StatefulWidget {
   final List<Category> category;
   const CategoryCustomTab({super.key, required this.category});
@@ -37,14 +39,13 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
   @override
   void initState() {
     _pagingController.addPageRequestListener((pageKey) {
-        fetchData(widget.category[selectedIndex].id, pageKey).then((data) {
-          if (data.length < 15) {
-            _pagingController.appendLastPage(data);
-          } else {
-            _pagingController.appendPage(data, pageKey + 1);
-          }
+      fetchData(widget.category[selectedIndex].id, pageKey).then((data) {
+        if (data.length < 15) {
+          _pagingController.appendLastPage(data);
+        } else {
+          _pagingController.appendPage(data, pageKey + 1);
         }
-      ).catchError((error) {
+      }).catchError((error) {
         _pagingController.error = error;
       });
     });
@@ -57,7 +58,7 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
     List<Tab> tabs = widget.category
         .map((e) =>
         Tab(
-          text: e.name,
+          text: e.name[Language.getLocaleCode()]!.toString(),
         ))
         .toList();
     return SafeArea(

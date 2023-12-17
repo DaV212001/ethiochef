@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:ethio_chef/widgets/screen_head.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
+import '../models/language.dart';
 import '../screens/competition/layout/vertical_competition_list.dart';
 import '../screens/home/layout/recent_dishes.dart';
 import '../utils/place_holder_data.dart';
@@ -41,44 +42,38 @@ class _SearchScreenState extends State<SearchScreen> {
                   searchHint: "search".tr()
               ),
             ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: widget.homescreen?PlaceHolderData.dishes.length:PlaceHolderData.categories.length,
-                itemBuilder: (context, index) {
-                  if(widget.homescreen==true){
-                    return ListTile(
-                      leading: CircleAvatar(backgroundImage: NetworkImage(PlaceHolderData.dishes[index].thumbnail)),
-                      title: Text(PlaceHolderData.dishes[index].name),
-                      subtitle: Text(PlaceHolderData.dishes[index].description!),
-                      onTap: () {},
-                    );
-                  }
-                  if(widget.categoryscreen==true){
-                    return ListTile(
-                      leading: CircleAvatar(backgroundImage: NetworkImage(PlaceHolderData.categories[index].image)),
-                      title: Text(PlaceHolderData.categories[index].name),
-                      onTap: () {},
-                    );
-                  }
-                  if(widget.competitionscreen==true){
-                    return ListTile(
-                      leading: CircleAvatar(backgroundImage: NetworkImage(PlaceHolderData.foodCompetitionList[index].image!)),
-                      title: Text(PlaceHolderData.foodCompetitionList[index].name!),
-                      subtitle: Text(PlaceHolderData.foodCompetitionList[index].description!),
-                      onTap: () {},
-                    );
-                  }
-                  if(widget.nutritionscreen==true){
-                    return ListTile(
-                      leading: CircleAvatar(backgroundImage: NetworkImage(PlaceHolderData.categories[index].image)),
-                      title: Text(PlaceHolderData.categories[index].name),
-                      onTap: () {},
-                    );
-                  }
-                  return null;
-                }
-              ),
-            )
+            // Expanded(
+            //   child: ListView.builder(
+            //     itemCount: widget.homescreen?4:5,
+            //     itemBuilder: (context, index) {
+            //       if(widget.homescreen==true){
+            //         return ListTile(
+            //           leading: CircleAvatar(backgroundImage: NetworkImage(PlaceHolderData.dishes[index].thumbnail)),
+            //           title: Text(PlaceHolderData.dishes[index].name[Language.getLocaleCode()].toString()),
+            //           subtitle: Text(PlaceHolderData.dishes[index].description!),
+            //           onTap: () {},
+            //         );
+            //       }
+            //       // if(widget.categoryscreen==true){
+            //       //   return ListTile(
+            //       //     leading: CircleAvatar(backgroundImage: NetworkImage(PlaceHolderData.categories[index].image)),
+            //       //     title: Text(PlaceHolderData.categories[index].name),
+            //       //     onTap: () {},
+            //       //   );
+            //       // }
+            //       if(widget.competitionscreen==true){
+            //         return ListTile(
+            //           leading: CircleAvatar(backgroundImage: NetworkImage(PlaceHolderData.foodCompetitionList[index].image!)),
+            //           title: Text(PlaceHolderData.foodCompetitionList[index].name!),
+            //           subtitle: Text(PlaceHolderData.foodCompetitionList[index].description!),
+            //           onTap: () {},
+            //         );
+            //       }
+            //
+            //       return null;
+            //     }
+            //   ),
+            // )
           ],
         ),
       ),

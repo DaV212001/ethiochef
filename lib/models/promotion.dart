@@ -22,13 +22,13 @@ class Promotion {
     }
     String image = json['image'];
     String i = clearPath(image);
+    print(i);
     String thumbnail = Constants.ImageAPI + i;
-    print("thumbnail $thumbnail");
-    print("============================== $i");
+    print(thumbnail);
     return Promotion(
       id: json['id'] as int,
-      name: thumbnail,
-      image: json['image'] as String,
+      name: "Promotion",
+      image: thumbnail
     );
   }
 }

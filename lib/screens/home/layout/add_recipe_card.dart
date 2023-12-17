@@ -25,10 +25,11 @@ class AddRecipeCard extends StatelessWidget {
             borderRadius: AppTheme.allBorderRadius,
             child: Container(
               decoration: BoxDecoration(
-                border: Border.all(color: theme.colorScheme.onSecondary, width: 1),
-                  image: DecorationImage(
-                      image: AssetImage(Assets.imagesAuthBtnBackground)
-                  )
+                color: theme.colorScheme.primary,
+                border: Border.all(color: theme.colorScheme.primary, width: 1),
+                  // image: DecorationImage(
+                  //     image: AssetImage(Assets.imagesAuthBtnBackground)
+                  // )
               ),
             ),
           ),
@@ -50,7 +51,7 @@ class AddRecipeCard extends StatelessWidget {
                       Text(
                         "add_your_own_recipe".tr(),
                         style: theme.textTheme.headlineSmall?.copyWith(
-                            color: theme.colorScheme.onSecondary,
+                            color: theme.colorScheme.surface,
                             fontWeight: FontWeight.w600),
                       ),
                       GestureDetector(
@@ -58,14 +59,14 @@ class AddRecipeCard extends StatelessWidget {
                           child: Icon(
                             Icons.highlight_remove_rounded,
                             size: 25.sp,
-                            color: theme.colorScheme.onSecondary,
+                            color: theme.colorScheme.surface,
                           ))
                     ],
                   ),
                   SizedBox(height: 10.h),
                   Text("add_your_own_recipe_body".tr(),
                       style: theme.textTheme.labelSmall?.copyWith(
-                          color: theme.colorScheme.onSecondary)),
+                          color: theme.colorScheme.surface)),
                   SizedBox(height: 15.h),
                   SizedBox(
                     width: double.infinity/2,
@@ -78,7 +79,7 @@ class AddRecipeCard extends StatelessWidget {
                         style: ButtonStyle(
                           side: MaterialStateProperty.all<BorderSide>(
                             BorderSide(
-                                color: theme.colorScheme.onSecondary,
+                                color: theme.colorScheme.surface,
                                 width: 1.w),
                           ),
                         ),
@@ -88,13 +89,13 @@ class AddRecipeCard extends StatelessWidget {
                             Text(
                               "submit_a_recipe".tr(),
                               style: theme.textTheme.headlineSmall?.copyWith(
-                                  color: theme.colorScheme.onSecondary,
+                                  color: theme.colorScheme.surface,
                                   fontWeight: FontWeight.w600),
                             ),
                             Icon(
                               Icons.arrow_forward,
                               size: 20.sp,
-                              color: theme.colorScheme.onSecondary,
+                              color: theme.colorScheme.surface,
                             )
                           ],
                         )),

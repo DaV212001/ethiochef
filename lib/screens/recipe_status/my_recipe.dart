@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/models/recipe.dart';
-import 'package:ethio_chef/screens/profile/layout/recipe_status/recipe_description.dart';
-import 'package:flutter/material.dart';
+
+import 'package:ethio_chef/screens/recipe_status/layout/recipe_description.dart';import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../../../../widgets/profile/recipe_card.dart';
-import '../../../upload_recipe/upload_recipe_screen.dart';
+import '../../models/recipe.dart';
+import '../upload_recipe/upload_recipe_screen.dart';
 
 class MyRecipes extends StatefulWidget {
   const MyRecipes({super.key});
@@ -86,7 +86,7 @@ class _MyRecipesState extends State<MyRecipes> {
               print("tap");
               pushNewScreen(
                 context,
-                screen: RecipeDescription(res: resp),
+                screen: RecipeDescription(myRecipe: resp),
                 withNavBar: false,
                 pageTransitionAnimation: PageTransitionAnimation.cupertino,
               );

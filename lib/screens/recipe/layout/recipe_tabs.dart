@@ -32,6 +32,7 @@ class _RecipeScreenTabState extends State<RecipeScreenTab> {
                 selectedIndex = index;
               });
             },
+            unselectedBorderColor: Colors.transparent,
             backgroundColor: theme.colorScheme.primary,
             unselectedBackgroundColor: Colors.transparent,
             unselectedLabelStyle: theme.textTheme.labelMedium
@@ -41,7 +42,7 @@ class _RecipeScreenTabState extends State<RecipeScreenTab> {
             labelStyle: theme.textTheme.bodyMedium
                 ?.copyWith(color: theme.colorScheme.onTertiary),
             contentPadding: EdgeInsets.symmetric(horizontal: 10),
-            radius: 5,
+            radius: 2,
             tabs: [
               Tab(
                   text: "ingredients".tr()
@@ -76,7 +77,8 @@ class _RecipeScreenTabState extends State<RecipeScreenTab> {
                               fontSize: 19,
                               fontWeight: FontWeight.w500,
                               color: theme.buttonTheme.colorScheme?.secondary),
-                        )
+                        ),
+                        SizedBox(height: 10)
                       ],
                     );
                   }).toList(),
@@ -105,7 +107,8 @@ class _RecipeScreenTabState extends State<RecipeScreenTab> {
                               fontSize: 19,
                               fontWeight: FontWeight.w500,
                               color: theme.buttonTheme.colorScheme?.secondary),
-                        )
+                        ),
+                        SizedBox(height: 10)
                       ]
                     );
                   }).toList()

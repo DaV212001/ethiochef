@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/food.dart';
+import 'package:ethio_chef/models/language.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -15,7 +16,7 @@ class ShareButton extends StatelessWidget {
       child: TextButton(
         onPressed: () {
           String text = "share_recipe".tr(args: [
-            food.name,
+            food.name[Language.getLocaleCode()].toString(),
             "[Recipe link]",
           ]);
 

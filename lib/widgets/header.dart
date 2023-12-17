@@ -28,9 +28,9 @@ class Header extends StatelessWidget {
             title,
             style: TextStyle(
                 letterSpacing: 0.5,
-                fontSize: 17,
+                fontSize: 19,
                 fontWeight: FontWeight.w800,
-                color: theme.colorScheme.tertiary),
+                color: theme.colorScheme.primary),
           ),
           Visibility(
               visible: showMore,
@@ -45,14 +45,14 @@ class Header extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                           color: theme.colorScheme.primary),
                     ),
-                    SizedBox(
-                      width: 2,
-                    ),
-                    Icon(
-                      CupertinoIcons.arrow_right,
-                      color: theme.colorScheme.primary,
-                      size: 20,
-                    )
+                    // SizedBox(
+                    //   width: 2,
+                    // ),
+                    // Icon(
+                    //   CupertinoIcons.arrow_right,
+                    //   color: theme.colorScheme.primary,
+                    //   size: 20,
+                    // )
                   ],
                 ),
               )),

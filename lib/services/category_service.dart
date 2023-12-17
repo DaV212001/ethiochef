@@ -6,34 +6,19 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../utils/constants.dart';
-import 'authorization_service.dart';
-
+import '../utils/error_util.dart';
 class CategoryService {
-  Future<List<Category>> fetchAllCategories(int pageKey) async{
-    if(pageKey > 15) {
-      throw Exception();
-    }
-    await Future.delayed(Duration(seconds: 1));
-    return PlaceHolderData.categories;
-  }
   Future<List<Category>> fetchCategories() async {
-    print("fetchCategories");
     try {
-      print("1");
+      await ErrorUtil.checkConnection();
       final response = await http.get(
-        Uri.parse('${Constants.url}/user/category')
+          Uri.parse('${Constants.url}/user/category')
       );
-      print("2");
-      print(response.body);
       if (response.statusCode == 200) {
-        print("3");
-        print(response.statusCode);
         final List<dynamic> responseData = jsonDecode(response.body)['data'];
-        print(jsonDecode(response.body));
-        print("responseData $responseData");
         return responseData.map((json) => Category.fromJson(json)).toList();
       } else {
-        throw Exception('Failed to fetch categories');
+        throw Exception(response.statusCode.toString());
       }
     } catch (error) {
       throw Exception('Failed to fetch categories: $error');
