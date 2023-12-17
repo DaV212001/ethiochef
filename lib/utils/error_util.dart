@@ -86,7 +86,7 @@ class ErrorUtil {
   );
 
   static ErrorData getErrorType(String type) {
-    print(type);
+    print("Error type for error card $type");
     type = removeExceptionPrefix(type);
     switch (type) {
       case "500":

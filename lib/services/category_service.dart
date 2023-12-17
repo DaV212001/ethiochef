@@ -21,7 +21,7 @@ class CategoryService {
         throw Exception(response.statusCode.toString());
       }
     } catch (error) {
-      throw Exception('Failed to fetch categories: $error');
+      rethrow;
     }
   }
 }

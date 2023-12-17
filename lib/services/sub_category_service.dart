@@ -28,7 +28,7 @@ class SubCategoryService{
             throw Exception(response.statusCode.toString());
           }
       }catch (error) {
-        throw Exception('Failed to fetch subcategory by id: $error');
+        rethrow;
       }
   }
   Future<List<SubCategory>> fetchAllSubCategories() async {
@@ -50,7 +50,7 @@ class SubCategoryService{
           throw Exception(response.statusCode.toString());
         }
     }catch (error) {
-      throw Exception('Failed to fetch all subcategories: $error');
+      rethrow;
     }
   }
 }

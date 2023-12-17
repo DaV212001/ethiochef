@@ -26,7 +26,7 @@ class FoodService{
         throw Exception(response.statusCode.toString());
       }
     } catch (error) {
-      throw Exception('Failed to fetch all foods: $error');
+      rethrow;
     }
   }
   Future<List<Food>> fetchFoodBySubCategoryId(int subCategoryId) async {
@@ -45,7 +45,7 @@ class FoodService{
         throw Exception(response.statusCode.toString());
       }
     }catch (error) {
-      throw Exception('Failed to fetch foods by sub category: $error');
+      rethrow;
     }
   }
   Future<List<Food>> fetchFoodByCategoryIdPaginated(int categoryId, int pageKey) async {
@@ -64,7 +64,7 @@ class FoodService{
         throw Exception(response.statusCode.toString());
       }
     }catch (error) {
-      throw Exception('Failed to fetch paginated foods: $error');
+      rethrow;
     }
   }
   Future<List<Food>> fetchFoodByCategoryId(int categoryId) async {
@@ -83,7 +83,7 @@ class FoodService{
         throw Exception(response.statusCode.toString());
       }
     } catch (error) {
-      throw Exception('Failed to fetch all foods: $error');
+      rethrow;
     }
   }
   Future<Food> fetchFoodById(int foodId) async {
@@ -110,7 +110,7 @@ class FoodService{
         throw Exception(response.statusCode.toString());
       }
     }catch (error) {
-      throw Exception('Failed to fetch food: $error');
+      rethrow;
     }
   }
   Future<http.Response> likeFood(int foodId) async {
