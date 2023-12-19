@@ -43,36 +43,19 @@ class _RecipeDescriptionState extends State<RecipeDescription> {
     CloudinaryContext.cloudinary= Cloudinary.fromCloudName(cloudName: "ttreeadvert");
    super.initState();
   }
-  String generateSignature(String apiKey, String apiSecret, String timestamp, String path) {
-    final dataToSign = '$apiKey$timestamp$path';
-    print("dataToSign    $dataToSign");
-    final signatureBytes = crypto.Hmac(crypto.sha256, utf8.encode(apiSecret)).convert(utf8.encode(dataToSign));
-    print("signatureBytes    $signatureBytes");
-    return base64Encode(signatureBytes.bytes);
-  }
   Future<void> uploadVideo() async {
-    print("uploading 1");
-
     var request = http.MultipartRequest(
       'POST',
       Uri.parse('https://api.cloudinary.com/v1_1/ttreeadvert/video/upload'),
     );
-    print("uploading 2");
 
     request.files.add(await http.MultipartFile.fromPath('file', widget.myRecipe.video!.path));
-    print("uploading 3");
-    print("widget.myRecipe.video!.path ${widget.myRecipe.video!.path}");
     request.fields['upload_preset'] = 'my_uploads';
-    print("uploading 4");
 
     try {
       var response = await request.send();
-    print("uploading 5");
       var responseJson = await http.Response.fromStream(response).then((value) {
-        print("value.body ${value.body}");
-    print("uploading 6");
       });
-    print("uploading 7");
     } catch (error) {
       print(error);
     }
@@ -95,8 +78,6 @@ class _RecipeDescriptionState extends State<RecipeDescription> {
       isLoadingVideo = false;
     });
   }
-  final PageController _pageController = PageController(initialPage: 0);
-  int _currentPage = 0;
   @override
   void dispose() {
     videoController?.dispose();
@@ -110,7 +91,6 @@ class _RecipeDescriptionState extends State<RecipeDescription> {
     return SafeArea(
       child: Scaffold(
           body: SingleChildScrollView(
-            //TODO fix the end of slider effect
               scrollDirection: Axis.vertical,
               child: Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10),
@@ -158,9 +138,7 @@ class _RecipeDescriptionState extends State<RecipeDescription> {
                             ScaffoldMessenger.of(context).showSnackBar(wait);
                             RecipeService service = RecipeService();
                             var response = await service.createFood(widget.myRecipe);
-                            print("uploading");
                             await uploadVideo();
-                            print("uploaded");
                             SnackBar success = SnackBar(
                                 padding: EdgeInsets.symmetric(vertical: 10),
                                 content: Text(
