@@ -57,8 +57,6 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     if(widget.food == null){
-      print("====================================================================================================");
-      print(widget.food);
       return Center(
         child: Text("No Food")
       );
@@ -128,13 +126,13 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
                       textAlign: TextAlign.start
                     ),
                     SmallLabelButton(text: widget.food.mealTime.toString(),onTap: (){},)
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+                  ]
+                )
+              )
+            )
+          ]
+        )
+      )
     );
   }
 

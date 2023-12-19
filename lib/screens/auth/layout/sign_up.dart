@@ -1,21 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/generated/assets.dart';
-import 'package:ethio_chef/screens/auth/layout/payment_screen.dart';
-import 'package:ethio_chef/screens/main_screen.dart';
-import 'package:ethio_chef/widgets/auth/auth_header.dart';
-import 'package:ethio_chef/widgets/auth/auth_link.dart';
 import 'package:ethio_chef/widgets/input_field.dart';
 import 'package:ethio_chef/widgets/auth/phone_input_field.dart';
-import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../../../models/user.dart';
-import '../../../models/verification.dart';
-import '../../../services/payment_service.dart';
 import '../../../services/user_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/screen_utils.dart';

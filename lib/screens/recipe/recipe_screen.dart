@@ -9,6 +9,7 @@ import '../../models/comment.dart';
 import '../../models/user.dart';
 import '../../services/comment_service.dart';
 import '../../services/food_service.dart';
+import '../../widgets/recipe/share_button.dart';
 import '../comment/food_comments.dart';
 import 'layout/recipe_tabs.dart';
 import '../../widgets/error_card.dart';
@@ -129,8 +130,8 @@ class _RecipeScreenState extends State<RecipeScreen> {
                   // RecipeRelated(dishes: PlaceHolderData.dishes),
                 ],
               ),
-            )
-            // ShareButton(food: widget.food)
+            ),
+            ShareButton(food: widget.food)
           ],
         )
       ),

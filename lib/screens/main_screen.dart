@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
+import '../services/authorization_service.dart';
+
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -62,7 +64,6 @@ class _MainScreenState extends State<MainScreen> {
       navBarStyle: NavBarStyle.style15,
     );
   }
-
   List<Widget> _buildScreens() {
     return [
       HomeScreen(),

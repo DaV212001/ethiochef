@@ -9,7 +9,7 @@ class Food {
   final int categoryId;
   final Map<String, dynamic> name;
   final String? description;
-  final String? mealTime;
+  final int? mealTime;
   final Map<String, dynamic>? stepsList;
   final Map<String, dynamic>? ingredients;
   final int? servings;
@@ -56,16 +56,16 @@ class Food {
     }
     String image = json['image'];
     String i = clearPath(image);
-    String meal = '';
+    int meal = 0;
 
     if(json['meal_time']['breakfast']==true){
-      meal = 'breakfast'.tr();
+      meal = 1;
     }else if(json['meal_time']['lunch']==true){
-      meal = 'lunch'.tr();
+      meal = 2;
     }else if(json['meal_time']['super']==true){
-      meal = 'supper'.tr();
+      meal = 3;
     }else{
-      meal = 'dinner'.tr();
+      meal = 4;
     }
     String thumbnail = Constants.ImageAPI + i;
     return Food(
@@ -97,15 +97,16 @@ class Food {
     String image = json['image'];
     String i = clearPath(image);
     String thumbnail = Constants.ImageAPI + i;
-    String meal = '';
+    int meal = 0;
+
     if(json['meal_time']['breakfast']==true){
-      meal = 'breakfast'.tr();
+      meal = 1;
     }else if(json['meal_time']['lunch']==true){
-      meal = 'lunch'.tr();
+      meal = 2;
     }else if(json['meal_time']['super']==true){
-      meal = 'supper'.tr();
+      meal = 3;
     }else{
-      meal = 'dinner'.tr();
+      meal = 4;
     }
     return Food(
       id: json['id'],
@@ -134,15 +135,15 @@ class Food {
     String image = json['image'];
     String i = clearPath(image);
     String thumbnail = Constants.ImageAPI + i;
-    String meal = '';
+    int meal = 0;
     if(type==1){
-      meal = 'breakfast'.tr();
+      meal = 1;
     }else if(type==2){
-      meal = 'lunch'.tr();
+      meal = 2;
     }else if(type==3){
-      meal = 'supper'.tr();
+      meal = 3;
     }else{
-      meal = 'dinner'.tr();
+      meal = 4;
     }
     return Food(
       id: json['id'],
@@ -171,15 +172,15 @@ class Food {
     String image = json['image'];
     String i = clearPath(image);
     String thumbnail = Constants.ImageAPI + i;
-    String meal = '';
+    int meal = 0;
     if(json['breakfast']==true){
-      meal = 'breakfast'.tr();
+      meal = 1;
     }else if(json['lunch']==true){
-      meal = 'lunch'.tr();
+      meal = 2;
     }else if(json['super']==true){
-      meal = 'supper'.tr();
+      meal = 3;
     }else{
-      meal = 'dinner'.tr();
+      meal = 4;
     }
     Map<String, dynamic> name = {
       'name': '',

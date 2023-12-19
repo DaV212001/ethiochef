@@ -43,7 +43,7 @@ class PlaceHolderData {
       // ingredient: ingredients,
       // steps: steps,
       servings: 2,
-    mealTime: '2',
+    mealTime: 2,
       // preparationTime: 1.5
   );
   static List<Food> dishes = List.filled(10, food);

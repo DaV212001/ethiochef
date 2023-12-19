@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class InputField extends StatelessWidget {
@@ -81,14 +82,14 @@ class InputField extends StatelessWidget {
 
   String? validateNameType(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Name is required';
+      return "name_is_required".tr();
     }
     return null;
   }
 
   String? validateEmailType(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Email is required';
+      return "email_is_required".tr();
     } else
     if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$').hasMatch(value)) {
       return 'Invalid email format';

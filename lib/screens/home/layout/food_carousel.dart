@@ -3,11 +3,15 @@ import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import '../../../models/food.dart';
 import '../../../services/food_service.dart';
+import '../../../utils/screen_utils.dart';
 import '../../../widgets/error_card.dart';
 import '../../../widgets/home/image_food_card.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+
+import '../../../widgets/main_button.dart';
 
 
 class FoodCarousel extends StatefulWidget {
@@ -67,21 +71,60 @@ class _FoodCarouselState extends State<FoodCarousel> {
 
   final CarouselController carouselController = CarouselController();
   int currentIndex = 0;
+
   Widget buildFoodScreen(List<Food> food){
+
+    Widget buildButton() {
+      return MainButton(
+          width: 200.w,
+          text: "refresh",
+          onPress: () {
+            setState(() {
+              _future = fetchData();
+            });
+          }!
+      );
+    }
+    final bool isTablet = ScreenUtils.isTablet(context);
     ThemeData theme = Theme.of(context);
     if(food.length == 0){
       return Center(
-          child: ErrorCard(
-            isFood: true,
-            errorType: 'no_food_in_this_category',
-            refresh: () {
-              setState(() {
-                _future = fetchData();
-              });
-            },
-          ));
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            "assets/images/errors/empty_food.svg",
+            width: isTablet ? 250.w : 300.w,
+            height: isTablet ? 100.h : 100.h,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+            child: Text(
+              "empty_food".tr(),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: theme.colorScheme.primary,
+                  fontSize: isTablet ? 18.sp : 20.sp,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+            child: Text(
+              "no_food_in_this_category".tr(),
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: theme.unselectedWidgetColor,
+                  fontSize:isTablet ? 12.sp :  15.sp,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          // SizedBox(height: 10.h),
+          // buildButton()
+        ],
+          )
+      );
     }
-
     double height = 255;
     return Column(
         children: [

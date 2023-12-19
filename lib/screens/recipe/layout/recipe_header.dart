@@ -83,7 +83,9 @@ class RecipeHeader extends StatelessWidget {
                 width: 5,
               ),
               Text(
-                food.mealTime!.toString(),
+                food.mealTime!.toString()=="1"? 'breakfast'.tr() :
+                food.mealTime!.toString()=="2"? 'lunch'.tr() :
+                food.mealTime!.toString()=="3"? 'dinner'.tr() : 'supper'.tr(),
                 style: TextStyle(
                     fontSize: 15,
                     color: theme.colorScheme.tertiary.withOpacity(0.7),

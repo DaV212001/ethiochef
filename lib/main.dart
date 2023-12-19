@@ -44,13 +44,6 @@ class EthioChef extends StatefulWidget {
 
 class _EthioChefState extends State<EthioChef> {
   bool isLoggedIn = false;
-  void getUserStatus() async {
-    bool status = await AuthService.isUserLoggedIn();
-    print("Logged in status = $status");
-    setState(() {
-      isLoggedIn = status;
-    });
-  }
   @override
   void initState() {
     super.initState();
@@ -58,6 +51,12 @@ class _EthioChefState extends State<EthioChef> {
   }
   bool isFirstTimeUser = true;
   Future<void> _checkFirstTimeUser() async {
+    print("check login status");
+    bool status = await AuthService.isUserLoggedIn();
+    print("Logged in status = $status");
+    setState(() {
+      isLoggedIn = status;
+    });
     print("Checking First TimeUser");
     final prefs = await SharedPreferences.getInstance();
     final hasLaunchedBefore = prefs.getBool('hasLaunchedEthioChefBefore') ?? false;
@@ -87,9 +86,14 @@ class _EthioChefState extends State<EthioChef> {
             if (isFirstTimeUser) {
               print("To SplashScreen $isFirstTimeUser");
               homeScreen = SplashScreen();
-            } else {
-              print("To SignupScreen $isFirstTimeUser");
-              homeScreen = AuthScreen();
+            }  else {
+              if(isLoggedIn == false){
+                print("To Auth Screen $isLoggedIn");
+                homeScreen = AuthScreen();
+              }else {
+                print("To SignupScreen $isFirstTimeUser");
+                homeScreen = MainScreen();
+              }
             }
         return ScreenUtilInit(
           designSize: const Size(412, 892),//Never change this value

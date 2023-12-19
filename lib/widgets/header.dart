@@ -20,7 +20,7 @@ class Header extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(top: 5),
       padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Row(
+      child:  Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

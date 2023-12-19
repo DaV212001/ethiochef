@@ -174,7 +174,9 @@ class _FoodCardState extends State<FoodCard> {
               SizedBox(
                 width: 150.w,
                 child: Text(
-                  widget.food.mealTime.toString(),
+                  widget.food.mealTime.toString()=="1"? 'breakfast'.tr() :
+                  widget.food.mealTime.toString()=="2"? 'lunch'.tr() :
+                  widget.food.mealTime.toString()=="3"? 'dinner'.tr() : 'supper'.tr(),
                   style: theme.textTheme.labelMedium?.copyWith(
                     color: theme.colorScheme.tertiary,
                   ),
