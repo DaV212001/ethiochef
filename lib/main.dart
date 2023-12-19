@@ -82,18 +82,13 @@ class _EthioChefState extends State<EthioChef> {
           builder: (context, ModelTheme themeNotifier, child) {
         // themeNotifier.isDark = false; // using to check dark theme
             Widget homeScreen;
-            print("First Time User status $isFirstTimeUser");
-            if (isFirstTimeUser) {
-              print("To SplashScreen $isFirstTimeUser");
-              homeScreen = SplashScreen();
-            }  else {
-              if(isLoggedIn == false){
-                print("To Auth Screen $isLoggedIn");
-                homeScreen = AuthScreen();
-              }else {
-                print("To SignupScreen $isFirstTimeUser");
-                homeScreen = MainScreen();
-              }
+            // print("First Time User status $isFirstTimeUser");
+            if(isLoggedIn == false){
+              print("To Auth Screen $isLoggedIn");
+              homeScreen = AuthScreen();
+            }else {
+              print("To SignupScreen $isFirstTimeUser");
+              homeScreen = MainScreen();
             }
         return ScreenUtilInit(
           designSize: const Size(412, 892),//Never change this value
