@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../models/category.dart';
+import 'package:ethio_chef/models/language.dart';
 
 class CategorySideBarCard extends StatelessWidget {
   final Category category;
@@ -28,7 +29,7 @@ class CategorySideBarCard extends StatelessWidget {
             children: [
               FittedBox(
                 child: Text(
-                  category.name,
+                  category.name[Language.getLocaleCode()]!.toString(),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 10.sp

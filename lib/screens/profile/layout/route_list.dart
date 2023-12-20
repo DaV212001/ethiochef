@@ -1,6 +1,5 @@
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/screens/profile/layout/recipe_status/my_recipe.dart';
 import 'package:ethio_chef/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
@@ -16,6 +15,8 @@ import '../../../widgets/profile/route_labels_card.dart';
 import '../../app_documentation/faq_screen.dart';
 import '../../app_documentation/privacy_policies_screen.dart';
 import '../../app_documentation/terms_and_conditions_screen.dart';
+import '../../recipe_status/my_recipe.dart';
+import '../../subscription/all_subscriptions.dart';
 import '../../subscription/subscriptionscreen.dart';
 import 'competition_status/my_competition.dart';
 
@@ -42,9 +43,14 @@ class _RouteListState extends State<RouteList> {
         "onTap": () async {
           pushNewScreen(
             context,
-            screen: SubscriptionScreen(
-              onRefresh: widget.onRefresh,
-            ),
+            screen: AllSubscriptions(
+              first_name: '',
+              last_name: '',
+              phone: '',
+              isSignUp: false,
+              returnPrice: (price){
+
+              }),
             withNavBar: false,
             pageTransitionAnimation: PageTransitionAnimation.cupertino,
           );

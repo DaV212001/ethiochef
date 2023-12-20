@@ -2,6 +2,24 @@
 class Assets {
   Assets._();
 
+  static const String errorsBadRequest = 'assets/images/errors/bad_request.svg';
+  static const String errorsBeingCooked = 'assets/images/errors/being_cooked.svg';
+  static const String errorsEmptyFood = 'assets/images/errors/empty_food.svg';
+  static const String errorsEmptyList = 'assets/images/errors/empty_list.svg';
+  static const String errorsEmptyNotification = 'assets/images/errors/empty_notification.svg';
+  static const String errorsEmptySearchQuery = 'assets/images/errors/empty_search_query.svg';
+  static const String errorsForbidden = 'assets/images/errors/forbidden.svg';
+  static const String errorsGatewayTimeout = 'assets/images/errors/gateway_timeout.svg';
+  static const String errorsInternalServer = 'assets/images/errors/internal_server.svg';
+  static const String errorsLetsCook = 'assets/images/errors/lets_cook.svg';
+  static const String errorsMyRecipeBook = 'assets/images/errors/my_recipe_book.svg';
+  static const String errorsNoConnection = 'assets/images/errors/no_connection.svg';
+  static const String errorsNotFound = 'assets/images/errors/not_found.svg';
+  static const String errorsRecipeWoman = 'assets/images/errors/recipe_woman.svg';
+  static const String errorsServiceUnavailable = 'assets/images/errors/service_unavailable.svg';
+  static const String errorsTooManyRequests = 'assets/images/errors/too_many_requests.svg';
+  static const String errorsUnauthorized = 'assets/images/errors/unauthorized.svg';
+  static const String errorsUnknown = 'assets/images/errors/unknown.svg';
   static const String fontsManropeBold = 'assets/fonts/Manrope-Bold.ttf';
   static const String fontsManropeExtraBold = 'assets/fonts/Manrope-ExtraBold.ttf';
   static const String fontsManropeExtraLight = 'assets/fonts/Manrope-ExtraLight.ttf';
@@ -32,10 +50,6 @@ class Assets {
   static const String imagesChapa = 'assets/images/chapa.png';
   static const String imagesEthiopianFlag = 'assets/images/ethiopian_flag.svg';
   static const String imagesLogo = 'assets/images/logo.png';
-  static const String imagesPhoto1 = 'assets/images/photo_1.jpg';
-  static const String imagesPhoto2 = 'assets/images/photo_2.jpg';
-  static const String imagesPhoto3 = 'assets/images/photo_3.jpg';
-  static const String imagesPhoto4 = 'assets/images/photo_4.jpg';
   static const String imagesSignInImage = 'assets/images/sign_in_image.png';
   static const String imagesSignUpImage = 'assets/images/sign_up_image.png';
   static const String imagesSplashScreenOne = 'assets/images/splash_screen_one.jpg';

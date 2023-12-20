@@ -9,9 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
+import '../../models/language.dart';
 import '../../screens/auth/auth_screen.dart';
 import '../../services/authorization_service.dart';
 import '../../services/user_service.dart';
+import '../small_label_button.dart';
+import 'category_label_carousel.dart';
 
 class ImageFoodCard extends StatefulWidget {
   static int foodCardType = 2;
@@ -29,7 +32,6 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
   bool isLoading = true;
   void getUserStatus() async {
     bool status = await AuthService.isUserLoggedIn();
-    print("Logged in status = $status");
     setState(() {
       isLoggedIn = status;
     });
@@ -55,47 +57,37 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     if(widget.food == null){
-      print("====================================================================================================");
-      print(widget.food);
       return Center(
         child: Text("No Food")
       );
     }
     return GestureDetector(
-      onTap: () {
-        print("====================================================================================================");
-      print("isLoggedIn $isLoggedIn");
-        print("hasSubscribed $hasSubscribed"); print("====================================================================================================");
-
-      if(isLoggedIn == true && hasSubscribed == true) {
-          pushNewScreen(
-            context,
-            withNavBar: false,
-            screen: RecipeScreen(food: widget.food),
-          );
-        }else if(hasSubscribed == false) {
+      onTap: () async {
+        print("Clicked show recipe");
+        setState(() {
+          isLoading = true;
+        });
+        bool status = await AuthService.isUserLoggedIn();
+        print("Logged in status = $status");
+        if(status == false){
+          setState(() {
+            isLoading = false;
+          });
           SnackBar logIn =SnackBar(
               padding: EdgeInsets.symmetric(vertical: 20),
               content: Text(
                   'Please subscribe to see ingredients and steps'.tr()
               ));
           ScaffoldMessenger.of(context).showSnackBar(logIn);
-          pushNewScreen(
-            context,
-            withNavBar: false,
-            screen: AuthScreen(isSignIn: true),
-          );
+          loginFunction();
         }else{
-          SnackBar logIn =SnackBar(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              content: Text(
-                  'Please log in to see ingredients and steps'.tr()
-              ));
-          ScaffoldMessenger.of(context).showSnackBar(logIn);
+          setState(() {
+            isLoading = false;
+          });
           pushNewScreen(
             context,
             withNavBar: false,
-            screen: AuthScreen(isSignIn: true),
+            screen: RecipeScreen(food: widget.food),
           );
         }
 
@@ -114,42 +106,41 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
               right: 0,
               child: Container(
                 height: 75,
-                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
                 decoration: BoxDecoration(
-                    color: theme.colorScheme.onSecondaryContainer.withOpacity(0.7)),
+                    color: theme.colorScheme.primary.withOpacity(0.5)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(height: 5),
+                    SizedBox(
+                      height: 1.h
+                    ),
                     Text(
-                      widget.food.name,
+                      widget.food.name[Language.getLocaleCode()].toString(),
                       softWrap: true,
                       overflow: TextOverflow.visible,
                       style: theme.textTheme.headlineSmall?.copyWith(
                           color: theme.colorScheme.onTertiary,
                           fontWeight: FontWeight.w500),
-                      textAlign: TextAlign.start,
+                      textAlign: TextAlign.start
                     ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Text(
-                      widget.food.mealTime.toString(),
-                      style: theme.textTheme.headlineSmall?.copyWith(
-                          color: theme.colorScheme.onTertiary,
-                          fontWeight: FontWeight.w500),
-                      textAlign: TextAlign.start,
-                    ),
+                    // SmallLabelButton(text: widget.food.mealTime.toString(),onTap: (){},)
+                  ]
+                )
+              )
+            )
+          ]
+        )
+      )
+    );
+  }
 
-                    // CategoryLabelCarousel(categories: widget.food.menuTimes)
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+  void loginFunction(){
+    pushNewScreen(
+      context,
+      withNavBar: false,
+      screen: AuthScreen(isSignIn: true),
     );
   }
 }

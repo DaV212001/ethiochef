@@ -3,13 +3,15 @@ import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/screens/category/categories_screen.dart';
 import 'package:ethio_chef/screens/competition/competitions_screen.dart';
 import 'package:ethio_chef/screens/home/home_screen.dart';
-import 'package:ethio_chef/screens/profile/layout/recipe_status/my_recipe.dart';
 import 'package:ethio_chef/screens/profile/profile_screen.dart';
+import 'package:ethio_chef/screens/upload_recipe/upload_recipe_screen.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+
+import '../services/authorization_service.dart';
 
 
 class MainScreen extends StatefulWidget {
@@ -59,19 +61,16 @@ class _MainScreenState extends State<MainScreen> {
         duration: Duration(milliseconds: 200),
       ),
       navBarHeight: 60.h,
-      navBarStyle: NavBarStyle.style2,
+      navBarStyle: NavBarStyle.style15,
     );
   }
-
   List<Widget> _buildScreens() {
     return [
       HomeScreen(),
       CategoriesScreen(),
-      // SavedRecipesScreen(),
-      // NutritionScreen(),
+      UploadRecipeScreen(type: "recipe"),
       CompetitionsScreen(),
-      // ProfileScreen()
-      ProfileScreen()// TODO MAKE PROFILE SCREEN THE BUILD SCREEN WHEN DONE
+      ProfileScreen()
     ];
   }
 
@@ -113,53 +112,25 @@ class _MainScreenState extends State<MainScreen> {
         activeColorPrimary: activeColor,
         inactiveColorPrimary: inactiveColor,
       ),
-      // PersistentBottomNavBarItem(
-      //   icon: Icon(CupertinoIcons.bookmark),
-      //   title: ("Saved Recipes"),
-      //   activeColorPrimary: activeColor,
-      //   inactiveColorPrimary: inactiveColor,
-      // ),
-      // PersistentBottomNavBarItem(
-      //   icon: SvgIcon(
-      //     image: Assets.iconsIngredients,
-      //     color: activeColor,
-      //   ),
-      //   inactiveIcon: SvgIcon(
-      //     size: 30,
-      //     image: Assets.iconsIngredients,
-      //     color: inactiveColor,
-      //   ),
-      //   title: ("Nutrition".tr()),
-      //   activeColorPrimary: activeColor,
-      //   inactiveColorPrimary: inactiveColor,
-      // ),
-      // PersistentBottomNavBarItem(
-      //     icon: SvgIcon(
-      //       image: Assets.iconsIngredients,
-      //       color: Theme
-      //           .of(context)
-      //           .colorScheme
-      //           .surface,
-      //     ),
-      //     inactiveIcon: SvgIcon(
-      //       size: 30,
-      //       image: Assets.iconsIngredients,
-      //       color: Theme
-      //           .of(context)
-      //           .colorScheme
-      //           .surface,
-      //     ),
-      //     title: ("nutrition".tr()),
-      //     activeColorPrimary: inactiveColor,
-      //     inactiveColorPrimary: inactiveColor,
-      //     onPressed: (context) {
-      //       // pushNewScreen(context!,
-      //       //     screen: UploadRecipeScreen(type: "recipe"), withNavBar: false);
-      //       pushNewScreen(context!,
-      //           screen: NutritionScreen());
-      //
-      //     }
-      // ),
+
+      PersistentBottomNavBarItem(
+        icon: SvgIcon(
+          image: Assets.iconsPlus,
+          color: Theme
+              .of(context)
+              .colorScheme
+              .surface,
+        ),
+        inactiveIcon: SvgIcon(
+          size: 30,
+          image: Assets.iconsPlus,
+          color: inactiveColor,
+        ),
+        title: ("recipe".tr()),
+        textStyle: TextStyle(color: activeColor),
+        activeColorPrimary: activeColor,
+        inactiveColorPrimary: inactiveColor,
+      ),
       PersistentBottomNavBarItem(
         icon: SvgIcon(
           image: Assets.iconsMedal,

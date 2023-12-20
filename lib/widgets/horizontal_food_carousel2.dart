@@ -48,7 +48,7 @@ class HorizontalFoodCarousel2 extends StatelessWidget {
     );
   }
   Widget buildFoodCard({required Food food}) {
-    return ImageFoodCard(food: food);
+    return ImageHeadFoodCard(food: food);
     // if(type == ImageFoodCard.foodCardType){
     //   return ImageFoodCard(food: food);
     // }

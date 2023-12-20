@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
+import '../../../widgets/error_card.dart';
+import '../../../widgets/loading.dart';
+
 class VerticalFoodList extends StatefulWidget {
   final PagingController<int, Food> pagingController;
 
@@ -23,7 +26,25 @@ class _VerticalFoodListState extends State<VerticalFoodList> {
       itemExtent: 275.h,
       pagingController: widget.pagingController,
       builderDelegate: PagedChildBuilderDelegate<Food>(
-        noMoreItemsIndicatorBuilder: (_) => SizedBox.shrink(),
+        firstPageProgressIndicatorBuilder: (context) => Center(child: Loading()),
+        newPageProgressIndicatorBuilder: (_) => Center(child: Loading()),
+        noMoreItemsIndicatorBuilder: (context) {
+          return SizedBox.shrink();
+        },
+        noItemsFoundIndicatorBuilder: (_) =>
+            Center(
+                child: ErrorCard(
+                  errorType: 'no_food_in_this_category',
+                  refresh: (){
+                    setState(() {
+                      widget.pagingController.refresh();
+                    });
+                  },
+                )),
+        firstPageErrorIndicatorBuilder: (_) => ErrorCard(
+          refresh: () => widget.pagingController.refresh(),
+          errorType: widget.pagingController.error.toString(),
+        ),
         itemBuilder: (context, food, index) {
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),

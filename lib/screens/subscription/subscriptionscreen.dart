@@ -13,6 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/user.dart';
 import '../../widgets/main_button.dart';
+import '../../widgets/subscription/subscription_card.dart';
 
 
 
@@ -80,8 +81,10 @@ Widget build(BuildContext context) {
                 child: Column(
                   children: [
                     ListView.builder(
-                      shrinkWrap: true,
+                        shrinkWrap: true,
                         itemCount: subscriptionPlans.length,
+                        scrollDirection: Axis.vertical,
+                        physics: BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
                           duration =
                           subscriptionPlans[index].duration != null ?
@@ -97,81 +100,14 @@ Widget build(BuildContext context) {
                               :
                           //subscription duration is null
                           '0';
-
-                          return Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20.w),
-                            child: Card(
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 20.h,
-                                    ),
-                                    Text(
-                                      subscriptionPlans[index].plan!,
-                                      style: Theme
-                                          .of(context)
-                                          .textTheme
-                                          .headlineMedium,
-                                    ),
-                                    SizedBox(
-                                      height: 20.h,
-                                    ),
-                                    Text(
-                                      'Price: ${subscriptionPlans[index].price
-                                          .toString()}',
-                                      style: Theme
-                                          .of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    ),
-                                    if(duration != '0')Text('Duration: ${duration}'),
-                                    SizedBox(
-                                      height: 20.h,
-                                    ),
-                                    MainButton(
-                                      text: 'Subscribe',
-                                      onPress: () async {
-                                        print('Subscribe');
-                                        var response = userSubscriptionPlans.isEmpty?
-                                        await u
-                                            .UserService()
-                                            .createUserSubscription(
-                                            subscriptionPlans[index].id!, user_id)
-                                        :
-                                        await u.UserService().updateUserSubscription(subscriptionPlans[index].id!, user_id)
-                                        ;
-                                        print('Sub: ${subscriptionPlans[index].id}, user: $user_id');
-                                        print(response.statusCode);
-                                        if (response.statusCode == 200) {
-                                          setState(() {
-                                            userSubscriptionPlans.isEmpty?userSubscriptionPlans.add(
-                                                subscriptionPlans[index]): userSubscriptionPlans.forEach((element) {element = subscriptionPlans[index];});
-                                          });
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                              SnackBar(
-                                                  content: Text(
-                                                    userSubscriptionPlans.isEmpty? "Subscribed successfully": "Updated successfully",
-                                                  )
-                                              )
-                                          );
-                                          widget.onRefresh!();
-                                          Navigator.of(context).pop();
-                                        }
-                                        else {
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                              SnackBar(
-                                                  content: Text(
-                                                    'Error: ${jsonDecode(
-                                                        response.body)['message']}',
-                                                  )
-                                              )
-                                          );
-                                        }
-                                      },
-                                    )
-                                  ],
-                                )
-                            ),
+                          return SubscriptionCard(
+                            buttonName: 'Subscribe',
+                            plan: subscriptionPlans[index].plan!,
+                            price: subscriptionPlans[index].price.toString(),
+                            duration: duration,
+                            onTap: () async {
+                              subscribeUser(index);
+                            },
                           );
                         }
                     ),
@@ -189,8 +125,10 @@ Widget build(BuildContext context) {
                       height: 20.h,
                     ),
                     ListView.builder(
-                      shrinkWrap: true,
+                        shrinkWrap: true,
                         itemCount: userSubscriptionPlans.length,
+                        scrollDirection: Axis.vertical,
+                        physics: BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
                           durationu =
                           userSubscriptionPlans.isNotEmpty?
@@ -208,52 +146,14 @@ Widget build(BuildContext context) {
                           //subscription duration is null
                           '0'
                               : '0';
-                          return Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20.w),
-                            child: Card(
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 20.h,
-                                    ),
-                                    Text(
-                                      userSubscriptionPlans[index].plan!,
-                                    ),
-                                    SizedBox(
-                                      height: 20.h,
-                                    ),
-                                    Text(
-                                      'Price: ${userSubscriptionPlans[index].price}'
-                                    ),
-
-                                    if(durationu != '0')Text('Duration: ${durationu}'),
-                                    SizedBox(
-                                      height: 20.h,
-                                    ),
-                                    MainButton(
-                                      text: 'Delete',
-                                      onPress: () async{
-                                        print('Delete');
-                                        u.UserService service = u.UserService();
-                                        bool deleted = await service.deleteUserSubscription();
-                                        if(deleted){
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                              SnackBar(
-                                                  content: Text(
-                                                    'Deleted successfully',
-                                                  )
-                                              )
-                                          );
-                                          setState(() {
-                                            userSubscriptionPlans.removeAt(index);
-                                          });
-
-                                        }
-                                      }
-                                    )
-                                  ]
-                                )
-                            )
+                          return SubscriptionCard(
+                            buttonName: 'Delete',
+                            plan: userSubscriptionPlans[index].plan!,
+                            price: userSubscriptionPlans[index].price.toString(),
+                            duration: durationu,
+                            onTap: (){
+                              deleteSubscription(index);
+                            },
                           );
                         }
                     )
@@ -270,5 +170,61 @@ Widget build(BuildContext context) {
         )
       ),
     );
+  }
+  void subscribeUser(int index)async{
+    print('Subscribe');
+    var response = userSubscriptionPlans.isEmpty?
+    await u
+        .UserService()
+        .createUserSubscription(
+        subscriptionPlans[index].id!, user_id)
+        :
+    await u.UserService().updateUserSubscription(subscriptionPlans[index].id!, user_id)
+    ;
+    print('Sub: ${subscriptionPlans[index].id}, user: $user_id');
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      setState(() {
+        userSubscriptionPlans.isEmpty?userSubscriptionPlans.add(
+            subscriptionPlans[index]): userSubscriptionPlans.forEach((element) {element = subscriptionPlans[index];});
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text(
+                userSubscriptionPlans.isEmpty? "Subscribed successfully": "Updated successfully",
+              )
+          )
+      );
+      widget.onRefresh!();
+      Navigator.of(context).pop();
+    }
+    else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text(
+                'Error: ${jsonDecode(
+                    response.body)['message']}',
+              )
+          )
+      );
+    }
+  }
+  void deleteSubscription(int index) async {
+    print('Delete');
+    u.UserService service = u.UserService();
+    bool deleted = await service.deleteUserSubscription();
+    if(deleted){
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text(
+                'Deleted successfully',
+              )
+          )
+      );
+      setState(() {
+        userSubscriptionPlans.removeAt(index);
+      });
+
+    }
   }
 }

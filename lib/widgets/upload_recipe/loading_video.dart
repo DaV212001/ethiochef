@@ -53,7 +53,7 @@ class _LoadingVideoState extends State<LoadingVideo> {
           ),
           if (showSecondRow)
             SizedBox(
-              height: 10,
+              height: 10
             ),
           if (showSecondRow) // Show the second row if showSecondRow is true
             Row(

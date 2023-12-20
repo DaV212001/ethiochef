@@ -73,16 +73,16 @@ class _CompetitionDescriptionState extends State<CompetitionDescription> {
         "leadingIcon": Icons.list_alt,
         "trailing": widget.comp.description.toString()
       },
-      {
-        "title": "serving_sizes".tr(),
-        "leadingIcon": Icons.people_outline,
-        "trailing": widget.comp.servingSize.toString()
-      },
-      {
-        "title": "preparation_times".tr(),
-        "leadingIcon": Icons.timer_outlined,
-        "trailing": widget.comp.prepTime.toString()
-      },
+      // {
+      //   "title": "serving_sizes".tr(),
+      //   "leadingIcon": Icons.people_outline,
+      //   "trailing": widget.comp.servingSize.toString()
+      // },
+      // {
+      //   "title": "preparation_times".tr(),
+      //   "leadingIcon": Icons.timer_outlined,
+      //   "trailing": widget.comp.prepTime.toString()
+      // },
     ];
 
     ThemeData theme = Theme.of(context);

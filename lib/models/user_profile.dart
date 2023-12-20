@@ -4,7 +4,7 @@ import 'package:ethio_chef/models/user.dart';
 class UserProfile {
   final int? id;
   final int? userId;
-   User? user;
+  User? user;
   final int? subscriptionId;
   final SubscriptionPlans? subscription;
   final String? status;
@@ -12,7 +12,7 @@ class UserProfile {
   final DateTime? lastPaidDate;
   String? message;
 
-  UserProfile( {
+  UserProfile({
     this.id,
     this.userId,
     this.user,
@@ -24,6 +24,7 @@ class UserProfile {
   });
 
   factory UserProfile.fromJson(Map<String, dynamic> json) {
+    print("UserProfile.fromJson $json");
     return UserProfile(
       id: json['id'],
       userId: json['user_id'],

@@ -34,11 +34,7 @@ class SubCategory {
     }
     String image = json['image'];
     String i = clearPath(image);
-    print("============================== $i");
-    print(json['id']);
-    print(json['name']);
     String thumbnail = Constants.ImageAPI + i;
-    print("============================== $thumbnail");
 
     return SubCategory(
         id: json['id'] ?? 0,

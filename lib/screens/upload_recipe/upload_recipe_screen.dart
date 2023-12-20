@@ -27,6 +27,8 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
   List<TextEditingController> quantityControllers = [TextEditingController()];
   List<TextEditingController> stepControllers = [TextEditingController()];
   List<Map<String, String>> ingredients = [];
+  Map<String, dynamic> ingredientToCreate = {};
+  Map<String, dynamic> stepToCreate = {};
   List<String> step = [];
   int activeStep = 0;
   File? image = null;
@@ -138,6 +140,18 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
                String stepString = stepControllers[i].text;
                step.add(stepString);
              }
+
+             int stepNumber = 1;
+             for (String instruction in step) {
+               stepToCreate["$stepNumber"] = instruction;
+               stepNumber++;
+             }
+
+             print("STEPS ${stepToCreate}");
+             for (var map in ingredients) {
+               ingredientToCreate.addAll(map);
+             }
+             print("INGREDIENTS ${ingredientToCreate}");
              Recipe newRecipe = Recipe(
                  name: nameController.text,
                  description: descriptionController.text,
@@ -146,12 +160,29 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
                  steps: step,
                  image: image,
                  video: video,
-                 ingredient: ingredients
+                 ingredient: ingredients,
+                ingredientToCreate: ingredientToCreate,
+                stepToCreate: stepToCreate
              );
 
-
+             print("Add RECIPE");
              Recipe.addRecipe(newRecipe);
-             Navigator.of(context).pop();
+             setState(() {
+               nameController.text = '';
+             descriptionController.text = '';
+             prepTimeController.text = '';
+             servingSizeController.text = '';
+             itemControllers = [TextEditingController()];
+             stepControllers = [TextEditingController()];
+             quantityControllers = [TextEditingController()];
+               image = null;
+               video = null;
+             ingredients = [];
+               step = [];
+             ingredientToCreate = {};
+               stepToCreate = {};
+               activeStep = 0;
+             });
            }else{
              Map<String, String> ingredientMap = {
                'ingredient': 'ingredient',
@@ -185,7 +216,9 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
 
 
              Competition.addCompetition(newRecipe);
-             Navigator.of(context).pop();
+             setState(() {
+               activeStep = 0;
+             });
            }
           },
           back: decrementStep,

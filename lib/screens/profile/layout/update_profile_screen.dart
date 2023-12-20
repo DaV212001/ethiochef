@@ -39,15 +39,13 @@ class UpdateProfileScreen extends StatefulWidget {
 }
 
 class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
-  File? updatedProfilePicture;
-
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final emailController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   final picker = ImagePicker();
-  // late var profilePicture;
+  late var profilePicture = null;
   bool isFile = false;
   bool isLoading = false;
 
@@ -58,16 +56,16 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     lastNameController.text = widget.lastName ?? '';
     emailController.text = widget.email ?? '';
     phoneNumberController.text = widget.phone ?? '';
+    profilePicture = widget.imagePath;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     final bool isTablet = ScreenUtils.isTablet(context);
     return Scaffold(
         appBar: MainAppBar(
-          title: "Update profile".tr(),
+          title: "edit".tr(),
           hasMainIcons: false,
         ),
         body: Form(
@@ -76,36 +74,35 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             padding: EdgeInsets.only(
                 left: isTablet ? 80.w : 40.w,
                 right: isTablet ? 80.w : 40.w,
-                top: isTablet ? 50.h : 10.h
-            ),
+                top: isTablet ? 50.h : 10.h),
             child: ListView(
+              physics: NeverScrollableScrollPhysics(),
               scrollDirection: Axis.vertical,
               children: [
                 ProfileWidget(
-                    isUpdateScreen: true,
-                  imagePath: widget.imagePath,
-                  hasEditButton: widget.isFile || widget.imagePath != null,
-                  isFile: widget.isFile,
-                  onClicked: showOptions
+                  imagePath: profilePicture,
+                  hasEditButton: isFile || profilePicture != null,
+                  isFile: isFile,
+                  onClicked: showOptions, isUpdateScreen: true,
                 ),
                 SizedBox(height: 15.h),
                 // Row(
                 //   children: [
-                    InputField(
-                      controller: firstNameController,
-                      icon: CupertinoIcons.person,
-                      label: 'first_name'.tr(),
-                      hint: "your_first_name".tr(),
-                      type: InputField.NameType,
-                    ),
-                    // SizedBox(height: 100,),
-                    InputField(
-                      controller: lastNameController,
-                      icon: CupertinoIcons.person,
-                      label: 'last_name'.tr(),
-                      hint: "your_last_name".tr(),
-                      type: InputField.NameType,
-                    ),
+                InputField(
+                  controller: firstNameController,
+                  icon: CupertinoIcons.person,
+                  label: 'first_name'.tr(),
+                  hint: "your_first_name".tr(),
+                  type: InputField.NameType,
+                ),
+                // SizedBox(height: 100,),
+                InputField(
+                  controller: lastNameController,
+                  icon: CupertinoIcons.person,
+                  label: 'last_name'.tr(),
+                  hint: "your_last_name".tr(),
+                  type: InputField.NameType,
+                ),
                 //   ],
                 // ),
                 SizedBox(height: 20.h),
@@ -120,18 +117,18 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                 SizedBox(height: 20.h),
                 MainButton(
                     isLoading: isLoading,
-                    text: "update".tr(), onPress: () async {
-                      setState(() {
-                        isLoading = true;
-                      });
+                    text: "edit".tr(), onPress: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
                   UserService userService = UserService();
-                  var response = await userService.updateUserAccount(
-                    firstNameController.text,
-                    lastNameController.text,
-                    emailController.text,
-                    phoneNumberController.text,
-                    // updatedProfilePicture!
-                  );
+                  print("Updating");
+                  var response = await userService.updateProfile(
+                      firstNameController.text,
+                      lastNameController.text,
+                      emailController.text,
+                      phoneNumberController.text,
+                      profilePicture);
                   if(response.statusCode == 200){
                     SnackBar success = SnackBar(
                         padding: EdgeInsets.symmetric(vertical: 20),
@@ -149,26 +146,21 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                         ));
                     await ScaffoldMessenger.of(context).showSnackBar(failed);
                   }
-                      setState(() {
-                        isLoading = false;
-                      });
+                  setState(() {
+                    isLoading = false;
+                  });
                 }),
               ],
             ),
           ),
         ));
   }
-
-
-
-
-  //Image Picker function to get image from gallery
   Future getImageFromGallery() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       if (pickedFile != null) {
-        updatedProfilePicture = File(pickedFile.path);
+        profilePicture = File(pickedFile.path);
         isFile = true;
       }
     });
@@ -180,7 +172,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
     setState(() {
       if (pickedFile != null) {
-        updatedProfilePicture = File(pickedFile.path);
+        profilePicture = File(pickedFile.path);
         isFile = true;
       }
     });
@@ -193,7 +185,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       builder: (context) => CupertinoActionSheet(
         actions: [
           CupertinoActionSheetAction(
-            child: Text('Photo Gallery',),
+            child: Text(
+              'photo_gallery'.tr(),
+            ),
             onPressed: () {
               // close the options modal
               Navigator.of(context).pop();
@@ -202,7 +196,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             },
           ),
           CupertinoActionSheetAction(
-            child: Text('Camera'),
+            child: Text('camera'.tr(),),
             onPressed: () {
               // close the options modal
               Navigator.of(context).pop();
@@ -214,4 +208,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       ),
     );
   }
+
+
+
+
 }

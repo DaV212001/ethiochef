@@ -24,14 +24,9 @@ class HomeCategoryTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Tab> tabs = PlaceHolderData.menuTimes
-        .map((e) => Tab(
-              text: e.name,
-            ))
-        .toList();
     ThemeData theme = Theme.of(context);
     return DefaultTabController(
-      length: tabs.length,
+      length: 4,
       child: Column(
         children: [
           // Header(title: "meal".tr()),
@@ -51,7 +46,7 @@ class HomeCategoryTab extends StatelessWidget {
               Tab(text: 'breakfast'.tr()),
               Tab(text: 'lunch'.tr()),
               Tab(text: 'supper'.tr()),
-              Tab(text: 'dinner'.tr()),
+              Tab(text: 'dinner'.tr())
             ],
           ),
           SizedBox(
@@ -72,10 +67,11 @@ class HomeCategoryTab extends StatelessWidget {
     );
   }
 
-  // List<Widget> getTabs() {
+  // List<Widget> getTabs(int index) {
   //   return List.filled(
   //     4,
   //     HorizontalFoodCarousel2(
+  //       type: index,
   //       breakfast: breakfast,
   //       dinner: dinner,
   //       lunch: lunch,

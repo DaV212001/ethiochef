@@ -61,7 +61,7 @@ class CompetitionsCard extends StatelessWidget {
                         textAlign: TextAlign.start,
                       ),
                       Text(
-                        "_votes".tr(args: [competition.votes.toString()]),
+                        "votes".tr(args: [competition.votes.toString()]),
                         style: theme.textTheme.labelMedium
                             ?.copyWith(color: theme.unselectedWidgetColor),
                         textAlign: TextAlign.start,
@@ -72,7 +72,7 @@ class CompetitionsCard extends StatelessWidget {
                     height: 10.h,
                   ),
                   Text(
-                    "_days_left".tr(args: [competition.daysLeft.toString()]),
+                    "days_left".tr(args: [competition.daysLeft.toString()]),
                     style: theme.textTheme.labelMedium
                         ?.copyWith(color: theme.unselectedWidgetColor),
                     textAlign: TextAlign.start,

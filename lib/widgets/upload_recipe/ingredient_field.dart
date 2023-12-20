@@ -25,11 +25,13 @@ class IngredientField extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          InputField(
-            height: 75,
-            width: 175,
-            controller: itemController,
-            hint: "ingredient".tr(),
+          Expanded(
+            child: InputField(
+              height: 75,
+              width: 175,
+              controller: itemController,
+              hint: "ingredient".tr(),
+            ),
           ),
           // InputField(
           //   height: 75,

@@ -61,8 +61,6 @@ class CommentService{
   }
 
   Future<http.Response> updateComment(int comment_id, int food_id, String comment) async {
-    print("comment_id ===========  ${comment_id}");
-    print("comment ================= ${comment}");
     var requestBody = jsonEncode({
       "food_id": food_id,
       "comment": comment

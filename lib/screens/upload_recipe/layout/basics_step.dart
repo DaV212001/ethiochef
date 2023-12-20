@@ -76,23 +76,23 @@ class _BasicsStepState extends State<BasicsStep> {
           SizedBox(
             height: 10,
           ),
-          InputField(
-            icon: Icons.timer_outlined,
-            controller: widget.prepTimeController,
-            label: "preparation_times".tr(),
-            hint: "enter_dish_preparation_in_minutes".tr(),
-            inputType: TextInputType.number,
-          ),
+          // InputField(
+          //   icon: Icons.timer_outlined,
+          //   controller: widget.prepTimeController,
+          //   label: "preparation_times".tr(),
+          //   hint: "enter_dish_preparation_in_minutes".tr(),
+          //   inputType: TextInputType.number,
+          // ),
           SizedBox(
             height: 10,
           ),
-          InputField(
-            icon: Icons.people_outline,
-            controller: widget.servingSizeController,
-            label: "serving_sizes".tr(),
-            hint: "enter_dish_serving_size".tr(),
-            inputType: TextInputType.number,
-          ),
+          // InputField(
+          //   icon: Icons.people_outline,
+          //   controller: widget.servingSizeController,
+          //   label: "serving_sizes".tr(),
+          //   hint: "enter_dish_serving_size".tr(),
+          //   inputType: TextInputType.number,
+          // ),
           StepperControlButtons(
             isFirst: true,
             next: () {

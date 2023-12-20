@@ -1,21 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/generated/assets.dart';
-import 'package:ethio_chef/screens/auth/layout/payment_screen.dart';
-import 'package:ethio_chef/screens/main_screen.dart';
-import 'package:ethio_chef/widgets/auth/auth_header.dart';
-import 'package:ethio_chef/widgets/auth/auth_link.dart';
 import 'package:ethio_chef/widgets/input_field.dart';
 import 'package:ethio_chef/widgets/auth/phone_input_field.dart';
-import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../../../models/user.dart';
-import '../../../models/verification.dart';
-import '../../../services/payment_service.dart';
 import '../../../services/user_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/screen_utils.dart';
@@ -120,54 +111,21 @@ class _SignUpState extends State<SignUp> {
             text: "sign_up_button".tr(),
             onPress: () async {
               if (_formKey.currentState!.validate()) {
-                await showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (context) {
-                    return WillPopScope(
-                      onWillPop: () async {
-                        return true;
-                      },
-                      child: Dialog(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.r),
-                        ),
-                        backgroundColor: Theme.of(context).cardColor,
-                        child: InfoCard(
-                          onPress: () async {
-                            await pushNewScreen(context,
-                                screen: AllSubscriptions(returnPrice: (price){
-                                  setState(() {
-                                    amount = price;
-                                  });
-                                },)
-                            );
-                            print("amount $amount");
-                            Verification verification =
-                            await PaymentService().getChapaCheckoutLink(amount, '', firstNameController.text, lastNameController.text, "0"+phoneController.text);
-
-                            print("PaymentService");
-                            pushNewScreen(context,
-                                screen: PaymentScreen(url: verification.checkoutUrl!)
-                            );
-
-                            bool notpaid = await PaymentService().verifyChapaPayment(verification.txref!);
-                            print(notpaid);
-                          },
-                          buttonText: "Pay Subscription",
-                          closeText: "Pay Later",
-                          infoBody: "Pay your monthly, yearly or weekly subscription",
-                          infoTitle: "Subscriptions payment",
-                          infoImage: "assets/images/chapa.png",
-                          closeBtn: true,
-                        ),
-                      ),
-                    );
-                  },
-                );
                 setState(() {
                   isLoading = true;
                 });
+                await pushNewScreen(context,
+                    screen: AllSubscriptions(
+                      first_name: firstNameController.text,
+                      last_name: lastNameController.text,
+                      phone: "0"+phoneController.text,
+                      isSignUp: true,
+                      returnPrice: (price){
+                        setState(() {
+                          amount = price;
+                        });
+                      },)
+                );
                 await _registration();
               }
             }
