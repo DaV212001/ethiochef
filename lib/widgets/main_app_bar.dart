@@ -15,6 +15,7 @@ class MainAppBar extends StatefulWidget implements PreferredSizeWidget {
   final bool hasBackButton;
   final bool hasSearchField;
   final bool hasMainIcons;
+  final bool isSearchScreen;
   final List<Widget>? specialAction;
   final ValueChanged<String>? onSearchQueryChange;
   final FocusNode? focusNode;
@@ -28,6 +29,7 @@ class MainAppBar extends StatefulWidget implements PreferredSizeWidget {
         this.hasMainIcons = true,
         this.hasBackButton = true,
         this.hasSearchField = false,
+        this.isSearchScreen = false,
         this.onSearchQueryChange,
         this.focusNode,
         this.color,

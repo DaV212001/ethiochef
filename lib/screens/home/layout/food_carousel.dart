@@ -125,80 +125,75 @@ class _FoodCarouselState extends State<FoodCarousel> {
           )
       );
     }
-    double height = 255;
-    return Column(
-        children: [
-          CarouselSlider(
-            items: food.map((foods) {
-              return Builder(
-                builder: (BuildContext context) {
-                  return ImageFoodCard(
-                      food: foods
-                  );
-                },
-              );
-            }).toList(),
-            carouselController: carouselController,
-            options: CarouselOptions(
-              scrollPhysics: const BouncingScrollPhysics(),
-              autoPlay: false,
-              onPageChanged: (index, reason) {
-                setState(() {
-                  currentIndex = index;
-                });
-              },
-              height: height,
-              padEnds: false,
-              disableCenter: false,
-              enableInfiniteScroll: false,
-              reverse: false,
-              enlargeCenterPage: false
-            ),
-          ),
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: food.asMap().entries.map((entry) {
-                    return GestureDetector(
-                      onTap: () =>
-                          carouselController.animateToPage(entry.key),
-                      child: Container(
-                        width: currentIndex == entry.key ? 17.w : 7.w,
-                        height: 7.h,
-                        margin: EdgeInsets.symmetric(
-                          horizontal: 3.0.w,
-                        ),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.r),
-                            color: currentIndex == entry.key
-                                ? theme.colorScheme.primaryContainer
-                                : theme.colorScheme.primary),
+    double height = 180;
+    return Container(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            CarouselSlider(
+              items: food.map((foods) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      child: ImageFoodCard(
+                          food: foods
                       ),
                     );
-                  }).toList(),
-                )
-              ],
+                  },
+                );
+              }).toList(),
+              carouselController: carouselController,
+              options: CarouselOptions(
+                scrollPhysics: const BouncingScrollPhysics(),
+                autoPlay: false,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
+                  animateToClosest: false,
+                height: height,
+                padEnds: false,
+                disableCenter: false,
+                enableInfiniteScroll: false,
+                reverse: false,
+                enlargeCenterPage: false,
+                viewportFraction: 0.5
+              )
             ),
-          )
-    ]);
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: food.asMap().entries.map((entry) {
+                      return GestureDetector(
+                        onTap: () =>
+                            carouselController.animateToPage(entry.key),
+                        child: Container(
+                          width: currentIndex == entry.key ? 17.w : 7.w,
+                          height: 7.h,
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 3.0.w,
+                          ),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10.r),
+                              color: currentIndex == entry.key
+                                  ? theme.colorScheme.primaryContainer
+                                  : theme.colorScheme.primary),
+                        ),
+                      );
+                    }).toList(),
+                  )
+                ],
+              ),
+            )
+      ]),
+    );
   }
 
 }
 
-/*
-* ListView.builder(
-      shrinkWrap: true,
-      scrollDirection: Axis.horizontal,
-      physics: BouncingScrollPhysics(),
-      itemCount: food.length,
-      itemExtent: height,
-      itemBuilder: (BuildContext context, int index) {
-        return ImageFoodCard(
-          food: food[index],
-        );
-      },
-    );
-* */

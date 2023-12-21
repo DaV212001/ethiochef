@@ -1,7 +1,7 @@
 import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/widgets/category/food_card.dart';
 import 'package:ethio_chef/widgets/home/image_food_card.dart';
-import 'package:ethio_chef/widgets/image_head_food_card.dart';
+import 'package:ethio_chef/widgets/meal_card.dart';
 import 'package:flutter/material.dart';
 
 class HorizontalFoodCarousel extends StatelessWidget {
@@ -17,7 +17,7 @@ class HorizontalFoodCarousel extends StatelessWidget {
     if(type == ImageFoodCard.foodCardType){
       height = 255;
       width = 235;
-    } else if (type == ImageHeadFoodCard.foodCardType){
+    } else if (type == MealCard.foodCardType){
       height = 180;
       width = 165;
     }
@@ -39,8 +39,8 @@ class HorizontalFoodCarousel extends StatelessWidget {
     if(type == ImageFoodCard.foodCardType){
       return ImageFoodCard(food: food);
     }
-    else if(type == ImageHeadFoodCard.foodCardType){
-      return ImageHeadFoodCard(food: food);
+    else if(type == MealCard.foodCardType){
+      return MealCard(food: food);
     } else {
       return FoodCard(food: food);
     }

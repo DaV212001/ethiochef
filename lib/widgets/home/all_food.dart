@@ -72,7 +72,7 @@ class _AllFoodState extends State<AllFood> {
           children: [
 
         Header(title: widget.categoryName),
-            VerticalFoodList(pagingController: _pagingController),
+            VerticalFoodList(pagingController: _pagingController, isSearchList: false),
           ],
         ),
       )

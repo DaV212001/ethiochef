@@ -145,7 +145,7 @@ class _AdsCarouselState extends State<AdsCarousel> {
         ScreenHead(
           hasNotification: true,
           screen: 0,
-          searchHint: "search".tr(),
+          searchHint: "search_for_category".tr(),
         )
       ]),
     );

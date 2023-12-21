@@ -60,34 +60,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
   int amount = 0;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: FutureBuilder(
-            future: _future,
-            builder: (context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Loading();
-              }
-              if (snapshot.hasError) {
-                return Center(
-                    child: ErrorCard(
-                      errorType: snapshot.error.toString(),
-                      refresh: () {
-                        setState(() {
-                          _future = fetchData();
-                        });
-                      },
-                    ));
-              }
-              //TODO: check this code esti
-              if(snapshot.data == null){
-                return Center(
-                  child: Card(
+    return SafeArea(
+      child: Scaffold(
+          body: FutureBuilder(
+              future: _future,
+              builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Loading();
+                }
+                if (snapshot.hasError) {
+                  return Center(
+                      child: ErrorCard(
+                        errorType: snapshot.error.toString(),
+                        refresh: () {
+                          setState(() {
+                            _future = fetchData();
+                          });
+                        },
+                      ));
+                }
+                //TODO: check this code esti
+                if(snapshot.data == null){
+                  return Center(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("sign_in_button".tr()),
+                        Text("another_account_login".tr()),
                         MainButton(
                           isLoading: isLoading,
-                          text: "sign_in_button".tr(),
+                          text: "log_out".tr(),
                           onPress: () async {
                             setState(() {
                               isLoading = true;
@@ -104,11 +106,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         )
                       ]
                     ),
-                  ),
-                );
-              }
-              return buildUserScreen(snapshot.data as UserProfile);
-            })
+                  );
+                }
+                return buildUserScreen(snapshot.data as UserProfile);
+              })
+      ),
     );
   }
   @override

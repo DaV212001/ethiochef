@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/models/food.dart';
@@ -25,8 +27,9 @@ import '../info_card.dart';
 class FoodCard extends StatefulWidget {
   static int foodCardType = 1;
   final Food food;
+  final bool isSearchList;
 
-  const FoodCard({super.key, required this.food});
+  const FoodCard({super.key, required this.food,this.isSearchList=false});
 
   @override
   State<FoodCard> createState() => _FoodCardState();
@@ -74,13 +77,53 @@ class _FoodCardState extends State<FoodCard> {
             width: 200.w,
             text: "show_recipe".tr(),
             onPress: () async {
-              print("Clicked show recipe button");
+              print("Food Card");
               setState(() {
                 isLoading = true;
               });
-              bool status = await AuthService.isUserLoggedIn();
-              print("Logged in status = $status");
-              if(status == false){
+
+              var token = await AuthService.getAuthorizationToken();
+              if(token!=null){
+                UserService service = UserService();
+                var response = await service.checkUserSubscription();
+                final jsonData = json.decode(response.body);
+                print("user jsonData $jsonData");
+                if(jsonData['message'] == "Invalid Token, Redirect to login"){
+                  setState(() {
+                    isLoading = false;
+                  });
+                  SnackBar logIn =SnackBar(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      content: Text(
+                          'another_account_login'.tr()
+                      ));
+                  ScaffoldMessenger.of(context).showSnackBar(logIn);
+                  loginFunction();
+                }
+                if(response.statusCode == 200) {
+                  if(jsonData['message'] == "User is subscribed"){
+                    pushNewScreen(
+                      context,
+                      withNavBar: false,
+                      screen: RecipeScreen(food: widget.food),
+                    );
+
+                  }else{
+                    pushNewScreen(
+                      context,
+                      withNavBar: false,
+                      screen: AllSubscriptions(returnPrice: (int ) {  },
+                        first_name: "",
+                        last_name: "",
+                        isSignUp:
+                        false,phone: "",),
+                    );
+                  }
+                }
+                setState(() {
+                  isLoading = false;
+                });
+              }else{
                 setState(() {
                   isLoading = false;
                 });
@@ -91,15 +134,6 @@ class _FoodCardState extends State<FoodCard> {
                     ));
                 ScaffoldMessenger.of(context).showSnackBar(logIn);
                 loginFunction();
-              }else{
-                setState(() {
-                  isLoading = false;
-                });
-                pushNewScreen(
-                  context,
-                  withNavBar: false,
-                  screen: RecipeScreen(food: widget.food),
-                );
               }
             },
           )
@@ -113,6 +147,19 @@ class _FoodCardState extends State<FoodCard> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
+        widget.isSearchList?
+        Container(
+          width: 160,
+          child: OverflowTextAnimated(
+            text: widget.food.Name.toString(),
+            style: theme.textTheme.headlineMedium?.copyWith(
+              color: theme.colorScheme.tertiary,
+              fontWeight: FontWeight.w500,
+            ),
+            animation: OverFlowTextAnimations.scrollOpposite,
+            animateDuration: Duration(milliseconds: 500),
+          ),
+        ):
         Container(
           width: 160,
           child: OverflowTextAnimated(
@@ -125,66 +172,66 @@ class _FoodCardState extends State<FoodCard> {
             animateDuration: Duration(milliseconds: 500),
           ),
         ),
-        Container(
-            height: 35.h,
-            child: Row(children: [
-              SvgIcon(
-                  size: 25.sp,
-                  color: theme.colorScheme.tertiary,
-                  image: Assets.iconsPeople),
-              SizedBox(
-                width: 5.w,
-              ),
-              Text(
-                "number_people".tr(args: [widget.food.servings!.toString()]),
-                style: theme.textTheme.labelMedium?.copyWith(
-                  color: theme.colorScheme.tertiary,
-                ),
-              )
-            ])),
-        Container(
-            height: 35.h,
-            child: Row(children: [
-              SvgIcon(
-                  size: 25.sp,
-                  color: theme.colorScheme.tertiary,
-                  image: Assets.iconsCookingTime),
-              SizedBox(
-                width: 5.h,
-              ),
-              Text(
-                "number_hours".tr(args: [
-                  widget.food.preparationTime!.toString(),
-                ]),
-                style: theme.textTheme.labelMedium?.copyWith(
-                  color: theme.colorScheme.tertiary,
-                ),
-              )
-            ])),
-        Container(
-            height: 35.h,
-            child: Row(children: [
-              SvgIcon(
-                  size: 25.sp,
-                  color: theme.colorScheme.tertiary,
-                  image: Assets.iconsMealTime),
-              SizedBox(
-                width: 5.h,
-              ),
-              SizedBox(
-                width: 150.w,
-                child: Text(
-                  widget.food.mealTime.toString()=="1"? 'breakfast'.tr() :
-                  widget.food.mealTime.toString()=="2"? 'lunch'.tr() :
-                  widget.food.mealTime.toString()=="3"? 'dinner'.tr() : 'supper'.tr(),
-                  style: theme.textTheme.labelMedium?.copyWith(
-                    color: theme.colorScheme.tertiary,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                ),
-              )
-            ])),
+        // Container(
+        //     height: 35.h,
+        //     child: Row(children: [
+        //       SvgIcon(
+        //           size: 25.sp,
+        //           color: theme.colorScheme.tertiary,
+        //           image: Assets.iconsPeople),
+        //       SizedBox(
+        //         width: 5.w,
+        //       ),
+        //       Text(
+        //         "number_people".tr(args: [widget.food.servings!.toString()]),
+        //         style: theme.textTheme.labelMedium?.copyWith(
+        //           color: theme.colorScheme.tertiary,
+        //         ),
+        //       )
+        //     ])),
+        // Container(
+        //     height: 35.h,
+        //     child: Row(children: [
+        //       SvgIcon(
+        //           size: 25.sp,
+        //           color: theme.colorScheme.tertiary,
+        //           image: Assets.iconsCookingTime),
+        //       SizedBox(
+        //         width: 5.h,
+        //       ),
+        //       Text(
+        //         "number_hours".tr(args: [
+        //           widget.food.preparationTime!.toString(),
+        //         ]),
+        //         style: theme.textTheme.labelMedium?.copyWith(
+        //           color: theme.colorScheme.tertiary,
+        //         ),
+        //       )
+        //     ])),
+        // Container(
+        //     height: 35.h,
+        //     child: Row(children: [
+        //       SvgIcon(
+        //           size: 25.sp,
+        //           color: theme.colorScheme.tertiary,
+        //           image: Assets.iconsMealTime),
+        //       SizedBox(
+        //         width: 5.h,
+        //       ),
+        //       SizedBox(
+        //         width: 150.w,
+        //         child: Text(
+        //           widget.food.mealTime.toString()=="1"? 'breakfast'.tr() :
+        //           widget.food.mealTime.toString()=="2"? 'lunch'.tr() :
+        //           widget.food.mealTime.toString()=="3"? 'dinner'.tr() : 'supper'.tr(),
+        //           style: theme.textTheme.labelMedium?.copyWith(
+        //             color: theme.colorScheme.tertiary,
+        //           ),
+        //           overflow: TextOverflow.ellipsis,
+        //           maxLines: 2,
+        //         ),
+        //       )
+        //     ])),
       ],
     );
   }

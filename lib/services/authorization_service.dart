@@ -4,7 +4,7 @@ class AuthService {
   static const FlutterSecureStorage storage = FlutterSecureStorage();
 
   static Future<String?> getAuthorizationToken() async {
-    return await storage.read(key: 'ethioChef_authorization_token');
+    return storage.read(key: 'ethioChef_authorization_token');
   }
 
   static Future<void> setAuthorizationToken(String authorizationToken) async {
@@ -16,6 +16,7 @@ class AuthService {
   }
 
   static Future<bool> isUserLoggedIn() async{
+    print("isUserLoggedIn");
     return storage.containsKey(key: 'ethioChef_authorization_token');
   }
 

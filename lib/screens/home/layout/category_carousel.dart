@@ -27,7 +27,7 @@ class CategoryCarousel extends StatefulWidget {
 class _CategoryCarouselState extends State<CategoryCarousel> {
   @override
   Widget build(BuildContext context) {
-    double height = 265;
+    double height = 200;
     double width = 220;
     final bool isTablet = ScreenUtils.isTablet(context);
     return ListView.builder(
@@ -37,6 +37,7 @@ class _CategoryCarouselState extends State<CategoryCarousel> {
       physics: BouncingScrollPhysics(),
       itemBuilder: (context, index) {
       return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
             height: 15.h,

@@ -14,6 +14,8 @@
   "is_required": "{} የድሊ",
   "enter_phone_number": "ቁጽሪ ተሌፎንኩም ኣእትዉ",
   "name_is_required": "ሽም የድሊ",
+  "another_account_login": "ቁጽሪ ተሌፎንካ ኣብ ካልእ መሳርሒ ንምእታው ተጠቒሙ ኣሎ።",
+  "empty_search_query_title": "መግቢ ኣይተረኽበን።",
   "enter_a_valid": "ቅኑዕ ዝብል ኣእቱ ",
   "email_is_required": "ኢመይል የድሊ",
   "invalid_email": "ዘይሕጋዊ ኢመይል",

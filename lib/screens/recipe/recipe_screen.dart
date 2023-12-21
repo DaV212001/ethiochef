@@ -11,6 +11,7 @@ import '../../services/comment_service.dart';
 import '../../services/food_service.dart';
 import '../../widgets/recipe/share_button.dart';
 import '../comment/food_comments.dart';
+import 'layout/recipe_related.dart';
 import 'layout/recipe_tabs.dart';
 import '../../widgets/error_card.dart';
 import '../../widgets/loading.dart';
@@ -100,6 +101,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
                   RecipeHeader(
@@ -107,7 +109,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
                   ),
                   if (food.video != null)
                     YoutubeVideoPlayer(
-                      link: PlaceHolderData.videoLink,
+                      link: food.video.toString(),
                     ),
                   // YoutubeVideoPlayer(
                   //   link: PlaceHolderData.videoLink,
@@ -127,11 +129,13 @@ class _RecipeScreenState extends State<RecipeScreen> {
                     },
                     user: user,
                   ),
-                  // RecipeRelated(dishes: PlaceHolderData.dishes),
+                  if(!food.related_recipe!.isEmpty)
+                  RecipeRelated(food: food.related_recipe),
                 ],
               ),
             ),
-            ShareButton(food: widget.food)
+            ShareButton(food: food),
+
           ],
         )
       ),

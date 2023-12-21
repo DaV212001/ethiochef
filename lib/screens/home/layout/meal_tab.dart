@@ -53,7 +53,7 @@ class HomeCategoryTab extends StatelessWidget {
             height: 200,
             child: TabBarView(children: [
               for(int i=1;i<5;i++)
-                HorizontalFoodCarousel2(
+                MealCarousel(
                   type: i,
                   breakfast: breakfast,
                   dinner: dinner,

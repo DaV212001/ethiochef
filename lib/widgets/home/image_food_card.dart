@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/screens/recipe/recipe_screen.dart';
@@ -11,6 +13,7 @@ import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../../models/language.dart';
 import '../../screens/auth/auth_screen.dart';
+import '../../screens/subscription/all_subscriptions.dart';
 import '../../services/authorization_service.dart';
 import '../../services/user_service.dart';
 import '../small_label_button.dart';
@@ -50,7 +53,7 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
   }
   @override
   void initState() {
-    getUserStatus();
+    // getUserStatus();
     super.initState();
   }
   @override
@@ -63,13 +66,53 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
     }
     return GestureDetector(
       onTap: () async {
-        print("Clicked show recipe");
+        print("Meal Card");
         setState(() {
           isLoading = true;
         });
-        bool status = await AuthService.isUserLoggedIn();
-        print("Logged in status = $status");
-        if(status == false){
+
+        var token = await AuthService.getAuthorizationToken();
+        if(token!=null){
+          UserService service = UserService();
+          var response = await service.checkUserSubscription();
+          final jsonData = json.decode(response.body);
+          print("user jsonData $jsonData");
+          if(jsonData['message'] == "Invalid Token, Redirect to login"){
+            setState(() {
+              isLoading = false;
+            });
+            SnackBar logIn =SnackBar(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                content: Text(
+                    'another_account_login'.tr()
+                ));
+            ScaffoldMessenger.of(context).showSnackBar(logIn);
+            loginFunction();
+          }
+          if(response.statusCode == 200) {
+            if(jsonData['message'] == "User is subscribed"){
+              pushNewScreen(
+                context,
+                withNavBar: false,
+                screen: RecipeScreen(food: widget.food),
+              );
+
+            }else{
+              pushNewScreen(
+                context,
+                withNavBar: false,
+                screen: AllSubscriptions(returnPrice: (int ) {  },
+                  first_name: "",
+                  last_name: "",
+                  isSignUp:
+                  false,phone: "",),
+              );
+            }
+          }
+          setState(() {
+            isLoading = false;
+          });
+        }else{
           setState(() {
             isLoading = false;
           });
@@ -80,24 +123,16 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
               ));
           ScaffoldMessenger.of(context).showSnackBar(logIn);
           loginFunction();
-        }else{
-          setState(() {
-            isLoading = false;
-          });
-          pushNewScreen(
-            context,
-            withNavBar: false,
-            screen: RecipeScreen(food: widget.food),
-          );
         }
-
       },
       child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(12)),
+          ),
         child: Stack(
           fit: StackFit.expand,
           children: [
             ClipRRect(
-              borderRadius: AppTheme.allBorderRadius,
               child: CachedImage(url: widget.food.thumbnail, fit: BoxFit.fill),
             ),
             Positioned(
@@ -105,7 +140,7 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
               left: 0,
               right: 0,
               child: Container(
-                height: 75,
+                height: 50,
                 padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
                 decoration: BoxDecoration(
                     color: theme.colorScheme.primary.withOpacity(0.5)),
@@ -122,7 +157,7 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
                       overflow: TextOverflow.visible,
                       style: theme.textTheme.headlineSmall?.copyWith(
                           color: theme.colorScheme.onTertiary,
-                          fontWeight: FontWeight.w500),
+                          fontWeight: FontWeight.w600),
                       textAlign: TextAlign.start
                     ),
                     // SmallLabelButton(text: widget.food.mealTime.toString(),onTap: (){},)

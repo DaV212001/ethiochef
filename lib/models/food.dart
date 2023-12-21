@@ -8,6 +8,7 @@ class Food {
   final int subcategoriesId;
   final int categoryId;
   final Map<String, dynamic> name;
+  final String? Name;
   final String? description;
   final int? mealTime;
   final Map<String, dynamic>? stepsList;
@@ -25,14 +26,16 @@ class Food {
   final int? nextPage;
   final int? prevPage;
   final int? page;
-
+  final List<Food>? related_recipe;
   Food({
     this.id,
     required this.subcategoriesId,
     required this.categoryId,
     required this.name,
+    this.Name,
     required this.description,
     required this.mealTime,
+    this.related_recipe,
     this.stepsList,
     this.ingredients,
     this.servings,
@@ -75,6 +78,9 @@ class Food {
       name: json['name'],
       description: json['description'][Language.getLocaleCode()]?? json['name']["en"],
       mealTime: meal,
+      related_recipe: (json['similar_recipies'] as List)
+          .map((product) => Food.fromRelatedRecipe(product))
+          .toList(),
       preparationTime: json['cooking_time'],
       servings: json['serving'],
       stepsList: json['steps'][Language.getLocaleCode()]?? json['name']["en"],
@@ -87,6 +93,36 @@ class Food {
       nextPage: json['next_page'] ?? 0,
       prevPage: json['prev_page'] ?? 0,
       page: json['page'],
+    );
+  }
+  factory Food.fromRelatedRecipe(Map<String, dynamic> json) {
+    String clearPath(String path) {
+      final parts = path.split('/public_html');
+      return parts.last;
+    }
+    String image = json['image'];
+    String i = clearPath(image);
+    String thumbnail = Constants.ImageAPI + i;
+    int meal = 0;
+
+    if(json['meal_time']['breakfast']==true){
+      meal = 1;
+    }else if(json['meal_time']['lunch']==true){
+      meal = 2;
+    }else if(json['meal_time']['super']==true){
+      meal = 3;
+    }else{
+      meal = 4;
+    }
+    print("FOOOOOOOOOOOOOOOOOOOOOOD hrererererere");
+    return Food(
+      id: json['id'],
+      subcategoriesId: json['subcategories_id'],
+      categoryId: json['category_id'] ?? 0,
+      name: json['name'],
+      description: json['description'][Language.getLocaleCode()]?? json['description']['en']??'',
+      mealTime: meal,
+      thumbnail: thumbnail,
     );
   }
   factory Food.fromJson(Map<String, dynamic> json) {
@@ -185,20 +221,21 @@ class Food {
     Map<String, dynamic> name = {
       'name': '',
     };
+    String Name = '';
     String description = '';
     if(Language.getLocaleCode() == 'en'){
-      name['name'] = json['name_en'];
+      Name = json['name_en'];
       description = json['description_en'];
     }
     else if(Language.getLocaleCode() == 'am'){
-      name['name'] = json['name_am'];
+      Name = json['name_am'];
       description = json['description_am'];
     }
     else if(Language.getLocaleCode() == 'tr'){
-      name['name'] = json['name_tr'];
+      Name = json['name_tr'];
       description = json['description_tr'];
     }else{
-      name['name'] = json['name_or'];
+      Name = json['name_or'];
       description = json['description_or'];
     }
     return Food(
@@ -206,6 +243,7 @@ class Food {
       subcategoriesId: json['sub_category_id'],
       categoryId: json['category_id'] ?? 0,
       name: name,
+      Name: Name,
       description: description,
       mealTime: meal,
       thumbnail: thumbnail

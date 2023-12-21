@@ -15,11 +15,7 @@ class ShareButton extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       child: TextButton(
         onPressed: () {
-          String text = "share_recipe".tr(args: [
-            food.name[Language.getLocaleCode()].toString(),
-            "[Recipe link]",
-          ]);
-
+          String text = "share_recipe".tr();
           Share.share(text, subject: "ethio_chef".tr());
         },
         style: TextButton.styleFrom(
@@ -42,7 +38,7 @@ class ShareButton extends StatelessWidget {
             ),
             SizedBox(width: 10),
             Text(
-              "share_this_recipe".tr(),
+              "share_recipe".tr(),
               style: theme.textTheme.headlineMedium,
             )
           ],

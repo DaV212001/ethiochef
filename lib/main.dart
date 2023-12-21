@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/language.dart';
 import 'package:ethio_chef/screens/auth/auth_screen.dart';
 import 'package:ethio_chef/screens/main_screen.dart';
 import 'package:ethio_chef/screens/splash_screen.dart';
 import 'package:ethio_chef/services/authorization_service.dart';
+import 'package:ethio_chef/services/user_service.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:ethio_chef/theme/model_theme.dart';
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
@@ -42,31 +45,54 @@ class EthioChef extends StatefulWidget {
   State<EthioChef> createState() => _EthioChefState();
 }
 
+
 class _EthioChefState extends State<EthioChef> {
-  bool isLoggedIn = false;
+  bool isFirstTimeUser = true;
+  bool isLoggedIn = true;
+
   @override
   void initState() {
     super.initState();
-    _checkFirstTimeUser();
+    // _checkFirstTimeUser();
   }
-  bool isFirstTimeUser = true;
   Future<void> _checkFirstTimeUser() async {
     print("check login status");
-    bool status = await AuthService.isUserLoggedIn();
-    print("Logged in status = $status");
-    setState(() {
-      isLoggedIn = status;
-    });
-    print("Checking First TimeUser");
-    final prefs = await SharedPreferences.getInstance();
-    final hasLaunchedBefore = prefs.getBool('hasLaunchedEthioChefBefore') ?? false;
-    if (hasLaunchedBefore) {
+    var token = await AuthService.getAuthorizationToken();
+    if(token!=null){
+    print("Logged in status = $isLoggedIn");
+    print("token = $token");
+    UserService service = UserService();
+    var response = await service.checkUserSubscription();
+    final jsonData = json.decode(response.body);
+    print("user jsonData $jsonData");
+    if(jsonData['message'] == "Invalid Token, Redirect to login"){
+      print("Another account has logged in");
       setState(() {
-        isFirstTimeUser = false;
+        isLoggedIn = false;
       });
-    } else {
-      await prefs.setBool('hasLaunchedEthioChefBefore', true);
+    }else{
+      print("valid Token");
+      setState(() {
+        isLoggedIn = true;
+      });
     }
+
+    }else{
+      setState(() {
+        isLoggedIn = false;
+      });
+      print("Logged in status = $isLoggedIn");
+    }
+    // print("Checking First TimeUser");
+    // final prefs = await SharedPreferences.getInstance();
+    // final hasLaunchedBefore = prefs.getBool('hasLaunchedEthioChefBefore') ?? false;
+    // if (hasLaunchedBefore) {
+    //   setState(() {
+    //     isFirstTimeUser = false;
+    //   });
+    // } else {
+    //   await prefs.setBool('hasLaunchedEthioChefBefore', true);
+    // }
   }
 
   @override
@@ -84,10 +110,12 @@ class _EthioChefState extends State<EthioChef> {
             Widget homeScreen;
             // print("First Time User status $isFirstTimeUser");
             if(isLoggedIn == false){
-              print("To Auth Screen $isLoggedIn");
+              print("Logged in status = $isLoggedIn");
+              print("To Auth Screen");
               homeScreen = AuthScreen();
             }else {
-              print("To SignupScreen $isFirstTimeUser");
+              print("Logged in status = $isLoggedIn");
+              print("To Main Screen");
               homeScreen = MainScreen();
             }
         return ScreenUtilInit(
@@ -106,8 +134,8 @@ class _EthioChefState extends State<EthioChef> {
               darkTheme: AppTheme.darkTheme,
               initialRoute: '/',
               routes: {
-                '/': (context) => homeScreen,
-                '/main': (context) => homeScreen
+                '/': (context) => MainScreen(),
+                '/main': (context) => MainScreen()
               }),
         );
       }),

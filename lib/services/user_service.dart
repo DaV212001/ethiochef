@@ -324,7 +324,9 @@ class UserService {
 
 
   Future<UserProfile?> fetchUserProfile() async {
+    print("Get token");
     var access_token = await AuthService.getAuthorizationToken();
+    print("access_token $access_token");
     final userService = UserService();
     final response = await http.get(
       Uri.parse('${Constants.url}/user/profile'),
@@ -350,6 +352,17 @@ class UserService {
 
     return null;
   }
-
+  Future<http.Response> checkUserSubscription() async{
+    print("checkUserSubscription");
+    var access_token = await AuthService.getAuthorizationToken();
+    final response = await http.get(
+      Uri.parse('${Constants.url}/user/check-subscription'),
+      headers: {
+        'Authorization': 'JWT $access_token',
+      },
+    );
+    print(response.statusCode);
+    return response;
+  }
 
 }

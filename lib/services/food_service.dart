@@ -52,7 +52,7 @@ class FoodService{
     try{
       await ErrorUtil.checkConnection();
       final response = await http.get(
-          Uri.parse('${Constants.url}/user/food/category/$categoryId?page=$pageKey&limit=30')
+          Uri.parse('${Constants.url}/user/food/category/$categoryId?page=$pageKey&limit=31')
       );
       print(response.body);
       print(response.statusCode);
@@ -110,6 +110,36 @@ class FoodService{
         throw Exception(response.statusCode.toString());
       }
     }catch (error) {
+      rethrow;
+    }
+  }
+  Future<List<Food>> fetchFoodBySearch(String query, int pageKey) async {
+    try {
+      await ErrorUtil.checkConnection();
+      final accessToken = await AuthService.getAuthorizationToken();
+      print("access_token $accessToken");
+      final response = await http.post(
+          Uri.parse('${Constants.url}/user/food/search'),
+          headers: {
+            'Authorization': 'JWT $accessToken',
+          },
+      body: {
+        "context":"$query"
+      }
+      );
+      print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonData = json.decode(response.body);
+        final List<dynamic> products = jsonData["data"];
+        final List<Food> listOfFood = products.map((food) {
+          return Food.fromCommentJson(food);
+        }).toList();
+        return listOfFood;
+      } else {
+        throw Exception(response.statusCode.toString());
+      }
+    } catch (error) {
       rethrow;
     }
   }

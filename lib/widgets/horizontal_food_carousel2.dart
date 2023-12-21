@@ -1,17 +1,17 @@
 import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/widgets/category/food_card.dart';
 import 'package:ethio_chef/widgets/home/image_food_card.dart';
-import 'package:ethio_chef/widgets/image_head_food_card.dart';
+import 'package:ethio_chef/widgets/meal_card.dart';
 import 'package:flutter/material.dart';
 
 
-class HorizontalFoodCarousel2 extends StatelessWidget {
+class MealCarousel extends StatelessWidget {
   final List<Food> breakfast;
   final List<Food> lunch;
   final List<Food> superMeal;
   final List<Food> dinner;
   final int type;
-  const HorizontalFoodCarousel2({
+  const MealCarousel({
   super.key,
     required this.type,
   required this.breakfast,
@@ -48,7 +48,7 @@ class HorizontalFoodCarousel2 extends StatelessWidget {
     );
   }
   Widget buildFoodCard({required Food food}) {
-    return ImageHeadFoodCard(food: food);
+    return MealCard(food: food);
     // if(type == ImageFoodCard.foodCardType){
     //   return ImageFoodCard(food: food);
     // }

@@ -1,7 +1,14 @@
-import 'package:ethio_chef/search/searchscreen.dart';
+import 'dart:convert';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+
+import '../screens/auth/auth_screen.dart';
+import '../screens/search/search_screen.dart';
+import '../services/authorization_service.dart';
+import '../services/user_service.dart';
 
 class SearchInputField extends StatefulWidget {
   final String hint;
@@ -35,18 +42,41 @@ class _SearchInputFieldState extends State<SearchInputField> {
         enabled: widget.enabled,
         keyboardType: TextInputType.text,
         textAlignVertical: TextAlignVertical.center,
-        onTap: (){
-          widget.screen != 9?
-          pushNewScreen(
-              context,
-              screen: SearchScreen(
-                  homescreen:widget.screen ==0? true:false,
-                  categoryscreen: widget.screen ==1?true:false,
-                  competitionscreen: widget.screen ==2?true:false,
-                  nutritionscreen: false),
-            pageTransitionAnimation: PageTransitionAnimation.slideUp,
-            withNavBar: false
-          ): print('tapped');
+        onTap: () async {
+            print("Search");
+            var token = await AuthService.getAuthorizationToken();
+            if(token!=null){
+              UserService service = UserService();
+              var response = await service.checkUserSubscription();
+              final jsonData = json.decode(response.body);
+              print("user jsonData $jsonData");
+              if(jsonData['message'] == "Invalid Token, Redirect to login"){
+                SnackBar logIn =SnackBar(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    content: Text(
+                        'another_account_login'.tr()
+                    ));
+                ScaffoldMessenger.of(context).showSnackBar(logIn);
+                loginFunction();
+              }else{
+                pushNewScreen(
+                    context,
+                    screen: SearchScreen(),
+                    pageTransitionAnimation: PageTransitionAnimation.slideUp,
+                    withNavBar: false
+                );
+              }
+            }else{
+              SnackBar logIn =SnackBar(
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  content: Text(
+                      'Please subscribe to see ingredients and steps'.tr()
+                  ));
+              ScaffoldMessenger.of(context).showSnackBar(logIn);
+              loginFunction();
+            }
+
+
         },
         decoration: InputDecoration(
           hintText: widget.hint,
@@ -78,6 +108,13 @@ class _SearchInputFieldState extends State<SearchInputField> {
           contentPadding: EdgeInsets.symmetric(vertical: 10),
         ),
       ),
+    );
+  }
+  void loginFunction(){
+    pushNewScreen(
+      context,
+      withNavBar: false,
+      screen: AuthScreen(isSignIn: true),
     );
   }
 }

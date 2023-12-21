@@ -32,13 +32,10 @@ class _NotificationCardState extends State<NotificationCard> {
     final bool isTablet = ScreenUtils.isTablet(context);
     return Slidable(
       key: const ValueKey(0),
-
       startActionPane: ActionPane(
         motion: const ScrollMotion(),
-        dismissible: DismissiblePane(onDismissed: () {}),
-
+        dragDismissible: false,
         children: widget.isRead == false? [
-
           SlidableAction(
             onPressed: (context) {
               print("Delete pressed");

@@ -41,6 +41,11 @@
   "cooking_steps": "Cooking Steps",
   "share_recipe_message": "Check out this delicious recipe I found on EthioChef! π��²β�¨The name of the recipe is {} {}.π��©β��π��³π��¨β��π��³ Give it a try and let me know what you think!π��² Check out the app at [App Download Link] or you can also use the website ethiochef.com #CookingAdventures #Foodie",
   "share_recipe": "Share this recipe!",
+  "another_account_login": "Your phone number has been used to log in on another device",
+
+
+
+
   "competitions": "Competitions",
   "profile": "Profile",
   "categories": "Categories",
@@ -85,7 +90,7 @@
   "video_file_size_limit": "Video file size should not exceed 100MB.",
 
 
-
+  "empty_search_query_title":"No food found",
   "registration_successful": "Registration successful",
   "registration_failed": "Registration failed",
   "login_successful": "Login successful",

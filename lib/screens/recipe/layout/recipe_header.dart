@@ -5,6 +5,7 @@ import 'package:ethio_chef/widgets/home/category_label_carousel.dart';
 import 'package:ethio_chef/widgets/small_label_button.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../models/language.dart';
 
@@ -23,7 +24,7 @@ class RecipeHeader extends StatelessWidget {
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Padding(
-          padding: const EdgeInsets.only(right: 20, bottom: 5),
+          padding: const EdgeInsets.only(right: 20),
           child: Text(
             food.name[Language.getLocaleCode()].toString(),
             style: theme.textTheme.headlineLarge,
@@ -73,29 +74,29 @@ class RecipeHeader extends StatelessWidget {
         //         ])),
         //   ],
         // ),
-        SizedBox(height: 10),
-        Container(
-            height: 35,
-            child: Row(children: [
-              SvgIcon(
-                  size: 20,
-                  color: theme.colorScheme.tertiary.withOpacity(0.8),
-                  image: Assets.iconsMealTime),
-              SizedBox(
-                width: 5,
-              ),
-              Text(
-                food.mealTime!.toString()=="1"? 'breakfast'.tr() :
-                food.mealTime!.toString()=="2"? 'lunch'.tr() :
-                food.mealTime!.toString()=="3"? 'dinner'.tr() : 'supper'.tr(),
-                style: TextStyle(
-                    fontSize: 15,
-                    color: theme.colorScheme.tertiary.withOpacity(0.7),
-                    fontWeight: FontWeight.w300
-                ),
-              ),
-            ])),
-        SizedBox(height: 10),
+        // SizedBox(height: 10),
+        // Container(
+        //     height: 35,
+        //     child: Row(children: [
+        //       SvgIcon(
+        //           size: 20,
+        //           color: theme.colorScheme.tertiary.withOpacity(0.8),
+        //           image: Assets.iconsMealTime),
+        //       SizedBox(
+        //         width: 5,
+        //       ),
+        //       Text(
+        //         food.mealTime!.toString()=="1"? 'breakfast'.tr() :
+        //         food.mealTime!.toString()=="2"? 'lunch'.tr() :
+        //         food.mealTime!.toString()=="3"? 'dinner'.tr() : 'supper'.tr(),
+        //         style: TextStyle(
+        //             fontSize: 15,
+        //             color: theme.colorScheme.tertiary.withOpacity(0.7),
+        //             fontWeight: FontWeight.w300
+        //         ),
+        //       ),
+        //     ])),
+        SizedBox(height: 5.h),
         food.description != null ? description(context) : SizedBox.shrink(),
         // SizedBox(height: 15),
         // rowedInformation("serving_size".tr(), food.servings!.toString(), context),

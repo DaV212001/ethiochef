@@ -3,13 +3,17 @@ import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/widgets/horizontal_food_carousel.dart';
 import 'package:flutter/material.dart';
 
-class RecipeRelated extends StatelessWidget {
-  final List<Food> dishes;
+import '../../../widgets/meal_card.dart';
 
-  const RecipeRelated({super.key, required this.dishes});
+class RecipeRelated extends StatelessWidget {
+  final List<Food>? food;
+
+  const RecipeRelated({super.key, required this.food});
 
   @override
   Widget build(BuildContext context) {
+    double height = 180;
+    double width = 165;
     ThemeData theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,10 +26,19 @@ class RecipeRelated extends StatelessWidget {
                   color: theme.colorScheme.tertiary,
                   fontWeight: FontWeight.w500),
             )),
-        HorizontalFoodCarousel(
-          type: 3,
-          dishes: dishes,
-        ),
+        Container(
+          height: height,
+          child: ListView.builder(
+              physics: BouncingScrollPhysics(),
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemExtent: width,
+              itemCount: food!.length,
+              itemBuilder: (BuildContext context, int index) {
+                return MealCard(food: food![index]);
+              }
+          ),
+        )
       ],
     );
   }

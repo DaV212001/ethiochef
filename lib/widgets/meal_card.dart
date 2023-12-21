@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/screens/recipe/recipe_screen.dart';
@@ -8,20 +10,21 @@ import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../models/language.dart';
 import '../screens/auth/auth_screen.dart';
+import '../screens/subscription/all_subscriptions.dart';
 import '../services/authorization_service.dart';
 import '../services/user_service.dart';
 
-class ImageHeadFoodCard extends StatefulWidget {
+class MealCard extends StatefulWidget {
   static int foodCardType = 3;
   final Food food;
 
-  const ImageHeadFoodCard({super.key, required this.food});
+  const MealCard({super.key, required this.food});
 
   @override
-  State<ImageHeadFoodCard> createState() => _ImageHeadFoodCardState();
+  State<MealCard> createState() => _MealCardState();
 }
 
-class _ImageHeadFoodCardState extends State<ImageHeadFoodCard> {
+class _MealCardState extends State<MealCard> {
   bool isLoading = true;
 
   @override
@@ -29,13 +32,49 @@ class _ImageHeadFoodCardState extends State<ImageHeadFoodCard> {
     ThemeData theme = Theme.of(context);
     return GestureDetector(
       onTap: () async {
-        print("Clicked show recipe");
-        setState(() {
-          isLoading = true;
-        });
-        bool status = await AuthService.isUserLoggedIn();
-        print("Logged in status = $status");
-        if(status == false){
+        print("Meal Card");
+        var token = await AuthService.getAuthorizationToken();
+          if(token!=null){
+            UserService service = UserService();
+            var response = await service.checkUserSubscription();
+            final jsonData = json.decode(response.body);
+            print("user jsonData $jsonData");
+            if(jsonData['message'] == "Invalid Token, Redirect to login"){
+              setState(() {
+                isLoading = false;
+              });
+              SnackBar logIn =SnackBar(
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  content: Text(
+                      'another_account_login'.tr()
+                  ));
+              ScaffoldMessenger.of(context).showSnackBar(logIn);
+              loginFunction();
+            }
+            if(response.statusCode == 200) {
+              if(jsonData['message'] == "User is subscribed"){
+                pushNewScreen(
+                  context,
+                  withNavBar: false,
+                  screen: RecipeScreen(food: widget.food),
+                );
+
+              }else{
+                pushNewScreen(
+                  context,
+                  withNavBar: false,
+                  screen: AllSubscriptions(returnPrice: (int ) {  },
+                    first_name: "",
+                    last_name: "",
+                    isSignUp:
+                    false,phone: "",),
+                );
+              }
+            }
+            setState(() {
+              isLoading = false;
+            });
+        }else{
           setState(() {
             isLoading = false;
           });
@@ -46,15 +85,6 @@ class _ImageHeadFoodCardState extends State<ImageHeadFoodCard> {
               ));
           ScaffoldMessenger.of(context).showSnackBar(logIn);
           loginFunction();
-        }else{
-          setState(() {
-            isLoading = false;
-          });
-          pushNewScreen(
-            context,
-            withNavBar: false,
-            screen: RecipeScreen(food: widget.food),
-          );
         }
       },
       child: Card(

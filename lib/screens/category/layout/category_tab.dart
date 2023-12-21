@@ -93,7 +93,7 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
               tabs: tabs,
             ),
 
-            Expanded(child: VerticalFoodList(pagingController: _pagingController))
+            Expanded(child: VerticalFoodList(pagingController: _pagingController, isSearchList: false,))
           ],
         ),
       ),
@@ -108,6 +108,7 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
     return List.filled(
       widget.category.length,
       VerticalFoodList(
+        isSearchList: false,
         pagingController: _pagingController,
       ),
     );

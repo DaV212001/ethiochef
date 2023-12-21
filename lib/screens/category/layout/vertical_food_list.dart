@@ -9,8 +9,9 @@ import '../../../widgets/loading.dart';
 
 class VerticalFoodList extends StatefulWidget {
   final PagingController<int, Food> pagingController;
+  final bool isSearchList;
 
-  const VerticalFoodList({super.key, required this.pagingController});
+  const VerticalFoodList({super.key, required this.pagingController, required this.isSearchList});
 
   @override
   State<VerticalFoodList> createState() => _VerticalFoodListState();
@@ -48,7 +49,7 @@ class _VerticalFoodListState extends State<VerticalFoodList> {
         itemBuilder: (context, food, index) {
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
-            child: FoodCard(food: food),
+            child: FoodCard(food: food, isSearchList: widget.isSearchList)
           );
         },
       ),

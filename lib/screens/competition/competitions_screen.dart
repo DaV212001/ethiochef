@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
+import '../../widgets/main_app_bar.dart';
 import '../upload_recipe/upload_recipe_screen.dart';
 
 class CompetitionsScreen extends StatefulWidget {
@@ -54,10 +55,11 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
       child: SingleChildScrollView(
           physics: NeverScrollableScrollPhysics(),
           child: Column(children: [
-            ScreenHead(
-              hasNotification: true,
-              screen: 1,
-              searchHint: "search_for_competition".tr(),
+            MainAppBar(
+                hasSearchField: true,
+                hasBackButton: false,
+                hasMainIcons: true,
+                specialAction: null
             ),
             SizedBox(
                 height: 930.h,
