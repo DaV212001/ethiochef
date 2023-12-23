@@ -69,7 +69,7 @@ class CompetitionsCard extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: 10.h,
+                    height: 9.h,
                   ),
                   Text(
                     "days_left".tr(args: [competition.daysLeft.toString()]),

@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 
+import '../../theme/model_theme.dart';
 import '../../widgets/main_app_bar.dart';
 import '../upload_recipe/upload_recipe_screen.dart';
 
@@ -70,7 +72,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
     floatingActionButton: FloatingActionButton(
       backgroundColor: theme.colorScheme.primary,
         onPressed: () {
-          pushNewScreen(context!,
+          pushNewScreen(context,
               screen: UploadRecipeScreen(type: "competition"), withNavBar: false);
         },
       child: Icon(Icons.add,color: Colors.white)

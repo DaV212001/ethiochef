@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/auth/auth_screen.dart';
+import 'package:ethio_chef/services/footer_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
@@ -27,7 +28,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   bool isLoggedIn = false;
   late User user = User(lastName: '', firstName: '');
-
+String? footertext;
   Future? _future;
   bool isLoading = false;
 
@@ -40,6 +41,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
 
   Future<UserProfile?> fetchData() async {
+    var access_token = await AuthService.getAuthorizationToken();
+    if(access_token == null){
+      pushNewScreen(context, screen: AuthScreen(), withNavBar: false);
+    }
     try {
       final userService = UserService();
       var userData = await userService.fetchUserProfile();
@@ -51,6 +56,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
       }
       print("userData1 $userData");
+      FooterService foot = FooterService();
+      footertext = await foot.getFooterText();
+      setState(() {
+
+      });
       return userData;
     } catch (error) {
 
@@ -187,7 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             SizedBox(height: 5.h,),
             Align(
               alignment: Alignment.bottomCenter,
-              child: Text("@2023 Copyright EthioChef"),
+              child: Text(footertext!),
             ),
             SizedBox(
               height: 45,

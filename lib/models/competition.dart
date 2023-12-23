@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'language.dart';
+
 
 
 class Competition {
@@ -20,6 +22,18 @@ class Competition {
   int? votes;
   int? daysLeft;
   List<Competitor>? competitor;
+  int? id;
+
+  // poster_image
+  // video
+  // start_date
+  // end_date
+  // winner
+  // vote
+  // contest_like
+  // contestant
+  // created_at
+  // updated_at
   Competition(
       {
         this.ingredient,
@@ -55,15 +69,22 @@ class Competition {
       return Map<String, String>.from(ingredient as Map<dynamic, dynamic>);
     }).toList() ?? [];
 
+
+
+    DateTime fromtheresponse = DateTime.parse(json['end_date']);
+DateTime now =  DateTime.now();
+Duration daysleff = fromtheresponse.difference(now);
     return Competition(
-        name: json['name'],
-        description: json['description'],
-        prepTime: json['prepTime'],
-        servingSize: json['servingSize'],
-        steps: List<String>.from(json['steps']),
-        imageFile: image,
-        ingredient: ingredientList,
-        videoFile: video
+        name: json['name_${Language.getLocaleCode()}']??'sampleunkownlang',
+        description: json['name_${Language.getLocaleCode()}']??'sampleunkownlang',
+        image: "https://apiv2.ethiochef.com/" + json['poster_image'],
+        daysLeft: daysleff.inDays
+        // prepTime: json['prepTime'],
+        // servingSize: json['servingSize'],
+        // steps: List<String>.from(json['steps']),
+        // imageFile: image,
+        // ingredient: ingredientList,
+        // videoFile: video
     );
   }
 
@@ -104,6 +125,7 @@ class Competition {
   }
 
   static Future<List<Competition>> loadCompetitionsFromSharedPrefs() async {
+
     final sharedPreferences = await SharedPreferences.getInstance();
     final jsonString = sharedPreferences.getString('savedCompetitions') ?? '[]';
     final recipes = json.decode(jsonString) as List<dynamic>;

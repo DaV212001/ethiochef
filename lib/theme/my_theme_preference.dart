@@ -12,4 +12,18 @@ class MyThemePreferences {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     return sharedPreferences.getBool(THEME_KEY) ?? false;
   }
+
+}
+class LanguagePreferences {
+  static const LANGUAGE_STATUS = "languageStatus";
+
+  setLanguage(String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(LANGUAGE_STATUS, value);
+  }
+
+  Future<String> getLanguage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(LANGUAGE_STATUS) ?? 'en';
+  }
 }
