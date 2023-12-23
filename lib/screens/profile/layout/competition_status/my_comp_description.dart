@@ -4,9 +4,11 @@ import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:chewie/chewie.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/competition.dart';
+import 'package:ethio_chef/theme/model_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pod_player/pod_player.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../widgets/main_button.dart';
 
@@ -62,16 +64,17 @@ class _CompetitionDescriptionState extends State<CompetitionDescription> {
   }
   @override
   Widget build(BuildContext context) {
+    ModelTheme lang = Provider.of<ModelTheme>(context);
     final List<Map<String, dynamic>> orderList = [
       {
         "title": "dish_name".tr(),
         "leadingIcon": Icons.category,
-        "trailing": widget.comp.name
+        "trailing": lang.languageCode == "en" ? widget.comp.name_en.toString() : lang.languageCode=='am'? widget.comp.name_am.toString(): lang.languageCode =='GB'? widget.comp.name_or.toString():widget.comp.name_tr.toString()
       },
       {
         "title": "dish_description".tr(),
         "leadingIcon": Icons.list_alt,
-        "trailing": widget.comp.description.toString()
+        "trailing": lang.languageCode == "en" ? widget.comp.description_en.toString() : lang.languageCode=='am'? widget.comp.description_am.toString(): lang.languageCode =='GB'? widget.comp.description_or.toString():widget.comp.description_tr.toString()
       },
       // {
       //   "title": "serving_sizes".tr(),
@@ -88,7 +91,7 @@ class _CompetitionDescriptionState extends State<CompetitionDescription> {
     ThemeData theme = Theme.of(context);
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.comp.name.toString(), style: TextStyle(
+          title: Text(lang.languageCode == "en" ? widget.comp.name_en.toString() : lang.languageCode=='am'? widget.comp.name_am.toString(): lang.languageCode =='GB'? widget.comp.name_or.toString():widget.comp.name_tr.toString(), style: TextStyle(
               color: theme.colorScheme.primary
           ),),
           backgroundColor: Colors.transparent,

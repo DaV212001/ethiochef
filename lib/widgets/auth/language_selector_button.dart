@@ -48,7 +48,8 @@ class _LanguageSelectorButtonState extends State<LanguageSelectorButton> {
           setState(() {
             Language.selectedLanguage = value!;
             context.setLocale(value.code);
-            lang.languageCode = value.code.languageCode;
+            lang.languageCode = value.code.countryCode??value.code.languageCode;
+            print(lang.languageCode);
             print(Language.selectedLanguage.name);
           });
         },

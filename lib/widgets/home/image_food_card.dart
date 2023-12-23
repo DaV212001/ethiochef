@@ -97,7 +97,8 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
                 screen: RecipeScreen(food: widget.food),
               );
 
-            }else{
+            }
+            else{
               pushNewScreen(
                 context,
                 withNavBar: false,
@@ -108,6 +109,16 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
                   false,phone: "",),
               );
             }
+          } else{
+            pushNewScreen(
+              context,
+              withNavBar: false,
+              screen: AllSubscriptions(returnPrice: (int ) {  },
+                first_name: "",
+                last_name: "",
+                isSignUp:
+                false,phone: "",),
+            );
           }
           setState(() {
             isLoading = false;

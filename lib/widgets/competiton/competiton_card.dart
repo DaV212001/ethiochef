@@ -2,10 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/competition.dart';
 import 'package:ethio_chef/screens/competition/competition_screen.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
+import 'package:ethio_chef/theme/model_theme.dart';
 import 'package:ethio_chef/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 
 class CompetitionsCard extends StatelessWidget {
   final Competition competition;
@@ -15,6 +17,7 @@ class CompetitionsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    ModelTheme lang = Provider.of<ModelTheme>(context);
     return GestureDetector(
       onTap: () {
         pushNewScreen(
@@ -56,7 +59,7 @@ class CompetitionsCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        competition.name.toString(),
+                        lang.languageCode == 'en'? competition.name_en!.toString() : lang.languageCode == 'am'? competition.name_am!.toString(): lang.languageCode == 'GB'? competition.name_or!.toString() : competition.name_tr!.toString(),
                         style: theme.textTheme.headlineMedium,
                         textAlign: TextAlign.start,
                       ),

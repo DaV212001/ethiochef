@@ -118,6 +118,14 @@ String? footertext;
                     ),
                   );
                 }
+                // UserProfile us = snapshot.data as UserProfile;
+                // if(us.message == 'User is not subscribed'){
+                //   return AllSubscriptions(
+                //       returnPrice: (n){
+                //
+                //       }, isSignUp: false, first_name: '', last_name: '', phone: '',
+                //     );
+                // }
                 return buildUserScreen(snapshot.data as UserProfile);
               })
       ),

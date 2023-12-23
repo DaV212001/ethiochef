@@ -9,8 +9,14 @@ import 'language.dart';
 
 
 class Competition {
-  String? name;
-  String? description;
+  String? name_en;
+  String? name_am;
+  String? name_or;
+  String? name_tr;
+  String? description_en;
+  String? description_am;
+  String? description_or;
+  String? description_tr;
   String? prepTime;
   String? servingSize;
   List<String>? steps;
@@ -37,8 +43,15 @@ class Competition {
   Competition(
       {
         this.ingredient,
-        this.name,
-        this.description,
+        this.name_tr,
+        this.name_en,
+        this.name_am,
+        this.name_or,
+        this.description_en,
+        this.description_am,
+        this.description_or,
+        this.description_tr,
+        this.id,
         this.steps,
         this.prepTime,
         this.servingSize,
@@ -68,6 +81,8 @@ class Competition {
     final ingredientList = ingredients?.map((ingredient) {
       return Map<String, String>.from(ingredient as Map<dynamic, dynamic>);
     }).toList() ?? [];
+List vote = json['vote'] as List;
+
 
 
 
@@ -75,10 +90,18 @@ class Competition {
 DateTime now =  DateTime.now();
 Duration daysleff = fromtheresponse.difference(now);
     return Competition(
-        name: json['name_${Language.getLocaleCode()}']??'sampleunkownlang',
-        description: json['name_${Language.getLocaleCode()}']??'sampleunkownlang',
+        name_en: json['name_en']??"en",
+        name_am: json['name_am']??'am',
+        name_or: json['name_or']??'or',
+        name_tr: json['name_tr']??'tr',
+        description_en: json['description_en']??'en',
+        description_am: json['description_am']??'am',
+        description_or: json['description_or']??'or',
+        description_tr: json['description_tr']??'tr',
+        id: json['id'],
         image: "https://apiv2.ethiochef.com/" + json['poster_image'],
-        daysLeft: daysleff.inDays
+        daysLeft: daysleff.inDays,
+        votes: vote.length
         // prepTime: json['prepTime'],
         // servingSize: json['servingSize'],
         // steps: List<String>.from(json['steps']),
@@ -90,8 +113,15 @@ Duration daysleff = fromtheresponse.difference(now);
 
   Map<String, dynamic> toJson() {
     return {
-      'name': name,
-      'description': description,
+      'name_en': name_en,
+      'name_am': name_am,
+      'name_or': name_or,
+      'name_tr': name_tr,
+      'description_en': description_en,
+      'description_am': description_am,
+      'description_or': description_or,
+      'description_tr': description_tr,
+      'id': id,
       'prepTime': prepTime,
       'servingSize': servingSize,
       'steps': steps,

@@ -259,6 +259,7 @@ class UserService {
   }
 
   Future<List<SubscriptionPlans>> fetchUserSubscriptions() async {
+    print('FETCH USERSUBS');
     List<SubscriptionPlans> subscriptionPlans = [];
     var access_token = await AuthService.getAuthorizationToken();
     User user = await fetchLoggedInUser();
@@ -268,7 +269,7 @@ class UserService {
       'Content-Type': 'application/json',
       'Authorization': 'JWT ${access_token}',
     });
-    print(response.body);
+    print('USER SUBS: ${response.body}');
     print(response.statusCode);
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);

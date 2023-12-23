@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
 
 import '../../models/competition.dart';
+import '../../theme/model_theme.dart';
 import '../../utils/screen_utils.dart';
 import '../main_button.dart';
 class MyCompCard extends StatelessWidget {
@@ -14,6 +16,7 @@ class MyCompCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ModelTheme lang = Provider.of<ModelTheme>(context);
     final bool isTablet = ScreenUtils.isTablet(context);
     ThemeData theme = Theme.of(context);
     return Padding(
@@ -31,7 +34,7 @@ class MyCompCard extends StatelessWidget {
                   children: [
                     Expanded(
                         child: Text(
-                          comp.name!,
+                          lang.languageCode == 'en' ? comp.name_en! : lang.languageCode == 'am' ? comp.name_am!: lang.languageCode == 'GB' ? comp.name_or! : comp.name_tr!,
                           style: TextStyle(
                               fontSize: isTablet ? 12.sp : 14.sp,
                               fontWeight: FontWeight.bold),

@@ -124,7 +124,8 @@ class _SignUpState extends State<SignUp> {
                         setState(() {
                           amount = price;
                         });
-                      },)
+                      },
+                    )
                 );
                 await _registration();
               }

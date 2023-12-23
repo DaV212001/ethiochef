@@ -70,10 +70,10 @@ class _AllSubscriptionsState extends State<AllSubscriptions> {
   }
   Future<void> getSubscriptionPlans() async {
     u.UserService service = u.UserService();
-    User user = await service.fetchLoggedInUser();
-    setState(() {
-      user_id = user.id!;
-    });
+    // User user = await service.fetchLoggedInUser();
+    // setState(() {
+    //   user_id = user.id!;
+    // });
 
     var response = await service.fetchSubscriptionPlans();
     setState(() {
