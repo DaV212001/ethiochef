@@ -83,7 +83,11 @@ class Competition {
     }).toList() ?? [];
 List vote = json['vote'] as List;
 
-
+var competitors = json['contestant'] as List;
+    List<Competitor>? competitorss1;
+if(competitors.isNotEmpty){
+  competitorss1 = competitors.map((e) => Competitor.fromJson(e)).toList();
+}
 
 
     DateTime fromtheresponse = DateTime.parse(json['end_date']);
@@ -101,7 +105,9 @@ Duration daysleff = fromtheresponse.difference(now);
         id: json['id'],
         image: "https://apiv2.ethiochef.com/" + json['poster_image'],
         daysLeft: daysleff.inDays,
-        votes: vote.length
+        votes: vote.length,
+        competitor: competitorss1??[],
+
         // prepTime: json['prepTime'],
         // servingSize: json['servingSize'],
         // steps: List<String>.from(json['steps']),

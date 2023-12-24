@@ -32,7 +32,7 @@ class _VoteCardState extends State<VoteCard> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(100.r),
                     child: CachedImage(
-                      url: widget.competitor.image,
+                      url: widget.competitor.image!,
                       fit: BoxFit.fill,
                     ),
                   )),
@@ -40,7 +40,7 @@ class _VoteCardState extends State<VoteCard> {
                 width: 10.w,
               ),
               Text(
-                widget.competitor.fullName,
+                widget.competitor.fullName!,
                 style: theme.textTheme.bodyMedium,
                 textAlign: TextAlign.start,
               ),

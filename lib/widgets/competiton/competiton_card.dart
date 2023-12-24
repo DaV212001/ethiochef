@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/competition.dart';
 import 'package:ethio_chef/screens/competition/competition_screen.dart';
+import 'package:ethio_chef/services/competition_service.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:ethio_chef/theme/model_theme.dart';
 import 'package:ethio_chef/widgets/cached_image.dart';
@@ -9,10 +10,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 
-class CompetitionsCard extends StatelessWidget {
+class CompetitionsCard extends StatefulWidget {
   final Competition competition;
 
-  const CompetitionsCard({super.key, required this.competition});
+  const CompetitionsCard({Key? key, required this.competition}) : super(key: key);
+
+  @override
+  _CompetitionsCardState createState() => _CompetitionsCardState();
+}
+
+class _CompetitionsCardState extends State<CompetitionsCard> {
+
+  bool Loading = false;
+  int likes = 0;
+
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +34,7 @@ class CompetitionsCard extends StatelessWidget {
         pushNewScreen(
           context,
           withNavBar: false,
-          screen: CompetitionScreen(competition: competition),
+          screen: CompetitionScreen(competition: widget.competition),
         );
       },
       child: Container(
@@ -37,16 +48,16 @@ class CompetitionsCard extends StatelessWidget {
           children: [
             Container(
                 width: double.infinity,
-                height: 200.h,
+                height: 160.h,
                 child: ClipRRect(
                   borderRadius: AppTheme.topBorderRadius,
                   child: CachedImage(
-                    url: competition.image.toString(),
+                    url: widget.competition.image.toString(),
                     fit: BoxFit.fill,
                   ),
                 )),
             SizedBox(
-              height: 10.h,
+              height:9.h,
             ),
             Container(
               margin: EdgeInsets.symmetric(
@@ -59,12 +70,12 @@ class CompetitionsCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        lang.languageCode == 'en'? competition.name_en!.toString() : lang.languageCode == 'am'? competition.name_am!.toString(): lang.languageCode == 'GB'? competition.name_or!.toString() : competition.name_tr!.toString(),
+                        lang.languageCode == 'en'? widget.competition.name_en!.toString() : lang.languageCode == 'am'? widget.competition.name_am!.toString(): lang.languageCode == 'GB'? widget.competition.name_or!.toString() : widget.competition.name_tr!.toString(),
                         style: theme.textTheme.headlineMedium,
                         textAlign: TextAlign.start,
                       ),
                       Text(
-                        "votes".tr(args: [competition.votes.toString()]),
+                        "votes".tr(args: [widget.competition.votes.toString()]),
                         style: theme.textTheme.labelMedium
                             ?.copyWith(color: theme.unselectedWidgetColor),
                         textAlign: TextAlign.start,
@@ -74,11 +85,65 @@ class CompetitionsCard extends StatelessWidget {
                   SizedBox(
                     height: 9.h,
                   ),
-                  Text(
-                    "days_left".tr(args: [competition.daysLeft.toString()]),
-                    style: theme.textTheme.labelMedium
-                        ?.copyWith(color: theme.unselectedWidgetColor),
-                    textAlign: TextAlign.start,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "days_left".tr(args: [widget.competition.daysLeft.toString()]),
+                        style: theme.textTheme.labelMedium
+                            ?.copyWith(color: theme.unselectedWidgetColor),
+                        textAlign: TextAlign.start,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(8),
+                            child: GestureDetector(
+                              onTap: ()async {
+                                CompetitionService cmp = CompetitionService();
+                                setState(() {
+                                  Loading = true;
+                                });
+                                try {
+                                  var response = await cmp.likeCompetition(
+                                      widget.competition.id!);
+
+                                  if(response?.statusCode == 200){
+                                    setState(() {
+                                      Loading = false;
+                                    });
+                                    likes++;
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Competition liked!')));
+                                  }
+                                } catch(e){
+                                  setState(() {
+                                    Loading = false;
+                                  });
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                                }
+                                setState(() {
+                                  Loading = false;
+                                });
+                              },
+                              child: Container(
+                                width: 30,
+                                height: 30,
+                                decoration: BoxDecoration(color: Colors.orange, shape: BoxShape.circle),
+                                child: !Loading?Center(
+                                  child: Icon(
+                                    Icons.thumb_up_sharp,
+                                    color: Colors.white,
+                                  ),
+                                ): CircularProgressIndicator(),
+                              ),
+                            ),
+                          ),
+                          Text('${likes}  likes', style: theme.textTheme.bodySmall)
+                        ],
+                      )
+
+                    ],
                   ),
                 ],
               ),

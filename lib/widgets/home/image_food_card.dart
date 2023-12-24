@@ -96,7 +96,6 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
                 withNavBar: false,
                 screen: RecipeScreen(food: widget.food),
               );
-
             }
             else{
               pushNewScreen(
