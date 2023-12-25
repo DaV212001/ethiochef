@@ -7,7 +7,7 @@ import 'package:ethio_chef/widgets/horizontal_food_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../widgets/horizontal_food_carousel2.dart';
+import '../../../widgets/meal_carousel.dart';
 
 class HomeCategoryTab extends StatelessWidget {
   final List<Food> breakfast;
