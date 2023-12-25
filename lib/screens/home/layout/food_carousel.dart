@@ -26,23 +26,10 @@ class FoodCarousel extends StatefulWidget {
 class _FoodCarouselState extends State<FoodCarousel> {
 
   Future? _future;
-  late PageController carouselController;
-  int currentIndex = 0;
   @override
   void initState() {
     _future = fetchData();
-    carouselController = PageController(initialPage: 0);
-    carouselController.addListener(() {
-      setState(() {
-        currentIndex = carouselController.page!.round();
-      });
-    });
     super.initState();
-  }
-  @override
-  void dispose() {
-    carouselController.dispose();
-    super.dispose();
   }
 
   Future<dynamic> fetchData() async {
@@ -69,7 +56,6 @@ class _FoodCarouselState extends State<FoodCarousel> {
               if (snapshot.hasError) {
                 return Center(
                     child: ErrorCard(
-                      isFood: true,
                       errorType: snapshot.error.toString(),
                       refresh: () {
                         setState(() {
@@ -83,7 +69,8 @@ class _FoodCarouselState extends State<FoodCarousel> {
     );
   }
 
-  // final CarouselController carouselController = CarouselController();
+  final CarouselController carouselController = CarouselController();
+  int currentIndex = 0;
 
   Widget buildFoodScreen(List<Food> food){
 
@@ -138,65 +125,44 @@ class _FoodCarouselState extends State<FoodCarousel> {
           )
       );
     }
-    double height = 170;
-    double width = 165;
+    double height = 180;
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
-              height: height,
-              child: ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemExtent: width,
-                  itemCount: food.length,
-                  itemBuilder: (BuildContext context, int index) {
+            CarouselSlider(
+              items: food.map((foods) {
+                return Builder(
+                  builder: (BuildContext context) {
                     return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5.w),
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
                       child: ImageFoodCard(
-                          food: food[index]
+                          food: foods
                       ),
                     );
-                  }
-              ),
+                  },
+                );
+              }).toList(),
+              carouselController: carouselController,
+              options: CarouselOptions(
+                scrollPhysics: const BouncingScrollPhysics(),
+                autoPlay: false,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
+                  animateToClosest: false,
+                height: height,
+                padEnds: false,
+                disableCenter: false,
+                enableInfiniteScroll: false,
+                reverse: false,
+                enlargeCenterPage: false,
+                viewportFraction: 0.5
+              )
             ),
-            // CarouselSlider(
-            //   items: food.map((foods) {
-            //     return Builder(
-            //       builder: (BuildContext context) {
-            //         return Padding(
-            //           padding: EdgeInsets.symmetric(horizontal: 10.w),
-            //           child: ImageFoodCard(
-            //               food: foods
-            //           ),
-            //         );
-            //       },
-            //     );
-            //   }).toList(),
-            //   carouselController: carouselController,
-            //   options: CarouselOptions(
-            //     scrollPhysics: const BouncingScrollPhysics(),
-            //     autoPlay: false,
-            //     onPageChanged: (index, reason) {
-            //       setState(() {
-            //         currentIndex = index;
-            //       });
-            //     },
-            //     height: height,
-            //     padEnds: false,
-            //     disableCenter: false,
-            //     enableInfiniteScroll: false,
-            //     reverse: false,
-            //     enlargeCenterPage: false,
-            //       animateToClosest: false,
-            //       pageSnapping: false,
-            //     viewportFraction: 0.6
-            //   )
-            // ),
-            SizedBox(height: 5),
             Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -205,7 +171,8 @@ class _FoodCarouselState extends State<FoodCarousel> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: food.asMap().entries.map((entry) {
                       return GestureDetector(
-                        onTap: () {},
+                        onTap: () =>
+                            carouselController.animateToPage(entry.key),
                         child: Container(
                           width: currentIndex == entry.key ? 17.w : 7.w,
                           height: 7.h,
