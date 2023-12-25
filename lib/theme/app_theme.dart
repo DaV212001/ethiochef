@@ -111,9 +111,12 @@ class AppTheme {
   static const Color tomato = Color(0xFFFD3A39);
 
   static BorderRadius topBorderRadius = BorderRadius.only(
-      topLeft: Radius.circular(5), topRight: Radius.circular(5));
+      topLeft: Radius.circular(10), topRight: Radius.circular(10));
 
-  static BorderRadius allBorderRadius = BorderRadius.all(Radius.circular(5));
+  static BorderRadius bottomBorderRadius = BorderRadius.only(
+      bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10));
+
+  static BorderRadius allBorderRadius = BorderRadius.all(Radius.circular(10));
 
   static TextStyle snackBarStyleTablet = TextStyle(fontSize: 13.sp);
   static TextStyle snackBarStyle = TextStyle(fontSize: 15.sp);

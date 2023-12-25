@@ -47,7 +47,7 @@ class _CategoryCarouselState extends State<CategoryCarousel> {
             showMoreText: 'show_more'.tr(),
             onTap:(){
             pushNewScreen(
-                withNavBar: false,
+                withNavBar: true,
                 pageTransitionAnimation: PageTransitionAnimation.cupertino,
                 context,
                 screen: AllFood(categoryId: widget.category[index].id,
