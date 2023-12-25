@@ -1,24 +1,15 @@
 
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/screens/home/layout/add_recipe_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/promotion.dart';
 import '../../models/category.dart';
 import '../../models/food.dart';
-import '../../services/authorization_service.dart';
 import '../../services/category_service.dart';
 import '../../services/meal_service.dart';
 import '../../services/promotion_service.dart';
 import '../../widgets/error_card.dart';
-import '../../widgets/info_card.dart';
 import '../../widgets/loading.dart';
-import '../../widgets/main_app_bar.dart';
-import '../../widgets/screen_head.dart';
-import '../recipe/layout/recipe_new_tabs.dart';
-import '../recipe/layout/recipe_tabs.dart';
 import 'layout/ads_carousel.dart';
 import 'layout/category_carousel.dart';
 import 'layout/meal_tab.dart';

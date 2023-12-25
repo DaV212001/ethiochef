@@ -13,7 +13,6 @@ import '../../../../../models/recipe.dart';
 import '../../../../../services/recipe_service.dart';
 import '../../../../../widgets/main_button.dart';
 import 'package:cloudinary_url_gen/cloudinary.dart';
-import 'package:cloudinary_flutter/image/cld_image.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -151,6 +150,10 @@ class _RecipeDescriptionState extends State<RecipeDescription> {
                                 ));
                             if(response.statusCode == 200){
                               await ScaffoldMessenger.of(context).showSnackBar(success);
+                              print("delete");
+                              Recipe.deleteRecipe(widget.myRecipe);
+                              print("delete");
+                              Recipe.savedRecipes = await Recipe.loadRecipesFromSharedPrefs();
                               Navigator.pop(context);
                             }else{
                               await ScaffoldMessenger.of(context).showSnackBar(failed);

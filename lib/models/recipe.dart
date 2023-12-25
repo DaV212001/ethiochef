@@ -99,6 +99,7 @@ class Recipe {
     return savedRecipes;
   }
   static void deleteRecipe(Recipe recipe) {
+    print("deleteRecipe");
     savedRecipes.remove(recipe);
     saveRecipesToSharedPrefs();
   }

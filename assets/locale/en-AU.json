@@ -76,7 +76,6 @@
   "add_your_own_recipe_body": "ኣሰራርሓ መግቢኻ ብምቕራብ ሽልማት ክትዕወት ​​ትኽእል ኢኻ።",
   "submit": "ኣእትው",
   "submit_a_recipe": "ኣሰራርሓ መግቢ ኣቕርቡ።",
-  "show_recipe": "ኣሰራርሓ መግቢ ኣርእዩ",
   "recipe": "ኣሰራርሓ መግቢ",
   "photo_gallery": "ፎቶ ጋለሪ",
   "camera": "ካሜራ",
@@ -156,6 +155,13 @@
   "no_connection_text": "ኢንተርነትካ መርምር እሞ እንደገና ፈትን።",
   "submitted_successfully": "ኣሰራርሓ መግቢኹም ብዓወት ቀሪቡ ኣሎ።",
   "submitted_failed": "ኣሰራርሓ መግቢ ከቕርብ ኣይከኣለን",
-  "wait_recipe": "ኣሰራርሓ መግቢኹም ክሳብ ነቕርብ ተጸበዩ።"
-
+  "wait_recipe": "ኣሰራርሓ መግቢኹም ክሳብ ነቕርብ ተጸበዩ።",
+  "submitted_video": "ናተይ ቪድዮታት ኩነታት",
+  "show_recipe": "ንብሰል",
+  "upload_competition": "ቪድዮ ስቐል",
+  "notifications": "መፍለጢታት",
+  "checking_subscription_please_wait": "ምዝገባ ምፍታሽ በጃኹም ተጸበዩ።",
+  "please_subscribe_to_see_ingredients_and_steps": "ቀመማትን ስጉምትታትን ንምርኣይ ሳብስክራይብ ግበሩ",
+  "food_status": "ኩነታት መግቢ",
+  "pending": "ኣብ ከይዲ"
 }

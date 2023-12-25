@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../../../../widgets/profile/my_competition_card.dart';
+import '../../../competition/layout/upload_video.dart';
 import '../../../upload_recipe/upload_recipe_screen.dart';
 import 'my_comp_description.dart';
 
@@ -101,7 +102,7 @@ class _MyCompetitionState extends State<MyCompetition> {
           backgroundColor:  theme.colorScheme.primary,
           onPressed: () {
             pushNewScreen(context,
-                screen: UploadRecipeScreen(type: "competition"), withNavBar: false);
+                screen: UploadCompetitionVideo(), withNavBar: false);
           },
           child: Icon(
               Icons.add,

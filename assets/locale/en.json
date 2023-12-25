@@ -44,8 +44,6 @@
   "another_account_login": "Your phone number has been used to log in on another device",
 
 
-
-
   "competitions": "Competitions",
   "profile": "Profile",
   "categories": "Categories",
@@ -79,7 +77,6 @@
   "add_your_own_recipe_body": "By submitting your recipes you can win prizes",
   "submit": "Submit",
   "submit_a_recipe": "Submit a recipe",
-  "show_recipe": "Cook",
   "recipe": "Recipe",
   "photo_gallery": "Photo Gallery",
   "camera": "Camera",
@@ -159,5 +156,14 @@
   "no_connection_text": "Check your internet and try again.",
   "submitted_successfully": "Your Recipe has been submitted successfully",
   "submitted_failed": "Failed to submit recipe",
-  "wait_recipe": "Please wait while we submit your master class"
+  "wait_recipe": "Please wait while we submit your master class",
+  "submitted_video": "My Videos Status",
+  "show_recipe": "Let's Cook",
+  "upload_competition": "Upload Video",
+  "notifications": "Notifications",
+  "checking_subscription_please_wait":"Checking subscription please wait",
+  "please_subscribe_to_see_ingredients_and_steps": "Please subscribe to see ingredients and steps",
+  "food_status": "Food Status",
+  "pending": "Pending"
+
 }

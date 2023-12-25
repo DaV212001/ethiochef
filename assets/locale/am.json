@@ -40,7 +40,7 @@
   "description": "መግለጫ",
   "related_recipes": "ተመሳሳይ የምግብ አዘገጃጀቶች",
   "cooking_steps": "የአሰራር ሂደት",
-  "share_recipe_message": "በኢትዮ ሼፍ ያገኘሁትን ይህን ጣፋጭ አሰራር ይመልከቱ! π  ²β ¨The name of the recipe is {} {}.π  ©β  π  ³π  ¨β  π  ³ Give it a try and let me know what you think!π  ² Check out the app at [App Download Link] or you can also use the website ethiochef.com #CookingAdventures #Foodie",
+  "share_recipe_message": "በኢትዮ ሼፍ ያገኘሁትን ይህን ጣፋጭ አሰራር ይመልከቱ! π��²β�¨The name of the recipe is {} {}.π��©β��π��³π��¨β��π��³ Give it a try and let me know what you think!π��² Check out the app at [App Download Link] or you can also use the website ethiochef.com #CookingAdventures #Foodie",
   "share_recipe": "ይህን የምግብ አሰራር አጋራ!",
   "competitions": "ውድድሮች",
   "profile": "መለያ",
@@ -66,6 +66,7 @@
   "enter_dish_serving_size": "የዲሽ ማቅረቢያ መጠን ያስገቡ",
   "image_is_required": "ፎቶ ያስፈልጋል",
   "add_ingredient": "የሚያስፈልጉ ግብአቶችን ያስገቡ",
+  "ingredient": "ግብአት",
   "basic_info": "መሰረታዊ መረጃ",
   "steps": "የአሰራር ሂደት",
   "video": "ቪዲዮ",
@@ -77,7 +78,6 @@
   "submit_a_recipe": "የምግብ አሰራር አሰገባ",
   "recipe": "አሰራር ያሰገቡ",
   "empty_search_query_title": "ምንም ምግብ አልተገኘም።",
-  "show_recipe": "ያብስሉ",
   "photo_gallery": "የፎቶ ጋለሪ",
   "camera": "ካሜራ",
   "video_is_loading": "ቪዲዮ እየተጫነ ነው።.",
@@ -85,8 +85,6 @@
   "next": "ቀጥል",
   "back": "ተመለስ",
   "video_file_size_limit": "የቪዲዮ ፋይል መጠን ከ100ሜባ መብለጥ የለበትም።",
-
-
   "registration_successful": "ምዝገባው ተሳክቷል።",
   "registration_failed": "ምዝገባ አልተሳካም።",
   "login_successful": "እንኳን ደህና መጡ",
@@ -155,5 +153,13 @@
   "empty_food": "ምንም ምግብ የለም",
   "submitted_successfully": "የምግብ አሰራርዎ በተሳካ ሁኔታ ገብቷል።",
   "submitted_failed": "የምግብ አሰራርን ማስገባት አልተሳካም።",
-  "wait_recipe": "እባክዎ የምግብ አሰራርዎን እስከምናስገባ ድረስ ይጠብቁ"
+  "wait_recipe": "እባክዎ የምግብ አሰራርዎን እስከምናስገባ ድረስ ይጠብቁ",
+  "submitted_video": "የእኔ ቪዲዮዎች ሁኔታ",
+  "show_recipe": "እናበስል",
+  "upload_competition": "ቪዲዮ ስቀል",
+  "notifications": "ማሳወቂያዎች",
+  "checking_subscription_please_wait": "የደንበኝነት ምዝገባን በመፈተሽ ላይ እባክዎ ይጠብቁ",
+  "please_subscribe_to_see_ingredients_and_steps": "ንጥረ ነገሮችን እና ደረጃዎችን ለማየት እባክዎ ለደንበኝነት ይመዝገቡ",
+  "food_status": "የምግብ ሁኔታ",
+  "pending": "በመጠባበቅ ላይ"
 }

@@ -23,7 +23,7 @@ class InputField extends StatelessWidget {
     this.label,
     this.hint,
     this.icon,
-    this.height = 69,
+    this.height = 76,
     this.width,
     this.type = 0,
     this.maxLines = 1,
@@ -75,7 +75,7 @@ class InputField extends StatelessWidget {
 
   String? validateNoType(String? value) {
     if (value == null || value.isEmpty) {
-      return 'This field is required';
+      return 'enter_dish_name'.tr();
     }
     return null;
   }

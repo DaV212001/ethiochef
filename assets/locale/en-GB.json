@@ -39,7 +39,6 @@
   "number_people": "{} Kaardii Qormaataa",
   "number_hours": "{} sa'aatiiwwan",
   "description": "Ibsa",
-  "ingredients": "Mi'a dheedhii",
   "related_recipes": "Recipes Walqabatan",
   "cooking_steps": "Tarkaanfiiwwan Nyaata Bilcheessuu",
   "share_recipe_message": "Recipe mi'aawaa ani EthioChef irratti argadhe kana ilaalaa!\n ",
@@ -47,7 +46,6 @@
   "competitions": "Dorgommiiwwan",
   "profile": "Ibsama",
   "categories": "Ramaddiiwwan",
-  "home": "Mana",
   "saved_recipes": "Recipes Qusataman",
   "phone_number": "Lakkoofsa Bilbilaa",
   "phone_number_required": "Lakkoofsi bilbilaa barbaachisa",
@@ -67,7 +65,6 @@
   "image_is_required": "Fakkiin barbaachisaadha",
   "add_ingredient": "Ingredient itti dabali",
   "basic_info": "Odeeffannoo Bu'uuraa",
-  "steps": "Tarkaanfiiwwan",
   "video": "Viidiyoo",
   "add_step": "Tarkaanfii itti dabali",
   "video_is_required": "Viidiyoon barbaachisa",
@@ -76,7 +73,6 @@
   "submit": "Galchuu",
   "submit_a_recipe": "Recipe tokko galchaa",
   "recipe": "Recipe tokko",
-  "show_recipe": "Recipe Agarsiisi",
   "photo_gallery": "Galmee Suuraa",
   "camera": "Kaameeraa",
   "video_is_loading": "Viidiyoon fe'amaa jira.",
@@ -155,5 +151,14 @@
   "no_connection_text": "Intarneetii keessan ilaalaa irra deebi'aa yaalaa.",
   "submitted_successfully": "Recipe keessan milkaa'inaan dhiyaateera",
   "submitted_failed": "Recipe dhiyeessuu hin dandeenye",
-  "wait_recipe": "Mee osoo qophii nyaataa keessan dhiyeessinu eegaa"
+  "wait_recipe": "Mee osoo qophii nyaataa keessan dhiyeessinu eegaa",
+
+  "submitted_video": "Haala Viidiyoowwan Koo",
+  "show_recipe": "Haa Bilcheessinu",
+  "upload_competition": "Viidiyoo Olkaa'aa",
+  "notifications": "Beeksisa",
+  "checking_subscription_please_wait": "Checking subscription mee eegaa",
+  "please_subscribe_to_see_ingredients_and_steps": "Wantoota itti fayyadamanii fi tarkaanfiiwwan itti fudhataman ilaaluuf subscribe godhaa",
+  "food_status": "Haala Nyaataa",
+  "pending": "Eeggataa kan jiru"
 }

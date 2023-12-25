@@ -12,8 +12,6 @@ import '../models/language.dart';
 import '../models/recipe_show_checker.dart';
 import '../screens/auth/auth_screen.dart';
 import '../screens/subscription/all_subscriptions.dart';
-import '../services/authorization_service.dart';
-import '../services/user_service.dart';
 
 class MealCard extends StatefulWidget {
   static int foodCardType = 3;
@@ -39,7 +37,7 @@ class _MealCardState extends State<MealCard> {
             padding: EdgeInsets.symmetric(vertical: 10),
             showCloseIcon: true,
             content: Text(
-                'Checking Subscription Please wait'.tr()
+                'checking_subscription_please_wait'.tr()
             ));
         ScaffoldMessenger.of(context).showSnackBar(checking);
         String status = await Check.checkToShow();
@@ -49,13 +47,13 @@ class _MealCardState extends State<MealCard> {
             SnackBar logIn =SnackBar(
                 padding: EdgeInsets.symmetric(vertical: 20),
                 content: Text(
-                    'Please subscribe to see ingredients and steps'.tr()
+                    'please_subscribe_to_see_ingredients_and_steps'.tr()
                 ));
             loginFunction();
             ScaffoldMessenger.of(context).showSnackBar(logIn);
             break;
           case "Another user logged in":
-        print("Another user logged in");
+            print("Another user logged in");
             SnackBar logIn =SnackBar(
                 padding: EdgeInsets.symmetric(vertical: 20),
                 content: Text(

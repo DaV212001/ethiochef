@@ -14,6 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../widgets/auth/auth_btn.dart';
 import '../../../widgets/info_card.dart';
+import '../../main_screen.dart';
 import '../../subscription/all_subscriptions.dart';
 
 class SignUp extends StatefulWidget {
@@ -127,7 +128,11 @@ class _SignUpState extends State<SignUp> {
                       },
                     )
                 );
-                await _registration();
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context)=>MainScreen())
+                );
+                // await _registration();
               }
             }
           ),

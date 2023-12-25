@@ -7,13 +7,14 @@ import 'package:ethio_chef/utils/place_holder_data.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/user.dart';
+import '../utils/constants.dart';
 import 'authorization_service.dart';
 class CompetitionService {
   Future<List<Competition>> fetchCompetitions(int pageKey) async {
     List<Competition>? competitionslist;
     try {
       var res = await http.get(
-          Uri.parse("https://apiv2.ethiochef.com/user/contest/competiton"));
+          Uri.parse("${Constants.url}/user/contest/competiton"));
       print("res.statusCode  == = == = = = == = = = ${res.statusCode}");
 
       var data = jsonDecode(res.body);
@@ -37,20 +38,32 @@ class CompetitionService {
     return competitionslist;
   }
 
+  Future<http.Response> sendCompetitionVideo(String video_string) async {
+    var body = json.encode({"video": video_string});
+    print(body);
+    final response = await http.post(
+        Uri.parse("${Constants.url}/user/contest/upload"),
+        body: {"video": video_string});
+    print(response);
+    print(response.body);
+    print(response.statusCode);
+    if(response.statusCode == 200){
 
+    }
+    return response;
+  }
   Future<http.Response>? likeCompetition(int id) async {
     var access_token = await AuthService.getAuthorizationToken();
     final response;
     try {
       response = await http.post(
-        Uri.parse("https://apiv2.ethiochef.com/user/contest/like"),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
+        Uri.parse("${Constants.url}/user/contest/like"),
+        headers: {
           'Authorization': 'JWT $access_token'
         },
-        body: jsonEncode(<String, int>{
+        body: {
           'contest_id': id
-        }),
+        },
       );
       print("res.statusCode  == = == = = == = = = ${response.statusCode}");
       var message = jsonDecode(response.body);
@@ -68,7 +81,7 @@ class CompetitionService {
     final response;
     try {
       response = await http.get(
-        Uri.parse("https://apiv2.ethiochef.com/user/contest/$id"),
+        Uri.parse("${Constants.url}/user/contest/$id"),
       );
       print("res.statusCode  == = == = = == = = = ${response.statusCode}");
       var message = jsonDecode(response.body);
@@ -93,7 +106,7 @@ class CompetitionService {
         final response = await http
             .get(
             Uri.parse(
-                "https://apiv2.ethiochef.com/user/contest/user/${user.id}"),
+                "${Constants.url}/user/contest/user/${user.id}"),
             headers: {
               'Authorization': 'JWT $access_token',
             });

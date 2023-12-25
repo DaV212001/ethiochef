@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
+import '../../../utils/screen_utils.dart';
 import '../../../widgets/error_card.dart';
 import '../../../widgets/loading.dart';
 
@@ -20,11 +21,22 @@ class VerticalFoodList extends StatefulWidget {
 class _VerticalFoodListState extends State<VerticalFoodList> {
   @override
   Widget build(BuildContext context) {
-    return PagedListView<int, Food>(
+    final bool isTablet = ScreenUtils.isTablet(context);
+    final double desiredItemWidth = isTablet ? 130.w : 150.w;
+    final double desiredItemHeight = isTablet ? 190.h : 170.h;
+    final double screenWidth = ScreenUtils.width(context);
+
+    final int crossAxisCount = (screenWidth / desiredItemWidth).floor();
+    final double childAspectRatio = desiredItemWidth / desiredItemHeight;
+    return PagedGridView<int, Food>(
       physics: BouncingScrollPhysics(),
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      itemExtent: 275.h,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount,
+        childAspectRatio: childAspectRatio,
+        mainAxisSpacing: isTablet ? 5 : 0,
+      ),
       pagingController: widget.pagingController,
       builderDelegate: PagedChildBuilderDelegate<Food>(
         firstPageProgressIndicatorBuilder: (context) => Center(child: Loading()),
@@ -48,7 +60,7 @@ class _VerticalFoodListState extends State<VerticalFoodList> {
         ),
         itemBuilder: (context, food, index) {
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+            padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 10.h),
             child: FoodCard(food: food, isSearchList: widget.isSearchList)
           );
         },

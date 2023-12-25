@@ -1,23 +1,37 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   static const FlutterSecureStorage storage = FlutterSecureStorage();
 
   static Future<String?> getAuthorizationToken() async {
-    return storage.read(key: 'ethioChef_authorization_token');
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final token = sharedPreferences.getString('ethioChef_authorization_token') ?? 'none';
+    return token;
+    // return storage.read(key: 'ethioChef_authorization_token');
   }
 
   static Future<void> setAuthorizationToken(String authorizationToken) async {
-    await storage.write(key: 'ethioChef_authorization_token', value: authorizationToken);
+    final sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.setString('ethioChef_authorization_token', authorizationToken);
+    // await storage.write(key: 'ethioChef_authorization_token', value: authorizationToken);
   }
 
   static Future<void> logout() async {
-    await storage.delete(key: 'ethioChef_authorization_token');
+    final sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.remove("ethioChef_authorization_token");
+    // await storage.delete(key: 'ethioChef_authorization_token');
   }
 
   static Future<bool> isUserLoggedIn() async{
-    print("isUserLoggedIn");
-    return storage.containsKey(key: 'ethioChef_authorization_token');
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final token = sharedPreferences.getString('ethioChef_authorization_token') ?? 'none';
+    if(token == "none"){
+      return false;
+    }
+    return true;
+    // print("isUserLoggedIn");
+    // return storage.containsKey(key: 'ethioChef_authorization_token');
   }
 
   static Future<void> setRefreshToken(String refreshToken) async {

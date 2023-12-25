@@ -160,6 +160,26 @@ Future<void> getUserData() async {
                               );
                             }
                         ),
+                        if(userSubscriptionPlans.isNotEmpty)
+                          SizedBox(height: 5,),
+                        if(userSubscriptionPlans.isNotEmpty)
+                          Divider(thickness: 1, height: 1,),
+                        if(userSubscriptionPlans.isNotEmpty)
+                          SizedBox(height: 5,),
+                        if(userSubscriptionPlans.isNotEmpty)Text(
+                          'Extend your subscription',
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .headlineLarge,
+                        ),
+                        if(userSubscriptionPlans.isNotEmpty)
+                          SizedBox(height: 5,),
+                        if(userSubscriptionPlans.isNotEmpty)
+                          Divider(thickness: 1, height: 1,),
+                        if(userSubscriptionPlans.isNotEmpty)
+                          SizedBox(height: 5,),
+
                         ListView.builder(
                             shrinkWrap: true,
                             itemCount: subscriptionPlans.length,

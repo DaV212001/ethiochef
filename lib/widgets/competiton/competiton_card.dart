@@ -10,6 +10,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/recipe_show_checker.dart';
+import '../../screens/auth/auth_screen.dart';
+import '../../screens/subscription/all_subscriptions.dart';
+
 class CompetitionsCard extends StatefulWidget {
   final Competition competition;
 
@@ -101,27 +105,78 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
                             padding: EdgeInsets.all(8),
                             child: GestureDetector(
                               onTap: ()async {
-                                CompetitionService cmp = CompetitionService();
-                                setState(() {
-                                  Loading = true;
-                                });
-                                try {
-                                  var response = await cmp.likeCompetition(
-                                      widget.competition.id!);
+                                SnackBar checking =SnackBar(
+                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    showCloseIcon: true,
+                                    content: Text(
+                                        'Checking Subscription Please wait'.tr()
+                                    ));
+                                ScaffoldMessenger.of(context).showSnackBar(checking);
+                                String status = await Check.checkToShow();
+                                switch(status){
+                                  case "Not logged in":
+                                    print("Not logged in");
+                                    SnackBar logIn =SnackBar(
+                                        padding: EdgeInsets.symmetric(vertical: 20),
+                                        content: Text(
+                                            'Please subscribe to see ingredients and steps'.tr()
+                                        ));
+                                    loginFunction();
+                                    ScaffoldMessenger.of(context).showSnackBar(logIn);
+                                    break;
+                                  case "Another user logged in":
+                                    print("Another user logged in");
+                                    SnackBar logIn =SnackBar(
+                                        padding: EdgeInsets.symmetric(vertical: 20),
+                                        content: Text(
+                                            'another_account_login'.tr()
+                                        ));
+                                    ScaffoldMessenger.of(context).showSnackBar(logIn);
+                                    loginFunction();
+                                    break;
+                                  case "User is subscribed":
+                                    print("User is subscribed");
 
-                                  if(response?.statusCode == 200){
+
+                                    CompetitionService cmp = CompetitionService();
                                     setState(() {
-                                      Loading = false;
+                                      Loading = true;
                                     });
-                                    likes++;
-                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Competition liked!')));
-                                  }
-                                } catch(e){
-                                  setState(() {
-                                    Loading = false;
-                                  });
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                                    try {
+                                      var response = await cmp.likeCompetition(
+                                          widget.competition.id!);
+
+                                      if(response?.statusCode == 200){
+                                        setState(() {
+                                          Loading = false;
+                                        });
+                                        likes++;
+                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Competition liked!')));
+                                      }
+                                    } catch(e){
+                                      setState(() {
+                                        Loading = false;
+                                      });
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                                    }
+
+
+
+                                    break;
+                                  case "User is not subscribed":
+                                    print("User is not subscribed");
+                                    pushNewScreen(
+                                      context,
+                                      withNavBar: false,
+                                      screen: AllSubscriptions(returnPrice: (int ) {  },
+                                        first_name: "",
+                                        last_name: "",
+                                        isSignUp:
+                                        false,phone: "",),
+                                    );
+                                    break;
                                 }
+
                                 setState(() {
                                   Loading = false;
                                 });
@@ -151,6 +206,13 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
           ],
         ),
       ),
+    );
+  }
+  void loginFunction(){
+    pushNewScreen(
+      context,
+      withNavBar: false,
+      screen: AuthScreen(isSignIn: true),
     );
   }
 }

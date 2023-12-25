@@ -34,8 +34,12 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
 
   @override
   void initState() {
-    print("pic my ${widget.user.user?.profile_picture}");
-    profilePicture = widget.user.user?.profile_picture;
+    if(widget.user.user?.profile_picture !=null) {
+      print("pic my ${widget.user.user?.profile_picture}");
+      profilePicture = widget.user.user?.profile_picture;
+    }else{
+      profilePicture = null;
+    }
     print("pic my this ${profilePicture}");
     super.initState();
   }

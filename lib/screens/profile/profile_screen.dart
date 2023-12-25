@@ -42,7 +42,7 @@ String? footertext;
 
   Future<UserProfile?> fetchData() async {
     var access_token = await AuthService.getAuthorizationToken();
-    if(access_token == null){
+    if(access_token == 'none'){
       pushNewScreen(context, screen: AuthScreen(), withNavBar: false);
     }
     try {
@@ -190,6 +190,7 @@ String? footertext;
                     SharedPreferences shared = await SharedPreferences.getInstance();
                     await shared.remove('savedRecipes');
                     await shared.remove('ethioChef_authorization_token');
+                    await shared.clear();
                     Phoenix.rebirth(context);
                     // Navigator.of(context).popUntil((route) => route.settings.name == '/main');
                     //

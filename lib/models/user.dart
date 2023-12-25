@@ -36,6 +36,12 @@ class User{
         profile_picture = Constants.ImageAPI + i;
         print("profile_picture $profile_picture");
       }
+      var profile_image = null;
+      if(profile_picture == ""){
+        profile_image = null;
+      }else{
+        profile_image = profile_picture;
+      }
     return User(
 
     id: json['id'] as int?,
@@ -43,7 +49,7 @@ class User{
     lastName: json['last_name'] as String,
     email: json['email'] as String?,
     phone: json['phone_number'] as String?,
-    profile_picture: profile_picture,
+    profile_picture: profile_image,
     emailVerifiedAt: json.containsKey(['email_verified_at'])?json['email_verified_at'] as String?:null,
     createdAt: json.containsKey(['created_at'])?json['created_at'] as String?:null,
     updatedAt: json.containsKey(['updated_at'])?json['updated_at'] as String?:null,

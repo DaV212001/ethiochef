@@ -49,7 +49,7 @@ class StepField extends StatelessWidget {
           Expanded(
             child: InputField(
               controller: stepController,
-              hint: "step".tr(),
+              hint: "steps".tr(),
             ),
           ),
           IconButton(

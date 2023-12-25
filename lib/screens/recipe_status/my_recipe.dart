@@ -8,6 +8,7 @@ import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import '../../../../widgets/profile/recipe_card.dart';
 import '../../models/recipe.dart';
 import '../upload_recipe/upload_recipe_screen.dart';
+import 'my_submitted_recipe.dart';
 
 class MyRecipes extends StatefulWidget {
   const MyRecipes({super.key});
@@ -64,40 +65,63 @@ class _MyRecipesState extends State<MyRecipes> {
               color: theme.colorScheme.primary,
             )),
       ),
-      body:  Recipe.savedRecipes.length == 0?Center(
+      body:  SingleChildScrollView(
         child: Column(
           children: [
-            Text("submit_a_recipe".tr())
+            Align(
+              alignment: Alignment.topRight,
+              child: TextButton(
+                child: Text(
+                    'submitted_video'.tr()
+                ),
+                onPressed: (){
+
+                  pushNewScreen(
+                    context,
+                    screen: SubmittedRecipe(),
+                    withNavBar: false,
+                    pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                  );
+                },
+              ),
+            ),
+            Recipe.savedRecipes.length == 0?Center(
+              child: Column(
+                children: [
+                  Text("submit_a_recipe".tr())
+                ],
+              ),
+            ):isLoading ==true?
+            Center(
+                child: CircularProgressIndicator()
+            ):
+            ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: Recipe.savedRecipes.length,
+              itemBuilder: (BuildContext context, int index) {
+                var resp = Recipe.savedRecipes[index];
+                return GestureDetector(
+                  onTap: (){
+                    print("tap");
+                    pushNewScreen(
+                      context,
+                      screen: RecipeDescription(myRecipe: resp),
+                      withNavBar: false,
+                      pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                    );
+                  },
+                  child: RecipeCard(
+                    recipe: resp,
+                    name: resp.name.toString(),
+                    imageUrl: resp.image,
+                  ),
+                );
+              },)
           ],
         ),
-      ):isLoading ==true?
-          Center(
-            child: CircularProgressIndicator()
-          ):
-      ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        itemCount: Recipe.savedRecipes.length,
-        itemBuilder: (BuildContext context, int index) {
-          var resp = Recipe.savedRecipes[index];
-          return GestureDetector(
-            onTap: (){
-              print("tap");
-              pushNewScreen(
-                context,
-                screen: RecipeDescription(myRecipe: resp),
-                withNavBar: false,
-                pageTransitionAnimation: PageTransitionAnimation.cupertino,
-              );
-            },
-            child: RecipeCard(
-              recipe: resp,
-              name: resp.name.toString(),
-              imageUrl: resp.image,
-            ),
-          );
-        },),
+      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor:  theme.colorScheme.primary,
           onPressed: () {
@@ -112,47 +136,3 @@ class _MyRecipesState extends State<MyRecipes> {
     );
   }
 }
-/*
-* Column(
-          children: [
-            GestureDetector(
-
-            ),
-            Text(resp.name.toString()),
-            Text(resp.description.toString()),
-            Text(resp.prepTime.toString()),
-            Text(resp.servingSize.toString()),
-            ListView.builder(
-                scrollDirection: Axis.vertical,
-                physics: BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: resp.steps?.length,
-                itemBuilder: (context, index){
-                  return Column(
-                    children: [
-                      Text(resp.steps![index].toString()),
-                    ],
-                  );
-                }
-            ),
-            ListView.builder(
-                scrollDirection: Axis.vertical,
-                physics: BouncingScrollPhysics(),
-              shrinkWrap: true,
-                itemCount: resp.ingredient?.length,
-                itemBuilder: (context, index){
-                var ing = resp.ingredient![index];
-                return Column(
-                  children: [
-                    Text(ing['ingredient'].toString()),
-                    Text(ing['quantity'].toString()),
-                  ],
-                );
-                }
-            ),
-
-            Text("==============================="),
-            SizedBox(height: 50,)
-          ],
-        )
-* */

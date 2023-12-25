@@ -116,6 +116,10 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
       Visibility(
         visible: activeStep == 3,
         child: VideoStep(
+          uploadCompetition: () async{
+
+          },
+          isCompetition: false,
           video: video,
           updateVideo: (video) {
            this.video = video;
@@ -167,6 +171,12 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
 
              print("Add RECIPE");
              Recipe.addRecipe(newRecipe);
+             SnackBar success = SnackBar(
+                 padding: EdgeInsets.symmetric(vertical: 10),
+                 content: Text(
+                   "submitted_successfully".tr(),
+                 ));
+             ScaffoldMessenger.of(context).showSnackBar(success);
              setState(() {
                nameController.text = '';
              descriptionController.text = '';

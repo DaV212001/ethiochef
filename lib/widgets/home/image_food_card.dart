@@ -12,12 +12,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../../models/language.dart';
+import '../../models/recipe_show_checker.dart';
 import '../../screens/auth/auth_screen.dart';
 import '../../screens/subscription/all_subscriptions.dart';
 import '../../services/authorization_service.dart';
 import '../../services/user_service.dart';
 import '../small_label_button.dart';
 import 'category_label_carousel.dart';
+import '../../utils/screen_utils.dart';
+import 'package:overflow_text_animated/overflow_text_animated.dart';
 
 class ImageFoodCard extends StatefulWidget {
   static int foodCardType = 2;
@@ -58,6 +61,7 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
   }
   @override
   Widget build(BuildContext context) {
+    final bool isTablet = ScreenUtils.isTablet(context);
     ThemeData theme = Theme.of(context);
     if(widget.food == null){
       return Center(
@@ -66,21 +70,32 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
     }
     return GestureDetector(
       onTap: () async {
-        print("Meal Card");
+        print("Category Card");
         setState(() {
           isLoading = true;
         });
 
-        var token = await AuthService.getAuthorizationToken();
-        if(token!=null){
-          UserService service = UserService();
-          var response = await service.checkUserSubscription();
-          final jsonData = json.decode(response.body);
-          print("user jsonData $jsonData");
-          if(jsonData['message'] == "Invalid Token, Redirect to login"){
-            setState(() {
-              isLoading = false;
-            });
+        SnackBar checking =SnackBar(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            showCloseIcon: true,
+            content: Text(
+                'checking_subscription_please_wait'.tr()
+            ));
+        ScaffoldMessenger.of(context).showSnackBar(checking);
+        String status = await Check.checkToShow();
+        switch(status){
+          case "Not logged in":
+            print("Not logged in");
+            SnackBar logIn =SnackBar(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                content: Text(
+                    'please_subscribe_to_see_ingredients_and_steps'.tr()
+                ));
+            loginFunction();
+            ScaffoldMessenger.of(context).showSnackBar(logIn);
+            break;
+          case "Another user logged in":
+            print("Another user logged in");
             SnackBar logIn =SnackBar(
                 padding: EdgeInsets.symmetric(vertical: 20),
                 content: Text(
@@ -88,27 +103,17 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
                 ));
             ScaffoldMessenger.of(context).showSnackBar(logIn);
             loginFunction();
-          }
-          if(response.statusCode == 200) {
-            if(jsonData['message'] == "User is subscribed"){
-              pushNewScreen(
-                context,
-                withNavBar: false,
-                screen: RecipeScreen(food: widget.food),
-              );
-            }
-            else{
-              pushNewScreen(
-                context,
-                withNavBar: false,
-                screen: AllSubscriptions(returnPrice: (int ) {  },
-                  first_name: "",
-                  last_name: "",
-                  isSignUp:
-                  false,phone: "",),
-              );
-            }
-          } else{
+            break;
+          case "User is subscribed":
+            print("User is subscribed");
+            pushNewScreen(
+              context,
+              withNavBar: false,
+              screen: RecipeScreen(food: widget.food),
+            );
+            break;
+          case "User is not subscribed":
+            print("User is not subscribed");
             pushNewScreen(
               context,
               withNavBar: false,
@@ -118,69 +123,64 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
                 isSignUp:
                 false,phone: "",),
             );
-          }
-          setState(() {
-            isLoading = false;
-          });
-        }else{
-          setState(() {
-            isLoading = false;
-          });
-          SnackBar logIn =SnackBar(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              content: Text(
-                  'Please subscribe to see ingredients and steps'.tr()
-              ));
-          ScaffoldMessenger.of(context).showSnackBar(logIn);
-          loginFunction();
+            break;
         }
       },
-      child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(12)),
-          ),
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 5.w),
+        decoration: BoxDecoration(
+          color: theme.cardColor,
+          borderRadius: AppTheme.allBorderRadius,
+        ),
         child: Stack(
           fit: StackFit.expand,
           children: [
-            ClipRRect(
-              child: CachedImage(url: widget.food.thumbnail, fit: BoxFit.fill),
-            ),
+            Container(
+                width: double.infinity,
+                height: isTablet ? 105.h : 110.h,
+                child: ClipRRect(
+                  borderRadius: AppTheme.allBorderRadius,
+                  child: CachedImage(
+                    url: widget.food.thumbnail,
+                    fit: BoxFit.fill,
+                  ),
+                )),
             Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                height: 50,
-                padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
-                decoration: BoxDecoration(
-                    color: theme.colorScheme.primary.withOpacity(0.5)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      height: 1.h
-                    ),
-                    Text(
-                      widget.food.name[Language.getLocaleCode()].toString(),
-                      softWrap: true,
-                      overflow: TextOverflow.visible,
-                      style: theme.textTheme.headlineSmall?.copyWith(
-                          color: theme.colorScheme.onTertiary,
-                          fontWeight: FontWeight.w600),
-                      textAlign: TextAlign.start
-                    ),
-                    // SmallLabelButton(text: widget.food.mealTime.toString(),onTap: (){},)
-                  ]
-                )
-              )
-            )
-          ]
-        )
+                bottom: 0,
+                right: 0,
+                left: 0,
+                child: buildDetails(context, theme))
+          ],
+        ),
       )
     );
   }
-
+  Widget buildDetails(BuildContext context, ThemeData theme) {
+    final bool isTablet = ScreenUtils.isTablet(context);
+    return Container(
+        padding: EdgeInsets.only(bottom: 5.h, left: 5.w, right: 5.w),
+      height: 60,
+      decoration: BoxDecoration(
+          color: theme.colorScheme.primary.withOpacity(0.4),
+          borderRadius: AppTheme.bottomBorderRadius
+      ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            FittedBox(
+            child: Text(
+                widget.food.name[Language.getLocaleCode()].toString(),
+                style: theme.textTheme.headlineMedium?.copyWith(
+                  color: theme.colorScheme.tertiary,
+                  fontWeight: FontWeight.w600,
+                )
+            )
+            )
+          ],
+        ),
+      );
+  }
   void loginFunction(){
     pushNewScreen(
       context,
