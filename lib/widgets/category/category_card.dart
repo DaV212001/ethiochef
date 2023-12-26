@@ -107,7 +107,7 @@ class _CategoryCardState extends State<CategoryCard> {
               widget.food.Name.toString(),
               style: theme.textTheme.headlineMedium?.copyWith(
                 color: theme.colorScheme.surface,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w500
               ),
             ),
           ):
