@@ -139,7 +139,7 @@ class _MainAppBarState extends State<MainAppBar> {
           ),
           number: 0,
           showNum: false,
-          onPress: () {
+          onPress: () async {
 
             SnackBar checking =SnackBar(
                 padding: EdgeInsets.symmetric(vertical: 10),
