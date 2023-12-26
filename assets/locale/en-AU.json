@@ -163,5 +163,8 @@
   "checking_subscription_please_wait": "ምዝገባ ምፍታሽ በጃኹም ተጸበዩ።",
   "please_subscribe_to_see_ingredients_and_steps": "ቀመማትን ስጉምትታትን ንምርኣይ ሳብስክራይብ ግበሩ",
   "food_status": "ኩነታት መግቢ",
-  "pending": "ኣብ ከይዲ"
+  "pending": "ኣብ ከይዲ",
+  "successful": "ዕውት",
+  "add_another": "ካልእ ኣሰራርሓ መግቢ ወስኸሉ።",
+  "see_my_recipe": "ኣሰራርሓ መግበይ ርኣዩ።"
 }

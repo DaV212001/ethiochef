@@ -52,6 +52,7 @@ class _RecipeScreenTabState extends State<RecipeScreenTab> {
               )
             ],
           ),
+
           Container(
             height: 300,
             child: selectedIndex == 0 ? ListView.builder(
@@ -60,6 +61,7 @@ class _RecipeScreenTabState extends State<RecipeScreenTab> {
               physics: BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
               itemBuilder: (context, index) {
+                index++;
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -70,7 +72,7 @@ class _RecipeScreenTabState extends State<RecipeScreenTab> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
-                          "${ingredient.key}. ${ingredient.value}",
+                          "${index++}. ${ingredient.value}",
                           softWrap: true,
                           overflow: TextOverflow.visible,
                           style: TextStyle(
@@ -89,6 +91,7 @@ class _RecipeScreenTabState extends State<RecipeScreenTab> {
               physics: BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
               itemBuilder: (context, index) {
+                index++;
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -100,7 +103,7 @@ class _RecipeScreenTabState extends State<RecipeScreenTab> {
                       children: [
                         const SizedBox(width: 8.0),
                         Text(
-                          "${ingredient.key}. ${ingredient.value}",
+                          "${index++}. ${ingredient.value}",
                           softWrap: true,
                           overflow: TextOverflow.visible,
                           style: TextStyle(

@@ -161,5 +161,8 @@
   "checking_subscription_please_wait": "የደንበኝነት ምዝገባን በመፈተሽ ላይ እባክዎ ይጠብቁ",
   "please_subscribe_to_see_ingredients_and_steps": "ንጥረ ነገሮችን እና ደረጃዎችን ለማየት እባክዎ ለደንበኝነት ይመዝገቡ",
   "food_status": "የምግብ ሁኔታ",
-  "pending": "በመጠባበቅ ላይ"
+  "pending": "በመጠባበቅ ላይ",
+  "successful": "ስኬታማ",
+  "add_another": "ሌላ የምግብ አሰራር ያክሉ",
+  "see_my_recipe": "የእኔን የምግብ አሰራር ይመልከቱ"
 }

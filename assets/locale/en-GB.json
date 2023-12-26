@@ -160,5 +160,8 @@
   "checking_subscription_please_wait": "Checking subscription mee eegaa",
   "please_subscribe_to_see_ingredients_and_steps": "Wantoota itti fayyadamanii fi tarkaanfiiwwan itti fudhataman ilaaluuf subscribe godhaa",
   "food_status": "Haala Nyaataa",
-  "pending": "Eeggataa kan jiru"
+  "pending": "Eeggataa kan jiru",
+  "successful": "Milkaa'aa",
+  "add_another": "Recipe biraa itti dabali",
+  "see_my_recipe": "Recipe koo ilaalaa"
 }

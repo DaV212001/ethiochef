@@ -6,9 +6,11 @@ import 'package:ethio_chef/screens/upload_recipe/layout/steps_header.dart';
 import 'package:ethio_chef/screens/upload_recipe/layout/steps_step.dart';
 import 'package:ethio_chef/screens/upload_recipe/layout/video_step.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../../models/competition.dart';
 import '../../models/recipe.dart';
+import 'layout/successfully_added.dart';
 
 class UploadRecipeScreen extends StatefulWidget {
   String type;
@@ -177,6 +179,7 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
                    "submitted_successfully".tr(),
                  ));
              ScaffoldMessenger.of(context).showSnackBar(success);
+
              setState(() {
                nameController.text = '';
              descriptionController.text = '';
@@ -193,6 +196,13 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
                stepToCreate = {};
                activeStep = 0;
              });
+
+             pushNewScreen(
+               context,
+               screen: SuccessfullyAdded(),
+               withNavBar: true,
+               pageTransitionAnimation: PageTransitionAnimation.cupertino,
+             );
            }else{
              Map<String, String> ingredientMap = {
                'ingredient': 'ingredient',

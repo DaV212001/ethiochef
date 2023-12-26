@@ -164,6 +164,9 @@
   "checking_subscription_please_wait":"Checking subscription please wait",
   "please_subscribe_to_see_ingredients_and_steps": "Please subscribe to see ingredients and steps",
   "food_status": "Food Status",
-  "pending": "Pending"
+  "pending": "Pending",
+  "successful": "Successful",
+  "add_another": "Add another recipe",
+  "see_my_recipe": "See my recipe"
 
 }

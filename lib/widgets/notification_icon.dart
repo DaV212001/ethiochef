@@ -8,8 +8,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../generated/assets.dart';
+import '../models/recipe_show_checker.dart';
 import '../screens/auth/auth_screen.dart';
 import '../screens/notification/notification_screen.dart';
+import '../screens/subscription/all_subscriptions.dart';
 import '../services/authorization_service.dart';
 import '../services/user_service.dart';
 import '../utils/screen_utils.dart';
@@ -28,20 +30,39 @@ class NotificationIcon extends StatelessWidget {
       child: AppBarIcon(
         icon: SvgIcon(
           image: Assets.iconsNotification,
-          color: theme.colorScheme.inverseSurface,
+          color: theme.colorScheme.primary,
           size: isTablet ? 40.sp : 35.sp,
         ),
         number: 1,
         showNum: false,
         onPress: () async {
           print("Notification");
-          var token = await AuthService.getAuthorizationToken();
-          if(token!=null){
-            UserService service = UserService();
-            var response = await service.checkUserSubscription();
-            final jsonData = json.decode(response.body);
-            print("user jsonData $jsonData");
-            if(jsonData['message'] == "Invalid Token, Redirect to login"){
+
+          SnackBar checking =SnackBar(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              showCloseIcon: true,
+              content: Text(
+                  'checking_subscription_please_wait'.tr()
+              ));
+          ScaffoldMessenger.of(context).showSnackBar(checking);
+          String status = await Check.checkToShow();
+          switch(status){
+            case "Not logged in":
+              print("Not logged in");
+              SnackBar logIn =SnackBar(
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  content: Text(
+                      'please_subscribe_to_see_ingredients_and_steps'.tr()
+                  ));
+              pushNewScreen(
+                context,
+                withNavBar: false,
+                screen: AuthScreen(isSignIn: true),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(logIn);
+              break;
+            case "Another user logged in":
+              print("Another user logged in");
               SnackBar logIn =SnackBar(
                   padding: EdgeInsets.symmetric(vertical: 20),
                   content: Text(
@@ -53,32 +74,31 @@ class NotificationIcon extends StatelessWidget {
                 withNavBar: false,
                 screen: AuthScreen(isSignIn: true),
               );
-            }else{
+              break;
+            case "User is subscribed":
+              print("User is subscribed");
               pushNewScreen(
-              context,
-              screen: NotificationScreen(),
-              withNavBar: false,
-              pageTransitionAnimation: PageTransitionAnimation.cupertino,
-            );
-            }
-          }else{
-            SnackBar logIn =SnackBar(
-                padding: EdgeInsets.symmetric(vertical: 20),
-                content: Text(
-                    'Please subscribe to see ingredients and steps'.tr()
-                ));
-            ScaffoldMessenger.of(context).showSnackBar(logIn);
-            pushNewScreen(
-              context,
-              withNavBar: false,
-              screen: AuthScreen(isSignIn: true),
-            );
+                context,
+                withNavBar: false,
+                screen: NotificationScreen(),
+              );
+              break;
+            case "User is not subscribed":
+              print("User is not subscribed");
+              pushNewScreen(
+                context,
+                withNavBar: false,
+                screen: AllSubscriptions(returnPrice: (int ) {  },
+                  first_name: "",
+                  last_name: "",
+                  isSignUp:
+                  false,phone: "",),
+              );
+              break;
           }
-
 
         }
       ),
     );
   }
-
 }
