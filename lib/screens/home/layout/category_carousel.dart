@@ -27,7 +27,7 @@ class CategoryCarousel extends StatefulWidget {
 class _CategoryCarouselState extends State<CategoryCarousel> {
   @override
   Widget build(BuildContext context) {
-    double height = 200;
+    double height = 240;
     double width = 220;
     final bool isTablet = ScreenUtils.isTablet(context);
     return ListView.builder(

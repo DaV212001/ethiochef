@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../../models/food.dart';
 import '../../../services/food_service.dart';
 import '../../../utils/screen_utils.dart';
+import '../../../widgets/category/category_card.dart';
 import '../../../widgets/error_card.dart';
 import '../../../widgets/home/image_food_card.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -130,7 +131,7 @@ class _FoodCarouselState extends State<FoodCarousel> {
           )
       );
     }
-    double height = 170;
+    double height = 220;
     double width = 170;
     return Container(
       child: Column(
@@ -161,7 +162,7 @@ class _FoodCarouselState extends State<FoodCarousel> {
                   builder: (BuildContext context) {
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: 1.w),
-                      child: ImageFoodCard(
+                      child: CategoryCard(
                           food: foods
                       ),
                     );

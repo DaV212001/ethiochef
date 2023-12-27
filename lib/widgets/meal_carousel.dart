@@ -1,4 +1,5 @@
 import 'package:ethio_chef/models/food.dart';
+import 'package:ethio_chef/widgets/category/category_card.dart';
 import 'package:ethio_chef/widgets/category/food_card.dart';
 import 'package:ethio_chef/widgets/home/image_food_card.dart';
 import 'package:ethio_chef/widgets/meal_card.dart';
@@ -48,7 +49,7 @@ class MealCarousel extends StatelessWidget {
     );
   }
   Widget buildFoodCard({required Food food}) {
-    return MealCard(food: food);
+    return CategoryCard(food: food);
     // if(type == ImageFoodCard.foodCardType){
     //   return ImageFoodCard(food: food);
     // }

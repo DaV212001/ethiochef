@@ -62,7 +62,11 @@ class _VerticalFoodListState extends State<VerticalFoodList> {
         itemBuilder: (context, food, index) {
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 10.h),
-            child: CategoryCard(food: food, isSearchList: widget.isSearchList)
+            child: GestureDetector(
+                onTap: (){
+
+                },
+                child: CategoryCard(food: food, isSearchList: widget.isSearchList))
           );
         },
       ),
