@@ -18,7 +18,7 @@ class _RouteCardState extends State<RouteCard> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return InkWell(
+    return GestureDetector(
       onTap: widget.onTap,
       child: Container(
         height: 50,

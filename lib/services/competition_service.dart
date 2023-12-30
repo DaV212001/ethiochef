@@ -79,6 +79,29 @@ class CompetitionService {
     }
     return response;
   }
+  Future<http.Response>? voteContestant(int id) async {
+    var access_token = await AuthService.getAuthorizationToken();
+    final response;
+    try {
+      response = await http.post(
+        Uri.parse("${Constants.url}/user/contest/like"),
+        headers: {
+          'Authorization': 'JWT $access_token'
+        },
+        body: {
+          'contest_id': id
+        },
+      );
+      print("res.statusCode  == = == = = == = = = ${response.statusCode}");
+      var message = jsonDecode(response.body);
+      if (response.statusCode != 200) {
+        throw Exception('${response.statusCode.toString()}: ${message['message']}');
+      }
+    } catch (error) {
+      rethrow;
+    }
+    return response;
+  }
 
 ///I don't think the current response from this API is correct so this is a template to be fixed
   Future<Competition> getCompetitionUsingId (int id) async {

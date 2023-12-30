@@ -1,11 +1,12 @@
-import 'package:ethio_chef/models/competitor.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:ethio_chef/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../models/contestants.dart';
+
 class VoteCard extends StatefulWidget {
-  final Competitor competitor;
+  final Contestant competitor;
   const VoteCard({super.key, required this.competitor});
 
   @override
@@ -40,7 +41,7 @@ class _VoteCardState extends State<VoteCard> {
                 width: 10.w,
               ),
               Text(
-                widget.competitor.fullName!,
+                widget.competitor.firstName!,
                 style: theme.textTheme.bodyMedium,
                 textAlign: TextAlign.start,
               ),

@@ -78,7 +78,7 @@ class _SuccessfullyAddedState extends State<SuccessfullyAdded> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              Row(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   MainButton(

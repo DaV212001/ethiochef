@@ -7,6 +7,8 @@ import 'package:ethio_chef/widgets/youtube_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'layout/contestants_carousel.dart';
+
 class CompetitionScreen extends StatefulWidget {
   final Competition competition;
 
@@ -40,6 +42,7 @@ class _CompetitionScreenState extends State<CompetitionScreen> {
                   YoutubeVideoPlayer(
                     link: PlaceHolderData.videoLink,
                   ),
+                Contestants(contestant: widget.competition.competitor)
                 // ShareButton(food: PlaceHolderData.food)
               ],
             ),

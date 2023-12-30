@@ -1,9 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/models/food.dart';
-import 'package:ethio_chef/widgets/home/category_label_carousel.dart';
-import 'package:ethio_chef/widgets/small_label_button.dart';
-import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

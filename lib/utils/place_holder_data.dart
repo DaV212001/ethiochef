@@ -1,7 +1,8 @@
 import 'package:ethio_chef/models/category.dart';
 import 'package:ethio_chef/models/competition.dart';
-import 'package:ethio_chef/models/competitor.dart';
 import 'package:ethio_chef/models/food.dart';
+
+import '../models/contestants.dart';
 
 class PlaceHolderData {
   static List<String> ingredients = [
@@ -102,31 +103,7 @@ class PlaceHolderData {
         video: videoLink),
   ];
 
-  static List<Competitor> competitorList = [
-    Competitor(
-      "John Doe",
-      500,
-      "john_doe_image.jpg",
-    ),
-    Competitor(
-      "Jane Smith",
-      300,
-      "jane_smith_image.jpg",
-    ),
-    Competitor(
-      "Pizza Lover",
-      800,
-      "pizza_lover_image.jpg",
-    ),
-    Competitor(
-      "Spice Master",
-      400,
-      "spice_master_image.jpg",
-    ),
-    Competitor(
-      "Sushi Sensei",
-      700,
-      "sushi_sensei_image.jpg",
-    ),
+  static List<Contestant> competitorList = [
+
   ];
 }

@@ -28,6 +28,7 @@ class RecipeDescription extends StatefulWidget {
 
 class _RecipeDescriptionState extends State<RecipeDescription> {
   bool isLoading = false;
+  String videoUrl = '';
   VideoPlayerController? videoController = null;
   ChewieController? chewieController = null;
   bool isLoadingVideo = false;
@@ -54,6 +55,13 @@ class _RecipeDescriptionState extends State<RecipeDescription> {
     try {
       var response = await request.send();
       var responseJson = await http.Response.fromStream(response).then((value) {
+        var jsonRes = jsonDecode(value.body);
+        print("Json Response ${jsonRes}");
+        print("Json Url ${jsonRes['url']}");
+        setState(() {
+          videoUrl = jsonRes['url'];
+        });
+        print("videoUrl ${videoUrl}");
       });
     } catch (error) {
       print(error);

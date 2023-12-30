@@ -1,10 +1,10 @@
-import 'package:ethio_chef/models/competitor.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/constants.dart';
+import 'contestants.dart';
 import 'language.dart';
 
 
@@ -28,7 +28,7 @@ class Competition {
   String? video;
   int? votes;
   int? daysLeft;
-  List<Competitor>? competitor;
+  List<Contestant>? competitor;
   int? id;
 
   // poster_image
@@ -86,9 +86,9 @@ class Competition {
 List vote = json['vote'] as List;
 
 var competitors = json['contestant'] as List;
-    List<Competitor>? competitorss1;
+    List<Contestant>? competitorss1;
 if(competitors.isNotEmpty){
-  competitorss1 = competitors.map((e) => Competitor.fromJson(e)).toList();
+  competitorss1 = competitors.map((e) => Contestant.fromJson(e)).toList();
 }
 
 

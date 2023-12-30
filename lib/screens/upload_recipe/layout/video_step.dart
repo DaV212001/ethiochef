@@ -10,7 +10,7 @@ import '../../../widgets/main_button.dart';
 class VideoStep extends StatefulWidget {
   final ValueChanged<File?> updateVideo;
   final File? video;
-  final Function next;
+  final ValueChanged<File?> next;
   final Function back;
   final bool isCompetition;
 
@@ -67,7 +67,6 @@ class _VideoStepState extends State<VideoStep> {
 
               setState(() {
                 videoInvalid = true;
-                isLoading = true;
               });
               return;
             }
@@ -83,7 +82,7 @@ class _VideoStepState extends State<VideoStep> {
               });
               return;
             }
-            widget.next();
+            widget.next(currentVideo);
           },
           back: () {
             widget.back();

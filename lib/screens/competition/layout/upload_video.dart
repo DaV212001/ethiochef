@@ -126,7 +126,7 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
                   uploading = false;
                 });
               },
-              next: (){}, back: (){
+              next: (video){}, back: (){
             },
             )
           ],

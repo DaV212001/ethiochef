@@ -38,7 +38,7 @@ class _CompetitionHeaderImageState extends State<CompetitionHeaderImage> {
               child: circularBackground(
                 child: Icon(
                   Icons.arrow_back,
-                  color: theme.colorScheme.background,
+                  color: theme.colorScheme.onSecondary,
                 ),
               )),
         ),
@@ -51,7 +51,7 @@ class _CompetitionHeaderImageState extends State<CompetitionHeaderImage> {
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(100)),
-          color: Theme.of(context).colorScheme.tertiary.withOpacity(0.7)),
+          color: Theme.of(context).colorScheme.onPrimary),
       child: child,
     );
   }

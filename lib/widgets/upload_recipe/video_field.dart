@@ -14,9 +14,9 @@ class VideoField extends StatefulWidget {
 
   const VideoField(
       {Key? key,
-      required this.onVideoSelected,
-      this.video,
-      this.invalid = false})
+        required this.onVideoSelected,
+        this.video,
+        this.invalid = false})
       : super(key: key);
 
   @override
@@ -82,8 +82,8 @@ class _VideoFieldState extends State<VideoField> {
                   child: isLoadingVideo
                       ? LoadingVideo()
                       : videoController != null
-                          ? Chewie(controller: chewieController!)
-                          : button(theme),
+                      ? Chewie(controller: chewieController!)
+                      : button(theme),
                 ),
               )),
         ));
