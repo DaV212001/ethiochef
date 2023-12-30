@@ -1,5 +1,6 @@
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/screens/myrecipes/myrecipe_screen.dart';
 import 'package:ethio_chef/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
@@ -84,6 +85,20 @@ class _RouteListState extends State<RouteList> {
           pushNewScreen(
             context,
             screen: MyRecipes(),
+            withNavBar: false,
+            pageTransitionAnimation: PageTransitionAnimation.cupertino,
+          );
+        },
+        "trailing":
+        Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary)
+      },
+      {
+        "title": 'My Recipes',
+        "leadingIcon": Icons.dinner_dining,
+        "onTap": () {
+          pushNewScreen(
+            context,
+            screen: RecipeMine(),
             withNavBar: false,
             pageTransitionAnimation: PageTransitionAnimation.cupertino,
           );

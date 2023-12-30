@@ -20,7 +20,7 @@ class RecipeHeaderImage extends StatefulWidget {
   final Function() refresh;
   final User user;
   final List<Likes> likes;
-
+  final Food? food;
   const RecipeHeaderImage(
       {super.key,
         required this.image,
@@ -30,7 +30,7 @@ class RecipeHeaderImage extends StatefulWidget {
         required this.refresh,
         required this.foodId,
         required this.user,
-        required this.likes
+        required this.likes, this.food,
       });
 
   @override
@@ -54,11 +54,19 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
     super.initState();
   }
 
+
+  bool isSaved = false;
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     ThemeData theme = Theme.of(context);
+    isSaved = Food.savedRecipes.any((food) => Food.isSameFood(food, widget.food!));
     return Stack(children: [
       SizedBox(
         width: width,
@@ -107,6 +115,33 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
                     )
                   ],
                 ),
+              ),
+              SizedBox(
+                width: 5.h,
+              ),
+              GestureDetector(
+              onTap: () async {
+                  print(Food.savedRecipes.toString());
+                  // Use the custom function to check if the widget.food is in the savedRecipes list
+                  if (Food.savedRecipes.any((food) => Food.isSameFood(food, widget.food!))) {
+                  Food.deleteRecipe(widget.food!);
+                  Food.savedRecipes = await Food.loadRecipesFromSharedPrefs();
+                  setState(() {
+
+                  });
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Removed')));
+                  } else {
+                  Food.addRecipe(widget.food!);
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Bookmarked')));
+                  }
+                  setState(() {
+                  isSaved = !isSaved;
+                  });
+                  print('secondcheck: ${Food.savedRecipes.toString()}');
+                  },
+                child: circularBackground(child: Icon(
+                  isSaved?CupertinoIcons.bookmark_fill:CupertinoIcons.bookmark
+                )),
               ),
               SizedBox(
                 width: 5.h,

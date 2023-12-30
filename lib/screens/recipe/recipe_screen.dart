@@ -18,7 +18,6 @@ import '../../widgets/loading.dart';
 
 class RecipeScreen extends StatefulWidget {
   final Food food;
-
   const RecipeScreen({super.key, required this.food});
 
   @override
@@ -86,6 +85,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             RecipeHeaderImage(
+              food: food,
               likes: food.likes!,
               user: user,
               image: food.thumbnail,

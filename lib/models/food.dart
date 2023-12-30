@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/constants.dart';
 import 'language.dart';
@@ -52,6 +55,11 @@ class Food {
     this.page,
     this.isLiked
   });
+
+
+
+
+
   factory Food.fromSingleFoodJson(Map<String, dynamic> json) {
     String clearPath(String path) {
       final parts = path.split('/public_html');
@@ -249,6 +257,93 @@ class Food {
       thumbnail: thumbnail
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'subcategoriesId': subcategoriesId,
+    'categoryId': categoryId,
+    'name': jsonEncode(name),
+    'Name': Name,
+    'description': description,
+    'mealTime': mealTime,
+    // 'related_recipe': related_recipe?.map((recipe) => recipe.toJson()).toList(), // or jsonEncode(related_recipe)
+    'stepsList': jsonEncode(stepsList),
+    'ingredients': jsonEncode(ingredients),
+    'servings': servings,
+    'preparationTime': preparationTime,
+    'posterImage': posterImage,
+    'image': thumbnail,
+    'video': video,
+    // 'likes': likes?.map((like) => jsonEncode(likes)).toList(), // or jsonEncode(likes)
+    'comments': jsonEncode(comments),
+    // 'createdAt': createdAt,
+    // 'updatedAt': updatedAt,
+    'nextPage': nextPage,
+    'prevPage': prevPage,
+    'page': page,
+    'isLiked': isLiked
+  };
+  factory Food.fromSavedJson(Map<String, dynamic> json){
+    return Food(
+        subcategoriesId: json['subcategoriesId'],
+        id: json['id'],
+        categoryId: json['categoryId'],
+      name: jsonDecode(json['name']),
+      description: json['description'],
+      mealTime: json['mealTime'],
+      thumbnail: json['image'],
+      servings: json['servings'],
+      stepsList: jsonDecode(json['stepsList']),
+      ingredients: jsonDecode(json['ingredients']),
+      preparationTime: json['preparationTime'],
+      posterImage: json['posterImage'],
+      video: json['video'],
+      comments: jsonDecode(json['comments']),
+      createdAt: json['createdAt'],
+      updatedAt: json['updatedAt'],
+      nextPage: json['nextPage'],
+      prevPage: json['prevPage'],
+      page: json['page'],
+      isLiked: json['isLiked']
+    );
+  }
+
+
+
+  static List<Food> savedRecipes = [];
+
+
+  static void addRecipe(Food food) {
+    savedRecipes.add(food);
+    saveRecipesToSharedPrefs();
+  }
+
+
+  static List<Food> getSavedRecipes() {
+    return savedRecipes;
+  }
+  static void deleteRecipe(Food food) {
+    print("deleteRecipe");
+    savedRecipes.remove(food);
+    saveRecipesToSharedPrefs();
+  }
+  static void saveRecipesToSharedPrefs() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final jsonString = json.encode(Food.savedRecipes.map((food) => food.toJson()).toList());
+    await sharedPreferences.setString('bookmarkRecipes', jsonString);
+  }
+
+  static bool isSameFood(Food food1, Food food2) {
+    return food1.id == food2.id;
+  }
+
+
+  static Future<List<Food>> loadRecipesFromSharedPrefs() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    final jsonString = sharedPreferences.getString('bookmarkRecipes') ?? '[]';
+    final recipes = json.decode(jsonString) as List<dynamic>;
+    return recipes.map((recipe) => Food.fromSavedJson(recipe)).toList();
+  }
 }
 
 class Likes{
@@ -267,4 +362,11 @@ class Likes{
       food_id: json['food_id'],
     );
   }
-}
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'user_id': user_id,
+    'food_id': food_id,
+  };
+
+  }
+
