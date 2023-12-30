@@ -12,7 +12,7 @@ class RecipeRelated extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double height = 180;
+    double height = 200;
     double width = 165;
     ThemeData theme = Theme.of(context);
     return Column(

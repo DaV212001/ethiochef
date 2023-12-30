@@ -12,16 +12,16 @@ class _LoadingVideoState extends State<LoadingVideo> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 7), () {
-      setState(() {
-        if (mounted) {
-          // Check if the widget is still mounted
-          setState(() {
-            showSecondRow = true;
-          });
-        }
-      });
-    });
+    // Future.delayed(Duration(seconds: 7), () {
+    //   setState(() {
+    //     if (mounted) {
+    //       // Check if the widget is still mounted
+    //       setState(() {
+    //         showSecondRow = true;
+    //       });
+    //     }
+    //   });
+    // });
   }
 
   @override

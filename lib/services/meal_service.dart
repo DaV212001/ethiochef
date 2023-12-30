@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 
+import '../models/language.dart';
 import '../utils/constants.dart';
 import '../models/food.dart';
 import '../utils/error_util.dart';
@@ -13,9 +14,9 @@ class MealService{
       await ErrorUtil.checkConnection();
       final access_token = await AuthService.getAuthorizationToken();
       final response = await http.get(
-        Uri.parse('${Constants.url}/user/food/breakfast'),
+        Uri.parse('${Constants.url}/user/food/breakfast?&limit=1000&lang=${Language.getLocaleCode()}'),
         headers: {
-          'Authorization': 'JWT $access_token',
+          'Authorization': 'JWT $access_token'
         },
       );
       if (response.statusCode == 200) {
@@ -34,7 +35,7 @@ class MealService{
       await ErrorUtil.checkConnection();
       final access_token = await AuthService.getAuthorizationToken();
       final response = await http.get(
-        Uri.parse('${Constants.url}/user/food/lunch'),
+        Uri.parse('${Constants.url}/user/food/lunch?&limit=1000&lang=${Language.getLocaleCode()}'),
         headers: {
           'Authorization': 'JWT $access_token',
         },
@@ -56,7 +57,7 @@ class MealService{
      await ErrorUtil.checkConnection();
      final access_token = await AuthService.getAuthorizationToken();
      final response = await http.get(
-       Uri.parse('${Constants.url}/user/food/super'),
+       Uri.parse('${Constants.url}/user/food/super?&limit=1000&lang=${Language.getLocaleCode()}'),
        headers: {
          'Authorization': 'JWT $access_token',
        },
@@ -78,7 +79,7 @@ class MealService{
       await ErrorUtil.checkConnection();
       final access_token = await AuthService.getAuthorizationToken();
       final response = await http.get(
-        Uri.parse('${Constants.url}/user/food/dinner'),
+        Uri.parse('${Constants.url}/user/food/dinner?&limit=1000&lang=${Language.getLocaleCode()}'),
         headers: {
           'Authorization': 'JWT $access_token',
         },

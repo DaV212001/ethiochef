@@ -12,7 +12,6 @@ class VideoStep extends StatefulWidget {
   final File? video;
   final Function next;
   final Function back;
-  final VoidCallback uploadCompetition;
   final bool isCompetition;
 
   const VideoStep({
@@ -20,7 +19,6 @@ class VideoStep extends StatefulWidget {
     required this.updateVideo,
     required this.next,
     required this.back,
-    required this.uploadCompetition,
     required this.isCompetition,
     this.video,
   });
@@ -54,7 +52,6 @@ class _VideoStepState extends State<VideoStep> {
             setState(() {
               videoInvalid = false;
               currentVideo = video;
-              widget.updateVideo(video);
             });
           },
         ),
@@ -65,7 +62,17 @@ class _VideoStepState extends State<VideoStep> {
           isLoading: isLoading,
           width: 200.w,
           text: 'submit_a_recipe'.tr(),
-          onPress: widget.uploadCompetition,
+          onPress: () {
+            if (currentVideo == null && videoInvalid == false) {
+
+              setState(() {
+                videoInvalid = true;
+                isLoading = true;
+              });
+              return;
+            }
+            widget.updateVideo(currentVideo);
+          } ,
         )
             :
         StepperControlButtons(

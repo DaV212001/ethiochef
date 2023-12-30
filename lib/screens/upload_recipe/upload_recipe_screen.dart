@@ -118,9 +118,6 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
       Visibility(
         visible: activeStep == 3,
         child: VideoStep(
-          uploadCompetition: () async{
-
-          },
           isCompetition: false,
           video: video,
           updateVideo: (video) {

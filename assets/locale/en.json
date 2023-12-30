@@ -167,6 +167,12 @@
   "pending": "Pending",
   "successful": "Successful",
   "add_another": "Add another recipe",
-  "see_my_recipe": "See my recipe"
-
+  "see_my_recipe": "See my recipe",
+  "uploading_title": "Uploading Video",
+  "uploading_body": "Uploading video please do not interrupt the process by pressing the cancel button.",
+  "refresh": "Refresh",
+  "cancel": "Cancel",
+  "successful_upload": "Your video is Uploaded Successfully!  It's now under review by our judges, and you're in the running for that awesome prize!",
+  "failed_upload": "Failed to upload video!",
+  "upload_another": "Upload another video"
 }

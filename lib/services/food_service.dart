@@ -4,6 +4,7 @@ import 'package:ethio_chef/utils/place_holder_data.dart';
 import 'dart:convert';
 
 
+import '../models/language.dart';
 import '../utils/constants.dart';
 import '../utils/error_util.dart';
 import 'authorization_service.dart';
@@ -15,9 +16,10 @@ class FoodService{
     try{
       await ErrorUtil.checkConnection();
       final response = await http.get(
-          Uri.parse('${Constants.url}/user/food')
+          Uri.parse('${Constants.url}/user/food?limit=1000&lang=${Language.getLocaleCode()}')
       );
-
+      print("Response body ${Language.getLocaleCode()}");
+      print(response.body);
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final List<dynamic> foodList = data['data'];
@@ -33,8 +35,9 @@ class FoodService{
     try{
       await ErrorUtil.checkConnection();
       final response = await http.get(
-          Uri.parse('${Constants.url}/user/food/sub-category/$subCategoryId')
+          Uri.parse('${Constants.url}/user/food/sub-category/$subCategoryId?&limit=1000&lang=${Language.getLocaleCode()}')
       );
+      print("Response body ${Language.getLocaleCode()}");
       print(response.body);
       print(response.statusCode);
       if (response.statusCode == 200) {
@@ -52,8 +55,9 @@ class FoodService{
     try{
       await ErrorUtil.checkConnection();
       final response = await http.get(
-          Uri.parse('${Constants.url}/user/food/category/$categoryId?page=$pageKey&limit=31')
+          Uri.parse('${Constants.url}/user/food/category/$categoryId?page=$pageKey&limit=1000&lang=${Language.getLocaleCode()}')
       );
+      print("Response body ${Language.getLocaleCode()}");
       print(response.body);
       print(response.statusCode);
       if (response.statusCode == 200) {
@@ -71,8 +75,10 @@ class FoodService{
     try {
       await ErrorUtil.checkConnection();
       final response = await http.get(
-          Uri.parse('${Constants.url}/user/food/category/$categoryId')
+          Uri.parse('${Constants.url}/user/food/category/$categoryId/?limit=1000&lang=${Language.getLocaleCode()}')
       );
+      print("Response body ${Language.getLocaleCode()}");
+      print("fetchFoodByCategoryId");
       print(response.body);
       print(response.statusCode);
       if (response.statusCode == 200) {
@@ -91,14 +97,14 @@ class FoodService{
       await ErrorUtil.checkConnection();
       final accessToken = await AuthService.getAuthorizationToken();
       print("access_token $accessToken");
-
       final response = await http.get(
-        Uri.parse('${Constants.url}/user/food/$foodId'),
+        Uri.parse('${Constants.url}/user/food/$foodId?&limit=1000&lang=${Language.getLocaleCode()}'),
         headers: {
           'Authorization': 'JWT $accessToken',
         },
       );
 
+      print("Response body ${Language.getLocaleCode()}");
       print(response.body);
       print(response.statusCode);
 
@@ -119,7 +125,7 @@ class FoodService{
       final accessToken = await AuthService.getAuthorizationToken();
       print("access_token $accessToken");
       final response = await http.post(
-          Uri.parse('${Constants.url}/user/food/search'),
+          Uri.parse('${Constants.url}/user/food/search?&limit=1000&lang=${Language.getLocaleCode()}'),
           headers: {
             'Authorization': 'JWT $accessToken',
           },
