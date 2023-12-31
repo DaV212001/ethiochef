@@ -125,7 +125,7 @@ class FoodService{
       final accessToken = await AuthService.getAuthorizationToken();
       print("access_token $accessToken");
       final response = await http.post(
-          Uri.parse('${Constants.url}/user/food/search'),
+          Uri.parse('${Constants.url}/user/food/search?&limit=1000&lang=${Language.getLocaleCode()}'),
           headers: {
             'Authorization': 'JWT $accessToken',
           },
