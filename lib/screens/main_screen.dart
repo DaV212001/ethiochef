@@ -92,7 +92,7 @@ class _MainScreenState extends State<MainScreen> {
         duration: Duration(milliseconds: 200),
       ),
       navBarHeight: 60.h,
-      navBarStyle: NavBarStyle.style15,
+      navBarStyle: NavBarStyle.style15
     );
   }
 
@@ -106,6 +106,7 @@ class _MainScreenState extends State<MainScreen> {
         .onSurface;
     return [
       PersistentBottomNavBarItem(
+        routeAndNavigatorSettings: RouteAndNavigatorSettings(initialRoute: '/home'),
         icon: SvgIcon(
           image: Assets.iconsHome,
           color: activeColor,
@@ -168,6 +169,7 @@ class _MainScreenState extends State<MainScreen> {
         inactiveColorPrimary: inactiveColor,
       ),
       PersistentBottomNavBarItem(
+        routeAndNavigatorSettings: RouteAndNavigatorSettings(initialRoute: '/profile'),
         icon: SvgIcon(
           image: Assets.iconsProfile,
           color: activeColor,
