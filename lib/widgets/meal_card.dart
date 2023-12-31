@@ -111,7 +111,7 @@ class _MealCardState extends State<MealCard> {
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 5),
               child: Text(
-                widget.food.name[Language.getLocaleCode()].toString(),
+                widget.food.name.toString(),
                 style: TextStyle(
                   color: theme.colorScheme.tertiary,
                   fontWeight: FontWeight.bold,

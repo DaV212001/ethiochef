@@ -10,7 +10,7 @@ class Food {
   final int? id;
   final int subcategoriesId;
   final int categoryId;
-  final Map<String, dynamic> name;
+  final String? name;
   final String? Name;
   final String? description;
   final int? mealTime;
@@ -83,8 +83,8 @@ class Food {
       id: json['id'],
       subcategoriesId: json['subcategories_id'],
       categoryId: json['category_id'] ?? 0,
-      name: json['name'],
-      description: json['description'][Language.getLocaleCode()]?? json['name']["en"],
+      name: json['name'][Language.getLocaleCode()]?? json['name']["en"],
+      description: json['description'][Language.getLocaleCode()]?? json['description']["en"],
       mealTime: meal,
       related_recipe: (json['similar_recipies'] as List)
           .map((product) => Food.fromRelatedRecipe(product))
@@ -127,7 +127,7 @@ class Food {
       id: json['id'],
       subcategoriesId: json['subcategories_id'],
       categoryId: json['category_id'] ?? 0,
-      name: json['name'],
+      name: json['name'][Language.getLocaleCode()]?? json['name']["en"],
       description: json['description'][Language.getLocaleCode()]?? json['description']['en']??'',
       mealTime: meal,
       thumbnail: thumbnail,
@@ -156,7 +156,7 @@ class Food {
       id: json['id'],
       subcategoriesId: json['subcategories_id'],
       categoryId: json['category_id'] ?? 0,
-      name: json['name'],
+      name: json['name'][Language.getLocaleCode()]?? json['name']["en"],
       description: json['description'][Language.getLocaleCode()]?? json['description']['en']??'',
       mealTime: meal,
       preparationTime: json['cooking_time'],
@@ -193,7 +193,7 @@ class Food {
       id: json['id'],
       subcategoriesId: json['subcategories_id'],
       categoryId: json['category_id'] ?? 0,
-      name: json['name'],
+      name: json['name'][Language.getLocaleCode()]?? json['name']["en"],
       description: json['description'][Language.getLocaleCode()]?? json['name']['en'],
       mealTime: meal,
       preparationTime: json['cooking_time'],
@@ -250,8 +250,8 @@ class Food {
       id: json['id'],
       subcategoriesId: json['sub_category_id'],
       categoryId: json['category_id'] ?? 0,
-      name: name,
-      Name: Name,
+        name: Name,
+        Name: Name,
       description: description,
       mealTime: meal,
       thumbnail: thumbnail

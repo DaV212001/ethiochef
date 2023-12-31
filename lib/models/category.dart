@@ -4,7 +4,7 @@ import 'package:ethio_chef/models/language.dart';
 
 class Category {
   final int id;
-  final Map<String,dynamic> name;
+  final String name;
   final String description;
   final String image;
   final DateTime? createdAt;
@@ -35,7 +35,7 @@ class Category {
     String thumbnail = Constants.ImageAPI + i;
     return Category(
         id: json['id'],
-        name: json['name'],
+        name: json['name'][Language.getLocaleCode()]?? json['name']['en'],
         description: json['description'][Language.getLocaleCode()]?? json['description']['en'],
         image: thumbnail,
         createdAt: DateTime.parse(json['created_at']),

@@ -5,7 +5,12 @@ import 'package:ethio_chef/models/language.dart';
 import 'package:ethio_chef/theme/model_theme.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
+
+import '../../main.dart';
+import '../../screens/main_screen.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 class LanguageSelectorButton extends StatefulWidget {
   const LanguageSelectorButton({Key? key});
@@ -52,6 +57,10 @@ class _LanguageSelectorButtonState extends State<LanguageSelectorButton> {
             print(lang.languageCode);
             print(Language.selectedLanguage.name);
           });
+          pushNewScreenWithRouteSettings(context,
+              screen: MainScreen(),
+              settings: RouteSettings(name: '/'),
+              withNavBar: false);
         },
         dropdownStyleData: DropdownStyleData(
           width: 160,

@@ -173,7 +173,7 @@ class _CategoryCardState extends State<CategoryCard> {
           ):
           FittedBox(
             child: Text(
-                widget.food.name[Language.getLocaleCode()].toString(),
+                widget.food.name.toString(),
                 style: theme.textTheme.headlineMedium?.copyWith(
                   color: theme.colorScheme.tertiary,
                   fontWeight: FontWeight.w600,

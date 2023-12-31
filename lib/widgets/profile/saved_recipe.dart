@@ -98,7 +98,7 @@ class _SavedRecipeState extends State<SavedRecipe> {
                   },
                   child: SavedRecipeCard(
                     recipe: resp,
-                    name: resp.name[Language.getLocaleCode()].toString(),
+                    name: resp.name.toString(),
                     imageUrl: File(resp.thumbnail),
                   ),
                 );

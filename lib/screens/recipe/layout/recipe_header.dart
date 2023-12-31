@@ -22,7 +22,7 @@ class RecipeHeader extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: 20),
           child: Text(
-            food.name[Language.getLocaleCode()].toString(),
+            food.name.toString(),
             style: theme.textTheme.headlineLarge,
           ),
         ),
