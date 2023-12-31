@@ -52,7 +52,7 @@ class _MyRecipesState extends State<MyRecipes> {
     final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("saved_recipes".tr(),style: TextStyle(
+        title: Text("my_recipes".tr(),style: TextStyle(
             color: theme.colorScheme.primary
         )),
         backgroundColor: Colors.transparent,

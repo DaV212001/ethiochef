@@ -223,8 +223,8 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
                step.add(stepString);
              }
              Competition newRecipe = Competition(
-                 name_en: nameController.text,
-                 description_en: descriptionController.text,
+                 name: nameController.text,
+                 description: descriptionController.text,
                  prepTime: prepTimeController.text,
                  servingSize: servingSizeController.text,
                  steps: step,

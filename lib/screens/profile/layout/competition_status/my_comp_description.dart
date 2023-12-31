@@ -69,12 +69,12 @@ class _CompetitionDescriptionState extends State<CompetitionDescription> {
       {
         "title": "dish_name".tr(),
         "leadingIcon": Icons.category,
-        "trailing": lang.languageCode == "en" ? widget.comp.name_en.toString() : lang.languageCode=='am'? widget.comp.name_am.toString(): lang.languageCode =='GB'? widget.comp.name_or.toString():widget.comp.name_tr.toString()
+        "trailing": widget.comp.name.toString()
       },
       {
         "title": "dish_description".tr(),
         "leadingIcon": Icons.list_alt,
-        "trailing": lang.languageCode == "en" ? widget.comp.description_en.toString() : lang.languageCode=='am'? widget.comp.description_am.toString(): lang.languageCode =='GB'? widget.comp.description_or.toString():widget.comp.description_tr.toString()
+        "trailing": widget.comp.description.toString()
       },
       // {
       //   "title": "serving_sizes".tr(),
@@ -91,7 +91,8 @@ class _CompetitionDescriptionState extends State<CompetitionDescription> {
     ThemeData theme = Theme.of(context);
     return Scaffold(
         appBar: AppBar(
-          title: Text(lang.languageCode == "en" ? widget.comp.name_en.toString() : lang.languageCode=='am'? widget.comp.name_am.toString(): lang.languageCode =='GB'? widget.comp.name_or.toString():widget.comp.name_tr.toString(), style: TextStyle(
+          title: Text(widget.comp.name.toString(),
+            style: TextStyle(
               color: theme.colorScheme.primary
           ),),
           backgroundColor: Colors.transparent,

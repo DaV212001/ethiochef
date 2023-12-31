@@ -44,38 +44,12 @@ class _SearchInputFieldState extends State<SearchInputField> {
         textAlignVertical: TextAlignVertical.center,
         onTap: () async {
             print("Search");
-            var token = await AuthService.getAuthorizationToken();
-            if(token!=null){
-              UserService service = UserService();
-              var response = await service.checkUserSubscription();
-              final jsonData = json.decode(response.body);
-              print("user jsonData $jsonData");
-              if(jsonData['message'] == "Invalid Token, Redirect to login"){
-                SnackBar logIn =SnackBar(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    content: Text(
-                        'another_account_login'.tr()
-                    ));
-                ScaffoldMessenger.of(context).showSnackBar(logIn);
-                loginFunction();
-              }else{
-                pushNewScreen(
-                    context,
-                    screen: SearchScreen(),
-                    pageTransitionAnimation: PageTransitionAnimation.slideUp,
-                    withNavBar: false
-                );
-              }
-            }else{
-              SnackBar logIn =SnackBar(
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  content: Text(
-                      'Please subscribe to see ingredients and steps'.tr()
-                  ));
-              ScaffoldMessenger.of(context).showSnackBar(logIn);
-              loginFunction();
-            }
-
+            pushNewScreen(
+                context,
+                screen: SearchScreen(),
+                pageTransitionAnimation: PageTransitionAnimation.slideUp,
+                withNavBar: false
+            );
 
         },
         decoration: InputDecoration(

@@ -1,6 +1,7 @@
 import '../utils/constants.dart';
 
 class Contestant{
+  int? id;
   String? firstName;
   String? lastName;
   int? votes;
@@ -8,6 +9,7 @@ class Contestant{
   String? phone;
 
   Contestant(
+      this.id,
       this.firstName,
       this.lastName,
       this.votes,
@@ -23,6 +25,7 @@ class Contestant{
     String image = json['user']['profile_picture'];
     String i = clearPath(image);
     String thumbnail = Constants.ImageAPI + i;
+    id = json['user']['id'];
     firstName = json['user']['first_name'] ;
     lastName =  json['user']['last_name'];
     phone = json['user']['phone_number'];

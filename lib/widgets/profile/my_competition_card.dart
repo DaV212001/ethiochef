@@ -34,7 +34,7 @@ class MyCompCard extends StatelessWidget {
                   children: [
                     Expanded(
                         child: Text(
-                          lang.languageCode == 'en' ? comp.name_en! : lang.languageCode == 'am' ? comp.name_am!: lang.languageCode == 'GB' ? comp.name_or! : comp.name_tr!,
+                          comp.name.toString(),
                           style: TextStyle(
                               fontSize: isTablet ? 12.sp : 14.sp,
                               fontWeight: FontWeight.bold),

@@ -113,7 +113,7 @@ class _MainAppBarState extends State<MainAppBar> {
       return ScreenHead(
           hasNotification: true,
           screen: 1,
-          searchHint: "search_for_category".tr(),
+          searchHint: "search_for_food".tr(),
         );
     }
     if (widget.title != "") {

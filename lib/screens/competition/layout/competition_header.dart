@@ -26,7 +26,7 @@ class CompetitionHeader extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                lang.languageCode == 'en'? competition.name_en.toString() : lang.languageCode == 'am'? competition.name_am.toString() : lang.languageCode == 'GB'? competition.name_or.toString() : competition.name_tr.toString(),
+              competition.name.toString(),
                 style: theme.textTheme.headlineLarge
                     ?.copyWith(color: theme.colorScheme.primary),
               ),
@@ -66,7 +66,7 @@ class CompetitionHeader extends StatelessWidget {
           height: 5.h,
         ),
         Text(
-          lang.languageCode == 'en'? competition.description_en.toString() : lang.languageCode == 'am'? competition.description_am.toString() : lang.languageCode == 'GB'? competition.description_or.toString() : competition.description_tr.toString(),
+        competition.description.toString(),
           style:
               theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w300),
         ),

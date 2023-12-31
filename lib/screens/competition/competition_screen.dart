@@ -40,9 +40,9 @@ class _CompetitionScreenState extends State<CompetitionScreen> {
                 ),
                 if (widget.competition.video != null)
                   YoutubeVideoPlayer(
-                    link: PlaceHolderData.videoLink,
+                    link: widget.competition.video!,
                   ),
-                Contestants(contestant: widget.competition.competitor)
+                Contestants(contestant: widget.competition.competitor, contest_id: widget.competition.id!)
                 // ShareButton(food: PlaceHolderData.food)
               ],
             ),

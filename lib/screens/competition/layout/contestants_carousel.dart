@@ -15,9 +15,10 @@ import '../../auth/auth_screen.dart';
 import '../../subscription/all_subscriptions.dart';
 
 class Contestants extends StatefulWidget {
+  final int contest_id;
   final List<Contestant>? contestant;
 
-  const Contestants({super.key, required this.contestant});
+  const Contestants({super.key, required this.contestant, required this.contest_id});
 
   @override
   State<Contestants> createState() => _ContestantsState();
@@ -29,7 +30,7 @@ class _ContestantsState extends State<Contestants> {
   @override
   Widget build(BuildContext context) {
     final bool isTablet = ScreenUtils.isTablet(context);
-    double height = 260;
+    double height = 270;
     double width = 165;
     ThemeData theme = Theme.of(context);
     return Column(
@@ -38,7 +39,7 @@ class _ContestantsState extends State<Contestants> {
         Padding(
             padding: EdgeInsets.only(left: 10, right: 10, top: 10),
             child: Text(
-              "related_contestants".tr(),
+              "vote_for_contestants".tr(),
               style: theme.textTheme.headlineMedium?.copyWith(
                   color: theme.colorScheme.tertiary,
                   fontWeight: FontWeight.w500),
@@ -59,33 +60,13 @@ class _ContestantsState extends State<Contestants> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        ClipOval(
-                            child: CachedImage(
-                              url: widget.contestant![index].image!,
-                              fit: BoxFit.cover,
-                            )
-                        ),
-                        SizedBox(height: 5.h),
-                        Text("${widget.contestant![index].firstName.toString()} ${widget.contestant![index].lastName.toString()}",
-
-                          style: theme.textTheme.headlineMedium?.copyWith(
-                              color: theme.colorScheme.tertiary,
-                              fontWeight: FontWeight.w500)
-                        ),
-                        SizedBox(height: 5.h),
-                        Text("${widget.contestant![index].phone.toString()}",
-                          style: theme.textTheme.headlineMedium?.copyWith(
-                              color: theme.colorScheme.tertiary,
-                              fontWeight: FontWeight.w300),),
-                        SizedBox(height: 5.h),
-                        Text(widget.contestant![index].votes.toString(),
-                            style: theme.textTheme.headlineMedium?.copyWith(
-                                color: theme.colorScheme.tertiary,
-                                fontWeight: FontWeight.w300)),
-                        Padding(
-                          padding: EdgeInsets.all(8),
+                        Align(
                           child: GestureDetector(
                             onTap: ()async {
+                              setState(() {
+                                Loading = true;
+                              });
+                              print("voting");
                               SnackBar checking =SnackBar(
                                   padding: EdgeInsets.symmetric(vertical: 10),
                                   showCloseIcon: true,
@@ -120,27 +101,26 @@ class _ContestantsState extends State<Contestants> {
 
 
                                   CompetitionService cmp = CompetitionService();
-                                  setState(() {
-                                    Loading = true;
-                                  });
+                                  print("voting 2");
 
-                                  // try {
-                                  //   var response = await cmp.likeCompetition(
-                                  //       widget.competition.id!);
-                                  //
-                                  //   if(response?.statusCode == 200){
-                                  //     setState(() {
-                                  //       Loading = false;
-                                  //     });
-                                  //     likes++;
-                                  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Competition liked!')));
-                                  //   }
-                                  // } catch(e){
-                                  //   setState(() {
-                                  //     Loading = false;
-                                  //   });
-                                  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
-                                  // }
+                                  try {
+                                    print("voting 3");
+                                    print(widget.contestant![index].id!);
+                                    print(widget.contest_id!);
+                                    var response = await cmp.voteContestant(widget.contestant![index].id!, widget.contest_id!);
+
+                                    if(response?.statusCode == 200){
+                                      setState(() {
+                                        Loading = false;
+                                      });
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Competition liked!')));
+                                    }
+                                  } catch(e){
+                                    setState(() {
+                                      Loading = false;
+                                    });
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                                  }
 
 
 
@@ -174,8 +154,32 @@ class _ContestantsState extends State<Contestants> {
                                 ),
                               ): CircularProgressIndicator(),
                             ),
-                          ),
+                          ),alignment: Alignment.topRight,
                         ),
+                        ClipOval(
+                            child: CachedImage(
+                              url: widget.contestant![index].image!,
+                              fit: BoxFit.cover,
+                            )
+                        ),
+                        SizedBox(height: 5.h),
+                        Text("${widget.contestant![index].firstName.toString()} ${widget.contestant![index].lastName.toString()}",
+
+                          style: theme.textTheme.headlineMedium?.copyWith(
+                              color: theme.colorScheme.tertiary,
+                              fontWeight: FontWeight.w500)
+                        ),
+                        SizedBox(height: 5.h),
+                        Text("${widget.contestant![index].phone.toString()}",
+                          style: theme.textTheme.headlineMedium?.copyWith(
+                              color: theme.colorScheme.tertiary,
+                              fontWeight: FontWeight.w300),),
+                        SizedBox(height: 5.h),
+                        Text(widget.contestant![index].votes.toString(),
+                            style: theme.textTheme.headlineMedium?.copyWith(
+                                color: theme.colorScheme.tertiary,
+                                fontWeight: FontWeight.w300)),
+
                       ]
                     );
                   }
