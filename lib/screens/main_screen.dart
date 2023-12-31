@@ -16,6 +16,7 @@ import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../services/authorization_service.dart';
 import '../services/user_service.dart';
+import 'package:ethio_chef/screens/auth/auth_screen.dart';
 
 
 class MainScreen extends StatefulWidget {
@@ -57,7 +58,7 @@ class _MainScreenState extends State<MainScreen> {
       CategoriesScreen(),
       UploadRecipeScreen(type: "recipe"),
       CompetitionsScreen(),
-      isLoggedIn ? ProfileScreen():PreLoginUserScreen()
+      isLoggedIn ? ProfileScreen():AuthScreen(isSignIn: true)
     ];
   }
 

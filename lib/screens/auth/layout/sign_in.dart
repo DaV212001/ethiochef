@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
+import '../../../main.dart';
 import '../../../services/user_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utils/screen_utils.dart';
@@ -94,11 +95,13 @@ class _SignInState extends State<SignIn> {
         setState(() {
           isLoading = false;
         });
+
+        RestartWidget.restartApp(context);
         ScaffoldMessenger.of(context).showSnackBar(success);
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(
-                builder: (BuildContext context)=>MainScreen())
-        );
+        // Navigator.pushReplacement(context,
+        //     MaterialPageRoute(
+        //         builder: (BuildContext context)=>MainScreen())
+        // );
       } else {
         // The login failed.
         setState(() {
