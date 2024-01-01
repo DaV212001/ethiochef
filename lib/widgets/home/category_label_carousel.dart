@@ -13,7 +13,7 @@ class CategoryLabelCarousel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<SmallLabelButton> labels = categories
-        .map((e) => SmallLabelButton(text: e.name[Language.getLocaleCode()]!.toString(), color: color, onTap: () {}))
+        .map((e) => SmallLabelButton(text: e.name!.toString(), color: color, onTap: () {}))
         .toList();
     return Expanded(
       child: Container(

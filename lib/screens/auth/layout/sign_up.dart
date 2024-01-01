@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
+import '../../../main.dart';
 import '../../../models/user.dart';
 import '../../../services/user_service.dart';
 import '../../../theme/app_theme.dart';
@@ -128,10 +129,12 @@ class _SignUpState extends State<SignUp> {
                       },
                     )
                 );
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context)=>MainScreen())
-                );
+
+                RestartWidget.restartApp(context);
+                // Navigator.pushReplacement(context,
+                //     MaterialPageRoute(
+                //         builder: (BuildContext context)=>MainScreen())
+                // );
                 // await _registration();
               }
             }

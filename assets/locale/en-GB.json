@@ -163,5 +163,18 @@
   "pending": "Eeggataa kan jiru",
   "successful": "Milkaa'aa",
   "add_another": "Recipe biraa itti dabali",
-  "see_my_recipe": "Recipe koo ilaalaa"
+  "see_my_recipe": "Recipe koo ilaalaa",
+  "uploading_title": "Viidiyoo Ergaa",
+  "uploading_body": "Viidiyoo erguun mee button cancel jedhu dhiibuun adeemsa kana addaan hin kutin.",
+  "refresh": "Haaromsi",
+  "cancel": "Haquu",
+  "successful_upload": "Viidiyoon keessan Milkaa'inaan Olkaa'ameera! ",
+  "failed_upload": "Viidiyoo olkaa'uu hin dandeenye!",
+  "upload_another": "Viidiyoo biraa ol kaa'aa",
+  "my_recipes": "Recipes Koo",
+  "no_saved_recipes": "Hanga ammaatti qophii nyaataa qusatame hin jiru maaloo qophii nyaataa jaallattan bookmark godhaa",
+  "delete": "Haquu",
+  "saved": "Nyaanni qophii nyaataa keessaniif qusatameera",
+  "vote_for_contestants": "Dorgomtootaaf sagalee kennaa",
+  "search_for_food": "Maqaa nyaataa galchi"
 }

@@ -1,22 +1,17 @@
-import 'package:ethio_chef/models/competitor.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../utils/constants.dart';
+import 'contestants.dart';
 import 'language.dart';
 
 
 
 class Competition {
-  String? name_en;
-  String? name_am;
-  String? name_or;
-  String? name_tr;
-  String? description_en;
-  String? description_am;
-  String? description_or;
-  String? description_tr;
+  String? name;
+  String? description;
   String? prepTime;
   String? servingSize;
   List<String>? steps;
@@ -27,7 +22,7 @@ class Competition {
   String? video;
   int? votes;
   int? daysLeft;
-  List<Competitor>? competitor;
+  List<Contestant>? competitor;
   int? id;
 
   // poster_image
@@ -43,14 +38,8 @@ class Competition {
   Competition(
       {
         this.ingredient,
-        this.name_tr,
-        this.name_en,
-        this.name_am,
-        this.name_or,
-        this.description_en,
-        this.description_am,
-        this.description_or,
-        this.description_tr,
+        this.name,
+        this.description,
         this.id,
         this.steps,
         this.prepTime,
@@ -65,6 +54,7 @@ class Competition {
       });
 
   factory Competition.fromJson(Map<String, dynamic> json) {
+    print("==== ${json['contestant']}");
     print("json $json");
     String? imagePath = json['image'];
     String videoPath = json['video'];
@@ -84,26 +74,27 @@ class Competition {
 List vote = json['vote'] as List;
 
 var competitors = json['contestant'] as List;
-    List<Competitor>? competitorss1;
+    List<Contestant>? competitorss1;
 if(competitors.isNotEmpty){
-  competitorss1 = competitors.map((e) => Competitor.fromJson(e)).toList();
+  competitorss1 = competitors.map((e) => Contestant.fromJson(e)).toList();
 }
 
 
     DateTime fromtheresponse = DateTime.parse(json['end_date']);
 DateTime now =  DateTime.now();
 Duration daysleff = fromtheresponse.difference(now);
+    String clearPath(String path) {
+      final parts = path.split('/public_html');
+      return parts.last;
+    }
+    String poster_image = json['poster_image'];
+    String i = clearPath(poster_image);
+    String thumbnail = Constants.ImageAPI + i;
     return Competition(
-        name_en: json['name_en']??"en",
-        name_am: json['name_am']??'am',
-        name_or: json['name_or']??'or',
-        name_tr: json['name_tr']??'tr',
-        description_en: json['description_en']??'en',
-        description_am: json['description_am']??'am',
-        description_or: json['description_or']??'or',
-        description_tr: json['description_tr']??'tr',
+        name: json['name'][Language.getLocaleCode()]??json['name']['en'],
+        description: json['description'][Language.getLocaleCode()]??json['description']['en'],
         id: json['id'],
-        image: "https://apiv2.ethiochef.com/" + json['poster_image'],
+        image: thumbnail,
         daysLeft: daysleff.inDays,
         votes: vote.length,
         competitor: competitorss1??[],
@@ -119,14 +110,8 @@ Duration daysleff = fromtheresponse.difference(now);
 
   Map<String, dynamic> toJson() {
     return {
-      'name_en': name_en,
-      'name_am': name_am,
-      'name_or': name_or,
-      'name_tr': name_tr,
-      'description_en': description_en,
-      'description_am': description_am,
-      'description_or': description_or,
-      'description_tr': description_tr,
+      'name_en': name,
+      'description_en': description,
       'id': id,
       'prepTime': prepTime,
       'servingSize': servingSize,

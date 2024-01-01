@@ -118,15 +118,15 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
       Visibility(
         visible: activeStep == 3,
         child: VideoStep(
-          uploadCompetition: () async{
-
-          },
           isCompetition: false,
           video: video,
           updateVideo: (video) {
-           this.video = video;
+            print("===========video $video");
+            setState(() {
+              this.video = video;
+            });
           },
-          next: (){
+          next: (video){
            if(widget.type == "recipe"){
              Map<String, String> ingredientMap = {
                'ingredient': 'ingredient',
@@ -153,11 +153,10 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
                stepNumber++;
              }
 
-             print("STEPS ${stepToCreate}");
              for (var map in ingredients) {
                ingredientToCreate.addAll(map);
              }
-             print("INGREDIENTS ${ingredientToCreate}");
+             print("video ${video}");
              Recipe newRecipe = Recipe(
                  name: nameController.text,
                  description: descriptionController.text,
@@ -224,8 +223,8 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
                step.add(stepString);
              }
              Competition newRecipe = Competition(
-                 name_en: nameController.text,
-                 description_en: descriptionController.text,
+                 name: nameController.text,
+                 description: descriptionController.text,
                  prepTime: prepTimeController.text,
                  servingSize: servingSizeController.text,
                  steps: step,

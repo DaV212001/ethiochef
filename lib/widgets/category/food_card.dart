@@ -93,7 +93,7 @@ class _FoodCardState extends State<FoodCard> {
             ):
             FittedBox(
               child: Text(
-                  widget.food.name[Language.getLocaleCode()].toString(),
+                  widget.food.name.toString(),
                   style: theme.textTheme.headlineMedium?.copyWith(
                     color: theme.colorScheme.tertiary,
                     fontWeight: FontWeight.w600,

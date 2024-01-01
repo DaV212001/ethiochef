@@ -1,24 +1,17 @@
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/screens/myrecipes/myrecipe_screen.dart';
-import 'package:ethio_chef/services/user_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
-import '../../../models/faqs.dart';
-import '../../../theme/app_theme.dart';
 import '../../../theme/model_theme.dart';
-import '../../../widgets/auth/language_selector_button.dart';
-import '../../../widgets/change_theme.dart';
-import '../../../widgets/profile/route_card.dart';
 import '../../../widgets/profile/route_container.dart';
-import '../../../widgets/profile/route_labels_card.dart';
+import '../../../widgets/profile/saved_recipe.dart';
 import '../../app_documentation/faq_screen.dart';
 import '../../app_documentation/privacy_policies_screen.dart';
 import '../../app_documentation/terms_and_conditions_screen.dart';
 import '../../recipe_status/my_recipe.dart';
 import '../../subscription/all_subscriptions.dart';
-import '../../subscription/subscriptionscreen.dart';
 import 'competition_status/my_competition.dart';
 
 
@@ -35,8 +28,6 @@ class _RouteListState extends State<RouteList> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ModelTheme>(context);
     ThemeData theme = Theme.of(context);
-    var response;
-    bool isLoading = false;
     final List<Map<String, dynamic>> general = [
       {
         "title": "subscription_plans".tr(),
@@ -79,7 +70,7 @@ class _RouteListState extends State<RouteList> {
     ];
     final List<Map<String, dynamic>> status = [
       {
-        "title": "saved_recipes".tr(),
+        "title": "my_recipes".tr(),
         "leadingIcon": Icons.dinner_dining,
         "onTap": () {
           pushNewScreen(
@@ -93,12 +84,12 @@ class _RouteListState extends State<RouteList> {
         Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary)
       },
       {
-        "title": 'My Recipes',
-        "leadingIcon": Icons.dinner_dining,
+        "title": 'saved_recipes'.tr(),
+        "leadingIcon": CupertinoIcons.bookmark_fill,
         "onTap": () {
           pushNewScreen(
             context,
-            screen: RecipeMine(),
+            screen: SavedRecipe(),
             withNavBar: false,
             pageTransitionAnimation: PageTransitionAnimation.cupertino,
           );
@@ -199,7 +190,7 @@ class _RouteListState extends State<RouteList> {
             ),
             RouteContainer(
               routePart: status,
-              indexTwo: 1,
+              indexTwo: 2,
               routeName: tr("status"),
             ),
             RouteContainer(

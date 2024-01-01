@@ -38,12 +38,6 @@ class _AppBarSearchBarState extends State<AppBarSearchBar> {
       child: TextFormField(
         onTap: (){
           print('tapped');
-          pushNewScreen(
-              context,
-              screen: SearchScreen(),
-              pageTransitionAnimation: PageTransitionAnimation.slideUp,
-              withNavBar: false
-          );
         },
         focusNode: widget.focusNode,
         onChanged: widget.onSearchQueryChange,

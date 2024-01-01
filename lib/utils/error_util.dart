@@ -84,6 +84,12 @@ class ErrorUtil {
     image: "assets/images/errors/unknown.svg",
     buttonText: "refresh".tr(),
   );
+  static ErrorData uploadingVideo = ErrorData(
+    title: "uploading_title".tr(),
+    body: "uploading_body".tr(),
+    image: "",
+    buttonText: "cancel".tr(),
+  );
 
   static ErrorData getErrorType(String type) {
     print("Error type for error card $type");
@@ -103,6 +109,8 @@ class ErrorUtil {
         return forbiddenError;
       case "429":
         return tooManyRequestsError;
+      case "uploading_video":
+        return uploadingVideo;
       case "empty_category":
         return emptyCategory;
       case "empty_sub_category":

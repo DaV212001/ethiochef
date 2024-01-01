@@ -42,7 +42,7 @@ class _CategoryCarouselState extends State<CategoryCarousel> {
           SizedBox(
             height: 15.h,
           ),
-          Header(title: widget.category[index].name[Language.getLocaleCode()]!.toString(),
+          Header(title: widget.category[index].name!.toString(),
           showMore: true,
             showMoreText: 'show_more'.tr(),
             onTap:(){
@@ -51,7 +51,7 @@ class _CategoryCarouselState extends State<CategoryCarousel> {
                 pageTransitionAnimation: PageTransitionAnimation.cupertino,
                 context,
                 screen: AllFood(categoryId: widget.category[index].id,
-                  categoryName: widget.category[index].name[Language.getLocaleCode()]!.toString()));
+                  categoryName: widget.category[index].name!.toString()));
             }
           ),
           SizedBox(

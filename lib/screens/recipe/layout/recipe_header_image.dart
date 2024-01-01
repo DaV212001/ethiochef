@@ -129,10 +129,10 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
                   setState(() {
 
                   });
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Removed')));
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('delete'.tr())));
                   } else {
                   Food.addRecipe(widget.food!);
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Bookmarked')));
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('saved'.tr())));
                   }
                   setState(() {
                   isSaved = !isSaved;

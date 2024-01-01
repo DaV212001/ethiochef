@@ -96,7 +96,7 @@ class _MealCardState extends State<MealCard> {
           children: [
             Container(
                 width: double.infinity,
-                height: 150,
+                height: 140,
                 padding: EdgeInsets.all(5),
                 child: ClipRRect(
                   borderRadius: AppTheme.allBorderRadius,
@@ -106,16 +106,16 @@ class _MealCardState extends State<MealCard> {
                   ),
                 )),
             SizedBox(
-              height: 2,
+              height: 1,
             ),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 5),
               child: Text(
-                widget.food.name[Language.getLocaleCode()].toString(),
+                widget.food.name.toString(),
                 style: TextStyle(
                   color: theme.colorScheme.tertiary,
                   fontWeight: FontWeight.bold,
-                  fontSize: 14
+                  fontSize: 13
                 ),
                 textAlign: TextAlign.start,
               ),

@@ -21,11 +21,11 @@ class RouteContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
       child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 8.0,),
     decoration: BoxDecoration(
-    color: theme.colorScheme.surface,
+    color: theme.colorScheme.surface.withOpacity(0.8),
     borderRadius: AppTheme.allBorderRadius),
       child: ListView.builder(
         shrinkWrap: true,
@@ -42,7 +42,7 @@ class RouteContainer extends StatelessWidget {
               ),
               index ==indexTwo? SizedBox.shrink(): Divider(
                 thickness: 1,
-                height: 1,
+                height: 1
               )
             ],
           );

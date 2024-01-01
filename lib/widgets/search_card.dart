@@ -1,26 +1,19 @@
 import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/screens/recipe/recipe_screen.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:ethio_chef/widgets/cached_image.dart';
 import 'package:ethio_chef/widgets/main_button.dart';
-import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:overflow_text_animated/overflow_text_animated.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
-import '../../models/language.dart';
-import '../../models/user.dart';
-import '../../models/verification.dart';
 import '../../screens/auth/auth_screen.dart';
-import '../../screens/auth/layout/payment_screen.dart';
 import '../../screens/subscription/all_subscriptions.dart';
 import '../../services/authorization_service.dart';
-import '../../services/payment_service.dart';
 import '../../services/user_service.dart';
 
 class SearchCard extends StatefulWidget {
@@ -148,7 +141,7 @@ class _SearchCardState extends State<SearchCard> {
         Container(
           width: 160,
           child: OverflowTextAnimated(
-            text: widget.food.name[Language.getLocaleCode()].toString(),
+            text: widget.food.name.toString(),
             style: theme.textTheme.headlineMedium?.copyWith(
               color: theme.colorScheme.tertiary,
               fontWeight: FontWeight.w500,

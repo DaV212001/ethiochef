@@ -39,12 +39,16 @@ class CompetitionService {
   }
 
   Future<http.Response> sendCompetitionVideo(String video_string) async {
+    var access_token = await AuthService.getAuthorizationToken();
     var body = json.encode({"video": video_string});
+    print("Body");
     print(body);
     final response = await http.post(
         Uri.parse("${Constants.url}/user/contest/upload"),
+        headers: {
+          'Authorization': 'JWT $access_token'
+        },
         body: {"video": video_string});
-    print(response);
     print(response.body);
     print(response.statusCode);
     if(response.statusCode == 200){
@@ -62,10 +66,38 @@ class CompetitionService {
           'Authorization': 'JWT $access_token'
         },
         body: {
-          'contest_id': id
+          "contest_id": id.toString()
         },
       );
       print("res.statusCode  == = == = = == = = = ${response.statusCode}");
+      print("response.body  == = == = = == = = = ${response.body}");
+      var message = jsonDecode(response.body);
+      if (response.statusCode != 200) {
+        throw Exception('${response.statusCode.toString()}: ${message['message']}');
+      }
+    } catch (error) {
+      rethrow;
+    }
+    return response;
+  }
+
+  Future<http.Response>? voteContestant(int contestant_id, int contest_id) async {
+    print("voteContestant");
+    var access_token = await AuthService.getAuthorizationToken();
+    final response;
+    try {
+      response = await http.post(
+        Uri.parse("${Constants.url}/user/contest/vote"),
+        headers: {
+          'Authorization': 'JWT $access_token'
+        },
+        body: {
+          "contestant_id": contestant_id.toString(),
+          "contest_id": contest_id.toString()
+        },
+      );
+      print("res.statusCode  == = == = = == = = = ${response.statusCode}");
+      print("res.body  == = == = = == = = = ${response.body}");
       var message = jsonDecode(response.body);
       if (response.statusCode != 200) {
         throw Exception('${response.statusCode.toString()}: ${message['message']}');

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import '../models/language.dart';
 import '../utils/constants.dart';
 import '../models/sub_category.dart';
 import 'package:http/http.dart' as http;
@@ -15,7 +16,7 @@ class SubCategoryService{
         print("access_token $access_token");
 
           final response = await
-          http.get(Uri.parse('${Constants.url}/user/sub-category/category/$categoryId'),
+          http.get(Uri.parse('${Constants.url}/user/sub-category/category/$categoryId?&limit=1000&lang=${Language.getLocaleCode()}'),
             headers: {
               'Authorization': 'JWT $access_token',
             },
@@ -37,7 +38,7 @@ class SubCategoryService{
       final access_token = await AuthService.getAuthorizationToken();
       print("access_token $access_token");
         final response = await http.get(
-          Uri.parse('${Constants.url}/user/sub-category'),
+          Uri.parse('${Constants.url}/user/sub-category?&limit=1000&lang=${Language.getLocaleCode()}'),
           headers: {
             'Authorization': 'JWT $access_token',
           },

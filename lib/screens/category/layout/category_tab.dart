@@ -58,7 +58,7 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
     List<Tab> tabs = widget.category
         .map((e) =>
         Tab(
-          text: e.name[Language.getLocaleCode()]!.toString(),
+          text: e.name!.toString(),
         ))
         .toList();
     return SafeArea(

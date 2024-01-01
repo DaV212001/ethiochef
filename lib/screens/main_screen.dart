@@ -16,6 +16,7 @@ import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../services/authorization_service.dart';
 import '../services/user_service.dart';
+import 'package:ethio_chef/screens/auth/auth_screen.dart';
 
 
 class MainScreen extends StatefulWidget {
@@ -57,7 +58,7 @@ class _MainScreenState extends State<MainScreen> {
       CategoriesScreen(),
       UploadRecipeScreen(type: "recipe"),
       CompetitionsScreen(),
-      isLoggedIn ? ProfileScreen():PreLoginUserScreen()
+      isLoggedIn ? ProfileScreen():AuthScreen(isSignIn: true)
     ];
   }
 
@@ -92,7 +93,7 @@ class _MainScreenState extends State<MainScreen> {
         duration: Duration(milliseconds: 200),
       ),
       navBarHeight: 60.h,
-      navBarStyle: NavBarStyle.style15,
+      navBarStyle: NavBarStyle.style15
     );
   }
 
@@ -106,6 +107,7 @@ class _MainScreenState extends State<MainScreen> {
         .onSurface;
     return [
       PersistentBottomNavBarItem(
+        routeAndNavigatorSettings: RouteAndNavigatorSettings(initialRoute: '/home'),
         icon: SvgIcon(
           image: Assets.iconsHome,
           color: activeColor,
@@ -168,6 +170,7 @@ class _MainScreenState extends State<MainScreen> {
         inactiveColorPrimary: inactiveColor,
       ),
       PersistentBottomNavBarItem(
+        routeAndNavigatorSettings: RouteAndNavigatorSettings(initialRoute: '/profile'),
         icon: SvgIcon(
           image: Assets.iconsProfile,
           color: activeColor,

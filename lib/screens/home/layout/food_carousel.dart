@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../models/food.dart';
+import '../../../models/language.dart';
 import '../../../services/food_service.dart';
 import '../../../utils/screen_utils.dart';
 import '../../../widgets/category/category_card.dart';
@@ -160,12 +161,13 @@ class _FoodCarouselState extends State<FoodCarousel> {
               items: food.map((foods) {
                 return Builder(
                   builder: (BuildContext context) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 1.w),
-                      child: CategoryCard(
-                          food: foods
-                      ),
-                    );
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 1.w),
+                        child: CategoryCard(
+                            food: foods
+                        )
+                      );
+
                   },
                 );
               }).toList(),
@@ -190,33 +192,35 @@ class _FoodCarouselState extends State<FoodCarousel> {
               )
             ),
             SizedBox(height: 5),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: food.asMap().entries.map((entry) {
-                      return GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          width: currentIndex == entry.key ? 17.w : 7.w,
-                          height: 7.h,
-                          margin: EdgeInsets.symmetric(
-                            horizontal: 3.0.w,
-                          ),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.r),
-                              color: currentIndex == entry.key
-                                  ? theme.colorScheme.primaryContainer
-                                  : theme.colorScheme.primary),
-                        ),
-                      );
-                    }).toList(),
-                  )
-                ],
-              ),
-            )
+            // Container(
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     children: [
+            //       Row(
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         children: food.asMap().entries.map((entry) {
+            //
+            //           return GestureDetector(
+            //             onTap: () {},
+            //             child: Container(
+            //               width: currentIndex == entry.key ? 17.w : 7.w,
+            //               height: 7.h,
+            //               margin: EdgeInsets.symmetric(
+            //                 horizontal: 3.0.w,
+            //               ),
+            //               decoration: BoxDecoration(
+            //                   borderRadius: BorderRadius.circular(10.r),
+            //                   color: currentIndex == entry.key
+            //                       ? theme.colorScheme.primaryContainer
+            //                       : theme.colorScheme.primary),
+            //             ),
+            //           );
+            //
+            //         }).toList(),
+            //       )
+            //     ],
+            //   ),
+            // )
       ]),
     );
   }

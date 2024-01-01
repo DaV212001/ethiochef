@@ -91,6 +91,7 @@ class Recipe {
 
   static void addRecipe(Recipe recipe) {
     savedRecipes.add(recipe);
+    print(savedRecipes[0].video);
     saveRecipesToSharedPrefs();
   }
 

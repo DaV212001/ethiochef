@@ -74,7 +74,7 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        lang.languageCode == 'en'? widget.competition.name_en!.toString() : lang.languageCode == 'am'? widget.competition.name_am!.toString(): lang.languageCode == 'GB'? widget.competition.name_or!.toString() : widget.competition.name_tr!.toString(),
+                        widget.competition.name!.toString(),
                         style: theme.textTheme.headlineMedium,
                         textAlign: TextAlign.start,
                       ),
@@ -105,6 +105,10 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
                             padding: EdgeInsets.all(8),
                             child: GestureDetector(
                               onTap: ()async {
+
+                                setState(() {
+                                  Loading = true;
+                                });
                                 SnackBar checking =SnackBar(
                                     padding: EdgeInsets.symmetric(vertical: 10),
                                     showCloseIcon: true,
@@ -159,9 +163,6 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
                                       });
                                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
                                     }
-
-
-
                                     break;
                                   case "User is not subscribed":
                                     print("User is not subscribed");

@@ -29,7 +29,7 @@ class CategorySideBarCard extends StatelessWidget {
             children: [
               FittedBox(
                 child: Text(
-                  category.name[Language.getLocaleCode()]!.toString(),
+                  category.name!.toString(),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 10.sp

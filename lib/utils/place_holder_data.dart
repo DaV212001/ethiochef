@@ -1,7 +1,8 @@
 import 'package:ethio_chef/models/category.dart';
 import 'package:ethio_chef/models/competition.dart';
-import 'package:ethio_chef/models/competitor.dart';
 import 'package:ethio_chef/models/food.dart';
+
+import '../models/contestants.dart';
 
 class PlaceHolderData {
   static List<String> ingredients = [
@@ -52,8 +53,8 @@ class PlaceHolderData {
 
   static List<Competition> foodCompetitionList = [
     Competition(
-        name_en: "Cooking Challenge",
-        description_en:
+        name: "Cooking Challenge",
+        description:
             "Show off your culinary skills in a head-to-head cooking competition.",
         image:
             "https://www.courier-journal.com/gcdn/presto/2018/09/13/PLOU/d947ceae-15e4-44d6-82d2-7fabf8fa785f-Gerron_Hurt_on_Masterchef_finale.jpg?width=660&height=440&fit=crop&format=pjpg&auto=webp",
@@ -62,8 +63,8 @@ class PlaceHolderData {
         competitor: competitorList,
         video: videoLink),
     Competition(
-        name_en: "Baking Championship",
-        description_am:
+        name: "Baking Championship",
+        description:
             "Compete in a series of baking challenges and win the title of the best baker.",
         image:
             "https://thumbs.dreamstime.com/b/cooking-master-competition-vector-illustration-53111191.jpg",
@@ -72,8 +73,8 @@ class PlaceHolderData {
         competitor: competitorList,
         video: videoLink),
     Competition(
-        name_en: "Pizza Eating Contest",
-        description_en:
+        name: "Pizza Eating Contest",
+        description:
             "How many slices of pizza can you devour in a set time? Test your limits!",
         image: "https://i.ytimg.com/vi/7j9NB_boaOE/hqdefault.jpg",
         daysLeft: 7,
@@ -81,8 +82,8 @@ class PlaceHolderData {
         competitor: competitorList,
         video: videoLink),
     Competition(
-        name_en: "Chili Cook-Off",
-        description_en:
+        name: "Chili Cook-Off",
+        description:
             "Prepare your best chili recipe and see if it's the spiciest in town.",
         image:
             "https://mummyfique.com/wp-content/uploads/2017/06/Mummyfique-Presents-an-All-New-Cooking-Competition-Home-Chef-2017-01.jpg",
@@ -91,8 +92,8 @@ class PlaceHolderData {
         competitor: competitorList,
         video: videoLink),
     Competition(
-        name_en: "Sushi Masterclass",
-        description_en:
+        name: "Sushi Masterclass",
+        description:
             "Learn the art of making sushi and compete to become the Sushi Master.",
         image:
             "https://www.courier-journal.com/gcdn/presto/2018/09/13/PLOU/d947ceae-15e4-44d6-82d2-7fabf8fa785f-Gerron_Hurt_on_Masterchef_finale.jpg",
@@ -102,31 +103,7 @@ class PlaceHolderData {
         video: videoLink),
   ];
 
-  static List<Competitor> competitorList = [
-    Competitor(
-      "John Doe",
-      500,
-      "john_doe_image.jpg",
-    ),
-    Competitor(
-      "Jane Smith",
-      300,
-      "jane_smith_image.jpg",
-    ),
-    Competitor(
-      "Pizza Lover",
-      800,
-      "pizza_lover_image.jpg",
-    ),
-    Competitor(
-      "Spice Master",
-      400,
-      "spice_master_image.jpg",
-    ),
-    Competitor(
-      "Sushi Sensei",
-      700,
-      "sushi_sensei_image.jpg",
-    ),
+  static List<Contestant> competitorList = [
+
   ];
 }

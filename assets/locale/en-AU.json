@@ -166,5 +166,18 @@
   "pending": "ኣብ ከይዲ",
   "successful": "ዕውት",
   "add_another": "ካልእ ኣሰራርሓ መግቢ ወስኸሉ።",
-  "see_my_recipe": "ኣሰራርሓ መግበይ ርኣዩ።"
+  "see_my_recipe": "ኣሰራርሓ መግበይ ርኣዩ።",
+  "uploading_title": "ቪድዮ ምልኣኽ",
+  "uploading_body": "ቪድዮ ምልኣኽ በጃኹም ነቲ መስርሕ ከይተቋረጽዎ ነቲ cancel ዝብል ቁልፊ ብምጽቃጥ።",
+  "refresh": "ምሕዳስ",
+  "cancel": "ሰርዝ",
+  "successful_upload": "ቪድዮኹም ብዓወት ተሰቒሉ ኣሎ! ",
+  "failed_upload": "ቪድዮ ምጽዓን ኣይከኣለን!",
+  "upload_another": "ካልእ ቪድዮ ስቐል",
+  "my_recipes": "ኣሰራርሓ መግበይ",
+  "no_saved_recipes": "ክሳብ ሕጂ ዝተዓቀበ ኣሰራርሓ መግቢ የለን በጃኹም ዝፈትውዎም ኣሰራርሓ መግቢ ዕልባት ግበሩ",
+  "delete": "ምድምሳስ",
+  "saved": "መግቢ ኣብ ኣሰራርሓ መግቢኹም ተዓቂቡ ኣሎ።",
+  "vote_for_contestants": "ንተወዳደርቲ ድምጺ ሃቡ።",
+  "search_for_food": "ስም መግቢ ኣእትዉ"
 }
