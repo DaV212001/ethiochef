@@ -6,10 +6,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/competition/layout/successfully_uploded.dart';
 import 'package:ethio_chef/widgets/main_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'dart:io';
 
 import '../../../services/competition_service.dart';
+import '../../../utils/screen_utils.dart';
 import '../../../widgets/error_card.dart';
 import '../../../widgets/info_card.dart';
 import '../../../widgets/main_button.dart';
@@ -68,6 +70,8 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
   }
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final bool isTablet = ScreenUtils.isTablet(context);
     return Scaffold(
       appBar: MainAppBar(
         hasBackButton: true,
@@ -76,21 +80,36 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
         isSearchScreen: false,
         title: 'upload_competition'.tr(),
       ),
-      body:  Visibility(
-        visible: uploading,
-        child: Center(
-          child: ErrorCard(
-            errorType: "uploading_video",
-            isFood: false,
-            refresh: (){
-              setState(() {
-                uploading = false;
-              });
-              Navigator.of(context).pop();
-            }
-          )
-        ),
-        replacement: Column(
+      body:  Container(
+        child: uploading==true?Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+                  child: Text(
+                    "uploading_title".tr(),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: theme.colorScheme.primary,
+                        fontSize: isTablet ? 18.sp : 20.sp,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+                  child: Text(
+                    "uploading_body".tr(),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: theme.unselectedWidgetColor,
+                        fontSize:isTablet ? 12.sp :  15.sp,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            )
+        ):Column(
           children: [
             VideoStep(
               isCompetition: true,
@@ -106,11 +125,9 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
                 await uploadVideo();
                 CompetitionService service = CompetitionService();
                 var response = await service.sendCompetitionVideo(videoUrl);
-                SnackBar failed = SnackBar(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    content: Text(
-                        "failed_upload".tr()
-                    ));
+                setState(() {
+                  uploading = false;
+                });
                 if(response.statusCode == 200){
                   print("=================================================== POP");
                   pushNewScreen(
@@ -119,18 +136,13 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
                     withNavBar: true,
                     pageTransitionAnimation: PageTransitionAnimation.cupertino,
                   );
-                }else{
-                  ScaffoldMessenger.of(context).showSnackBar(failed);
                 }
-                setState(() {
-                  uploading = false;
-                });
               },
               next: (video){}, back: (){
             },
             )
           ],
-        ),
+        )
       )
     );
   }

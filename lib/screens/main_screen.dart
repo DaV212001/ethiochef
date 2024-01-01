@@ -146,11 +146,10 @@ class _MainScreenState extends State<MainScreen> {
               .surface,
         ),
         inactiveIcon: SvgIcon(
-          size: 30,
+          size: 20,
           image: Assets.iconsPlus,
-          color: inactiveColor,
+          color: Colors.white,
         ),
-        title: ("recipe".tr()),
         textStyle: TextStyle(color: activeColor),
         activeColorPrimary: activeColor,
         inactiveColorPrimary: inactiveColor,

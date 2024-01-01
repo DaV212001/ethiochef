@@ -24,13 +24,15 @@ class Header extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            title,
-            style: TextStyle(
-                letterSpacing: 0.5,
-                fontSize: 19,
-                fontWeight: FontWeight.w800,
-                color: theme.colorScheme.primary),
+          FittedBox(
+            child: Text(
+              title,
+              style: TextStyle(
+                  letterSpacing: 0.5,
+                  fontSize: 19,
+                  fontWeight: FontWeight.w800,
+                  color: theme.colorScheme.primary),
+            ),
           ),
           Visibility(
               visible: showMore,
