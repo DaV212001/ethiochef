@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       final mealService = MealService();
       final promotionService = PromotionService();
       final categoryData = await categoryService.fetchCategories();
-      print("fetch category done");
+      print("fetch category done ${categoryData[0].name['en']}");
       final breakFast = await mealService.fetchAllBreakfast();
       print("fetch breakFast done");
       final lunch = await mealService.fetchAllLunch();
