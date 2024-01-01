@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/deeplink/deep_link_handler.dart';
 import 'package:ethio_chef/models/language.dart';
 import 'package:ethio_chef/screens/auth/auth_screen.dart';
 import 'package:ethio_chef/screens/main_screen.dart';
@@ -163,7 +164,7 @@ class _EthioChefState extends State<EthioChef> {
               darkTheme: AppTheme.darkTheme,
               initialRoute: '/',
               routes: {
-                '/': (context) => MainScreen(),
+                '/': (context) => DeepLinkHandler(child: MainScreen()),
                 '/main': (context) => MainScreen()
               }),
         );
