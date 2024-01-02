@@ -37,7 +37,7 @@ class _SuccessfullyUploadedState extends State<SuccessfullyUploaded> {
         elevation: 0,
         leading: GestureDetector(
             onTap: () {
-              Navigator.of(context).pop();
+              Navigator.of(context).popUntil((route) => route.settings.name == '/competition');
             },
             child: Icon(
               Icons.arrow_back,

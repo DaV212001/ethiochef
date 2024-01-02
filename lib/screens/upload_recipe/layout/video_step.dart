@@ -5,6 +5,7 @@ import 'package:ethio_chef/widgets/upload_recipe/video_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../utils/screen_utils.dart';
 import '../../../widgets/main_button.dart';
 
 class VideoStep extends StatefulWidget {
@@ -40,6 +41,8 @@ class _VideoStepState extends State<VideoStep> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final bool isTablet = ScreenUtils.isTablet(context);
     return Column(
       children: [
         SizedBox(
@@ -58,6 +61,35 @@ class _VideoStepState extends State<VideoStep> {
         if(videoInvalid)
         invalidVideo(),
         widget.isCompetition?
+        isLoading == true?Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+                  child: Text(
+                    "uploading_title".tr(),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: theme.colorScheme.primary,
+                        fontSize: isTablet ? 18.sp : 20.sp,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+                  child: Text(
+                    "uploading_body".tr(),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: theme.unselectedWidgetColor,
+                        fontSize:isTablet ? 12.sp :  15.sp,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            )
+        ):
         MainButton(
           isLoading: isLoading,
           width: 200.w,
@@ -70,6 +102,9 @@ class _VideoStepState extends State<VideoStep> {
               });
               return;
             }
+            setState(() {
+              isLoading = true;
+            });
             widget.updateVideo(currentVideo);
           } ,
         )

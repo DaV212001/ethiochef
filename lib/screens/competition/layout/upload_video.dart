@@ -4,6 +4,7 @@ import 'package:cloudinary_flutter/cloudinary_context.dart';
 import 'package:cloudinary_url_gen/cloudinary.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/competition/layout/successfully_uploded.dart';
+import 'package:ethio_chef/screens/competition/layout/uploading.dart';
 import 'package:ethio_chef/widgets/main_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -73,48 +74,29 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
     final ThemeData theme = Theme.of(context);
     final bool isTablet = ScreenUtils.isTablet(context);
     return Scaffold(
-      appBar: MainAppBar(
-        hasBackButton: true,
-        hasMainIcons: false,
-        hasSearchField: false,
-        isSearchScreen: false,
-        title: 'upload_competition'.tr(),
+      appBar: AppBar(
+        title: Text("upload_competition".tr(),style: TextStyle(
+            color: theme.colorScheme.primary
+        )),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: GestureDetector(
+            onTap: () {
+               Navigator.of(context).popUntil((route) => route.settings.name == '/competition');
+            },
+            child: Icon(
+              Icons.arrow_back,
+              color: theme.colorScheme.primary,
+            )),
       ),
       body:  Container(
-        child: uploading==true?Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
-                  child: Text(
-                    "uploading_title".tr(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: theme.colorScheme.primary,
-                        fontSize: isTablet ? 18.sp : 20.sp,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
-                  child: Text(
-                    "uploading_body".tr(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: theme.unselectedWidgetColor,
-                        fontSize:isTablet ? 12.sp :  15.sp,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            )
-        ):Column(
+        child: Column(
           children: [
             VideoStep(
               isCompetition: true,
               video: video,
               updateVideo: (video) async {
+
                 setState(() {
                   uploading = true;
                 });
@@ -127,13 +109,14 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
                 var response = await service.sendCompetitionVideo(videoUrl);
                 setState(() {
                   uploading = false;
+                  video = null;
                 });
                 if(response.statusCode == 200){
                   print("=================================================== POP");
                   pushNewScreen(
                     context,
                     screen: SuccessfullyUploaded(),
-                    withNavBar: true,
+                    withNavBar: false,
                     pageTransitionAnimation: PageTransitionAnimation.cupertino,
                   );
                 }

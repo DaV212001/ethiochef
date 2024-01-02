@@ -155,6 +155,7 @@ class _MainScreenState extends State<MainScreen> {
         inactiveColorPrimary: inactiveColor,
       ),
       PersistentBottomNavBarItem(
+    routeAndNavigatorSettings: RouteAndNavigatorSettings(initialRoute: '/competition'),
         icon: SvgIcon(
           image: Assets.iconsMedal,
           color: activeColor,
