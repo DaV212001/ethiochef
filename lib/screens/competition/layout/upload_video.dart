@@ -4,12 +4,15 @@ import 'package:cloudinary_flutter/cloudinary_context.dart';
 import 'package:cloudinary_url_gen/cloudinary.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/competition/layout/successfully_uploded.dart';
+import 'package:ethio_chef/screens/competition/layout/uploading.dart';
 import 'package:ethio_chef/widgets/main_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'dart:io';
 
 import '../../../services/competition_service.dart';
+import '../../../utils/screen_utils.dart';
 import '../../../widgets/error_card.dart';
 import '../../../widgets/info_card.dart';
 import '../../../widgets/main_button.dart';
@@ -68,34 +71,32 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
   }
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final bool isTablet = ScreenUtils.isTablet(context);
     return Scaffold(
-      appBar: MainAppBar(
-        hasBackButton: true,
-        hasMainIcons: false,
-        hasSearchField: false,
-        isSearchScreen: false,
-        title: 'upload_competition'.tr(),
+      appBar: AppBar(
+        title: Text("upload_competition".tr(),style: TextStyle(
+            color: theme.colorScheme.primary
+        )),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: GestureDetector(
+            onTap: () {
+               Navigator.of(context).popUntil((route) => route.settings.name == '/competition');
+            },
+            child: Icon(
+              Icons.arrow_back,
+              color: theme.colorScheme.primary,
+            )),
       ),
-      body:  Visibility(
-        visible: uploading,
-        child: Center(
-          child: ErrorCard(
-            errorType: "uploading_video",
-            isFood: false,
-            refresh: (){
-              setState(() {
-                uploading = false;
-              });
-              Navigator.of(context).pop();
-            }
-          )
-        ),
-        replacement: Column(
+      body:  Container(
+        child: Column(
           children: [
             VideoStep(
               isCompetition: true,
               video: video,
               updateVideo: (video) async {
+
                 setState(() {
                   uploading = true;
                 });
@@ -106,31 +107,25 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
                 await uploadVideo();
                 CompetitionService service = CompetitionService();
                 var response = await service.sendCompetitionVideo(videoUrl);
-                SnackBar failed = SnackBar(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    content: Text(
-                        "failed_upload".tr()
-                    ));
+                setState(() {
+                  uploading = false;
+                  video = null;
+                });
                 if(response.statusCode == 200){
                   print("=================================================== POP");
                   pushNewScreen(
                     context,
                     screen: SuccessfullyUploaded(),
-                    withNavBar: true,
+                    withNavBar: false,
                     pageTransitionAnimation: PageTransitionAnimation.cupertino,
                   );
-                }else{
-                  ScaffoldMessenger.of(context).showSnackBar(failed);
                 }
-                setState(() {
-                  uploading = false;
-                });
               },
               next: (video){}, back: (){
             },
             )
           ],
-        ),
+        )
       )
     );
   }

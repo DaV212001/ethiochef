@@ -37,7 +37,7 @@ class _SuccessfullyUploadedState extends State<SuccessfullyUploaded> {
         elevation: 0,
         leading: GestureDetector(
             onTap: () {
-              Navigator.of(context).pop();
+              Navigator.of(context).popUntil((route) => route.settings.name == '/competition');
             },
             child: Icon(
               Icons.arrow_back,
@@ -78,36 +78,12 @@ class _SuccessfullyUploadedState extends State<SuccessfullyUploaded> {
                 ),
                 textAlign: TextAlign.center,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  MainButton(
-                    width: 200.w,
-                      text: 'upload_another'.tr(),
-                      onPress: () async {
-                        Navigator.of(context).pop();
-                      }),
-                  SizedBox(height: 10.h),
-                  TextButton(
-                      onPressed: () {
-                        pushNewScreen(
-                          context,
-                          screen: MyRecipes(),
-                          withNavBar: false,
-                          pageTransitionAnimation: PageTransitionAnimation.cupertino,
-                        );
-                      },
-                      child: Text(
-                        "cancel".tr(),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: theme.colorScheme.primary,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 15.sp,
-                        ),
-                      )),
-                ],
-              )
+              MainButton(
+                  width: 200.w,
+                  text: 'upload_another'.tr(),
+                  onPress: () async {
+                    Navigator.of(context).pop();
+                  })
             ],
           ),
         )
