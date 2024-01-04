@@ -8,6 +8,7 @@ import 'package:ethio_chef/screens/home/home_screen.dart';
 import 'package:ethio_chef/screens/pre_login_user_screen.dart';
 import 'package:ethio_chef/screens/profile/profile_screen.dart';
 import 'package:ethio_chef/screens/upload_recipe/upload_recipe_screen.dart';
+import 'package:ethio_chef/services/subscription_checker.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,7 @@ class _MainScreenState extends State<MainScreen> {
     _controller = PersistentTabController();
   }
   Future<void> _checkFirstTimeUser() async {
+    await SubscriptionStatus().checkStatus();
     print("check login status");
     var token = await AuthService.getAuthorizationToken();
     if(token=="none"){

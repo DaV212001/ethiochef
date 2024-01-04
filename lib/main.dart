@@ -7,6 +7,7 @@ import 'package:ethio_chef/screens/auth/auth_screen.dart';
 import 'package:ethio_chef/screens/main_screen.dart';
 import 'package:ethio_chef/screens/splash_screen.dart';
 import 'package:ethio_chef/services/authorization_service.dart';
+import 'package:ethio_chef/services/subscription_checker.dart';
 import 'package:ethio_chef/services/user_service.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:ethio_chef/theme/model_theme.dart';
@@ -23,6 +24,7 @@ void main() async {
   await EasyLocalization.ensureInitialized();
 
   runApp(
+
       Phoenix(
         child: EasyLocalization(
         supportedLocales: const [

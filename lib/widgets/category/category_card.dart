@@ -1,6 +1,7 @@
 
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/services/subscription_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:ethio_chef/models/food.dart';
@@ -44,8 +45,8 @@ class _CategoryCardState extends State<CategoryCard> {
             content: Text(
                 'checking_subscription_please_wait'.tr()
             ));
-        ScaffoldMessenger.of(context).showSnackBar(checking);
-        String status = await Check.checkToShow();
+        // ScaffoldMessenger.of(context).showSnackBar(checking);
+        String? status = SubscriptionStatus().status;
         setState(() {
           isLoading = false;
         });

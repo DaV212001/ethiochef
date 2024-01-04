@@ -1,3 +1,4 @@
+import 'package:ethio_chef/services/subscription_checker.dart';
 import 'package:ethio_chef/widgets/main_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:ethio_chef/models/subscriptionplans.dart' as h;
@@ -213,7 +214,7 @@ Future<void> getUserData() async {
                                   await pushNewScreen(context,
                                       screen: PaymentScreen(url: verification.checkoutUrl!)
                                   );
-
+                                  await SubscriptionStatus().checkStatus();
                                   // bool notpaid = await PaymentService().verifyChapaPayment(verification.txref!);
                                   // print(notpaid);
                                   print("amount ${subscriptionPlans[index].price}");
