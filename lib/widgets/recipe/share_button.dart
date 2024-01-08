@@ -2,7 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/models/language.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:share_plus/share_plus.dart';
+
+import '../../utils/screen_utils.dart';
 
 class ShareButton extends StatelessWidget {
   final Food food;
@@ -10,6 +13,7 @@ class ShareButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isTablet = ScreenUtils.isTablet(context);
     ThemeData theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(10),
@@ -39,7 +43,10 @@ class ShareButton extends StatelessWidget {
             SizedBox(width: 10),
             Text(
               "share_recipe".tr(),
-              style: theme.textTheme.headlineMedium,
+              style: TextStyle(
+                  fontSize: isTablet ? 15.sp : 20.sp,
+                  fontWeight: FontWeight.w800,
+                  color: theme.colorScheme.secondaryContainer),
             )
           ],
         ),

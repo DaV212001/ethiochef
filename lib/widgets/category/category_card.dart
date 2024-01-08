@@ -39,13 +39,6 @@ class _CategoryCardState extends State<CategoryCard> {
         setState(() {
           isLoading = true;
         });
-        SnackBar checking =SnackBar(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            showCloseIcon: true,
-            content: Text(
-                'checking_subscription_please_wait'.tr()
-            ));
-        // ScaffoldMessenger.of(context).showSnackBar(checking);
         String? status = SubscriptionStatus().status;
         setState(() {
           isLoading = false;
@@ -94,7 +87,7 @@ class _CategoryCardState extends State<CategoryCard> {
         }
       },
       child: Card(
-        elevation: 4,
+        elevation: 1,
         child: ListView(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -166,19 +159,19 @@ class _CategoryCardState extends State<CategoryCard> {
           FittedBox(
             child: Text(
               widget.food.Name.toString(),
-              style: theme.textTheme.headlineMedium?.copyWith(
-                color: theme.colorScheme.surface,
-                fontWeight: FontWeight.w500
-              ),
+              style: TextStyle(
+                  fontSize: isTablet ? 11.sp : 15.sp,
+                  fontWeight: FontWeight.w400,
+                  color: theme.colorScheme.secondaryContainer),
             ),
           ):
           FittedBox(
             child: Text(
                 widget.food.name.toString(),
-                style: theme.textTheme.headlineMedium?.copyWith(
-                  color: theme.colorScheme.tertiary,
-                  fontWeight: FontWeight.w600,
-                )
+              style: TextStyle(
+                  fontSize: isTablet ? 11.sp : 15.sp,
+                  fontWeight: FontWeight.w400,
+                  color: theme.colorScheme.secondaryContainer),
             ),
           ),
           // SizedBox(

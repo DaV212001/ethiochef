@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/deeplink/deep_link_handler.dart';
 import 'package:ethio_chef/models/language.dart';
@@ -12,32 +13,44 @@ import 'package:ethio_chef/services/user_service.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:ethio_chef/theme/model_theme.dart';
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:ethio_chef/theme/app_theme.dart';
+
+final navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: AppTheme.denim
+  ));
   WidgetsFlutterBinding.ensureInitialized();
   await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 15));
   await EasyLocalization.ensureInitialized();
 
   runApp(
-
-      Phoenix(
-        child: EasyLocalization(
-        supportedLocales: const [
-          // needed to use these locales because om,ti  where not supported
-          Locale('en', 'AU'),
-          Locale('am'),
-          Locale('en', 'GB'),
-          Locale('en'),
-        ],
-        path: 'assets/locale',
-        fallbackLocale: const Locale('en'),
-        child: RestartWidget(child: EthioChef()))
-  )
+    Phoenix(
+         child:
+         //DevicePreview(
+        //     enabled: !kReleaseMode,
+        //     builder: (context) =>
+                EasyLocalization(
+                supportedLocales: const [
+                  // needed to use these locales because om,ti  where not supported
+                  Locale('en', 'AU'),
+                  Locale('am'),
+                  Locale('en', 'GB'),
+                  Locale('en'),
+                ],
+                path: 'assets/locale',
+                fallbackLocale: const Locale('en'),
+                child: RestartWidget(child: EthioChef()))
+  // ),
+      )
   );
 }
 class RestartWidget extends StatefulWidget {
@@ -130,14 +143,14 @@ class _EthioChefState extends State<EthioChef> {
   @override
   Widget build(BuildContext context) {
     Language.selectedLanguage = Language.getSelectedLanguage(context);
-
+    print("main 1");
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ModelTheme())
       ],
-      // create: (_) => ModelTheme(),
       child: Consumer<ModelTheme>(
           builder: (context, ModelTheme themeNotifier, child) {
+            print("main 2");
         // themeNotifier.isDark = false; // using to check dark theme
             Widget homeScreen;
             // print("First Time User status $isFirstTimeUser");
@@ -150,6 +163,7 @@ class _EthioChefState extends State<EthioChef> {
               print("To Main Screen");
               homeScreen = MainScreen();
             }
+            print("main 3");
         return ScreenUtilInit(
           designSize: const Size(412, 892),//Never change this value
           child: MaterialApp(

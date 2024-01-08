@@ -9,6 +9,7 @@ import '../../../models/category.dart';
 import '../../../models/food.dart';
 import '../../../services/food_service.dart';
 import '../../../widgets/category/category_button.dart';
+import '../../../widgets/pull_to_refresh.dart';
 import '../../../widgets/screen_head.dart';
 import 'package:ethio_chef/models/language.dart';
 
@@ -93,7 +94,19 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
               tabs: tabs,
             ),
 
-            Expanded(child: VerticalFoodList(pagingController: _pagingController, isSearchList: false,))
+             Expanded(
+                    child: RefreshWidget(
+                      child: VerticalFoodList(pagingController:
+                      _pagingController, isSearchList: false,),
+                      onRefresh: ()async{
+                        setState(() {
+                          _pagingController.refresh();
+                        });
+                      },
+                    ),
+                ),
+
+
           ],
         ),
       ),

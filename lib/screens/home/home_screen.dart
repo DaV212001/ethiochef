@@ -10,6 +10,7 @@ import '../../services/meal_service.dart';
 import '../../services/promotion_service.dart';
 import '../../widgets/error_card.dart';
 import '../../widgets/loading.dart';
+import '../../widgets/pull_to_refresh.dart';
 import 'layout/ads_carousel.dart';
 import 'layout/category_carousel.dart';
 import 'layout/meal_tab.dart';
@@ -59,85 +60,77 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
-          future: _future,
-          builder: (context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Loading();
-            }
-            if (snapshot.hasError) {
-              return Center(
-                  child: ErrorCard(
-                    errorType: snapshot.error.toString(),
-                    refresh: () {
-                      setState(() {
-                        _future = fetchData();
-                      });
-                    },
-                  ));
-            }
-            return buildHomePage(
-                snapshot.data[0] as List<Category>,
-                snapshot.data[1] as List<Food>,
-                snapshot.data[2] as List<Food>,
-                snapshot.data[3] as List<Food>,
-                snapshot.data[4] as List<Food>,
-                snapshot.data[5] as List<Promotion>);
-          }),
-    );
+        body: FutureBuilder(
+            future: _future,
+            builder: (context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Loading();
+              }
+              if (snapshot.hasError) {
+                return Center(
+                    child: ErrorCard(
+                      errorType: snapshot.error.toString(),
+                      refresh: () {
+                        setState(() {
+                          _future = fetchData();
+                        });
+                      },
+                    ));
+              }
+              return buildHomePage(
+                  snapshot.data[0] as List<Category>,
+                  snapshot.data[1] as List<Food>,
+                  snapshot.data[2] as List<Food>,
+                  snapshot.data[3] as List<Food>,
+                  snapshot.data[4] as List<Food>,
+                  snapshot.data[5] as List<Promotion>);
+            }),
+      );
   }
 
   Widget buildHomePage(List<Category> category, List<Food> breakfast,
       List<Food> lunch,List<Food> superMeal,List<Food> dinner, List<Promotion> promotion
       ){
-    return SafeArea(
-      child: SingleChildScrollView(
-          child: Column(
-            children: [
-              AdsCarousel(promotion: promotion),
-              SizedBox(
-                height: 5.h,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 15.h,
-                    ),
-                    HomeCategoryTab(
-                      breakfast: breakfast,
-                      lunch: lunch,
-                      superMeal: superMeal,
-                      dinner: dinner,
-                    ),
-                    // if(showAddRecipeCard)
-                    //   SizedBox(
-                    //     height: 15.h,
-                    //   ),
-                    // if(showAddRecipeCard)
-                    //   AddRecipeCard(
-                    //     onRemove: () {
-                    //       setState(() {
-                    //         showAddRecipeCard = false;
-                    //       });
-                    //     },
-                    //   ),
-                    CategoryCarousel(category: category),
-                    SizedBox(
-                      height: 15.h,
-                    ),
-                    // RecentDishes(
-                    //   dishes: PlaceHolderData.dishes,
-                    // ),
-                    SizedBox(
-                      height: 15.h,
-                    ),
-                  ],
+    return RefreshWidget(
+      child: SafeArea(
+        child: SingleChildScrollView(
+            child: Column(
+              children: [
+                AdsCarousel(promotion: promotion),
+                SizedBox(
+                  height: 5.h,
                 ),
-              )
-            ],)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 15.h,
+                      ),
+                      HomeCategoryTab(
+                        breakfast: breakfast,
+                        lunch: lunch,
+                        superMeal: superMeal,
+                        dinner: dinner,
+                      ),
+                      CategoryCarousel(category: category),
+                      SizedBox(
+                        height: 15.h,
+                      ),
+                      SizedBox(
+                        height: 15.h,
+                      ),
+                    ],
+                  ),
+                )
+              ],)
+        ),
       ),
+        onRefresh: ()async{
+          setState(() {
+            _future = fetchData();
+          });
+        }
     );
   }
 }

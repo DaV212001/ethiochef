@@ -7,6 +7,7 @@ import 'package:ethio_chef/widgets/horizontal_food_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../utils/screen_utils.dart';
 import '../../../widgets/meal_carousel.dart';
 
 class HomeCategoryTab extends StatelessWidget {
@@ -25,6 +26,7 @@ class HomeCategoryTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    final bool isTablet = ScreenUtils.isTablet(context);
     return DefaultTabController(
       length: 4,
       child: Column(
@@ -36,10 +38,14 @@ class HomeCategoryTab extends StatelessWidget {
           ButtonsTabBar(
             backgroundColor: theme.colorScheme.primary,
             unselectedBackgroundColor: Colors.transparent,
-            unselectedLabelStyle: theme.textTheme.labelMedium
-                ?.copyWith(color: theme.colorScheme.tertiary),
-            labelStyle: theme.textTheme.bodyMedium
-                ?.copyWith(color: theme.colorScheme.onTertiary),
+            unselectedLabelStyle:  TextStyle(
+                fontSize: isTablet ? 11.sp : 15.sp,
+                fontWeight: FontWeight.w300,
+                color: theme.colorScheme.onTertiary),
+            labelStyle:  TextStyle(
+                fontSize: isTablet ? 11.sp : 15.sp,
+                fontWeight: FontWeight.w400,
+                color: theme.colorScheme.secondary),
             contentPadding: EdgeInsets.symmetric(horizontal: 10),
             radius: 5,
             tabs: [

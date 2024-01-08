@@ -6,6 +6,8 @@ import 'package:ethio_chef/screens/recipe/layout/recipe_steps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../utils/screen_utils.dart';
+
 
 class RecipeScreenTab extends StatefulWidget {
   final Food food;
@@ -20,6 +22,7 @@ class _RecipeScreenTabState extends State<RecipeScreenTab> {
   int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
+    final bool isTablet = ScreenUtils.isTablet(context);
     ThemeData theme = Theme.of(context);
     return DefaultTabController(
       length: 2,
@@ -35,12 +38,14 @@ class _RecipeScreenTabState extends State<RecipeScreenTab> {
             unselectedBorderColor: Colors.transparent,
             backgroundColor: theme.colorScheme.primary,
             unselectedBackgroundColor: Colors.transparent,
-            unselectedLabelStyle: theme.textTheme.labelMedium
-                ?.copyWith(
-                color: theme.colorScheme.tertiary
-            ),
-            labelStyle: theme.textTheme.bodyMedium
-                ?.copyWith(color: theme.colorScheme.onTertiary),
+            unselectedLabelStyle:  TextStyle(
+                fontSize: isTablet ? 11.sp : 15.sp,
+                fontWeight: FontWeight.w300,
+                color: theme.colorScheme.onTertiary),
+            labelStyle:  TextStyle(
+                fontSize: isTablet ? 11.sp : 15.sp,
+                fontWeight: FontWeight.w400,
+                color: theme.colorScheme.secondary),
             contentPadding: EdgeInsets.symmetric(horizontal: 10),
             radius: 2,
             tabs: [
@@ -76,9 +81,9 @@ class _RecipeScreenTabState extends State<RecipeScreenTab> {
                           softWrap: true,
                           overflow: TextOverflow.visible,
                           style: TextStyle(
-                              fontSize: 19,
-                              fontWeight: FontWeight.w500,
-                              color: theme.buttonTheme.colorScheme?.secondary),
+                              fontSize: isTablet ? 15.sp : 19.sp,
+                              fontWeight: FontWeight.w600,
+                              color: theme.colorScheme.secondaryContainer),
                         ),
                         SizedBox(height: 10)
                       ],
@@ -95,7 +100,7 @@ class _RecipeScreenTabState extends State<RecipeScreenTab> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: widget.food.stepsList!.entries.map((ingredient) {
+                  children: widget.food.stepsList!.entries.map((step) {
                     return Flex(
                       direction: Axis.vertical,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,13 +108,13 @@ class _RecipeScreenTabState extends State<RecipeScreenTab> {
                       children: [
                         const SizedBox(width: 8.0),
                         Text(
-                          "${index++}. ${ingredient.value}",
+                          "${index++}. ${step.value}",
                           softWrap: true,
                           overflow: TextOverflow.visible,
                           style: TextStyle(
-                              fontSize: 19,
-                              fontWeight: FontWeight.w500,
-                              color: theme.buttonTheme.colorScheme?.secondary),
+                              fontSize: isTablet ? 15.sp : 19.sp,
+                              fontWeight: FontWeight.w600,
+                              color: theme.colorScheme.secondaryContainer),
                         ),
                         SizedBox(height: 10)
                       ]

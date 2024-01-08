@@ -86,20 +86,8 @@ Widget build(BuildContext context) {
                         scrollDirection: Axis.vertical,
                         physics: BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
-                          duration =
-                          subscriptionPlans[index].duration != null ?
-                          //subscription duration is not null
-                          subscriptionPlans[index].plan == 'Yearly' ?
-                          //subscription duration is not null and subscription is yearly
-                          '${currentYear -
-                              subscriptionPlans[index].duration!.year} years'
-                              :
-                          //subscription duration is not null and subscription is monthly
-                          '${currentMonth -
-                              subscriptionPlans[index].duration!.month} months'
-                              :
-                          //subscription duration is null
-                          '0';
+
+                          duration =subscriptionPlans[index].duration!.toString() + " Months";
                           return SubscriptionCard(
                             buttonName: 'Subscribe',
                             plan: subscriptionPlans[index].plan!,
@@ -130,22 +118,9 @@ Widget build(BuildContext context) {
                         scrollDirection: Axis.vertical,
                         physics: BouncingScrollPhysics(),
                         itemBuilder: (context, index) {
-                          durationu =
-                          userSubscriptionPlans.isNotEmpty?
-                          userSubscriptionPlans[index].duration != null ?
-                          //subscription duration is not null
-                          userSubscriptionPlans[index].plan == 'Yearly' ?
-                          //subscription duration is not null and subscription is yearly
-                          '${currentYear -
-                              userSubscriptionPlans[index].duration!.year} years'
-                              :
-                          //subscription duration is not null and subscription is monthly
-                          '${currentMonth -
-                              userSubscriptionPlans[index].duration!.month} months'
-                              :
-                          //subscription duration is null
-                          '0'
-                              : '0';
+                          durationu =userSubscriptionPlans.isNotEmpty?
+                          userSubscriptionPlans[index].duration.toString()+" Months left":"0";
+
                           return SubscriptionCard(
                             buttonName: 'Delete',
                             plan: userSubscriptionPlans[index].plan!,

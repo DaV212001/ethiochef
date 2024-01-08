@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../models/language.dart';
+import '../../../utils/screen_utils.dart';
 
 class RecipeHeader extends StatelessWidget {
   final Food food;
@@ -12,6 +13,7 @@ class RecipeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isTablet = ScreenUtils.isTablet(context);
     ThemeData theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.only(
@@ -23,7 +25,10 @@ class RecipeHeader extends StatelessWidget {
           padding: const EdgeInsets.only(right: 20),
           child: Text(
             food.name.toString(),
-            style: theme.textTheme.headlineLarge,
+            style: TextStyle(
+                fontSize: isTablet ? 15.sp : 20.sp,
+                fontWeight: FontWeight.w300,
+                color: theme.colorScheme.secondaryContainer),
           ),
         ),
         // Column(
@@ -103,6 +108,7 @@ class RecipeHeader extends StatelessWidget {
 
   Widget description(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    final bool isTablet = ScreenUtils.isTablet(context);
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Column(
@@ -110,9 +116,10 @@ class RecipeHeader extends StatelessWidget {
           children: [
             Text(
               "dish_description".tr(),
-              style: theme.textTheme.headlineMedium?.copyWith(
-                  color: theme.colorScheme.tertiary,
-                  fontWeight: FontWeight.w800),
+              style: TextStyle(
+                  fontSize: isTablet ? 15.sp : 20.sp,
+                  fontWeight: FontWeight.w800,
+                  color: theme.colorScheme.secondaryContainer),
             ),
             SizedBox(
               height: 10,
@@ -120,10 +127,9 @@ class RecipeHeader extends StatelessWidget {
             Text(
               food.description!,
               style: TextStyle(
-                fontSize: 20,
-                color: theme.colorScheme.tertiary.withOpacity(0.7),
-                  fontWeight: FontWeight.w300
-              ),
+                  fontSize: isTablet ? 15.sp : 20.sp,
+                  fontWeight: FontWeight.w300,
+                  color: theme.colorScheme.onTertiary),
             ),
           ],
         ));

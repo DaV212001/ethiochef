@@ -227,6 +227,7 @@ class UserService {
     final response = await http.get(
       Uri.parse("${Constants.url}/pay/plans"),
     );
+    print("==============fetchSubscriptionPlans response.body====================");
     print(response.body);
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);

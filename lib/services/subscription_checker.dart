@@ -8,6 +8,7 @@ class SubscriptionStatus {
   static final SubscriptionStatus _singleton = SubscriptionStatus._internal();
 
   factory SubscriptionStatus() {
+    print("SubscriptionStatus status ${_singleton.status}");
     return _singleton;
   }
 
@@ -16,7 +17,9 @@ class SubscriptionStatus {
   String? status;
 
   Future<void> checkStatus() async {
+    print("checkStatus 1");
     var token = await AuthService.getAuthorizationToken();
+    print("checkStatus 2");
     if(token=="none"){
       status = "Not logged in";
     } else {

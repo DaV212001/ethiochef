@@ -13,6 +13,7 @@ import '../../widgets/error_card.dart';
 import '../../widgets/loading.dart';
 import '../../widgets/main_button.dart';
 import '../../widgets/profile/route_card.dart';
+import '../../widgets/pull_to_refresh.dart';
 import '../subscription/all_subscriptions.dart';
 import 'layout/route_list.dart';
 import 'layout/user_screen_header.dart';
@@ -70,65 +71,64 @@ String? footertext;
   int amount = 0;
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          body: FutureBuilder(
-              future: _future,
-              builder: (context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Loading();
-                }
-                if (snapshot.hasError) {
-                  return Center(
-                      child: ErrorCard(
-                        errorType: snapshot.error.toString(),
-                        refresh: () {
-                          setState(() {
-                            _future = fetchData();
-                          });
-                        },
-                      ));
-                }
-                //TODO: check this code esti
-                if(snapshot.data == null){
-                  return Center(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("another_account_login".tr()),
-                        MainButton(
-                          isLoading: isLoading,
-                          text: "log_out".tr(),
-                          onPress: () async {
+    return RefreshWidget(
+      child: SafeArea(
+        child: Scaffold(
+            body: FutureBuilder(
+                future: _future,
+                builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Loading();
+                  }
+                  if (snapshot.hasError) {
+                    return Center(
+                        child: ErrorCard(
+                          errorType: snapshot.error.toString(),
+                          refresh: () {
                             setState(() {
-                              isLoading = true;
+                              _future = fetchData();
                             });
-                            await AuthService.logout();
-                            SharedPreferences shared = await SharedPreferences.getInstance();
-                            await shared.remove('savedRecipes');
-                            await shared.remove('ethioChef_authorization_token');
-                            Phoenix.rebirth(context);
-                            setState(() {
-                              isLoading = false;
-                            });
-                          }
-                        )
-                      ]
-                    ),
-                  );
-                }
-                // UserProfile us = snapshot.data as UserProfile;
-                // if(us.message == 'User is not subscribed'){
-                //   return AllSubscriptions(
-                //       returnPrice: (n){
-                //
-                //       }, isSignUp: false, first_name: '', last_name: '', phone: '',
-                //     );
-                // }
-                return buildUserScreen(snapshot.data as UserProfile);
-              })
+                          },
+                        ));
+                  }
+                  //TODO: check this code esti
+                  if(snapshot.data == null){
+                    return Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("another_account_login".tr()),
+                          MainButton(
+                            isLoading: isLoading,
+                            text: "log_out".tr(),
+                            onPress: () async {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              await AuthService.logout();
+                              SharedPreferences shared = await SharedPreferences.getInstance();
+                              await shared.remove('savedRecipes');
+                              await shared.remove('ethioChef_authorization_token');
+                              Phoenix.rebirth(context);
+                              setState(() {
+                                isLoading = false;
+                              });
+                            }
+                          )
+                        ]
+                      ),
+                    );
+                  }
+                  return buildUserScreen(snapshot.data as UserProfile);
+                })
+        ),
       ),
+        onRefresh:()async{
+          setState(() {
+            _future = fetchData();
+          });
+        }
     );
   }
   @override

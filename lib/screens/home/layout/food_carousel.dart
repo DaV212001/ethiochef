@@ -135,94 +135,96 @@ class _FoodCarouselState extends State<FoodCarousel> {
     double height = 220;
     double width = 170;
     return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            // Container(
-            //   height: height,
-            //   child: ListView.builder(
-            //       physics: BouncingScrollPhysics(),
-            //       shrinkWrap: true,
-            //       scrollDirection: Axis.horizontal,
-            //       itemExtent: width,
-            //       itemCount: food.length,
-            //       itemBuilder: (BuildContext context, int index) {
-            //         return Padding(
-            //           padding: EdgeInsets.symmetric(horizontal: 5.w),
-            //           child: ImageFoodCard(
-            //               food: food[index]
-            //           ),
-            //         );
-            //       }
-            //   ),
-            // ),
-            CarouselSlider(
-              items: food.map((foods) {
-                return Builder(
-                  builder: (BuildContext context) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 1.w),
-                        child: CategoryCard(
-                            food: foods
-                        )
-                      );
-
-                  },
-                );
-              }).toList(),
-              carouselController: carouselController,
-              options: CarouselOptions(
-                scrollPhysics: const BouncingScrollPhysics(),
-                autoPlay: false,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    currentIndex = index;
-                  });
-                },
-                height: height,
-                padEnds: false,
-                disableCenter: false,
-                enableInfiniteScroll: false,
-                reverse: false,
-                enlargeCenterPage: false,
-                  animateToClosest: false,
-                  pageSnapping: false,
-                viewportFraction: 0.4
-              )
-            ),
-            SizedBox(height: 5),
-            // Container(
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.center,
-            //     children: [
-            //       Row(
-            //         mainAxisAlignment: MainAxisAlignment.center,
-            //         children: food.asMap().entries.map((entry) {
-            //
-            //           return GestureDetector(
-            //             onTap: () {},
-            //             child: Container(
-            //               width: currentIndex == entry.key ? 17.w : 7.w,
-            //               height: 7.h,
-            //               margin: EdgeInsets.symmetric(
-            //                 horizontal: 3.0.w,
-            //               ),
-            //               decoration: BoxDecoration(
-            //                   borderRadius: BorderRadius.circular(10.r),
-            //                   color: currentIndex == entry.key
-            //                       ? theme.colorScheme.primaryContainer
-            //                       : theme.colorScheme.primary),
-            //             ),
-            //           );
-            //
-            //         }).toList(),
-            //       )
-            //     ],
-            //   ),
-            // )
-      ]),
+      height: height,
+      child: ListView.builder(
+          physics: BouncingScrollPhysics(),
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemExtent: width,
+          itemCount: food.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 1.w),
+                child: CategoryCard(
+                    food: food[index]
+                )
+            );
+          }
+      ),
     );
+
+    //   Container(
+    //   child: Column(
+    //     crossAxisAlignment: CrossAxisAlignment.start,
+    //       mainAxisAlignment: MainAxisAlignment.start,
+    //       children: [
+    //
+    //         // CarouselSlider(
+    //         //   items: food.map((foods) {
+    //         //     return Builder(
+    //         //       builder: (BuildContext context) {
+    //         //           return Padding(
+    //         //             padding: EdgeInsets.symmetric(horizontal: 1.w),
+    //         //             child: CategoryCard(
+    //         //                 food: foods
+    //         //             )
+    //         //           );
+    //         //
+    //         //       },
+    //         //     );
+    //         //   }).toList(),
+    //         //   carouselController: carouselController,
+    //         //   options: CarouselOptions(
+    //         //     scrollPhysics: const BouncingScrollPhysics(),
+    //         //     autoPlay: false,
+    //         //     onPageChanged: (index, reason) {
+    //         //       setState(() {
+    //         //         currentIndex = index;
+    //         //       });
+    //         //     },
+    //         //     height: height,
+    //         //     padEnds: false,
+    //         //     disableCenter: false,
+    //         //     enableInfiniteScroll: false,
+    //         //     reverse: false,
+    //         //     enlargeCenterPage: false,
+    //         //       animateToClosest: false,
+    //         //       pageSnapping: false,
+    //         //     viewportFraction: 0.4
+    //         //   )
+    //         // ),
+    //         // SizedBox(height: 5),
+    //         // Container(
+    //         //   child: Row(
+    //         //     mainAxisAlignment: MainAxisAlignment.center,
+    //         //     children: [
+    //         //       Row(
+    //         //         mainAxisAlignment: MainAxisAlignment.center,
+    //         //         children: food.asMap().entries.map((entry) {
+    //         //
+    //         //           return GestureDetector(
+    //         //             onTap: () {},
+    //         //             child: Container(
+    //         //               width: currentIndex == entry.key ? 17.w : 7.w,
+    //         //               height: 7.h,
+    //         //               margin: EdgeInsets.symmetric(
+    //         //                 horizontal: 3.0.w,
+    //         //               ),
+    //         //               decoration: BoxDecoration(
+    //         //                   borderRadius: BorderRadius.circular(10.r),
+    //         //                   color: currentIndex == entry.key
+    //         //                       ? theme.colorScheme.primaryContainer
+    //         //                       : theme.colorScheme.primary),
+    //         //             ),
+    //         //           );
+    //         //
+    //         //         }).toList(),
+    //         //       )
+    //         //     ],
+    //         //   ),
+    //         // )
+    //   ]),
+    // );
   }
 
 }

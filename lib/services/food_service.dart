@@ -77,7 +77,6 @@ class FoodService{
       final response = await http.get(
           Uri.parse('${Constants.url}/user/food/category/$categoryId/?limit=1000&lang=${Language.getLocaleCode()}')
       );
-      print("Response body ${Language.getLocaleCode()}");
       print("fetchFoodByCategoryId");
       print(response.body);
       print(response.statusCode);
@@ -156,11 +155,18 @@ class FoodService{
     var requestBody = jsonEncode({
       "food_id": foodId
     });
-    var response = await http.post(Uri.parse("${Constants.url}/user/food/like"),
+    print("requestBody ${{
+      "food_id": foodId
+    }}");
+    var response = await http.post(
+        Uri.parse("${Constants.url}/user/food/like"),
         headers: {
+          'Content-type': 'application/json',
           'Authorization': 'JWT $accessToken',
         },
-        body: requestBody
+        body: jsonEncode({
+          "food_id": foodId
+        })
     );
     print("Response Body  == ${response.body} == Response Body");
     print(response.statusCode);
@@ -169,7 +175,7 @@ class FoodService{
   Future<http.Response> unLikeFood(int foodId) async {
     final accessToken = await AuthService.getAuthorizationToken();
     print("access_token $accessToken");
-
+    print("unlike food");
     var response = await http.delete(
         Uri.parse("${Constants.url}/user/food/unlike/$foodId"),
         headers: {

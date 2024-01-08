@@ -102,11 +102,11 @@ class _MainScreenState extends State<MainScreen> {
   List<PersistentBottomNavBarItem> _navBarsItems() {
     Color inactiveColor = Theme
         .of(context)
-        .unselectedWidgetColor;
+        .colorScheme.onSecondary;
     Color activeColor = Theme
         .of(context)
         .colorScheme
-        .onSurface;
+        .primary;
     return [
       PersistentBottomNavBarItem(
         routeAndNavigatorSettings: RouteAndNavigatorSettings(initialRoute: '/home'),
@@ -145,7 +145,7 @@ class _MainScreenState extends State<MainScreen> {
           color: Theme
               .of(context)
               .colorScheme
-              .surface,
+              .onSecondary,
         ),
         inactiveIcon: SvgIcon(
           size: 20,
