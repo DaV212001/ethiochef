@@ -2,23 +2,30 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import '../models/footer_data.dart';
+import '../utils/constants.dart';
+import '../utils/error_util.dart';
+
 class FooterService{
-  Future<String?> getFooterText() async{
-    String footertext;
-    final response = await http.get(Uri.parse("https://apiv2.ethiochef.com/user/footer"));
-    if(response.statusCode == 200){
-      var footertextdata = jsonDecode(response.body);
-      List <dynamic> footerlist = footertextdata['data'] as List;
-      if (footerlist.isNotEmpty){
-      footertext = footertextdata['data'][0];
+  Future<FooterData> getFooterData() async {
+    try {
+      await ErrorUtil.checkConnection();
+      final response = await http.get(
+        Uri.parse("${Constants.url}/user/footer"),
+        headers: {
+          "Content-type": "application/json",
+        },
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        dynamic jsonData = json.decode(response.body);
+        final FooterData footerData = FooterData.fromJson(jsonData["data"][0]);
+        return footerData;
+      } else {
+        throw Exception(response.statusCode.toString());
       }
-      else {
-        footertext = '';
-      }
-      return footertext;
-    }
-    else{
-      throw Exception('Unable to get footer');
+    } catch (error) {
+      rethrow;
     }
   }
 }

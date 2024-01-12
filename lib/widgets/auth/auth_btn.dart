@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../generated/assets.dart';
 
@@ -31,8 +32,10 @@ class AuthBtn extends StatelessWidget {
                       child: CircularProgressIndicator(),
                       replacement: Text(
                         text,
-                        style: theme.textTheme.headlineMedium
-                            ?.copyWith(color: theme.colorScheme.background)
+                          style: TextStyle(
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w800,
+                              color: theme.colorScheme.secondary)
                       )
                     ),style: ButtonStyle(
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(

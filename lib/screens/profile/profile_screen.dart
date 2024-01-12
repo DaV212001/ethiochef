@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../models/footer_data.dart';
 import '../../models/user.dart';
 import '../../models/user_profile.dart';
 import '../../services/authorization_service.dart';
@@ -13,11 +14,13 @@ import '../../widgets/error_card.dart';
 import '../../widgets/loading.dart';
 import '../../widgets/main_button.dart';
 import '../../widgets/profile/route_card.dart';
+import '../../widgets/profile/user_screen_footer.dart';
 import '../../widgets/pull_to_refresh.dart';
 import '../subscription/all_subscriptions.dart';
 import 'layout/route_list.dart';
-import 'layout/user_screen_header.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+
+import 'layout/user_screen_header.dart';
 class ProfileScreen extends StatefulWidget {
   final Function()? onRefresh;
   const ProfileScreen({Key? key, this.onRefresh}) : super(key: key);
@@ -29,7 +32,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   bool isLoggedIn = false;
   late User user = User(lastName: '', firstName: '');
-String? footertext;
   Future? _future;
   bool isLoading = false;
 
@@ -41,7 +43,7 @@ String? footertext;
 
 
 
-  Future<UserProfile?> fetchData() async {
+  Future<dynamic> fetchData() async {
     var access_token = await AuthService.getAuthorizationToken();
     if(access_token == 'none'){
       pushNewScreen(context, screen: AuthScreen(), withNavBar: false);
@@ -58,11 +60,11 @@ String? footertext;
       }
       print("userData1 $userData");
       FooterService foot = FooterService();
-      footertext = await foot.getFooterText();
+      var footerData = await foot.getFooterData();
       setState(() {
 
       });
-      return userData;
+      return [userData, footerData];
     } catch (error) {
 
       rethrow;
@@ -120,7 +122,7 @@ String? footertext;
                       ),
                     );
                   }
-                  return buildUserScreen(snapshot.data as UserProfile);
+                  return buildUserScreen(snapshot.data[0] as UserProfile, snapshot.data[1] as FooterData);
                 })
         ),
       ),
@@ -132,7 +134,7 @@ String? footertext;
     );
   }
   @override
-  Widget buildUserScreen(UserProfile user) {
+  Widget buildUserScreen(UserProfile user, FooterData data) {
     return SafeArea(
       child: Scaffold(
         body: ListView(
@@ -192,11 +194,6 @@ String? footertext;
                     await shared.remove('ethioChef_authorization_token');
                     await shared.clear();
                     Phoenix.rebirth(context);
-                    // Navigator.of(context).popUntil((route) => route.settings.name == '/main');
-                    //
-                    // Navigator.of(context).popUntil((route) {
-                    //   return route.settings.name == '/main';
-                    // });
                     setState(() {
                       isLoading = false;
                     });
@@ -206,7 +203,7 @@ String? footertext;
             SizedBox(height: 5.h,),
             Align(
               alignment: Alignment.bottomCenter,
-              child: Text(footertext!),
+              child: UserScreenFooter(footerData:data),
             ),
             SizedBox(
               height: 45,

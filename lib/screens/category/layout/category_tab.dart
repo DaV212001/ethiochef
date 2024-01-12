@@ -8,6 +8,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import '../../../models/category.dart';
 import '../../../models/food.dart';
 import '../../../services/food_service.dart';
+import '../../../utils/screen_utils.dart';
 import '../../../widgets/category/category_button.dart';
 import '../../../widgets/pull_to_refresh.dart';
 import '../../../widgets/screen_head.dart';
@@ -55,6 +56,7 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isTablet = ScreenUtils.isTablet(context);
     final ThemeData theme = Theme.of(context);
     List<Tab> tabs = widget.category
         .map((e) =>
@@ -83,12 +85,14 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
               },
               backgroundColor: theme.colorScheme.primary,
               unselectedBackgroundColor: Colors.transparent,
-              unselectedLabelStyle: theme.textTheme.labelMedium
-                  ?.copyWith(
-                  color: theme.colorScheme.tertiary
-              ),
-              labelStyle: theme.textTheme.bodyMedium
-                  ?.copyWith(color: theme.colorScheme.onTertiary),
+              unselectedLabelStyle:  TextStyle(
+                  fontSize: isTablet ? 11.sp : 15.sp,
+                  fontWeight: FontWeight.w500,
+                  color: theme.colorScheme.onTertiary),
+              labelStyle:  TextStyle(
+                  fontSize: isTablet ? 11.sp : 15.sp,
+                  fontWeight: FontWeight.w600,
+                  color: theme.colorScheme.secondary),
               contentPadding: EdgeInsets.symmetric(horizontal: 10),
               radius: 5,
               tabs: tabs,

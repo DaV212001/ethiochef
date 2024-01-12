@@ -59,5 +59,12 @@ class Assets {
   static const String localeEn = 'assets/locale/en.json';
   static const String localeEnAU = 'assets/locale/en-AU.json';
   static const String localeEnGB = 'assets/locale/en-GB.json';
+  static const String socialFacebook = 'assets/images/social/facebook.svg';
+  static const String socialInstagram = 'assets/images/social/instagram.svg';
+  static const String socialLinkedin = 'assets/images/social/linkedin.svg';
+  static const String socialTelegram = 'assets/images/social/telegram.svg';
+  static const String socialTiktok = 'assets/images/social/tiktok.svg';
+  static const String socialTwitter = 'assets/images/social/twitter.svg';
+  static const String socialYoutube = 'assets/images/social/youtube.svg';
 
 }

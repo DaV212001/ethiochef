@@ -4,6 +4,8 @@ import 'package:ethio_chef/widgets/search_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'auth/language_selector_button.dart';
+
 class ScreenHead extends StatelessWidget {
   final int screen;
   final String searchHint;
@@ -43,6 +45,11 @@ class ScreenHead extends StatelessWidget {
           NotificationIcon(
             hasNotification: hasNotification,
           ),
+          LanguageSelectorButton(
+            onChange: (){
+
+            }
+          )
         ],
       ),
     );

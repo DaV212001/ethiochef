@@ -97,21 +97,21 @@ class _RouteListState extends State<RouteList> {
         "trailing":
         Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary)
       },
-      {
-        "title": "competition_status".tr(),
-        "leadingIcon": Icons.incomplete_circle,
-        "onTap": () {
-          print("change_password");
-          pushNewScreen(
-            context,
-            screen: MyCompetition(),
-            withNavBar: false,
-            pageTransitionAnimation: PageTransitionAnimation.cupertino,
-          );
-        },
-        "trailing":
-        Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary)
-      }
+      // {
+      //   "title": "competition_status".tr(),
+      //   "leadingIcon": Icons.incomplete_circle,
+      //   "onTap": () {
+      //     print("change_password");
+      //     pushNewScreen(
+      //       context,
+      //       screen: MyCompetition(),
+      //       withNavBar: false,
+      //       pageTransitionAnimation: PageTransitionAnimation.cupertino,
+      //     );
+      //   },
+      //   "trailing":
+      //   Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary)
+      // }
     ];
     final List<Map<String, dynamic>> other = [
       {
@@ -190,7 +190,7 @@ class _RouteListState extends State<RouteList> {
             ),
             RouteContainer(
               routePart: status,
-              indexTwo: 2,
+              indexTwo: 1,
               routeName: tr("status"),
             ),
             RouteContainer(

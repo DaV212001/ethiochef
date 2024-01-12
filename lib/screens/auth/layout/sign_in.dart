@@ -1,24 +1,15 @@
-import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/screens/auth/auth_screen.dart';
-import 'package:ethio_chef/screens/main_screen.dart';
-import 'package:ethio_chef/widgets/auth/auth_header.dart';
 import 'package:ethio_chef/widgets/auth/auth_link.dart';
 import 'package:ethio_chef/widgets/auth/phone_input_field.dart';
-import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../../../main.dart';
 import '../../../services/user_service.dart';
-import '../../../theme/app_theme.dart';
 import '../../../utils/screen_utils.dart';
 import '../../../widgets/auth/auth_btn.dart';
-import '../../../widgets/auth/auth_image_header.dart';
-import '../../subscription/all_subscriptions.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});

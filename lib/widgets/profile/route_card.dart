@@ -18,7 +18,7 @@ class _RouteCardState extends State<RouteCard> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return InkWell(
+    return GestureDetector(
       onTap: widget.onTap,
       child: Container(
         height: 50,
@@ -30,7 +30,11 @@ class _RouteCardState extends State<RouteCard> {
               child: Text(widget.title, style: TextStyle(color: Colors.black),),
             ),
             Container(
-              child: widget.title == "change_language".tr()? LanguageSelectorButton():
+              child: widget.title == "change_language".tr()? LanguageSelectorButton(
+                onChange: (){
+
+                },
+              ):
               widget.title == "change_theme".tr()? ChangeThemeButtonWidget():
               Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary),
             )

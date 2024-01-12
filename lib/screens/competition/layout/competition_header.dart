@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
+import '../../../utils/screen_utils.dart';
+
 class CompetitionHeader extends StatelessWidget {
   final Competition competition;
 
@@ -12,6 +14,7 @@ class CompetitionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isTablet = ScreenUtils.isTablet(context);
     ThemeData theme = Theme.of(context);
     ModelTheme lang = Provider.of<ModelTheme>(context);
     return Padding(
@@ -27,23 +30,27 @@ class CompetitionHeader extends StatelessWidget {
             children: [
               Text(
               competition.name.toString(),
-                style: theme.textTheme.headlineLarge
-                    ?.copyWith(color: theme.colorScheme.primary),
+                style: TextStyle(
+                    fontSize: isTablet ? 16.sp : 20.sp,
+                    fontWeight: FontWeight.w700,
+                    color: theme.colorScheme.primary),
               ),
               Text(
                 "votes".tr(args: [competition.votes.toString()]),
-                style: theme.textTheme.labelMedium
-                    ?.copyWith(color: theme.unselectedWidgetColor),
-                textAlign: TextAlign.start,
+                style: TextStyle(
+                    fontSize: isTablet ? 10.sp : 14.sp,
+                    fontWeight: FontWeight.w400,
+                    color: theme.colorScheme.secondaryContainer),
               ),
             ],
           ),
         ),
         Text(
           "days_left".tr(args: [competition.daysLeft.toString()]),
-          style: theme.textTheme.labelMedium
-              ?.copyWith(color: theme.unselectedWidgetColor),
-          textAlign: TextAlign.start,
+          style: TextStyle(
+              fontSize: isTablet ? 10.sp : 14.sp,
+              fontWeight: FontWeight.w400,
+              color: theme.colorScheme.secondaryContainer),
         ),
         SizedBox(height: 5.h),
         description(context),
@@ -52,6 +59,7 @@ class CompetitionHeader extends StatelessWidget {
   }
 
   Widget description(BuildContext context) {
+    final bool isTablet = ScreenUtils.isTablet(context);
     ThemeData theme = Theme.of(context);
     ModelTheme lang = Provider.of<ModelTheme>(context);
     return Column(
@@ -59,16 +67,20 @@ class CompetitionHeader extends StatelessWidget {
       children: [
         Text(
           "description".tr(),
-          style: theme.textTheme.headlineMedium?.copyWith(
-              color: theme.colorScheme.tertiary, fontWeight: FontWeight.w500),
+          style: TextStyle(
+              fontSize: isTablet ? 13.sp : 17.sp,
+              fontWeight: FontWeight.w800,
+              color: theme.colorScheme.secondaryContainer),
         ),
         SizedBox(
           height: 5.h,
         ),
         Text(
         competition.description.toString(),
-          style:
-              theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w300),
+          style: TextStyle(
+              fontSize: isTablet ? 10.sp : 14.sp,
+              fontWeight: FontWeight.w400,
+              color: theme.colorScheme.secondaryContainer),
         ),
       ],
     );

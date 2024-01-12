@@ -6,9 +6,8 @@ import 'package:ethio_chef/deeplink/deep_link_handler.dart';
 import 'package:ethio_chef/models/language.dart';
 import 'package:ethio_chef/screens/auth/auth_screen.dart';
 import 'package:ethio_chef/screens/main_screen.dart';
-import 'package:ethio_chef/screens/splash_screen.dart';
 import 'package:ethio_chef/services/authorization_service.dart';
-import 'package:ethio_chef/services/subscription_checker.dart';
+import 'package:ethio_chef/services/firsebase_service.dart';
 import 'package:ethio_chef/services/user_service.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:ethio_chef/theme/model_theme.dart';
@@ -19,18 +18,25 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:ethio_chef/theme/app_theme.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 
 final navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: AppTheme.denim
+    statusBarColor: AppTheme.primaryColor
   ));
   WidgetsFlutterBinding.ensureInitialized();
   await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 15));
   await EasyLocalization.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  await FirebaseService().initNotification();
 
   runApp(
     Phoenix(
@@ -98,46 +104,11 @@ class _EthioChefState extends State<EthioChef> {
   @override
   void initState() {
     super.initState();
-    // _checkFirstTimeUser();
+    _checkFirstTimeUser();
   }
   Future<void> _checkFirstTimeUser() async {
     print("check login status");
-    var token = await AuthService.getAuthorizationToken();
-    if(token!=null){
-    print("Logged in status = $isLoggedIn");
-    print("token = $token");
-    UserService service = UserService();
-    var response = await service.checkUserSubscription();
-    final jsonData = json.decode(response.body);
-    print("user jsonData $jsonData");
-    if(jsonData['message'] == "Invalid Token, Redirect to login"){
-      print("Another account has logged in");
-      setState(() {
-        isLoggedIn = false;
-      });
-    }else{
-      print("valid Token");
-      setState(() {
-        isLoggedIn = true;
-      });
-    }
-
-    }else{
-      setState(() {
-        isLoggedIn = false;
-      });
-      print("Logged in status = $isLoggedIn");
-    }
-    // print("Checking First TimeUser");
-    // final prefs = await SharedPreferences.getInstance();
-    // final hasLaunchedBefore = prefs.getBool('hasLaunchedEthioChefBefore') ?? false;
-    // if (hasLaunchedBefore) {
-    //   setState(() {
-    //     isFirstTimeUser = false;
-    //   });
-    // } else {
-    //   await prefs.setBool('hasLaunchedEthioChefBefore', true);
-    // }
+    await FirebaseService().checkTokenRegistration(false);
   }
 
   @override

@@ -101,6 +101,7 @@ Future<void> getUserData() async {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     final bool isTablet = ScreenUtils.isTablet(context);
     final double desiredItemWidth = isTablet ? 130.w : 140.w;
     final double desiredItemHeight = isTablet ? 220.h : 130.h;
@@ -127,10 +128,10 @@ Future<void> getUserData() async {
                         children: [
                           if(userSubscriptionPlans.isNotEmpty)Text(
                             'Your subscription',
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .headlineLarge,
+                              style: TextStyle(
+                                  fontSize: 17.sp,
+                                  fontWeight: FontWeight.w800,
+                                  color: theme.colorScheme.secondaryContainer)
                           ),
                           SizedBox(
                             height: 20.h,
@@ -165,10 +166,10 @@ Future<void> getUserData() async {
                             SizedBox(height: 5,),
                           if(userSubscriptionPlans.isNotEmpty)Text(
                             'Extend your subscription',
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .headlineLarge,
+                              style: TextStyle(
+                                  fontSize: 17.sp,
+                                  fontWeight: FontWeight.w800,
+                                  color: theme.colorScheme.secondaryContainer)
                           ),
                           if(userSubscriptionPlans.isNotEmpty)
                             SizedBox(height: 5,),

@@ -14,17 +14,17 @@ class AppTheme {
 
   static ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
-    primaryColor: denim,
+    primaryColor: primaryColor,
     unselectedWidgetColor: gray,
     cardColor: antiFlashWhite,
     scaffoldBackgroundColor: white,
     fontFamily: "Manrope",
     buttonTheme: ButtonThemeData(
         colorScheme: ColorScheme.light(
-            primary: denim, secondary: white, primaryContainer: denim_O20)),
+            primary: primaryColor, secondary: white, primaryContainer: denim_O20)),
     canvasColor: gold,
     colorScheme: ColorScheme.light(
-        primary: denim,
+        primary: primaryColor,
         primaryContainer: denim_O20,
         tertiaryContainer: cocoaBrown2,
         secondary: antiFlashWhite,
@@ -34,7 +34,9 @@ class AppTheme {
         tertiary: gunmetal,
         error: tomato,
         inversePrimary: gold,
-        inverseSurface: gold_O40),
+        inverseSurface: gold_O40,
+        background: silver
+    ),
     bottomNavigationBarTheme:
     BottomNavigationBarThemeData(backgroundColor: white)
   );
@@ -48,7 +50,7 @@ class AppTheme {
     fontFamily: "Manrope",
     buttonTheme: ButtonThemeData(
         colorScheme: ColorScheme.dark(
-            primary: denim, secondary: white, primaryContainer: denim_O20)),
+            primary: primaryColor, secondary: white, primaryContainer: denim_O20)),
     canvasColor: gold,
     colorScheme: ColorScheme.dark(
         primary: gold,
@@ -57,13 +59,13 @@ class AppTheme {
         secondaryContainer: cadetGray,
         tertiary: antiFlashWhite,
         error: tomato,
-        inversePrimary: denim,
+        inversePrimary: primaryColor,
         inverseSurface: denim_O20),
     bottomNavigationBarTheme:
     BottomNavigationBarThemeData(backgroundColor: prussianBlue),
   );
   static Color cocoaBrown = const Color(0xFFFEC20A);//
-  static Color denim = const Color(0xFFD2691E);//
+  static Color primaryColor = const Color(0xFFD2691E);//
   static Color cocoaBrown2 = const Color(0x11D2691E);//
   static Color grey = const Color(0xFF646464);//
   static Color silver = const Color(0xFFCCCACA);//
@@ -110,117 +112,5 @@ class AppTheme {
   static TextStyle inputFieldErrorStyleTablet = TextStyle(fontSize: 10.sp);
   static TextStyle snackBarStyleTablet = TextStyle(fontSize: 13.sp);
   static TextStyle snackBarStyle = TextStyle(fontSize: 15.sp);
-  //
-  // static ThemeData lightTheme = ThemeData(
-  //   primaryColor: mikadoYellow,
-  //   unselectedWidgetColor: grey,
-  //   colorScheme: ColorScheme.light(
-  //     primary: cocoaBrown,
-  //     tertiaryContainer: cocoaBrown2,
-  //     onPrimary: white,
-  //     primaryContainer: mikadoYellow,
-  //     onPrimaryContainer: white,
-  //     secondary: silver,
-  //     onSecondary: russet,
-  //     secondaryContainer: silver,
-  //     onSecondaryContainer: russet,
-  //     tertiary: russet,
-  //     onTertiary: white,
-  //     surface: antiFlashWhite,
-  //     onSurface: cocoaBrown,
-  //     onSurfaceVariant: russet,
-  //     shadow: grey,
-  //     background: white,
-  //     error: tomato
-  //   ),
-  //   bottomNavigationBarTheme: BottomNavigationBarThemeData(
-  //     backgroundColor: white
-  //   ),
-  //   fontFamily: "Manrope",
-  //   textTheme: TextTheme(
-  //       headlineLarge: TextStyle(
-  //         fontSize: 20,
-  //         color: russet,
-  //         fontWeight: FontWeight.bold,
-  //       ),
-  //       headlineMedium: TextStyle(
-  //         fontSize: 26,
-  //         color: cocoaBrown,
-  //         fontWeight: FontWeight.w600,
-  //       ),
-  //       headlineSmall: TextStyle(
-  //         letterSpacing: 0.5,
-  //         fontSize: 15,
-  //         color: cocoaBrown,
-  //         fontWeight: FontWeight.w400,
-  //       ),
-  //       bodyMedium : TextStyle(
-  //         fontSize: 15,
-  //         color: russet,
-  //       ),
-  //       displaySmall: TextStyle(
-  //         fontSize: 10,
-  //         color: russet,
-  //       ),
-  //       labelMedium: TextStyle(
-  //         fontSize: 13,
-  //         color: white,
-  //       ),
-  //       labelSmall: TextStyle(
-  //         fontSize: 10,
-  //         color: white,
-  //       ),
-  //   ),
-  //   buttonTheme: ButtonThemeData(
-  //     buttonColor: cocoaBrown,
-  //     textTheme: ButtonTextTheme.primary
-  //   ),
-  //   cardTheme: CardTheme(
-  //     color: antiFlashWhite,
-  //     clipBehavior: Clip.hardEdge,
-  //     shape: RoundedRectangleBorder(
-  //       side: BorderSide(
-  //         width: 0.5,
-  //         color: silver
-  //       ),
-  //       borderRadius: allBorderRadius,
-  //     ),
-  //     elevation: 3,
-  //     shadowColor: Colors.transparent
-  //   )
-  // );
-  //
-  // static ThemeData darkTheme = ThemeData(
-  //   primaryColor: mikadoYellow,
-  //   unselectedWidgetColor: grey,
-  //
-  //   scaffoldBackgroundColor: russet_O90,
-  //     bottomNavigationBarTheme: BottomNavigationBarThemeData(
-  //         backgroundColor: russet
-  //     )
-  // );
-  //
-  // static Color mikadoYellow = const Color(0xFFFEC20A);
-  // static Color cocoaBrown = const Color(0xFFD2691E);
-  // static Color cocoaBrown2 = const Color(0x11D2691E);
-  // static Color grey = const Color(0xFF646464);
-  // static Color silver = const Color(0xFFCCCACA);
-  // static Color antiFlashWhite = const Color(0xFFECECEC);
-  // static Color russet = const Color(0xFF141115);
-  // static Color russet_O90 = const Color(0xE6141115);
-  // static Color seasalt = const Color(0xFFF8FAFC);
-  // static Color white = Colors.white;
-  // static const Color tomato = Color(0xFFFD3A39);
-  //
-  // static BorderRadius topBorderRadius = BorderRadius.only(
-  //     topLeft: Radius.circular(10), topRight: Radius.circular(10));
-  //
-  //
-  // static BorderRadius allBorderRadius = BorderRadius.all(Radius.circular(10));
-  //
-  // static TextStyle snackBarStyleTablet = TextStyle(fontSize: 13.sp);
-  // static TextStyle snackBarStyle = TextStyle(fontSize: 15.sp);
-  //
-  // static TextStyle inputFieldStyleTablet = TextStyle(fontSize: 10.sp);
-  // static TextStyle inputFieldErrorStyleTablet = TextStyle(fontSize: 10.sp);
+
 }

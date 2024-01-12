@@ -17,8 +17,8 @@ class ChangeThemeButtonWidget extends StatelessWidget {
         color: themeProvider.isDark ? Colors.white : Colors.black,
       ),
       onPressed: () {
-        final provider = Provider.of<ModelTheme>(context, listen: false);
-        provider.setIsDark = !themeProvider.isDark;
+        // final provider = Provider.of<ModelTheme>(context, listen: false);
+        // provider.setIsDark = !themeProvider.isDark;
       },
     );
 

@@ -13,6 +13,7 @@ import '../screens/auth/auth_screen.dart';
 import '../screens/notification/notification_screen.dart';
 import '../screens/subscription/all_subscriptions.dart';
 import '../services/authorization_service.dart';
+import '../services/subscription_checker.dart';
 import '../services/user_service.dart';
 import '../utils/screen_utils.dart';
 import 'app_bar_icon.dart';
@@ -38,14 +39,8 @@ class NotificationIcon extends StatelessWidget {
         onPress: () async {
           print("Notification");
 
-          SnackBar checking =SnackBar(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              showCloseIcon: true,
-              content: Text(
-                  'checking_subscription_please_wait'.tr()
-              ));
-          ScaffoldMessenger.of(context).showSnackBar(checking);
-          String status = await Check.checkToShow();
+          String? status = SubscriptionStatus().status;
+
           switch(status){
             case "Not logged in":
               print("Not logged in");
@@ -69,6 +64,7 @@ class NotificationIcon extends StatelessWidget {
                       'another_account_login'.tr()
                   ));
               ScaffoldMessenger.of(context).showSnackBar(logIn);
+
               pushNewScreen(
                 context,
                 withNavBar: false,

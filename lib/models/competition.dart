@@ -24,17 +24,6 @@ class Competition {
   int? daysLeft;
   List<Contestant>? competitor;
   int? id;
-
-  // poster_image
-  // video
-  // start_date
-  // end_date
-  // winner
-  // vote
-  // contest_like
-  // contestant
-  // created_at
-  // updated_at
   Competition(
       {
         this.ingredient,

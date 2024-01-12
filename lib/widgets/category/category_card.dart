@@ -161,7 +161,7 @@ class _CategoryCardState extends State<CategoryCard> {
               widget.food.Name.toString(),
               style: TextStyle(
                   fontSize: isTablet ? 11.sp : 15.sp,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w600,
                   color: theme.colorScheme.secondaryContainer),
             ),
           ):
@@ -170,7 +170,7 @@ class _CategoryCardState extends State<CategoryCard> {
                 widget.food.name.toString(),
               style: TextStyle(
                   fontSize: isTablet ? 11.sp : 15.sp,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w600,
                   color: theme.colorScheme.secondaryContainer),
             ),
           ),

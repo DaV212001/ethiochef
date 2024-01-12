@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../utils/screen_utils.dart';
 
 class MainButton extends StatelessWidget {
   final double height;
@@ -29,8 +31,10 @@ class MainButton extends StatelessWidget {
           child: CircularProgressIndicator(),
           replacement: Text(
             text,
-            style: theme.textTheme.headlineMedium
-                ?.copyWith(color: theme.colorScheme.background),
+              style: TextStyle(
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w800,
+                  color: theme.colorScheme.secondary)
           ),
         ),
         style: ButtonStyle(

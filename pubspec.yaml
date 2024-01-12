@@ -83,6 +83,10 @@ dependencies:
   pull_to_refresh: ^2.0.0
   pricing_cards: ^0.0.8
   device_preview: ^1.1.0
+  firebase_core: ^2.24.2
+  firebase_messaging: ^14.7.10
+  flutter_local_notifications: ^16.3.0
+  app_settings: ^5.1.1
 
 dev_dependencies:
   flutter_test:
@@ -161,3 +165,4 @@ flutter:
     - assets/fonts/
     - assets/images/icons/
     - assets/images/errors/
+    - assets/images/social/

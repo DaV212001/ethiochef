@@ -40,11 +40,11 @@ class HomeCategoryTab extends StatelessWidget {
             unselectedBackgroundColor: Colors.transparent,
             unselectedLabelStyle:  TextStyle(
                 fontSize: isTablet ? 11.sp : 15.sp,
-                fontWeight: FontWeight.w300,
+                fontWeight: FontWeight.w500,
                 color: theme.colorScheme.onTertiary),
             labelStyle:  TextStyle(
                 fontSize: isTablet ? 11.sp : 15.sp,
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.w600,
                 color: theme.colorScheme.secondary),
             contentPadding: EdgeInsets.symmetric(horizontal: 10),
             radius: 5,
