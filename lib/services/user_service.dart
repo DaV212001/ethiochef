@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:ethio_chef/services/subscription_checker.dart';
 import 'package:ethio_chef/utils/constants.dart';
 import 'dart:io';
 import 'package:ethio_chef/models/subscriptionplans.dart';
@@ -65,6 +66,7 @@ class UserService {
       var access_token = jsonDecode(response.body)['data']['session_token'];
       var refresh_token = jsonDecode(response.body)['data']['refresh_token'];
       print("Login token = ${access_token}");
+      await SubscriptionStatus().checkStatus();
       await AuthService.setAuthorizationToken(access_token);
       await AuthService.setRefreshToken(refresh_token);
       print("Login token = ${access_token}");
