@@ -8,7 +8,7 @@ class UserProfile {
   final int? subscriptionId;
   final SubscriptionPlans? subscription;
   final String? status;
-  final DateTime? dueDate;
+  final int? dueDate;
   final DateTime? lastPaidDate;
   String? message;
 
@@ -32,7 +32,7 @@ class UserProfile {
       subscriptionId: json['subscription_id'],
       subscription: SubscriptionPlans.fromJson(json['subscription']),
       status: json['status'],
-      dueDate: DateTime.parse(json['due_date']),
+      dueDate: json['due_date']??0,
       lastPaidDate: DateTime.parse(json['last_paid_date']),
     );
   }

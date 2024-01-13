@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import '../../models/recipe_show_checker.dart';
 import '../../screens/auth/auth_screen.dart';
 import '../../screens/subscription/all_subscriptions.dart';
+import '../../utils/screen_utils.dart';
 
 class CompetitionsCard extends StatefulWidget {
   final Competition competition;
@@ -31,6 +32,7 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isTablet = ScreenUtils.isTablet(context);
     ThemeData theme = Theme.of(context);
     ModelTheme lang = Provider.of<ModelTheme>(context);
     return GestureDetector(
@@ -75,15 +77,17 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
                     children: [
                       Text(
                         widget.competition.name!.toString(),
-                        style: theme.textTheme.headlineMedium,
-                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontSize: isTablet ? 11.sp : 15.sp,
+                            fontWeight: FontWeight.w600,
+                            color: theme.colorScheme.secondaryContainer),
                       ),
                       Text(
                         "votes".tr(args: [widget.competition.votes.toString()]),
-                        style: theme.textTheme.labelMedium
-                            ?.copyWith(color: theme.unselectedWidgetColor),
-                        textAlign: TextAlign.start,
-                      ),
+                        style: TextStyle(
+                            fontSize: isTablet ? 10.sp : 14.sp,
+                            fontWeight: FontWeight.w400,
+                            color: theme.colorScheme.secondaryContainer),)
                     ],
                   ),
                   SizedBox(
@@ -94,9 +98,10 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
                     children: [
                       Text(
                         "days_left".tr(args: [widget.competition.daysLeft.toString()]),
-                        style: theme.textTheme.labelMedium
-                            ?.copyWith(color: theme.unselectedWidgetColor),
-                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            fontSize: isTablet ? 10.sp : 14.sp,
+                            fontWeight: FontWeight.w500,
+                            color: theme.colorScheme.secondaryContainer),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -195,7 +200,11 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
                               ),
                             ),
                           ),
-                          Text('${likes}  likes', style: theme.textTheme.bodySmall)
+                          Text('${likes}  likes',
+                            style: TextStyle(
+                                fontSize: isTablet ? 9.sp : 13.sp,
+                                fontWeight: FontWeight.w300,
+                                color: theme.colorScheme.secondaryContainer),)
                         ],
                       )
 

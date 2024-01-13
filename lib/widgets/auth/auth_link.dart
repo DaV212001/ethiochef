@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AuthLink extends StatelessWidget {
   final String text;
@@ -20,19 +21,19 @@ class AuthLink extends StatelessWidget {
       children: [
         Text(
           text,
-          style: theme.textTheme.headlineSmall?.copyWith(
-            color: theme.colorScheme.tertiary.withOpacity(0.8),
-          ),
+          style: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.w800,
+              color: theme.colorScheme.secondaryContainer),
         ),
         TextButton(
           onPressed: onPress,
           child: Text(
             buttonText,
-            style: TextStyle(
-              fontSize: 19,
-              color: theme.colorScheme.primary,
-              fontWeight: FontWeight.bold,
-            ),
+              style: TextStyle(
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w800,
+                  color: theme.colorScheme.secondaryContainer)
           ),
         ),
       ],

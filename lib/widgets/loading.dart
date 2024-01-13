@@ -8,8 +8,8 @@ class Loading extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Center(
-      child: SpinKitWaveSpinner(
-        color: theme.primaryColor,
+      child: SpinKitDoubleBounce(
+        color: theme.colorScheme.primary,
         size: 130.0
       ),
     );

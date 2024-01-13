@@ -28,7 +28,10 @@ class _AuthScreenState extends State<AuthScreen> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
-          actions: [LanguageSelectorButton()],
+          actions: [LanguageSelectorButton(
+            onChange: (){
+            },
+          )],
         ),
         body: SingleChildScrollView(
           child: Container(

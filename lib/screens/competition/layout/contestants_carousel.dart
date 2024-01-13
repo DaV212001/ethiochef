@@ -40,9 +40,10 @@ class _ContestantsState extends State<Contestants> {
             padding: EdgeInsets.only(left: 10, right: 10, top: 10),
             child: Text(
               "vote_for_contestants".tr(),
-              style: theme.textTheme.headlineMedium?.copyWith(
-                  color: theme.colorScheme.tertiary,
-                  fontWeight: FontWeight.w500),
+              style: TextStyle(
+                  fontSize: isTablet ? 13.sp : 17.sp,
+                  fontWeight: FontWeight.w800,
+                  color: theme.colorScheme.secondaryContainer),
             )),
         Card(
           child: Padding(
@@ -165,20 +166,25 @@ class _ContestantsState extends State<Contestants> {
                         SizedBox(height: 5.h),
                         Text("${widget.contestant![index].firstName.toString()} ${widget.contestant![index].lastName.toString()}",
 
-                          style: theme.textTheme.headlineMedium?.copyWith(
-                              color: theme.colorScheme.tertiary,
-                              fontWeight: FontWeight.w500)
+                          style: TextStyle(
+                              fontSize: isTablet ? 11.sp : 15.sp,
+                              fontWeight: FontWeight.w800,
+                              color: theme.colorScheme.secondaryContainer),
                         ),
                         SizedBox(height: 5.h),
                         Text("${widget.contestant![index].phone.toString()}",
-                          style: theme.textTheme.headlineMedium?.copyWith(
-                              color: theme.colorScheme.tertiary,
-                              fontWeight: FontWeight.w300),),
+
+                          style: TextStyle(
+                              fontSize: isTablet ? 10.sp : 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: theme.colorScheme.secondaryContainer),),
                         SizedBox(height: 5.h),
                         Text(widget.contestant![index].votes.toString(),
-                            style: theme.textTheme.headlineMedium?.copyWith(
-                                color: theme.colorScheme.tertiary,
-                                fontWeight: FontWeight.w300)),
+
+                          style: TextStyle(
+                              fontSize: isTablet ? 10.sp : 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: theme.colorScheme.secondaryContainer),),
 
                       ]
                     );

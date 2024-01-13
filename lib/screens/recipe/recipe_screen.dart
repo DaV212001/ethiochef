@@ -9,6 +9,7 @@ import '../../models/comment.dart';
 import '../../models/user.dart';
 import '../../services/comment_service.dart';
 import '../../services/food_service.dart';
+import '../../widgets/pull_to_refresh.dart';
 import '../../widgets/recipe/share_button.dart';
 import '../comment/food_comments.dart';
 import 'layout/recipe_related.dart';
@@ -51,33 +52,48 @@ class _RecipeScreenState extends State<RecipeScreen> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return Scaffold(
-      body: FutureBuilder(
-          future: _future,
-          builder: (context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Loading();
-            }
-            if (snapshot.hasError) {
-              return Center(
-                  child: ErrorCard(
-                    errorType: snapshot.error.toString(),
-                    refresh: () {
-                      setState(() {
-                        _future = fetchData();
-                      });
-                    },
-                  ));
-            }
-            return buildRecipeScreen(
-                snapshot.data[0] as Food,
-                snapshot.data[1] as List<Comments>,
-                snapshot.data[2] as User);
-          })
+    return RefreshWidget(
+      child: Scaffold(
+        body: FutureBuilder(
+            future: _future,
+            builder: (context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Loading();
+              }
+              if (snapshot.hasError) {
+                return Center(
+                    child: ErrorCard(
+                      errorType: snapshot.error.toString(),
+                      refresh: () {
+                        setState(() {
+                          _future = fetchData();
+                        });
+                      },
+                    ));
+              }
+              return buildRecipeScreen(
+                  snapshot.data[0] as Food,
+                  snapshot.data[1] as List<Comments>,
+                  snapshot.data[2] as User);
+            })
+      ),
+        onRefresh:()async{
+          setState(() {
+            _future = fetchData();
+          });
+        }
     );
   }
 
   Widget buildRecipeScreen(Food food, List<Comments> comment, User user){
+
+    print("========================");
+    print("========================");
+    print("========================");
+    print("========================");
+    print(food.likes);
+    print("========================");
+    print("========================");
     ThemeData theme = Theme.of(context);
     return SafeArea(
       child: SingleChildScrollView(
@@ -89,7 +105,6 @@ class _RecipeScreenState extends State<RecipeScreen> {
               likes: food.likes!,
               user: user,
               image: food.thumbnail,
-              isLiked: food.isLiked ?? false,
               onLike: () {},
               refresh: (){
                 setState(() {
@@ -111,9 +126,6 @@ class _RecipeScreenState extends State<RecipeScreen> {
                     YoutubeVideoPlayer(
                       link: food.video.toString(),
                     ),
-                  // YoutubeVideoPlayer(
-                  //   link: PlaceHolderData.videoLink,
-                  // ),
                   SizedBox(height: 10),
                   RecipeScreenTab(
                     food: food,

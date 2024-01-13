@@ -6,6 +6,7 @@ import 'package:ethio_chef/screens/upload_recipe/layout/steps_header.dart';
 import 'package:ethio_chef/screens/upload_recipe/layout/steps_step.dart';
 import 'package:ethio_chef/screens/upload_recipe/layout/video_step.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../../models/competition.dart';
@@ -51,8 +52,10 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
         elevation: 0,
         title: Text(
           "submit_a_recipe".tr(),
-          style: theme.textTheme.headlineLarge
-              ?.copyWith(color: theme.colorScheme.primary),
+          style: TextStyle(
+              fontSize: 19.sp,
+              fontWeight: FontWeight.w600,
+              color: theme.colorScheme.primary),
         ),
       ),
       body: SingleChildScrollView(

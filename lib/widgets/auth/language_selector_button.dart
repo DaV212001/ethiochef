@@ -7,6 +7,7 @@ import 'package:ethio_chef/models/language.dart';
 import 'package:ethio_chef/theme/model_theme.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 
@@ -16,8 +17,11 @@ import '../../screens/main_screen.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:restart_app/restart_app.dart';
 
+import '../../utils/screen_utils.dart';
+
 class LanguageSelectorButton extends StatefulWidget {
-  const LanguageSelectorButton({Key? key});
+  final Function() onChange;
+  const LanguageSelectorButton({Key? key, required this.onChange});
 
   @override
   State<LanguageSelectorButton> createState() => _LanguageSelectorButtonState();
@@ -28,6 +32,7 @@ class _LanguageSelectorButtonState extends State<LanguageSelectorButton> {
   late bool changed = false;
   @override
   Widget build(BuildContext context) {
+    final bool isTablet = ScreenUtils.isTablet(context);
     ThemeData theme = Theme.of(context);
     ModelTheme lang = Provider.of<ModelTheme>(context);
     return DropdownButtonHideUnderline(
@@ -36,10 +41,11 @@ class _LanguageSelectorButtonState extends State<LanguageSelectorButton> {
           padding: EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             children: [
-              SvgIcon(
-                image: Assets.iconsLanguage,
-                color: Theme.of(context).colorScheme.secondaryContainer,
-              )
+              Text(Language.selectedLanguage.name,
+                style: TextStyle(
+                    fontSize: isTablet ? 11.sp : 15.sp,
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.secondaryContainer),)
             ],
           ),
         ),
@@ -49,8 +55,10 @@ class _LanguageSelectorButtonState extends State<LanguageSelectorButton> {
               value: item,
               child: Text(
                 item.name,
-                style: theme.textTheme.headlineMedium
-                    ?.copyWith(color: theme.colorScheme.tertiary),
+                  style: TextStyle(
+                      fontSize: isTablet ? 11.sp : 15.sp,
+                      fontWeight: FontWeight.w600,
+                      color: theme.colorScheme.secondaryContainer)
               ),
             ),
           ),
@@ -65,27 +73,8 @@ class _LanguageSelectorButtonState extends State<LanguageSelectorButton> {
             print(Language.selectedLanguage.name);
             changed = true;
           });
+          widget.onChange();
           RestartWidget.restartApp(context);
-          // Navigator.of(context).popUntil((route) => route.settings.name == '/home');
-          // Restart.restartApp();
-          // Navigator.pushReplacement(context,
-          //     MaterialPageRoute(
-          //         builder: (BuildContext context)=>MainScreen())
-          // );
-          // pushNewScreenWithRouteSettings(context,
-          //   screen: HomeScreen(),
-          //   settings: RouteSettings(name: '/home'),
-          //   withNavBar: true
-          // );
-          // Navigator.of(context).pushAndRemoveUntil(
-          //   MaterialPageRoute(builder: (context) => EthioChef()),
-          //       (route) => false, // Clears all previous routes
-          // );
-
-
-          // pushNewScreen(context, screen: HomeScreen(), withNavBar: true, );
-
-
         },
         dropdownStyleData: DropdownStyleData(
           width: 160,

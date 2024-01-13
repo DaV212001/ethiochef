@@ -9,12 +9,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
-import '../../../models/user.dart';
-import '../../../models/user_profile.dart';
-import '../../../services/user_service.dart';
-import '../../../theme/app_theme.dart';
-import '../../../utils/screen_utils.dart';
-import '../../../widgets/profile/profile_widget.dart';
+import '../../../../models/user.dart';
+import '../../../../models/user_profile.dart';
+import '../../../../services/user_service.dart';
+import '../../../../theme/app_theme.dart';
+import '../../../../utils/screen_utils.dart';
+import '../../../../widgets/profile/profile_widget.dart';
 
 class UserScreenHeader extends StatefulWidget {
   final UserProfile user;
@@ -70,13 +70,19 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
              mainAxisAlignment: MainAxisAlignment.center,
              children: [
                Text("$formattedName",
-                   style: TextStyle(color: theme.colorScheme.tertiary, fontSize: 20.sp)),
+                   style: TextStyle(
+                       fontSize: 20.sp,
+                       fontWeight: FontWeight.w800,
+                       color: theme.colorScheme.secondaryContainer)),
                if(widget.user.user?.email != '')
                SizedBox(height: 5.h),
                if(widget.user.user?.email != '')
                Text(widget.user.user?.email ?? '',
                    style:
-                   TextStyle(color: theme.colorScheme.tertiary.withOpacity(0.5), fontSize: 15.sp)),
+                   TextStyle(
+                       fontSize: 15.sp,
+                       fontWeight: FontWeight.w400,
+                       color: theme.colorScheme.onTertiary)),
              ],
            ),
          ),
@@ -99,7 +105,11 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
                     widget.reFresh();
                   }
                 ));
-          }, child: Text("edit".tr()))
+          }, child: Text("edit".tr(),
+              style: TextStyle(
+              fontSize: 15.sp,
+              fontWeight: FontWeight.w800,
+              color: theme.colorScheme.secondary)))
         ],
       ),
     );

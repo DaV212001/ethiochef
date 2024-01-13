@@ -26,18 +26,7 @@ class _AdsCarouselState extends State<AdsCarousel> {
 
   // List<PhotosModel> images = [];
 
-  // Future<void> fetchImages() async {
-  //   try {
-  //     final AdsService service = AdsService();
-  //     final data = await service.getApiImage();
-  //     setState(() {
-  //       fetched = true;
-  //       images = data;
-  //     });
-  //   } catch (error) {
-  //     print('Error: $error');
-  //   }
-  // }
+
   List imageList = [
     {"id": 1, "image_path": 'assets/images/photo_1.jpg'},
     {"id": 2, "image_path": 'assets/images/photo_2.jpg'},

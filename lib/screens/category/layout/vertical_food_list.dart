@@ -8,6 +8,7 @@ import '../../../utils/screen_utils.dart';
 import '../../../widgets/category/category_card.dart';
 import '../../../widgets/error_card.dart';
 import '../../../widgets/loading.dart';
+import '../../../widgets/pull_to_refresh.dart';
 
 class VerticalFoodList extends StatefulWidget {
   final PagingController<int, Food> pagingController;
@@ -30,46 +31,46 @@ class _VerticalFoodListState extends State<VerticalFoodList> {
     final int crossAxisCount = (screenWidth / desiredItemWidth).floor();
     final double childAspectRatio = desiredItemWidth / desiredItemHeight;
     return PagedGridView<int, Food>(
-      physics: BouncingScrollPhysics(),
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxisCount,
-        childAspectRatio: childAspectRatio,
-        mainAxisSpacing: isTablet ? 5 : 0,
-      ),
-      pagingController: widget.pagingController,
-      builderDelegate: PagedChildBuilderDelegate<Food>(
-        firstPageProgressIndicatorBuilder: (context) => Center(child: Loading()),
-        newPageProgressIndicatorBuilder: (_) => Center(child: Loading()),
-        noMoreItemsIndicatorBuilder: (context) {
-          return SizedBox.shrink();
-        },
-        noItemsFoundIndicatorBuilder: (_) =>
-            Center(
-                child: ErrorCard(
-                  errorType: 'no_food_in_this_category',
-                  refresh: (){
-                    setState(() {
-                      widget.pagingController.refresh();
-                    });
-                  },
-                )),
-        firstPageErrorIndicatorBuilder: (_) => ErrorCard(
-          refresh: () => widget.pagingController.refresh(),
-          errorType: widget.pagingController.error.toString(),
+        physics: BouncingScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: crossAxisCount,
+          childAspectRatio: childAspectRatio,
+          mainAxisSpacing: isTablet ? 5 : 0,
         ),
-        itemBuilder: (context, food, index) {
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 10.h),
-            child: GestureDetector(
-                onTap: (){
+        pagingController: widget.pagingController,
+        builderDelegate: PagedChildBuilderDelegate<Food>(
+          firstPageProgressIndicatorBuilder: (context) => Center(child: Loading()),
+          newPageProgressIndicatorBuilder: (_) => Center(child: Loading()),
+          noMoreItemsIndicatorBuilder: (context) {
+            return SizedBox.shrink();
+          },
+          noItemsFoundIndicatorBuilder: (_) =>
+              Center(
+                  child: ErrorCard(
+                    errorType: 'no_food_in_this_category',
+                    refresh: (){
+                      setState(() {
+                        widget.pagingController.refresh();
+                      });
+                    },
+                  )),
+          firstPageErrorIndicatorBuilder: (_) => ErrorCard(
+            refresh: () => widget.pagingController.refresh(),
+            errorType: widget.pagingController.error.toString(),
+          ),
+          itemBuilder: (context, food, index) {
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 10.h),
+              child: GestureDetector(
+                  onTap: (){
 
-                },
-                child: CategoryCard(food: food, isSearchList: widget.isSearchList))
-          );
-        },
-      ),
+                  },
+                  child: CategoryCard(food: food, isSearchList: widget.isSearchList))
+            );
+          },
+        ),
     );
   }
 }

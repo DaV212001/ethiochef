@@ -10,6 +10,7 @@ import 'package:path/path.dart';
 import '../models/user.dart';
 import '../models/user_profile.dart';
 import 'authorization_service.dart';
+import 'firsebase_service.dart';
 
 class UserService {
   Future<http.Response> registerUser(User user) async {
@@ -68,6 +69,7 @@ class UserService {
       print("Login token = ${access_token}");
       await SubscriptionStatus().checkStatus();
       await AuthService.setAuthorizationToken(access_token);
+      await FirebaseService().checkTokenRegistration(true);
       await AuthService.setRefreshToken(refresh_token);
       print("Login token = ${access_token}");
       print('Refresh token = ${refresh_token}');
@@ -76,35 +78,6 @@ class UserService {
   }
 
 
-
-
-  // Future<http.Response> updateUserAccount(
-  //     String firstName, String lastName, String email, String phoneNumber) async {
-  //     User user = await fetchLoggedInUser();
-  //     final access_token = await AuthService.getAuthorizationToken();
-  //     print('ID ${user.id}');
-  //     print('Phone: ${user.phone}');
-  //
-  //   final body = {
-  //     'first_name': firstName,
-  //     'last_name': lastName,
-  //     'email': email,
-  //     'phone_number': "0"+phoneNumber,
-  //     'profile_picture': ""
-  //   };
-  //   print(body);
-  //
-  //   final response = await http.post(
-  //     Uri.parse('${Constants.url}/user/profile/update/${user.id}'),
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Authorization': 'JWT $access_token'
-  //     },
-  //     body: jsonEncode(body)
-  //   );
-  //   print(response.body);
-  //   return response;
-  // }
   Future<http.Response> updateProfile(String firstName, String lastName, String email, String phoneNumber, File? image) async {
     User user = await fetchLoggedInUser();
     final access_token = await AuthService.getAuthorizationToken();
@@ -229,6 +202,7 @@ class UserService {
     final response = await http.get(
       Uri.parse("${Constants.url}/pay/plans"),
     );
+    print("==============fetchSubscriptionPlans response.body====================");
     print(response.body);
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);

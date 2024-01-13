@@ -6,14 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-import '../../../models/category.dart';
 import '../../../models/food.dart';
 import '../../../services/food_service.dart';
-import '../../../widgets/category/category_button.dart';
-import '../../../widgets/screen_head.dart';
-import 'package:ethio_chef/models/language.dart';
 
 import '../header.dart';
+import '../pull_to_refresh.dart';
 
 class AllFood extends StatefulWidget {
   final String categoryName;
@@ -66,16 +63,23 @@ class _AllFoodState extends State<AllFood> {
         hasMainIcons: false,
         hasSearchField: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      body: RefreshWidget(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
 
-        Header(title: widget.categoryName),
-            VerticalFoodList(pagingController: _pagingController, isSearchList: false),
-          ],
+          Header(title: widget.categoryName),
+              VerticalFoodList(pagingController: _pagingController, isSearchList: false),
+            ],
+          ),
         ),
-      )
+          onRefresh: ()async{
+            setState(() {
+              _pagingController.refresh();
+            });
+          }
+      ),
     );
   }
   @override

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import '../../widgets/pull_to_refresh.dart';
 import 'layout/upload_video.dart';
 
 class CompetitionsScreen extends StatefulWidget {
@@ -48,30 +49,37 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return Scaffold(
-        body: SafeArea(
-      child: SingleChildScrollView(
-          physics: NeverScrollableScrollPhysics(),
-          child: Column(children: [
-            ScreenHead(
-              hasNotification: true,
-              screen: 1,
-              searchHint: "search_for_category".tr(),
-            ),
-            SizedBox(
-                height: 930.h,
-                child: VerticalCompetitionList(
-                    pagingController: _pagingController))
-          ])),
-    ),
-    floatingActionButton: FloatingActionButton(
-      backgroundColor: theme.colorScheme.primary,
-        onPressed: () {
-          pushNewScreen(context,
-              screen: UploadCompetitionVideo(), withNavBar: false);
-        },
-      child: Icon(Icons.add,color: Colors.white)
-    ),
+    return RefreshWidget(
+      child: Scaffold(
+          body: SafeArea(
+        child: SingleChildScrollView(
+            physics: NeverScrollableScrollPhysics(),
+            child: Column(children: [
+              ScreenHead(
+                hasNotification: true,
+                screen: 1,
+                searchHint: "search_for_category".tr(),
+              ),
+              SizedBox(
+                  height: 930.h,
+                  child: VerticalCompetitionList(
+                      pagingController: _pagingController))
+            ])),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: theme.colorScheme.primary,
+          onPressed: () {
+            pushNewScreen(context,
+                screen: UploadCompetitionVideo(), withNavBar: false);
+          },
+        child: Icon(Icons.add,color: Colors.white)
+      ),
+      ),
+        onRefresh:()async{
+          setState(() {
+            _pagingController.refresh();
+          });
+        }
     );
   }
 

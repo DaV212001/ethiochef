@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../theme/app_theme.dart';
+import '../../utils/screen_utils.dart';
 import '../main_button.dart';
 
 class SubscriptionCard extends StatefulWidget {
@@ -24,43 +26,46 @@ class SubscriptionCard extends StatefulWidget {
 class _SubscriptionCardState extends State<SubscriptionCard> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
-      child: Card(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 20.h,
-              ),
-              Text(
-
-                widget.plan!,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .headlineMedium,
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              Text(
-                'Price: ${widget.price
-                    .toString()}',
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .bodyMedium,
-              ),
-              if(widget.duration != '0')Text('Duration: ${widget.duration}'),
-              SizedBox(
-                height: 20.h,
-              ),
-              MainButton(
-                text: widget.buttonName,
-                onPress: widget.onTap
-              )
-            ],
+    final bool isTablet = ScreenUtils.isTablet(context);
+    ThemeData theme = Theme.of(context);
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: AppTheme.allBorderRadius,
+        color: theme.colorScheme.tertiaryContainer
+      ),
+      child: Column(
+        children: [
+          SizedBox(
+            height: 20.h,
+          ),
+          Text(
+            widget.plan!,
+            style: Theme
+                .of(context)
+                .textTheme
+                .headlineMedium,
+          ),
+          SizedBox(
+            height: 20.h,
+          ),
+          Text(
+            'Price: ${widget.price
+                .toString()}',
+            style: Theme
+                .of(context)
+                .textTheme
+                .bodyMedium,
+          ),
+          if(widget.duration != '0')Text('Duration: ${widget.duration}'),
+          SizedBox(
+            height: 20.h,
+          ),
+          MainButton(
+              width: 200.w,
+              text: widget.buttonName,
+              onPress: widget.onTap
           )
+        ],
       ),
     );
   }

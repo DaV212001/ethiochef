@@ -25,7 +25,7 @@ class RouteContainer extends StatelessWidget {
       child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 8.0,),
     decoration: BoxDecoration(
-    color: theme.colorScheme.surface.withOpacity(0.8),
+    color: theme.colorScheme.onSecondary.withOpacity(0.2),
     borderRadius: AppTheme.allBorderRadius),
       child: ListView.builder(
         shrinkWrap: true,

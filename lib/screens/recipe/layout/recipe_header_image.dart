@@ -13,7 +13,6 @@ import '../../comment/add_edit_comment.dart';
 
 class RecipeHeaderImage extends StatefulWidget {
   final String image;
-  final bool isLiked;
   final Function() onLike;
   final int foodId;
   final Comments? comments;
@@ -25,7 +24,6 @@ class RecipeHeaderImage extends StatefulWidget {
       {super.key,
         required this.image,
         required this.onLike,
-        required this.isLiked,
         this.comments,
         required this.refresh,
         required this.foodId,
@@ -38,19 +36,17 @@ class RecipeHeaderImage extends StatefulWidget {
 }
 
 class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
-  late bool isLiked;
-
+  late bool isLiked = false;
   @override
   void initState() {
-    for(int i=0;i<widget.likes.length;i++){
-      if(widget.user.id == widget.likes[i].user_id){
+    for(int i=0;i<widget.food!.likes!.length;i++){
+      if(widget.user.id == widget.food?.likes![i].user_id){
         setState(() {
           isLiked = true;
         });
         break;
       }
     }
-    isLiked = widget.isLiked;
     super.initState();
   }
 
@@ -147,11 +143,14 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
                 width: 5.h,
               ),
               GestureDetector(
-                onTap: () {
-                  setState(() {
-                    isLiked = !isLiked;
-                    print("isLiked $isLiked");
-                  });
+                onTap: () async{
+                  print("isLiked pressed widget.isLiked = ${isLiked}");
+                  if(isLiked == false) {
+                    await likeFood();
+                  }else{
+                    print("unlike");
+                  await unLikeFood();
+                  }
                 },
                 child: circularBackground(
                   child: Icon(
@@ -178,9 +177,10 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
       child: child,
     );
   }
-  void likeFood() async {
+  Future<bool> likeFood() async {
       FoodService service = FoodService();
       try {
+        print("likeFood");
         var response =
         await service.likeFood(widget.foodId);
         if (response.statusCode == 200) {
@@ -188,6 +188,7 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('liked_food_successful'.tr())),
           );
+          return true;
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('liked_food_failed'.tr())),
@@ -200,8 +201,9 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
           SnackBar(content: Text('liked_food_failed'.tr())),
         );
       }
+      return false;
   }
-  void unLikeFood() async {
+  Future<bool> unLikeFood() async {
       print("widget.foodId ${widget.foodId}");
       FoodService service = FoodService();
       try {
@@ -212,9 +214,10 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
             SnackBar(content: Text('unliked_food_successful'.tr())),
           );
           widget.refresh();
+          return true;
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('unliked_food_successful'.tr())),
+            SnackBar(content: Text('unliked_food_failed'.tr())),
           );
           throw Exception();
         }
@@ -224,5 +227,6 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
           SnackBar(content: Text('unliked_food_successful'.tr())),
         );
       }
+      return false;
     }
 }

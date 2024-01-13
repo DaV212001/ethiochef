@@ -61,6 +61,11 @@ class Food {
 
 
   factory Food.fromSingleFoodJson(Map<String, dynamic> json) {
+    print("==============================================================");
+    print("==============================================================");
+    print("Likes = ${json['likes']}");
+    print("==============================================================");
+    print("==============================================================");
     String clearPath(String path) {
       final parts = path.split('/public_html');
       return parts.last;
