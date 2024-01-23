@@ -5,6 +5,7 @@ import 'package:ethio_chef/services/user_service.dart';
 import 'package:ethio_chef/widgets/youtube_video_player.dart';
 import 'package:ethio_chef/utils/place_holder_data.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../../models/comment.dart';
 import '../../models/user.dart';
 import '../../services/comment_service.dart';
@@ -28,11 +29,38 @@ class RecipeScreen extends StatefulWidget {
 class _RecipeScreenState extends State<RecipeScreen> {
 
   Future? _future;
-
+BannerAd? _bannerAd;
   @override
   void initState() {
     _future = fetchData();
+    _loadAd();
     super.initState();
+  }
+  String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
+  void _loadAd() async {
+    BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        // Called when an ad is successfully received.
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        // Called when an ad request failed.
+        onAdFailedToLoad: (ad, err) {
+          ad.dispose();
+        },
+        // Called when an ad opens an overlay that covers the screen.
+        onAdOpened: (Ad ad) {},
+        // Called when an ad removes an overlay that covers the screen.
+        onAdClosed: (Ad ad) {},
+        // Called when an impression occurs on the ad.
+        onAdImpression: (Ad ad) {},
+      ),
+    ).load();
   }
 
   Future<dynamic> fetchData() async {
@@ -100,6 +128,17 @@ class _RecipeScreenState extends State<RecipeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (_bannerAd != null)
+              Align(
+                alignment: Alignment.topCenter,
+                child: SafeArea(
+                  child: SizedBox(
+                    width: _bannerAd!.size.width.toDouble(),
+                    height: _bannerAd!.size.height.toDouble(),
+                    child: AdWidget(ad: _bannerAd!),
+                  ),
+                ),
+              ),
             RecipeHeaderImage(
               food: food,
               likes: food.likes!,

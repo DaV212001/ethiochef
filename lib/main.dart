@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -29,14 +30,14 @@ void main() async {
     statusBarColor: AppTheme.primaryColor
   ));
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 15));
   await EasyLocalization.ensureInitialized();
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  await FirebaseService().initNotification();
+  // await FirebaseService().initNotification();
 
   runApp(
     Phoenix(

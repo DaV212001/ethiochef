@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import '../../models/promotion.dart';
 import '../../models/category.dart';
@@ -25,13 +26,39 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin{
 
   Future? _future;
-
+  BannerAd? _bannerAd;
   @override
   void initState() {
     _future = fetchData();
+    _loadAd();
     super.initState();
   }
-
+  String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
+  void _loadAd() async {
+    BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        // Called when an ad is successfully received.
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        // Called when an ad request failed.
+        onAdFailedToLoad: (ad, err) {
+          ad.dispose();
+        },
+        // Called when an ad opens an overlay that covers the screen.
+        onAdOpened: (Ad ad) {},
+        // Called when an ad removes an overlay that covers the screen.
+        onAdClosed: (Ad ad) {},
+        // Called when an impression occurs on the ad.
+        onAdImpression: (Ad ad) {},
+      ),
+    ).load();
+  }
 
   Future<dynamic> fetchData() async {
     try {
@@ -96,6 +123,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         child: SingleChildScrollView(
             child: Column(
               children: [
+                if (_bannerAd != null)
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: SafeArea(
+                      child: SizedBox(
+                        width: _bannerAd!.size.width.toDouble(),
+                        height: _bannerAd!.size.height.toDouble(),
+                        child: AdWidget(ad: _bannerAd!),
+                      ),
+                    ),
+                  ),
                 AdsCarousel(promotion: promotion),
                 SizedBox(
                   height: 5.h,

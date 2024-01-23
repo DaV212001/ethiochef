@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/category/layout/vertical_food_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../../models/category.dart';
@@ -37,7 +38,7 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
       rethrow;
     }
   }
-
+BannerAd? _bannerAd;
   @override
   void initState() {
     _pagingController.addPageRequestListener((pageKey) {
@@ -51,7 +52,34 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
         _pagingController.error = error;
       });
     });
+    _loadAd();
     super.initState();
+  }
+  String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
+  void _loadAd() async {
+    BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        // Called when an ad is successfully received.
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        // Called when an ad request failed.
+        onAdFailedToLoad: (ad, err) {
+          ad.dispose();
+        },
+        // Called when an ad opens an overlay that covers the screen.
+        onAdOpened: (Ad ad) {},
+        // Called when an ad removes an overlay that covers the screen.
+        onAdClosed: (Ad ad) {},
+        // Called when an impression occurs on the ad.
+        onAdImpression: (Ad ad) {},
+      ),
+    ).load();
   }
 
   @override
@@ -70,6 +98,17 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
+            if (_bannerAd != null)
+              Align(
+                alignment: Alignment.topCenter,
+                child: SafeArea(
+                  child: SizedBox(
+                    width: _bannerAd!.size.width.toDouble(),
+                    height: _bannerAd!.size.height.toDouble(),
+                    child: AdWidget(ad: _bannerAd!),
+                  ),
+                ),
+              ),
             ScreenHead(
               hasNotification: true,
               screen: 1,
