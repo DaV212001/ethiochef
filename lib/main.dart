@@ -37,7 +37,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // await FirebaseService().initNotification();
+  await FirebaseService().initNotification();
 
   runApp(
     Phoenix(
