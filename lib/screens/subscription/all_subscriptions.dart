@@ -1,3 +1,4 @@
+import 'package:ethio_chef/models/language.dart';
 import 'package:ethio_chef/services/subscription_checker.dart';
 import 'package:ethio_chef/widgets/main_app_bar.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import '../../services/payment_service.dart';
 import '../../services/user_service.dart';
 import '../../utils/screen_utils.dart';
 import '../../widgets/main_button.dart';
+import '../../widgets/price_card.dart';
 import '../../widgets/pull_to_refresh.dart';
 import '../../widgets/subscription/subscription_card.dart';
 import '../auth/layout/payment_screen.dart';
@@ -109,23 +111,61 @@ Future<void> getUserData() async {
 
     final int crossAxisCount = (screenWidth / desiredItemWidth).floor();
     final double childAspectRatio = desiredItemWidth / desiredItemHeight;
-    return RefreshWidget(
+    return Theme(
+      data: Theme.of(context).copyWith(
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
+      ),
       child: Scaffold(
-        appBar: widget.isStepper==false ? MainAppBar(
-          title: userSubscriptionPlans.isEmpty ? 'Subscribe to a plan' :'Subscribe to a new plan',
-          hasMainIcons: false,
-        ): null,
+        extendBodyBehindAppBar: true,
+        // appBar: widget.isStepper==false ?
+        // MainAppBar(
+        //   title: userSubscriptionPlans.isEmpty ? 'Subscribe to a plan' :'Subscribe to a new plan',
+        //   hasMainIcons: false,
+        // ) : null,
         body: SafeArea(
+          maintainBottomViewPadding: true,
             child: FutureBuilder(
                 future: _subscriptionPlansFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     return SingleChildScrollView(
                       scrollDirection: Axis.vertical,
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          Stack(
+                              children: [
+                                Image.asset("assets/images/sign_up_image.png", fit: BoxFit.fill,),
+                                widget.isStepper == false? Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      GestureDetector(
+                                          onTap: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.all(10),
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(Radius.circular(100)),
+                                                color: Theme.of(context).colorScheme.onPrimary),
+
+                                            child: Icon(
+                                              Icons.arrow_back,
+                                              color: theme.colorScheme.onSecondary,
+                                            ),
+                                          )),
+
+
+                                    ],
+                                  ),
+                                ): SizedBox(),
+                              ]
+                          ),
                           if(userSubscriptionPlans.isNotEmpty)Text(
                             'Your subscription',
                               style: TextStyle(
@@ -189,31 +229,29 @@ Future<void> getUserData() async {
                             itemCount: subscriptionPlans.length,
                               itemBuilder: (context, index) {
                                 duration =subscriptionPlans[index].duration!.toString() + " Months";
-                                return PricingCards(
-                                  pricingCards: [
-                                    PricingCard(
-                                      mainPricingHighlightText: 'Save money',
-                                      title: 'Monthly',
-                                      price: subscriptionPlans[index].price.toString(),
-                                      subPriceText: duration,
-                                      billedText: subscriptionPlans[index].plan!,
-                                      onPress: () async {
-                                        Verification verification =
-                                            await PaymentService().getChapaCheckoutLink(subscriptionPlans[index].price!, '', first_name, last_name+"_"+phone, phone);
-                                        print("verification.checkoutUrl ${verification.checkoutUrl}");
-                                        print("PaymentService");
-                                        await pushNewScreen(context,
-                                        screen: PaymentScreen(url: verification.checkoutUrl!)
-                                        );
-                                        await SubscriptionStatus().checkStatus();
-                                        // bool notpaid = await PaymentService().verifyChapaPayment(verification.txref!);
-                                        // print(notpaid);
-                                        print("amount ${subscriptionPlans[index].price}");
-                                        widget.returnPrice(subscriptionPlans[index].price!);
-                                        Navigator.of(context).pop();
-                                      },
-                                    )
-                                  ],
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: PriceCard(
+                                        title: Language.getLocaleCode() == 'en'? 'Monthly': 'ወርሃዊ',
+                                        price: subscriptionPlans[index].price.toString(),
+                                        subPriceText: duration,
+                                        billedText: subscriptionPlans[index].plan!,
+                                        onPress: () async {
+                                          Verification verification =
+                                              await PaymentService().getChapaCheckoutLink(subscriptionPlans[index].price!, '', first_name, last_name+"_"+phone, phone);
+                                          print("verification.checkoutUrl ${verification.checkoutUrl}");
+                                          print("PaymentService");
+                                          await pushNewScreen(context,
+                                          screen: PaymentScreen(url: verification.checkoutUrl!)
+                                          );
+                                          await SubscriptionStatus().checkStatus();
+                                          // bool notpaid = await PaymentService().verifyChapaPayment(verification.txref!);
+                                          // print(notpaid);
+                                          print("amount ${subscriptionPlans[index].price}");
+                                          widget.returnPrice(subscriptionPlans[index].price!);
+                                          Navigator.of(context).pop();
+                                        }, duration: subscriptionPlans[index].duration!,
+                                  ),
                                 );
                               }
                           )
@@ -230,11 +268,6 @@ Future<void> getUserData() async {
             )
         ),
       ),
-        onRefresh:()async{
-          setState(() {
-            _subscriptionPlansFuture = getSubscriptionPlans();
-          });
-        }
     );
   }
   void deleteSubscription(int index) async {

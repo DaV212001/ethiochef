@@ -2,6 +2,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 import '../../../theme/model_theme.dart';
@@ -17,7 +18,10 @@ import 'competition_status/my_competition.dart';
 
 class RouteList extends StatefulWidget {
   final Function()? onRefresh;
-  const RouteList({super.key, this.onRefresh});
+  final BannerAd? banner;
+  const RouteList({super.key, this.onRefresh,
+    this.banner
+  });
 
   @override
   State<RouteList> createState() => _RouteListState();
@@ -192,6 +196,17 @@ class _RouteListState extends State<RouteList> {
               routePart: status,
               indexTwo: 1,
               routeName: tr("status"),
+            ),
+            if(widget.banner != null)
+            Align(
+              alignment: Alignment.topCenter,
+              child: SafeArea(
+                child: SizedBox(
+                  width: widget.banner!.size.width.toDouble(),
+                  height: widget.banner!.size.height.toDouble(),
+                  child: AdWidget(ad: widget.banner!),
+                ),
+              ),
             ),
             RouteContainer(
               routePart: other,

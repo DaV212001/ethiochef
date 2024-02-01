@@ -110,6 +110,7 @@ class FoodService{
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final foodData = data['data'];
+        print('CHECKING VIDEO FROM API: ${foodData['video']}');
         return Food.fromSingleFoodJson(foodData);
       } else {
         throw Exception(response.statusCode.toString());

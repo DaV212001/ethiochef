@@ -22,6 +22,7 @@ class _SignInState extends State<SignIn> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController phoneController = TextEditingController();
   bool isLoading = false;
+  bool isNotLoggedin = false;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +61,25 @@ class _SignInState extends State<SignIn> {
                     screen: AuthScreen(
                       isSignIn: false,
                     ));
-              })
+              }),
+          if(isNotLoggedin)
+          Center(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.red,
+                    Colors.redAccent
+                  ]
+                ),
+                borderRadius: BorderRadius.circular(20)
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(child: Text("login_failed".tr())),
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -85,6 +104,7 @@ class _SignInState extends State<SignIn> {
       if (response.statusCode == 200) {
         setState(() {
           isLoading = false;
+          isNotLoggedin = false;
         });
 
         RestartWidget.restartApp(context);
@@ -97,15 +117,17 @@ class _SignInState extends State<SignIn> {
         // The login failed.
         setState(() {
           isLoading = false;
+          isNotLoggedin = true;
         });
-        ScaffoldMessenger.of(context).showSnackBar(failed);
+        // ScaffoldMessenger.of(context).showSnackBar(failed);
       }
     } catch (e) {
       print(e);
       setState(() {
         isLoading = false;
+        isNotLoggedin = true;
       });
-      ScaffoldMessenger.of(context).showSnackBar(failed);
+      // ScaffoldMessenger.of(context).showSnackBar(failed);
     }
     // return response;
   }

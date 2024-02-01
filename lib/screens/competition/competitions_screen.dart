@@ -34,7 +34,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
       rethrow;
     }
   }
-BannerAd? _bannerAd;
+
   @override
   void initState() {
     _pagingController.addPageRequestListener((pageKey) {
@@ -48,6 +48,9 @@ BannerAd? _bannerAd;
     super.initState();
   }
   String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
+  BannerAd? _bannerAd;
+  BannerAd? _bannerAd2;
+  BannerAd? _bannerAd3;
   void _loadAd() async {
     BannerAd(
       adUnitId: _adbannerUnitId,
@@ -58,6 +61,56 @@ BannerAd? _bannerAd;
         onAdLoaded: (ad) {
           setState(() {
             _bannerAd = ad as BannerAd;
+          });
+        },
+        // Called when an ad request failed.
+        onAdFailedToLoad: (ad, err) {
+          ad.dispose();
+        },
+        // Called when an ad opens an overlay that covers the screen.
+        onAdOpened: (Ad ad) {},
+        // Called when an ad removes an overlay that covers the screen.
+        onAdClosed: (Ad ad) {},
+        // Called when an impression occurs on the ad.
+        onAdImpression: (Ad ad) {},
+      ),
+    ).load();
+
+    BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        // Called when an ad is successfully received.
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd2 = ad as BannerAd;
+
+          });
+        },
+        // Called when an ad request failed.
+        onAdFailedToLoad: (ad, err) {
+          ad.dispose();
+        },
+        // Called when an ad opens an overlay that covers the screen.
+        onAdOpened: (Ad ad) {},
+        // Called when an ad removes an overlay that covers the screen.
+        onAdClosed: (Ad ad) {},
+        // Called when an impression occurs on the ad.
+        onAdImpression: (Ad ad) {},
+      ),
+    ).load();
+
+    BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        // Called when an ad is successfully received.
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd3 = ad as BannerAd;
+
           });
         },
         // Called when an ad request failed.
@@ -100,9 +153,21 @@ BannerAd? _bannerAd;
                   ),
                 ),
               SizedBox(
-                  height: 930.h,
+                  height: 600.h,
                   child: VerticalCompetitionList(
-                      pagingController: _pagingController))
+                    // bannerAd: _bannerAd3,
+                      pagingController: _pagingController)),
+              if (_bannerAd2 != null)
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: SafeArea(
+                    child: SizedBox(
+                      width: _bannerAd2!.size.width.toDouble(),
+                      height: _bannerAd2!.size.height.toDouble(),
+                      child: AdWidget(ad: _bannerAd2!),
+                    )
+                  )
+                )
             ])),
       ),
       floatingActionButton: FloatingActionButton(

@@ -39,6 +39,8 @@ void main() async {
 
   await FirebaseService().initNotification();
 
+
+
   runApp(
     Phoenix(
          child:
@@ -54,12 +56,15 @@ void main() async {
                   Locale('en'),
                 ],
                 path: 'assets/locale',
-                fallbackLocale: const Locale('en'),
+                startLocale: Locale('am'),
+                fallbackLocale: const Locale('am'),
                 child: RestartWidget(child: EthioChef()))
   // ),
       )
   );
 }
+
+
 class RestartWidget extends StatefulWidget {
   RestartWidget({required this.child});
 

@@ -19,7 +19,7 @@ class FirebaseService {
 
   void handleMessage(RemoteMessage? message) {
     print("here 1");
-    if (message == null) return;
+    if (message == null) { print('message NULL'); return;}
     navigatorKey.currentState?.pushNamed("/main");
     navigatorKey.currentState?.pushNamed("/notification", arguments: message);
   }
@@ -55,7 +55,7 @@ class FirebaseService {
                 _androidChannel.id, _androidChannel.name,
                 channelDescription: _androidChannel.description,
                 priority: Priority.max,
-                icon: '@drawable/ic_launcher'
+                icon: '@drawable/ic_launcher2'
                 ),
           ),
           payload: jsonEncode(message.toMap()));
@@ -72,7 +72,7 @@ class FirebaseService {
 
   Future initLocalNotifications() async {
     const iOS = DarwinInitializationSettings();
-    const android = AndroidInitializationSettings('@drawable/ic_launcher');
+    const android = AndroidInitializationSettings('ic_launcher2');
     const setting = InitializationSettings(
       android: android,
       iOS: iOS,

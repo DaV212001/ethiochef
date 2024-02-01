@@ -124,7 +124,7 @@ class _FoodCardState extends State<FoodCard> {
                               'please_subscribe_to_see_ingredients_and_steps'.tr()
                           ));
                       loginFunction();
-                      ScaffoldMessenger.of(context).showSnackBar(logIn);
+                      // ScaffoldMessenger.of(context).showSnackBar(logIn);
                       break;
                     case "Another user logged in":
                       print("Another user logged in");

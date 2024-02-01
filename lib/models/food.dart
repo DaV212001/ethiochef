@@ -84,6 +84,7 @@ class Food {
       meal = 4;
     }
     String thumbnail = Constants.ImageAPI + i;
+    print('CHECKING VIDEO FROM API: ${json['video']}');
     return Food(
       id: json['id'],
       subcategoriesId: json['subcategories_id'],
@@ -95,6 +96,7 @@ class Food {
           .map((product) => Food.fromRelatedRecipe(product))
           .toList(),
       preparationTime: json['cooking_time'],
+      video: json['video']??null,
       servings: json['serving'],
       stepsList: json['steps'][Language.getLocaleCode()]?? json['name']["en"],
       ingredients: json['ingredients'][Language.getLocaleCode()] ?? json['name']["en"],

@@ -26,7 +26,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin{
 
   Future? _future;
-  BannerAd? _bannerAd;
+
   @override
   void initState() {
     _future = fetchData();
@@ -34,6 +34,9 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     super.initState();
   }
   String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
+  BannerAd? _bannerAd;
+  BannerAd? _bannerAd2;
+  BannerAd? _bannerAd3;
   void _loadAd() async {
     BannerAd(
       adUnitId: _adbannerUnitId,
@@ -44,6 +47,56 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         onAdLoaded: (ad) {
           setState(() {
             _bannerAd = ad as BannerAd;
+          });
+        },
+        // Called when an ad request failed.
+        onAdFailedToLoad: (ad, err) {
+          ad.dispose();
+        },
+        // Called when an ad opens an overlay that covers the screen.
+        onAdOpened: (Ad ad) {},
+        // Called when an ad removes an overlay that covers the screen.
+        onAdClosed: (Ad ad) {},
+        // Called when an impression occurs on the ad.
+        onAdImpression: (Ad ad) {},
+      ),
+    ).load();
+
+    BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        // Called when an ad is successfully received.
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd2 = ad as BannerAd;
+
+          });
+        },
+        // Called when an ad request failed.
+        onAdFailedToLoad: (ad, err) {
+          ad.dispose();
+        },
+        // Called when an ad opens an overlay that covers the screen.
+        onAdOpened: (Ad ad) {},
+        // Called when an ad removes an overlay that covers the screen.
+        onAdClosed: (Ad ad) {},
+        // Called when an impression occurs on the ad.
+        onAdImpression: (Ad ad) {},
+      ),
+    ).load();
+
+    BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        // Called when an ad is successfully received.
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd3 = ad as BannerAd;
+
           });
         },
         // Called when an ad request failed.
@@ -138,6 +191,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 SizedBox(
                   height: 5.h,
                 ),
+
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Column(
@@ -151,7 +205,29 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         superMeal: superMeal,
                         dinner: dinner,
                       ),
+                      if (_bannerAd2 != null)
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: SafeArea(
+                            child: SizedBox(
+                              width: _bannerAd2!.size.width.toDouble(),
+                              height: _bannerAd2!.size.height.toDouble(),
+                              child: AdWidget(ad: _bannerAd2!),
+                            ),
+                          ),
+                        ),
                       CategoryCarousel(category: category),
+                      if (_bannerAd3 != null)
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: SafeArea(
+                            child: SizedBox(
+                              width: _bannerAd3!.size.width.toDouble(),
+                              height: _bannerAd3!.size.height.toDouble(),
+                              child: AdWidget(ad: _bannerAd3!),
+                            ),
+                          ),
+                        ),
                       SizedBox(
                         height: 15.h,
                       ),

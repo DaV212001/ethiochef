@@ -54,7 +54,7 @@ class NotificationIcon extends StatelessWidget {
                 withNavBar: false,
                 screen: AuthScreen(isSignIn: true),
               );
-              ScaffoldMessenger.of(context).showSnackBar(logIn);
+              // ScaffoldMessenger.of(context).showSnackBar(logIn);
               break;
             case "Another user logged in":
               print("Another user logged in");

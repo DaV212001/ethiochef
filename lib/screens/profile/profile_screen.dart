@@ -35,7 +35,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late User user = User(lastName: '', firstName: '');
   Future? _future;
   bool isLoading = false;
-BannerAd? _bannerAd;
+
   @override
   void initState() {
     _future = fetchData();
@@ -43,6 +43,9 @@ BannerAd? _bannerAd;
     super.initState();
   }
   String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
+  BannerAd? _bannerAd;
+  BannerAd? _bannerAd2;
+  BannerAd? _bannerAd3;
   void _loadAd() async {
     BannerAd(
       adUnitId: _adbannerUnitId,
@@ -53,6 +56,56 @@ BannerAd? _bannerAd;
         onAdLoaded: (ad) {
           setState(() {
             _bannerAd = ad as BannerAd;
+          });
+        },
+        // Called when an ad request failed.
+        onAdFailedToLoad: (ad, err) {
+          ad.dispose();
+        },
+        // Called when an ad opens an overlay that covers the screen.
+        onAdOpened: (Ad ad) {},
+        // Called when an ad removes an overlay that covers the screen.
+        onAdClosed: (Ad ad) {},
+        // Called when an impression occurs on the ad.
+        onAdImpression: (Ad ad) {},
+      ),
+    ).load();
+
+    BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        // Called when an ad is successfully received.
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd2 = ad as BannerAd;
+
+          });
+        },
+          // Called when an ad request failed.
+          onAdFailedToLoad: (ad, err) {
+    ad.dispose();
+    },
+      // Called when an ad opens an overlay that covers the screen.
+      onAdOpened: (Ad ad) {},
+      // Called when an ad removes an overlay that covers the screen.
+      onAdClosed: (Ad ad) {},
+      // Called when an impression occurs on the ad.
+      onAdImpression: (Ad ad) {},
+    ),
+    ).load();
+
+    BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        // Called when an ad is successfully received.
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd3 = ad as BannerAd;
+
           });
         },
         // Called when an ad request failed.
@@ -150,6 +203,34 @@ BannerAd? _bannerAd;
                       ),
                     );
                   }
+                  if(snapshot.data[0] == null){
+                    return Center(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("another_account_login".tr()),
+                            MainButton(
+                                isLoading: isLoading,
+                                text: "log_out".tr(),
+                                onPress: () async {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  await AuthService.logout();
+                                  SharedPreferences shared = await SharedPreferences.getInstance();
+                                  await shared.remove('savedRecipes');
+                                  await shared.remove('ethioChef_authorization_token');
+                                  Phoenix.rebirth(context);
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                }
+                            )
+                          ]
+                      ),
+                    );
+                  }
                   return buildUserScreen(snapshot.data[0] as UserProfile, snapshot.data[1] as FooterData);
                 })
         ),
@@ -176,14 +257,14 @@ BannerAd? _bannerAd;
                 _future = fetchData();
               });
             }),
-            if (_bannerAd != null)
+            if(_bannerAd2 != null)
               Align(
                 alignment: Alignment.topCenter,
                 child: SafeArea(
                   child: SizedBox(
-                    width: _bannerAd!.size.width.toDouble(),
-                    height: _bannerAd!.size.height.toDouble(),
-                    child: AdWidget(ad: _bannerAd!),
+                    width: _bannerAd2!.size.width.toDouble(),
+                    height: _bannerAd2!.size.height.toDouble(),
+                    child: AdWidget(ad: _bannerAd2!),
                   ),
                 ),
               ),
@@ -209,12 +290,24 @@ BannerAd? _bannerAd;
               )
               ,
             RouteList(
+              // banner: _bannerAd,
               onRefresh: (){
                 setState(() {
                   _future = fetchData();
                 });
               },
             ),
+            if(_bannerAd3 != null)
+              Align(
+                alignment: Alignment.topCenter,
+                child: SafeArea(
+                  child: SizedBox(
+                    width: _bannerAd3!.size.width.toDouble(),
+                    height: _bannerAd3!.size.height.toDouble(),
+                    child: AdWidget(ad: _bannerAd3!),
+                  ),
+                ),
+              ),
             SizedBox(height: 5.h,),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),

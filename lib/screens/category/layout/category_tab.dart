@@ -38,7 +38,7 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
       rethrow;
     }
   }
-BannerAd? _bannerAd;
+
   @override
   void initState() {
     _pagingController.addPageRequestListener((pageKey) {
@@ -56,6 +56,9 @@ BannerAd? _bannerAd;
     super.initState();
   }
   String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
+  BannerAd? _bannerAd;
+  BannerAd? _bannerAd2;
+  BannerAd? _bannerAd3;
   void _loadAd() async {
     BannerAd(
       adUnitId: _adbannerUnitId,
@@ -80,7 +83,58 @@ BannerAd? _bannerAd;
         onAdImpression: (Ad ad) {},
       ),
     ).load();
+
+    BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        // Called when an ad is successfully received.
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd2 = ad as BannerAd;
+
+          });
+        },
+        // Called when an ad request failed.
+        onAdFailedToLoad: (ad, err) {
+          ad.dispose();
+        },
+        // Called when an ad opens an overlay that covers the screen.
+        onAdOpened: (Ad ad) {},
+        // Called when an ad removes an overlay that covers the screen.
+        onAdClosed: (Ad ad) {},
+        // Called when an impression occurs on the ad.
+        onAdImpression: (Ad ad) {},
+      ),
+    ).load();
+
+    BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        // Called when an ad is successfully received.
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd3 = ad as BannerAd;
+
+          });
+        },
+        // Called when an ad request failed.
+        onAdFailedToLoad: (ad, err) {
+          ad.dispose();
+        },
+        // Called when an ad opens an overlay that covers the screen.
+        onAdOpened: (Ad ad) {},
+        // Called when an ad removes an overlay that covers the screen.
+        onAdClosed: (Ad ad) {},
+        // Called when an impression occurs on the ad.
+        onAdImpression: (Ad ad) {},
+      ),
+    ).load();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +190,17 @@ BannerAd? _bannerAd;
               radius: 5,
               tabs: tabs,
             ),
-
+if(_bannerAd2 != null)
+              Align(
+                alignment: Alignment.topCenter,
+                child: SafeArea(
+                  child: SizedBox(
+                    width: _bannerAd2!.size.width.toDouble(),
+                    height: _bannerAd2!.size.height.toDouble(),
+                    child: AdWidget(ad: _bannerAd2!),
+                  )
+                )
+              ),
              Expanded(
                     child: RefreshWidget(
                       child: VerticalFoodList(pagingController:
@@ -148,7 +212,17 @@ BannerAd? _bannerAd;
                       },
                     ),
                 ),
-
+if(_bannerAd3 != null)
+              Align(
+                alignment: Alignment.topCenter,
+                child: SafeArea(
+                  child: SizedBox(
+                    width: _bannerAd3!.size.width.toDouble(),
+                    height: _bannerAd3!.size.height.toDouble(),
+                    child: AdWidget(ad: _bannerAd3!),
+                  )
+                )
+              ),
 
           ],
         ),
