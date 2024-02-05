@@ -1,3 +1,5 @@
+import 'package:ethio_chef/models/language.dart';
+
 class SubscriptionPlans{
   int? id;
   String? plan;
@@ -19,8 +21,9 @@ class SubscriptionPlans{
   });
 
   SubscriptionPlans.fromJson(Map<dynamic, dynamic> json) {
+    print(json);
     id = json['id'];
-    plan = json['plan'];
+    plan = json['plan'][Language.getLocaleCode()] ?? json['plan']['en'];
     price = json['price'];
     duration = json['duration']??0;
     created_at = DateTime.parse(json['created_at']);

@@ -13,7 +13,7 @@ class RecipeRelated extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isTablet = ScreenUtils.isTablet(context);
-    double height = 250;
+    double height = 260;
     double width = 165;
     ThemeData theme = Theme.of(context);
     return Column(

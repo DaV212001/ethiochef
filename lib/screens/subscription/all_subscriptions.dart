@@ -1,23 +1,20 @@
 import 'package:ethio_chef/models/language.dart';
+import 'package:ethio_chef/screens/subscription/layout/user_subscription.dart';
 import 'package:ethio_chef/services/subscription_checker.dart';
-import 'package:ethio_chef/widgets/main_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:ethio_chef/models/subscriptionplans.dart' as h;
 import 'package:ethio_chef/services/user_service.dart' as u;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
-import 'package:pricing_cards/pricing_cards.dart';
 import '../../models/user.dart';
 import '../../models/verification.dart';
 import '../../services/payment_service.dart';
 import '../../services/user_service.dart';
 import '../../utils/screen_utils.dart';
-import '../../widgets/main_button.dart';
 import '../../widgets/price_card.dart';
-import '../../widgets/pull_to_refresh.dart';
-import '../../widgets/subscription/subscription_card.dart';
 import '../auth/layout/payment_screen.dart';
 
+import 'layout/subscription_header.dart';
 
 
 
@@ -51,17 +48,21 @@ class _AllSubscriptionsState extends State<AllSubscriptions> {
   String last_name = "";
   String phone = "";
   late String duration;
-  int currentYear = DateTime.now().year;
-  int currentMonth = DateTime.now().month;
+  int currentYear = DateTime
+      .now()
+      .year;
+  int currentMonth = DateTime
+      .now()
+      .month;
   Future<void>? _subscriptionPlansFuture;
 
   @override
   void initState() {
     super.initState();
     _subscriptionPlansFuture = getSubscriptionPlans();
-    if(widget.isSignUp == false){
+    if (widget.isSignUp == false) {
       getUserData();
-    }else{
+    } else {
       print("isSignUp ${widget.isSignUp}");
       setState(() {
         first_name = widget.first_name;
@@ -73,6 +74,7 @@ class _AllSubscriptionsState extends State<AllSubscriptions> {
       print(phone);
     }
   }
+
   Future<void> getSubscriptionPlans() async {
     u.UserService service = u.UserService();
     print("fetchSubscriptionPlans");
@@ -85,32 +87,24 @@ class _AllSubscriptionsState extends State<AllSubscriptions> {
     setState(() {
       userSubscriptionPlans = response1;
     });
-
   }
 
-Future<void> getUserData() async {
-  UserService service = u.UserService();
-  User user = await service.fetchLoggedInUser();
-  setState(() {
-    user_id = user.id!;
-    first_name = user.firstName;
-    last_name = user.lastName;
-    phone = user.phone!;
-  });
-}
-
+  Future<void> getUserData() async {
+    UserService service = u.UserService();
+    User user = await service.fetchLoggedInUser();
+    setState(() {
+      user_id = user.id!;
+      first_name = user.firstName;
+      last_name = user.lastName;
+      phone = user.phone!;
+    });
+  }
 
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    final bool isTablet = ScreenUtils.isTablet(context);
-    final double desiredItemWidth = isTablet ? 130.w : 140.w;
-    final double desiredItemHeight = isTablet ? 220.h : 130.h;
-    final double screenWidth = ScreenUtils.width(context);
 
-    final int crossAxisCount = (screenWidth / desiredItemWidth).floor();
-    final double childAspectRatio = desiredItemWidth / desiredItemHeight;
     return Theme(
       data: Theme.of(context).copyWith(
         appBarTheme: AppBarTheme(
@@ -120,13 +114,8 @@ Future<void> getUserData() async {
       ),
       child: Scaffold(
         extendBodyBehindAppBar: true,
-        // appBar: widget.isStepper==false ?
-        // MainAppBar(
-        //   title: userSubscriptionPlans.isEmpty ? 'Subscribe to a plan' :'Subscribe to a new plan',
-        //   hasMainIcons: false,
-        // ) : null,
         body: SafeArea(
-          maintainBottomViewPadding: true,
+            maintainBottomViewPadding: true,
             child: FutureBuilder(
                 future: _subscriptionPlansFuture,
                 builder: (context, snapshot) {
@@ -137,124 +126,16 @@ Future<void> getUserData() async {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Stack(
-                              children: [
-                                Image.asset("assets/images/sign_up_image.png", fit: BoxFit.fill,),
-                                widget.isStepper == false? Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    children: [
-                                      GestureDetector(
-                                          onTap: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Container(
-                                            padding: EdgeInsets.all(10),
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.all(Radius.circular(100)),
-                                                color: Theme.of(context).colorScheme.onPrimary),
-
-                                            child: Icon(
-                                              Icons.arrow_back,
-                                              color: theme.colorScheme.onSecondary,
-                                            ),
-                                          )),
-
-
-                                    ],
-                                  ),
-                                ): SizedBox(),
-                              ]
+                          SubscriptionHeader(
+                            isStepper: widget.isStepper!
                           ),
-                          if(userSubscriptionPlans.isNotEmpty)Text(
-                            'Your subscription',
-                              style: TextStyle(
-                                  fontSize: 17.sp,
-                                  fontWeight: FontWeight.w800,
-                                  color: theme.colorScheme.secondaryContainer)
-                          ),
-                          SizedBox(
-                            height: 20.h,
-                          ),
-                          SizedBox(
-                            width: 300.w,
-                            child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: userSubscriptionPlans.length,
-                                scrollDirection: Axis.vertical,
-                                physics: BouncingScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  duration_user =userSubscriptionPlans.isNotEmpty?
-                                  userSubscriptionPlans[index].duration.toString() + " Months left":"0";
-                                  return SubscriptionCard(
-                                    buttonName: 'Delete',
-                                    plan: userSubscriptionPlans[index].plan!,
-                                    price: userSubscriptionPlans[index].price.toString(),
-                                    duration: duration_user,
-                                    onTap: (){
-                                      deleteSubscription(index);
-                                    },
-                                  );
-                                }
+                          if(userSubscriptionPlans.isNotEmpty)
+                            UserSubscription(
+                              duration_user: duration_user,
+                              subscriptionPlans: subscriptionPlans,
+                              userSubscriptionPlans: userSubscriptionPlans,
                             ),
-                          ),
-                          if(userSubscriptionPlans.isNotEmpty)
-                            SizedBox(height: 5,),
-                          if(userSubscriptionPlans.isNotEmpty)
-                            Divider(thickness: 1, height: 1,),
-                          if(userSubscriptionPlans.isNotEmpty)
-                            SizedBox(height: 5,),
-                          if(userSubscriptionPlans.isNotEmpty)Text(
-                            'Extend your subscription',
-                              style: TextStyle(
-                                  fontSize: 17.sp,
-                                  fontWeight: FontWeight.w800,
-                                  color: theme.colorScheme.secondaryContainer)
-                          ),
-                          if(userSubscriptionPlans.isNotEmpty)
-                            SizedBox(height: 5,),
-                          if(userSubscriptionPlans.isNotEmpty)
-                            Divider(thickness: 1, height: 1,),
-                          if(userSubscriptionPlans.isNotEmpty)
-                            SizedBox(height: 5,),
-                          GridView.builder(
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: crossAxisCount,
-                              childAspectRatio: childAspectRatio,
-                              mainAxisSpacing: isTablet ? 5 : 0,
-                            ),
-                            physics: BouncingScrollPhysics(),
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemCount: subscriptionPlans.length,
-                              itemBuilder: (context, index) {
-                                duration =subscriptionPlans[index].duration!.toString() + " Months";
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: PriceCard(
-                                        title: Language.getLocaleCode() == 'en'? 'Monthly': 'ወርሃዊ',
-                                        price: subscriptionPlans[index].price.toString(),
-                                        subPriceText: duration,
-                                        billedText: subscriptionPlans[index].plan!,
-                                        onPress: () async {
-                                          Verification verification =
-                                              await PaymentService().getChapaCheckoutLink(subscriptionPlans[index].price!, '', first_name, last_name+"_"+phone, phone);
-                                          print("verification.checkoutUrl ${verification.checkoutUrl}");
-                                          print("PaymentService");
-                                          await pushNewScreen(context,
-                                          screen: PaymentScreen(url: verification.checkoutUrl!)
-                                          );
-                                          await SubscriptionStatus().checkStatus();
-                                          // bool notpaid = await PaymentService().verifyChapaPayment(verification.txref!);
-                                          // print(notpaid);
-                                          print("amount ${subscriptionPlans[index].price}");
-                                          widget.returnPrice(subscriptionPlans[index].price!);
-                                          Navigator.of(context).pop();
-                                        }, duration: subscriptionPlans[index].duration!,
-                                  ),
-                                );
-                              }
-                          )
+                            Subscriptions()
                         ],
                       ),
                     );
@@ -270,45 +151,69 @@ Future<void> getUserData() async {
       ),
     );
   }
-  void deleteSubscription(int index) async {
-    print('Delete');
-    u.UserService service = u.UserService();
-    bool deleted = await service.deleteUserSubscription();
-    if(deleted){
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text(
-                'Deleted successfully',
-              )
-          )
-      );
-      setState(() {
-        userSubscriptionPlans.removeAt(index);
-      });
+  Widget Subscriptions(){
+    final bool isTablet = ScreenUtils.isTablet(context);
+    final double desiredItemWidth = isTablet ? 130.w : 140.w;
+    final double desiredItemHeight = isTablet ? 220.h : 130.h;
+    final double screenWidth = ScreenUtils.width(context);
 
-    }
+    final int crossAxisCount = (screenWidth / desiredItemWidth).floor();
+    final double childAspectRatio = desiredItemWidth / desiredItemHeight;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: crossAxisCount,
+              childAspectRatio: childAspectRatio,
+              mainAxisSpacing: isTablet ? 5 : 0,
+            ),
+            physics: BouncingScrollPhysics(),
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            itemCount: subscriptionPlans.length,
+            itemBuilder: (context, index) {
+              duration = subscriptionPlans[index].duration!
+                  .toString() + " Months";
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: PriceCard(
+                  title: Language.getLocaleCode() == 'en'
+                      ? 'Monthly'
+                      : 'ወርሃዊ',
+                  price: subscriptionPlans[index].price
+                      .toString(),
+                  subPriceText: duration,
+                  billedText: subscriptionPlans[index].plan!,
+                  onPress: () async {
+                    Verification verification =
+                    await PaymentService()
+                        .getChapaCheckoutLink(
+                        subscriptionPlans[index].price!, '',
+                        first_name, last_name + "_" + phone,
+                        phone);
+                    print(
+                        "verification.checkoutUrl ${verification
+                            .checkoutUrl}");
+                    print("PaymentService");
+                    await pushNewScreen(context,
+                        screen: PaymentScreen(
+                            url: verification.checkoutUrl!)
+                    );
+                    await SubscriptionStatus().checkStatus();
+                    print("amount ${subscriptionPlans[index]
+                        .price}");
+                    widget.returnPrice(
+                        subscriptionPlans[index].price!);
+                    Navigator.of(context).pop();
+                  },
+                  duration: subscriptionPlans[index]
+                      .duration!,
+                ),
+              );
+            }
+        )
+      ],
+    );
   }
 }
-/*
-* SubscriptionCard(
-                                  buttonName: 'Subscribe',
-                                  plan: subscriptionPlans[index].plan!,
-                                  price: subscriptionPlans[index].price.toString(),
-                                  duration: duration,
-                                  onTap: () async {
-                                    Verification verification =
-                                    await PaymentService().getChapaCheckoutLink(subscriptionPlans[index].price!, '', first_name, last_name+"_"+phone, phone);
-                                    print("verification.checkoutUrl ${verification.checkoutUrl}");
-                                    print("PaymentService");
-                                    await pushNewScreen(context,
-                                        screen: PaymentScreen(url: verification.checkoutUrl!)
-                                    );
-                                    await SubscriptionStatus().checkStatus();
-                                    // bool notpaid = await PaymentService().verifyChapaPayment(verification.txref!);
-                                    // print(notpaid);
-                                    print("amount ${subscriptionPlans[index].price}");
-                                    widget.returnPrice(subscriptionPlans[index].price!);
-                                    Navigator.of(context).pop();
-                                  },
-                                )
-* */

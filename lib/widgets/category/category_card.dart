@@ -16,6 +16,7 @@ import '../../theme/app_theme.dart';
 import '../../utils/screen_utils.dart';
 import '../cached_image.dart';
 import '../main_button.dart';
+import 'package:quickalert/quickalert.dart';
 
 class CategoryCard extends StatefulWidget {
   final Food food;
@@ -34,8 +35,10 @@ class _CategoryCardState extends State<CategoryCard> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return GestureDetector(
       onTap: () async {
+
         setState(() {
           isLoading = true;
         });
@@ -43,6 +46,7 @@ class _CategoryCardState extends State<CategoryCard> {
         setState(() {
           isLoading = false;
         });
+        print("Status  = = = = = = = =  = $status");
         switch(status){
           case "Not logged in":
             print("Not logged in");
@@ -73,7 +77,7 @@ class _CategoryCardState extends State<CategoryCard> {
             );
             break;
           case "User is not subscribed":
-            print("User is not subscribed");
+            print("User is not subscribed hereeeeeeeeeeeeeeeeeeeeeeee");
             pushNewScreen(
               context,
               withNavBar: false,
@@ -173,73 +177,7 @@ class _CategoryCardState extends State<CategoryCard> {
                   fontWeight: FontWeight.w600,
                   color: theme.colorScheme.secondaryContainer),
             ),
-          ),
-          // SizedBox(
-          //   child: MainButton(
-          //     isLoading: isLoading,
-          //     width: 150.w,
-          //       height: 50,
-          //       onPress: () async {
-          //       setState(() {
-          //         isLoading = true;
-          //       });
-          //         SnackBar checking =SnackBar(
-          //             padding: EdgeInsets.symmetric(vertical: 10),
-          //             showCloseIcon: true,
-          //             content: Text(
-          //                 'checking_subscription_please_wait'.tr()
-          //             ));
-          //         ScaffoldMessenger.of(context).showSnackBar(checking);
-          //         String status = await Check.checkToShow();
-          //       setState(() {
-          //         isLoading = false;
-          //       });
-          //         switch(status){
-          //           case "Not logged in":
-          //             print("Not logged in");
-          //             SnackBar logIn =SnackBar(
-          //                 padding: EdgeInsets.symmetric(vertical: 20),
-          //                 content: Text(
-          //                     'please_subscribe_to_see_ingredients_and_steps'.tr()
-          //                 ));
-          //             loginFunction();
-          //             ScaffoldMessenger.of(context).showSnackBar(logIn);
-          //             break;
-          //           case "Another user logged in":
-          //             print("Another user logged in");
-          //             SnackBar logIn =SnackBar(
-          //                 padding: EdgeInsets.symmetric(vertical: 20),
-          //                 content: Text(
-          //                     'another_account_login'.tr()
-          //                 ));
-          //             ScaffoldMessenger.of(context).showSnackBar(logIn);
-          //             loginFunction();
-          //             break;
-          //           case "User is subscribed":
-          //             print("User is subscribed");
-          //             pushNewScreen(
-          //               context,
-          //               withNavBar: false,
-          //               screen: RecipeScreen(food: widget.food),
-          //             );
-          //             break;
-          //           case "User is not subscribed":
-          //             print("User is not subscribed");
-          //             pushNewScreen(
-          //               context,
-          //               withNavBar: false,
-          //               screen: AllSubscriptions(returnPrice: (int ) {  },
-          //                 first_name: "",
-          //                 last_name: "",
-          //                 isSignUp:
-          //                 false,phone: "",),
-          //             );
-          //             break;
-          //         }
-          //       },
-          //       text: 'show_recipe'.tr()
-          //   ),
-          // )
+          )
         ]
     );
   }

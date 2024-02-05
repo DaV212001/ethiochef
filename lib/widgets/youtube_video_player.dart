@@ -31,26 +31,18 @@ class _YoutubeVideoPlayerState extends State<YoutubeVideoPlayer> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Container(
-        decoration: BoxDecoration(
-          borderRadius: AppTheme.allBorderRadius,
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        child: ClipRRect(
-            clipBehavior: Clip.hardEdge,
-            borderRadius: AppTheme.allBorderRadius,
-            child: AspectRatio(
-                aspectRatio: 16 / 9,
-                child: PodVideoPlayer(
-                  podProgressBarConfig: PodProgressBarConfig(
-                      playingBarColor: theme.colorScheme.primary,
-                      circleHandlerColor: theme.colorScheme.primary,
-                      bufferedBarColor: theme.colorScheme.primary),
-                  controller: controller,
-                  backgroundColor: theme.colorScheme.tertiary,
-                  videoThumbnail: const DecorationImage(
-                    image: AssetImage(Assets.imagesLogo),
-                  ),
-                ))));
+        child: PodVideoPlayer(
+          podProgressBarConfig: PodProgressBarConfig(
+              playingBarColor: theme.colorScheme.primary,
+              circleHandlerColor: theme.colorScheme.primary,
+              bufferedBarColor: theme.colorScheme.primary),
+          controller: controller,
+          backgroundColor: theme.colorScheme.tertiary,
+          videoThumbnail: const DecorationImage(
+            image: AssetImage(Assets.imagesLogo),
+          ),
+        )
+    );
   }
 
   @override

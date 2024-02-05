@@ -25,7 +25,7 @@ class ErrorCard extends StatelessWidget {
         SvgPicture.asset(
           error.image,
           width: isFood! ? isTablet ? 250.w : 300.w:isTablet ? 250.w : 300.w,
-          height: isFood! ? isTablet ? 100.h : 100.h: isTablet ? 300.h : 300.h,
+          height: isFood! ? isTablet ? 80.h : 80.h: isTablet ? 300.h : 300.h,
         ),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),

@@ -92,9 +92,9 @@ class CommentCard extends StatelessWidget {
             );
           },
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+            padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 10.h),
             child: Text(
-              "edit".tr(),
+              "edit_comment".tr(),
               style: TextStyle(
                 color: theme.primaryColor,
                 fontWeight: FontWeight.normal,
@@ -110,7 +110,7 @@ class CommentCard extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
             child: Text(
-              "remove".tr(),
+              "delete".tr(),
               style: TextStyle(
                   color: theme.colorScheme.error,
                   fontWeight: FontWeight.normal,

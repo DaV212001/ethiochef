@@ -102,7 +102,7 @@ class _FoodCarouselState extends State<FoodCarousel> {
           SvgPicture.asset(
             "assets/images/errors/empty_food.svg",
             width: isTablet ? 250.w : 300.w,
-            height: isTablet ? 100.h : 100.h,
+            height: isTablet ? 80.h : 80.h,
           ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
@@ -152,79 +152,6 @@ class _FoodCarouselState extends State<FoodCarousel> {
           }
       ),
     );
-
-    //   Container(
-    //   child: Column(
-    //     crossAxisAlignment: CrossAxisAlignment.start,
-    //       mainAxisAlignment: MainAxisAlignment.start,
-    //       children: [
-    //
-    //         // CarouselSlider(
-    //         //   items: food.map((foods) {
-    //         //     return Builder(
-    //         //       builder: (BuildContext context) {
-    //         //           return Padding(
-    //         //             padding: EdgeInsets.symmetric(horizontal: 1.w),
-    //         //             child: CategoryCard(
-    //         //                 food: foods
-    //         //             )
-    //         //           );
-    //         //
-    //         //       },
-    //         //     );
-    //         //   }).toList(),
-    //         //   carouselController: carouselController,
-    //         //   options: CarouselOptions(
-    //         //     scrollPhysics: const BouncingScrollPhysics(),
-    //         //     autoPlay: false,
-    //         //     onPageChanged: (index, reason) {
-    //         //       setState(() {
-    //         //         currentIndex = index;
-    //         //       });
-    //         //     },
-    //         //     height: height,
-    //         //     padEnds: false,
-    //         //     disableCenter: false,
-    //         //     enableInfiniteScroll: false,
-    //         //     reverse: false,
-    //         //     enlargeCenterPage: false,
-    //         //       animateToClosest: false,
-    //         //       pageSnapping: false,
-    //         //     viewportFraction: 0.4
-    //         //   )
-    //         // ),
-    //         // SizedBox(height: 5),
-    //         // Container(
-    //         //   child: Row(
-    //         //     mainAxisAlignment: MainAxisAlignment.center,
-    //         //     children: [
-    //         //       Row(
-    //         //         mainAxisAlignment: MainAxisAlignment.center,
-    //         //         children: food.asMap().entries.map((entry) {
-    //         //
-    //         //           return GestureDetector(
-    //         //             onTap: () {},
-    //         //             child: Container(
-    //         //               width: currentIndex == entry.key ? 17.w : 7.w,
-    //         //               height: 7.h,
-    //         //               margin: EdgeInsets.symmetric(
-    //         //                 horizontal: 3.0.w,
-    //         //               ),
-    //         //               decoration: BoxDecoration(
-    //         //                   borderRadius: BorderRadius.circular(10.r),
-    //         //                   color: currentIndex == entry.key
-    //         //                       ? theme.colorScheme.primaryContainer
-    //         //                       : theme.colorScheme.primary),
-    //         //             ),
-    //         //           );
-    //         //
-    //         //         }).toList(),
-    //         //       )
-    //         //     ],
-    //         //   ),
-    //         // )
-    //   ]),
-    // );
   }
 
 }

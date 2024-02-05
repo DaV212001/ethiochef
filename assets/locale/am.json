@@ -131,8 +131,9 @@
   "no_food_in_this_category": "በዚህ ምድብ ውስጥ ምንም ምግብ የለም",
   "please_subscribe_now": "እባክዎ አሁኑኑ ሰብስክራይብ ያድርጉ",
   "show_more": "ተጨማሪ አሳይ",
-  "no_connection": "ምንም የበይነመረብ ግንኙነት የለም።",
-  "no_connection_text": "ግንኙነትዎን ይፈትሹ እና ገጹን ያድሱ።",
+
+  "no_connection": "እንደገና ይሞክሩ።",
+  "no_connection_text": "ስልኮ ኢንተርኔት እየሰራ መሆኑን ያረጋግጡ።",
   "500_title": "የውስጥ መቆጣጠርያ ችግር",
   "500_body": "የውስጥ አገልጋይ ስህተት ተከስቷል።",
   "503_title": "የአገልግሎት መቋረጥ",

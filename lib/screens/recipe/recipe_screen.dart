@@ -169,14 +169,6 @@ class _RecipeScreenState extends State<RecipeScreen> {
 
   Widget buildRecipeScreen(Food food, List<Comments> comment, User user){
 
-    print("========================");
-    print("========================");
-    print("========================");
-    print("========================");
-    print(food.likes);
-    print("========================");
-    print("========================");
-    print("CHECKING VIDEO: ${food.video}");
     ThemeData theme = Theme.of(context);
     return SafeArea(
       child: SingleChildScrollView(
@@ -194,21 +186,23 @@ class _RecipeScreenState extends State<RecipeScreen> {
                   ),
                 ),
               ),
-            RecipeHeaderImage(
-              food: food,
-              likes: food.likes!,
-              user: user,
-              image: food.thumbnail,
-              onLike: () {},
-              refresh: (){
-                setState(() {
-                  _future = fetchData();
-                });
-              },
-              foodId: food.id!,
+            SafeArea(
+              child: RecipeHeaderImage(
+                food: food,
+                likes: food.likes!,
+                user: user,
+                image: food.thumbnail,
+                onLike: () {},
+                refresh: (){
+                  setState(() {
+                    _future = fetchData();
+                  });
+                },
+                foodId: food.id!,
+              ),
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -216,10 +210,6 @@ class _RecipeScreenState extends State<RecipeScreen> {
                   RecipeHeader(
                     food: food,
                   ),
-                  if (food.video != null&& food.video!.isNotEmpty && food.video != "")
-                    YoutubeVideoPlayer(
-                      link: food.video.toString(),
-                    ),
                   SizedBox(height: 10),
                   RecipeScreenTab(
                     food: food,
