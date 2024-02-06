@@ -102,6 +102,7 @@ class _SubmittedRecipeState extends State<SubmittedRecipe> with SingleTickerProv
             child: SubmittedCard(
               recipe: recipe[index],
               name: recipe[index].title,
+              isApproved: recipe[index].approved
             ),
           );
         },),

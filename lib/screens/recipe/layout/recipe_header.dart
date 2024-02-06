@@ -134,24 +134,24 @@ class RecipeHeader extends StatelessWidget {
           ],
         ));
   }
-  Widget rowedInformation(String name, String value, BuildContext context){
-    ThemeData theme = Theme.of(context);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          name,
-          style: theme.textTheme.headlineMedium?.copyWith(
-              color: theme.colorScheme.tertiary,
-              fontWeight: FontWeight.w500),
-        ),
-        Text(
-          value,
-          style: theme.textTheme.headlineMedium?.copyWith(
-              color: theme.colorScheme.tertiary,
-              fontWeight: FontWeight.w500),
-        ),
-      ],
-    );
-  }
+  // Widget rowedInformation(String name, String value, BuildContext context){
+  //   ThemeData theme = Theme.of(context);
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //     children: [
+  //       Text(
+  //         name,
+  //         style: theme.textTheme.headlineMedium?.copyWith(
+  //             color: theme.colorScheme.tertiary,
+  //             fontWeight: FontWeight.w500),
+  //       ),
+  //       Text(
+  //         value,
+  //         style: theme.textTheme.headlineMedium?.copyWith(
+  //             color: theme.colorScheme.tertiary,
+  //             fontWeight: FontWeight.w500),
+  //       ),
+  //     ],
+  //   );
+  // }
 }

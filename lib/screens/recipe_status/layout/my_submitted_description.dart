@@ -3,6 +3,8 @@ import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/submitted_recipe.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../utils/screen_utils.dart';
 import '../../../widgets/cached_image.dart';
 import '../../../widgets/youtube_video_player.dart';
 import '../../recipe/layout/recipe_header.dart';
@@ -32,6 +34,7 @@ class _SubmittedDescriptionState extends State<SubmittedDescription> with Single
     ThemeData theme = Theme.of(context);
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+    final bool isTablet = ScreenUtils.isTablet(context);
     return Scaffold(
       body: SafeArea(
 
@@ -71,30 +74,24 @@ class _SubmittedDescriptionState extends State<SubmittedDescription> with Single
                 ]),
                 SizedBox(
                   height: 10,
-                ),Center(
-                  child: Text(
-                    widget.recipe.approved?"${"food_status".tr()} ${"submitted_successfully".tr()}":"${"food_status".tr()} ${"pending".tr()}",
-                    style: theme.textTheme.headlineMedium?.copyWith(
-                        color: theme.colorScheme.tertiary,
-                        fontWeight: FontWeight.w800),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 20),
                   child: Text(
                     widget.recipe.title,
-                    style: theme.textTheme.headlineLarge,
+                    style: TextStyle(
+                        fontSize: isTablet ? 15.sp : 20.sp,
+                        fontWeight: FontWeight.w300,
+                        color: theme.colorScheme.secondaryContainer),
                   ),
                 ),Padding(
                   padding: const EdgeInsets.only(left: 20),
                   child: Text(
                     "dish_description".tr(),
-                    style: theme.textTheme.headlineMedium?.copyWith(
-                        color: theme.colorScheme.tertiary,
-                        fontWeight: FontWeight.w800),
+                    style: TextStyle(
+                        fontSize: isTablet ? 15.sp : 20.sp,
+                        fontWeight: FontWeight.w800,
+                        color: theme.colorScheme.secondaryContainer),
                   ),
                 ),
                 SizedBox(
@@ -105,10 +102,9 @@ class _SubmittedDescriptionState extends State<SubmittedDescription> with Single
                   child: Text(
                     widget.recipe.description!,
                     style: TextStyle(
-                        fontSize: 20,
-                        color: theme.colorScheme.tertiary.withOpacity(0.7),
-                        fontWeight: FontWeight.w300
-                    ),
+                        fontSize: isTablet ? 15.sp : 20.sp,
+                        fontWeight: FontWeight.w300,
+                        color: theme.colorScheme.onTertiary),
                   ),
                 ),
                 Padding(
@@ -127,12 +123,14 @@ class _SubmittedDescriptionState extends State<SubmittedDescription> with Single
                           unselectedBorderColor: Colors.transparent,
                           backgroundColor: theme.colorScheme.primary,
                           unselectedBackgroundColor: Colors.transparent,
-                          unselectedLabelStyle: theme.textTheme.labelMedium
-                              ?.copyWith(
-                              color: theme.colorScheme.tertiary
-                          ),
-                          labelStyle: theme.textTheme.bodyMedium
-                              ?.copyWith(color: theme.colorScheme.onTertiary),
+                          unselectedLabelStyle:  TextStyle(
+                              fontSize: isTablet ? 11.sp : 15.sp,
+                              fontWeight: FontWeight.w500,
+                              color: theme.colorScheme.onTertiary),
+                          labelStyle:  TextStyle(
+                              fontSize: isTablet ? 11.sp : 15.sp,
+                              fontWeight: FontWeight.w600,
+                              color: theme.colorScheme.secondary),
                           contentPadding: EdgeInsets.symmetric(horizontal: 10),
                           radius: 2,
                           tabs: [
@@ -152,6 +150,7 @@ class _SubmittedDescriptionState extends State<SubmittedDescription> with Single
                               physics: BouncingScrollPhysics(),
                               scrollDirection: Axis.vertical,
                               itemBuilder: (context, index) {
+                                index++;
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -162,13 +161,13 @@ class _SubmittedDescriptionState extends State<SubmittedDescription> with Single
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "${ingredient.key}. ${ingredient.value}",
+                                          "${index++}. ${ingredient.value}",
                                           softWrap: true,
                                           overflow: TextOverflow.visible,
                                           style: TextStyle(
-                                              fontSize: 19,
-                                              fontWeight: FontWeight.w500,
-                                              color: theme.buttonTheme.colorScheme?.secondary),
+                                              fontSize: isTablet ? 15.sp : 19.sp,
+                                              fontWeight: FontWeight.w600,
+                                              color: theme.colorScheme.secondaryContainer),
                                         ),
                                         SizedBox(height: 10)
                                       ],
@@ -181,10 +180,11 @@ class _SubmittedDescriptionState extends State<SubmittedDescription> with Single
                                 physics: BouncingScrollPhysics(),
                                 scrollDirection: Axis.vertical,
                                 itemBuilder: (context, index) {
+                                  index++;
                                   return Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisAlignment: MainAxisAlignment.start,
-                                      children: widget.recipe.steps!.entries.map((ingredient) {
+                                      children: widget.recipe.steps!.entries.map((step) {
                                         return Flex(
                                             direction: Axis.vertical,
                                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,13 +192,13 @@ class _SubmittedDescriptionState extends State<SubmittedDescription> with Single
                                             children: [
                                               const SizedBox(width: 8.0),
                                               Text(
-                                                "${ingredient.key}. ${ingredient.value}",
+                                                "${index++}. ${step.value}",
                                                 softWrap: true,
                                                 overflow: TextOverflow.visible,
                                                 style: TextStyle(
-                                                    fontSize: 19,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: theme.buttonTheme.colorScheme?.secondary),
+                                                    fontSize: isTablet ? 15.sp : 19.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: theme.colorScheme.secondaryContainer),
                                               ),
                                               SizedBox(height: 10)
                                             ]

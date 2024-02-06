@@ -31,11 +31,12 @@ class _NotificationCardState extends State<NotificationCard> {
     final ThemeData theme = Theme.of(context);
     final bool isTablet = ScreenUtils.isTablet(context);
     return Slidable(
-      key: const ValueKey(0),
-      startActionPane: ActionPane(
+      key: ValueKey(widget.data.id),
+      startActionPane: widget.isRead == false
+          ? ActionPane(
         motion: const ScrollMotion(),
         dragDismissible: false,
-        children: widget.isRead == false? [
+        children: [
           SlidableAction(
             onPressed: (context) {
               print("Delete pressed");
@@ -43,18 +44,19 @@ class _NotificationCardState extends State<NotificationCard> {
               widget.reFresh();
             },
             backgroundColor: theme.colorScheme.primaryContainer,
-            foregroundColor: Colors.white,
+            foregroundColor: theme.colorScheme.primary,
             icon: Icons.check_circle,
             label: 'mark_as_read'.tr(),
-          )
-        ]:[],
-      ),
-
+          ),
+        ],
+      )
+          : null,
       child: Container(
-        decoration: BoxDecoration(
-            color: widget.data.isRead
-                ? theme.scaffoldBackgroundColor
-                : theme.colorScheme.inverseSurface),
+        decoration: widget.data.isRead == false
+            ? BoxDecoration(
+          color: theme.colorScheme.inverseSurface,
+        )
+            : null,
         child: Padding(
           padding: EdgeInsets.symmetric(
             vertical: 10.h,
@@ -68,28 +70,31 @@ class _NotificationCardState extends State<NotificationCard> {
                   Container(
                     width: 15.w,
                     height: isTablet ? 8.h : 13.h,
-                  ),Text(
-                    '${widget.data.date}',
-                    style: TextStyle(fontSize: isTablet ? 10.sp : 12.sp),
-                  )
+                  ),
+                  Text(
+                    DateFormat.yMMMd().format(widget.data.date),
+                    style: TextStyle(
+                      fontSize: isTablet ? 10.sp : 12.sp,
+                    ),
+                  ),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Container(
-                    width: 8.w,
-                    height: isTablet ? 8.h : 13.h,
-                    decoration: widget.data.isRead
-                        ? null
-                        : BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.blue,
+                  if (widget.data.isRead == false)
+                    Container(
+                      width: 8.w,
+                      height: isTablet ? 8.h : 13.h,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.blue,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 10.w,
-                  ),
+                  if (widget.data.isRead == false)
+                    SizedBox(
+                      width: 10.w,
+                    ),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,26 +102,28 @@ class _NotificationCardState extends State<NotificationCard> {
                         Text(
                           widget.data.title,
                           style: TextStyle(
-                              fontSize: isTablet ? 13.sp : 15.sp,
-                              fontWeight: FontWeight.w500),
+                            fontSize: isTablet ? 13.sp : 15.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                         SizedBox(
                           height: 5.h,
                         ),
                         Text(
                           widget.data.body,
-                          style: TextStyle(fontSize: isTablet ? 10.sp : 12.sp),
-                        )
+                          style: TextStyle(
+                            fontSize: isTablet ? 10.sp : 12.sp,
+                          ),
+                        ),
                       ],
                     ),
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),
-      )
+      ),
     );
-
   }
 }

@@ -3,7 +3,6 @@ import 'package:ethio_chef/models/competition.dart';
 import 'package:ethio_chef/screens/competition/competition_screen.dart';
 import 'package:ethio_chef/services/competition_service.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
-import 'package:ethio_chef/theme/model_theme.dart';
 import 'package:ethio_chef/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,15 +25,76 @@ class CompetitionsCard extends StatefulWidget {
 
 class _CompetitionsCardState extends State<CompetitionsCard> {
 
-  bool Loading = false;
-  int likes = 0;
+  bool _isLoading = false;
+  int _likes = 0;
 
+  Future<void> _likeCompetition() async {
+    setState(() => _isLoading = true);
+
+    final status = await Check.checkToShow();
+
+    switch(status){
+      case 'Not logged in':
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          content: Text('Please subscribe to see ingredients and steps'.tr()),
+        ));
+        _login();
+        break;
+
+      case 'Another user logged in':
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          content: Text('another_account_login'.tr()),
+        ));
+        _login();
+        break;
+
+      case 'User is subscribed':
+        try {
+          final response = await CompetitionService().likeCompetition(widget.competition.id!);
+
+          if (response?.statusCode == 200) {
+            setState(() {
+              _isLoading = false;
+              _likes++;
+            });
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Competition liked!')));
+          }
+        } catch(e){
+          setState(() => _isLoading = false);
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+        }
+        break;
+
+      case 'User is not subscribed':
+        pushNewScreen(
+          context,
+          withNavBar: false,
+          screen: AllSubscriptions(
+            returnPrice: (_) {},
+            first_name: '',
+            last_name: '',
+            isSignUp: false,
+            phone: '',
+          ),
+        );
+        break;
+    }
+  }
+
+  void _login(){
+    pushNewScreen(
+      context,
+      withNavBar: false,
+      screen: AuthScreen(isSignIn: true),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final bool isTablet = ScreenUtils.isTablet(context);
     ThemeData theme = Theme.of(context);
-    ModelTheme lang = Provider.of<ModelTheme>(context);
     return GestureDetector(
       onTap: () {
         pushNewScreen(
@@ -53,22 +113,19 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-                width: double.infinity,
-                height: 160.h,
-                child: ClipRRect(
-                  borderRadius: AppTheme.topBorderRadius,
-                  child: CachedImage(
-                    url: widget.competition.image.toString(),
-                    fit: BoxFit.fill,
-                  ),
-                )),
-            SizedBox(
-              height:9.h,
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(
-                horizontal: 10.w,
+              width: double.infinity,
+              height: 160.h,
+              child: ClipRRect(
+                borderRadius: AppTheme.topBorderRadius,
+                child: CachedImage(
+                  url: widget.competition.image.toString(),
+                  fit: BoxFit.fill,
+                ),
               ),
+            ),
+            SizedBox(height: 9.h),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 10.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -78,30 +135,32 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
                       Text(
                         widget.competition.name!.toString(),
                         style: TextStyle(
-                            fontSize: isTablet ? 11.sp : 15.sp,
-                            fontWeight: FontWeight.w600,
-                            color: theme.colorScheme.secondaryContainer),
+                          fontSize: isTablet ? 11.sp : 15.sp,
+                          fontWeight: FontWeight.w600,
+                          color: theme.colorScheme.secondaryContainer,
+                        ),
                       ),
                       Text(
-                        "votes".tr(args: [widget.competition.votes.toString()]),
+                        'votes'.tr(args: [widget.competition.votes.toString()]),
                         style: TextStyle(
-                            fontSize: isTablet ? 10.sp : 14.sp,
-                            fontWeight: FontWeight.w400,
-                            color: theme.colorScheme.secondaryContainer),)
+                          fontSize: isTablet ? 10.sp : 14.sp,
+                          fontWeight: FontWeight.w400,
+                          color: theme.colorScheme.secondaryContainer,
+                        ),
+                      ),
                     ],
                   ),
-                  SizedBox(
-                    height: 9.h,
-                  ),
+                  SizedBox(height: 9.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "days_left".tr(args: [widget.competition.daysLeft.toString()]),
+                        'days_left'.tr(args: [widget.competition.daysLeft.toString()]),
                         style: TextStyle(
-                            fontSize: isTablet ? 10.sp : 14.sp,
-                            fontWeight: FontWeight.w500,
-                            color: theme.colorScheme.secondaryContainer),
+                          fontSize: isTablet ? 10.sp : 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: theme.colorScheme.secondaryContainer,
+                        ),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -109,105 +168,29 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
                           Padding(
                             padding: EdgeInsets.all(8),
                             child: GestureDetector(
-                              onTap: ()async {
-
-                                setState(() {
-                                  Loading = true;
-                                });
-                                SnackBar checking =SnackBar(
-                                    padding: EdgeInsets.symmetric(vertical: 10),
-                                    showCloseIcon: true,
-                                    content: Text(
-                                        'Checking Subscription Please wait'.tr()
-                                    ));
-                                ScaffoldMessenger.of(context).showSnackBar(checking);
-                                String status = await Check.checkToShow();
-                                switch(status){
-                                  case "Not logged in":
-                                    print("Not logged in");
-                                    SnackBar logIn =SnackBar(
-                                        padding: EdgeInsets.symmetric(vertical: 20),
-                                        content: Text(
-                                            'Please subscribe to see ingredients and steps'.tr()
-                                        ));
-                                    loginFunction();
-                                    ScaffoldMessenger.of(context).showSnackBar(logIn);
-                                    break;
-                                  case "Another user logged in":
-                                    print("Another user logged in");
-                                    SnackBar logIn =SnackBar(
-                                        padding: EdgeInsets.symmetric(vertical: 20),
-                                        content: Text(
-                                            'another_account_login'.tr()
-                                        ));
-                                    ScaffoldMessenger.of(context).showSnackBar(logIn);
-                                    loginFunction();
-                                    break;
-                                  case "User is subscribed":
-                                    print("User is subscribed");
-
-
-                                    CompetitionService cmp = CompetitionService();
-                                    setState(() {
-                                      Loading = true;
-                                    });
-                                    try {
-                                      var response = await cmp.likeCompetition(
-                                          widget.competition.id!);
-
-                                      if(response?.statusCode == 200){
-                                        setState(() {
-                                          Loading = false;
-                                        });
-                                        likes++;
-                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Competition liked!')));
-                                      }
-                                    } catch(e){
-                                      setState(() {
-                                        Loading = false;
-                                      });
-                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
-                                    }
-                                    break;
-                                  case "User is not subscribed":
-                                    print("User is not subscribed");
-                                    pushNewScreen(
-                                      context,
-                                      withNavBar: false,
-                                      screen: AllSubscriptions(returnPrice: (int ) {  },
-                                        first_name: "",
-                                        last_name: "",
-                                        isSignUp:
-                                        false,phone: "",),
-                                    );
-                                    break;
-                                }
-
-                                setState(() {
-                                  Loading = false;
-                                });
-                              },
+                              onTap: _likeCompetition,
                               child: Container(
-                                width: 30,
-                                height: 30,
-                                decoration: BoxDecoration(color: Colors.orange, shape: BoxShape.circle),
-                                child: !Loading?Center(
-                                  child: Icon(
+                                  width: 30,
+                                  height: 30,
+                                  decoration: BoxDecoration(color: Colors.orange, shape: BoxShape.circle),
+                                  child: _isLoading
+                                      ? const CircularProgressIndicator()
+                                      : const Icon(
                                     Icons.thumb_up_sharp,
                                     color: Colors.white,
-                                  ),
-                                ): CircularProgressIndicator(),
+                                  )
                               ),
                             ),
                           ),
-                          Text('${likes}  likes',
+                          Text('$_likes likes',
                             style: TextStyle(
-                                fontSize: isTablet ? 9.sp : 13.sp,
-                                fontWeight: FontWeight.w300,
-                                color: theme.colorScheme.secondaryContainer),)
+                              fontSize: isTablet ? 9.sp : 13.sp,
+                              fontWeight: FontWeight.w300,
+                              color: theme.colorScheme.secondaryContainer,
+                            ),
+                          ),
                         ],
-                      )
-
+                      ),
                     ],
                   ),
                 ],
@@ -216,13 +199,6 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
           ],
         ),
       ),
-    );
-  }
-  void loginFunction(){
-    pushNewScreen(
-      context,
-      withNavBar: false,
-      screen: AuthScreen(isSignIn: true),
     );
   }
 }

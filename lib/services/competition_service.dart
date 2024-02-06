@@ -16,7 +16,7 @@ class CompetitionService {
       var res = await http.get(
           Uri.parse("${Constants.url}/user/contest/competiton"));
       print("res.statusCode  == = == = = = == = = = ${res.statusCode}");
-
+      print(res.body);
       var data = jsonDecode(res.body);
       if (data['message'] == 'All user video get successful') {
         var categoriesData = data['data'] as List;

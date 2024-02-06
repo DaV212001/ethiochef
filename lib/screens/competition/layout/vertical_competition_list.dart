@@ -24,6 +24,7 @@ class _VerticalCompetitionListState extends State<VerticalCompetitionList> {
       shrinkWrap: true,
       itemExtent: 285.h,
       pagingController: widget.pagingController,
+
       builderDelegate: PagedChildBuilderDelegate<Competition>(
         noMoreItemsIndicatorBuilder: (_) => SizedBox.shrink(),
         itemBuilder: (context, competition, index) {

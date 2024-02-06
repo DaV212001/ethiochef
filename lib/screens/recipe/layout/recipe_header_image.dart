@@ -241,7 +241,8 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
                 print('secondcheck: ${Food.savedRecipes.toString()}');
               },
               child: circularBackground(child: Icon(
-                  isSaved?CupertinoIcons.bookmark_fill:CupertinoIcons.bookmark
+                  isSaved?CupertinoIcons.bookmark_fill:CupertinoIcons.bookmark,
+                color: theme.colorScheme.primary,
               )),
             ),
             SizedBox(
