@@ -167,7 +167,7 @@ class _CategoryCardState extends State<CategoryCard> {
                   fontSize: isTablet ? 11.sp : 15.sp,
                   fontWeight: FontWeight.w600,
                   color: theme.colorScheme.secondaryContainer),
-            ),
+            )
           ):
           FittedBox(
             child: Text(

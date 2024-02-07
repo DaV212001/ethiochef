@@ -9,11 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
-
+import 'package:quickalert/quickalert.dart';
 import '../../models/competition.dart';
 import '../../models/recipe.dart';
+import '../../services/recipe_service.dart';
 import 'layout/successfully_added.dart';
-
+import 'package:cloudinary_url_gen/cloudinary.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 class UploadRecipeScreen extends StatefulWidget {
   String type;
   UploadRecipeScreen({super.key, required this.type});
@@ -37,11 +40,37 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
   int activeStep = 0;
   File? image = null;
   File? video = null;
+  bool agreed = false;
 BannerAd? _bannerAd;
   @override
   void initState() {
     _loadAd();
     super.initState();
+  }
+  String videoUrl = "";
+  Future<void> uploadVideo() async {
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse('https://api.cloudinary.com/v1_1/ttreeadvert/video/upload'),
+    );
+
+    request.files.add(await http.MultipartFile.fromPath('file', video!.path));
+    request.fields['upload_preset'] = 'my_uploads';
+
+    try {
+      var response = await request.send();
+      var responseJson = await http.Response.fromStream(response).then((value) {
+        var jsonRes = jsonDecode(value.body);
+        print("Json Response ${jsonRes}");
+        print("Json Url ${jsonRes['url']}");
+        setState(() {
+          videoUrl = jsonRes['url'];
+        });
+        print("videoUrl ${videoUrl}");
+      });
+    } catch (error) {
+      print(error);
+    }
   }
   String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
   void _loadAd() async {
@@ -129,6 +158,13 @@ BannerAd? _bannerAd;
             this.image = image;
           },
           next: incrementStep,
+          hasUserAgreed: (agreed){
+            print(agreed);
+            setState(() {
+              agreed = true;
+            });
+            print(agreed);
+          },
         ),
       ),
       Visibility(
@@ -169,7 +205,7 @@ BannerAd? _bannerAd;
               this.video = video;
             });
           },
-          next: (video){
+          next: (video) async {
            if(widget.type == "recipe"){
              Map<String, String> ingredientMap = {
                'ingredient': 'ingredient',
@@ -214,13 +250,25 @@ BannerAd? _bannerAd;
              );
 
              print("Add RECIPE");
-             Recipe.addRecipe(newRecipe);
-             SnackBar success = SnackBar(
-                 padding: EdgeInsets.symmetric(vertical: 10),
-                 content: Text(
-                   "submitted_successfully".tr(),
-                 ));
-             ScaffoldMessenger.of(context).showSnackBar(success);
+             RecipeService service = RecipeService();
+             var response = await service.createFood(newRecipe);
+             if(response.statusCode == 200) {
+               await uploadVideo();
+               print("Video uploaded");
+               pushNewScreen(
+                 context,
+                 screen: SuccessfullyAdded(),
+                 withNavBar: true,
+                 pageTransitionAnimation: PageTransitionAnimation.cupertino,
+               );
+             }
+             // Recipe.addRecipe(newRecipe);
+             // SnackBar success = SnackBar(
+             //     padding: EdgeInsets.symmetric(vertical: 10),
+             //     content: Text(
+             //       "submitted_successfully".tr(),
+             //     ));
+             // ScaffoldMessenger.of(context).showSnackBar(success);
 
              setState(() {
                nameController.text = '';
@@ -239,12 +287,7 @@ BannerAd? _bannerAd;
                activeStep = 0;
              });
 
-             pushNewScreen(
-               context,
-               screen: SuccessfullyAdded(),
-               withNavBar: true,
-               pageTransitionAnimation: PageTransitionAnimation.cupertino,
-             );
+
            }else{
              Map<String, String> ingredientMap = {
                'ingredient': 'ingredient',
@@ -289,7 +332,7 @@ BannerAd? _bannerAd;
     ];
   }
 
-  void incrementStep() {
+  Future<void> incrementStep() async {
     setState(() {
       activeStep++;
     });

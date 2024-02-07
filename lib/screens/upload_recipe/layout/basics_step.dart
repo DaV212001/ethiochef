@@ -5,6 +5,11 @@ import 'package:ethio_chef/widgets/input_field.dart';
 import 'package:ethio_chef/widgets/upload_recipe/image_field.dart';
 import 'package:ethio_chef/widgets/upload_recipe/stepper_control_buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
+
+import '../../../utils/screen_utils.dart';
 
 class BasicsStep extends StatefulWidget {
   final TextEditingController nameController;
@@ -14,6 +19,7 @@ class BasicsStep extends StatefulWidget {
   final File? image;
   final Function(TextEditingController, TextEditingController,
       TextEditingController, TextEditingController, File?) updateControllers;
+  final Function(bool) hasUserAgreed;
   final Function next;
 
   const BasicsStep(
@@ -24,6 +30,7 @@ class BasicsStep extends StatefulWidget {
       required this.descriptionController,
       required this.prepTimeController,
       required this.servingSizeController,
+        required this.hasUserAgreed,
       this.image});
 
   @override
@@ -40,9 +47,11 @@ class _BasicsStepState extends State<BasicsStep> {
     currentImage = widget.image;
     super.initState();
   }
-
+  bool hasAgreed = false;
   @override
   Widget build(BuildContext context) {
+    final bool isTablet = ScreenUtils.isTablet(context);
+    ThemeData theme = Theme.of(context);
     return Form(
       key: _formKey,
       child: Column(
@@ -93,9 +102,75 @@ class _BasicsStepState extends State<BasicsStep> {
           //   hint: "enter_dish_serving_size".tr(),
           //   inputType: TextInputType.number,
           // ),
+          Row(
+            children: [
+              Checkbox(
+                  value: hasAgreed,
+                  onChanged: (val){
+                    print(hasAgreed);
+                    setState(() {
+                      hasAgreed = !hasAgreed;
+                    });
+                    print(hasAgreed);
+                    widget.hasUserAgreed(hasAgreed);
+                    print("Not called");
+                  }),
+              SizedBox(
+                width: 300,
+                child: Container(
+                  width: 300,
+                  child: Text(
+                      'food_submission_agreement'.tr(),
+                    style: TextStyle(
+                        fontSize: isTablet ? 11.sp : 15.sp,
+                        fontWeight: FontWeight.w600,
+                        color: theme.colorScheme.secondaryContainer)
+                  ),
+                ),
+              )
+            ],
+          ),
           StepperControlButtons(
             isFirst: true,
-            next: () {
+            next: () async {
+              if(hasAgreed == false){
+                await QuickAlert.show(
+                  context: context,
+                  type: QuickAlertType.error,
+                  showCancelBtn: true,
+                  showConfirmBtn: true,
+                  title: "food_submission_agreement_title".tr(),
+                  text: 'food_submission_agreement'.tr(),
+                  titleAlignment: TextAlign.center,
+                  textAlignment: TextAlign.center,
+                  confirmBtnText: 'food_submission_agreement_title'.tr(),
+                  onConfirmBtnTap: (){
+                    setState(() {
+                      hasAgreed = true;
+                    });
+                    Navigator.pop(context);
+                  },
+                  cancelBtnText: 'cancel'.tr(),
+                  onCancelBtnTap: (){
+                    Navigator.pop(context);
+                  },
+                  confirmBtnColor: Colors.red,
+                  cancelBtnTextStyle: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold
+                  ),
+                  backgroundColor: Colors.white,
+                  headerBackgroundColor: Colors.grey,
+                  confirmBtnTextStyle: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  barrierColor: Colors.red,
+                  titleColor: Colors.red,
+                  textColor: Colors.red,
+                );
+                return;
+              }
               if (!_formKey.currentState!.validate()) {
                 imageStatus();
                 return;

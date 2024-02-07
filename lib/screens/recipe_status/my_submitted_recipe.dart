@@ -8,6 +8,7 @@ import '../../models/submitted_recipe.dart';
 import '../../services/recipe_service.dart';
 import '../../widgets/error_card.dart';
 import '../../widgets/loading.dart';
+import '../../widgets/recipe_status/empty_recipe.dart';
 import '../../widgets/recipe_status/submitted.dart';
 import 'layout/my_submitted_description.dart';
 
@@ -45,7 +46,7 @@ class _SubmittedRecipeState extends State<SubmittedRecipe> with SingleTickerProv
     final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("submitted_video".tr(),style: TextStyle(
+        title: Text("submitted_recipes".tr(),style: TextStyle(
             color: theme.colorScheme.primary
         )),
         backgroundColor: Colors.transparent,
@@ -83,6 +84,9 @@ class _SubmittedRecipeState extends State<SubmittedRecipe> with SingleTickerProv
 
   Widget buildRecipeScreen(List<MySubmittedRecipe> recipe){
     bool isTablet = ScreenUtils.isTablet(context);
+    if(recipe.isEmpty){
+      return EmptyRecipe();
+    }
     return SafeArea(
       child: ListView.builder(
         scrollDirection: Axis.vertical,

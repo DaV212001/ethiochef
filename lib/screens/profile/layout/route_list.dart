@@ -12,6 +12,7 @@ import '../../app_documentation/faq_screen.dart';
 import '../../app_documentation/privacy_policies_screen.dart';
 import '../../app_documentation/terms_and_conditions_screen.dart';
 import '../../recipe_status/my_recipe.dart';
+import '../../recipe_status/my_submitted_recipe.dart';
 import '../../subscription/all_subscriptions.dart';
 import 'competition_status/my_competition.dart';
 
@@ -74,12 +75,12 @@ class _RouteListState extends State<RouteList> {
     ];
     final List<Map<String, dynamic>> status = [
       {
-        "title": "my_recipes".tr(),
+        "title": "submitted_recipes".tr(),
         "leadingIcon": Icons.dinner_dining,
         "onTap": () {
           pushNewScreen(
             context,
-            screen: MyRecipes(),
+            screen: SubmittedRecipe(),
             withNavBar: false,
             pageTransitionAnimation: PageTransitionAnimation.cupertino,
           );

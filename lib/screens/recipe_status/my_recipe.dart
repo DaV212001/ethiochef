@@ -73,7 +73,7 @@ class _MyRecipesState extends State<MyRecipes> {
               alignment: Alignment.topRight,
               child: TextButton(
                 child: Text(
-                    'submitted_video'.tr()
+                    'submitted_recipes'.tr()
                 ),
                 onPressed: (){
 

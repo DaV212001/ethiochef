@@ -9,6 +9,7 @@ import 'authorization_service.dart';
 class RecipeService{
     Future<http.Response> createFood(Recipe recipe) async {
         final access_token = await AuthService.getAuthorizationToken();
+        print(recipe);
         var request = http.MultipartRequest(
             'POST',
             Uri.parse("${Constants.url}/user/food-video/create"),
