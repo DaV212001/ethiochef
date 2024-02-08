@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'dart:io';
 import '../../models/submitted_recipe.dart';
 import '../../utils/screen_utils.dart';
 class SubmittedCard extends StatelessWidget {
@@ -18,53 +18,35 @@ class SubmittedCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool isTablet = ScreenUtils.isTablet(context);
     ThemeData theme = Theme.of(context);
-    return Center(
-      child: Card(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Expanded(
-              child: Row(
-                children: [
-                  Center(
-                    child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5.r)),
-                        child: SizedBox(
-                          height: isTablet ? 80.h : 100.h,
-                          width: isTablet ? 85.w : 110.w,
-                          child: Image.network(
-                            recipe.image,
-                            fit: BoxFit.fill,
-                          ),
-                        )),
-                  ),
-                  Expanded(
-                    child: Text(recipe.title,
-                      style: TextStyle(
-                          fontSize: isTablet ? 11.sp : 15.sp,
-                          fontWeight: FontWeight.w600,
-                          color: theme.colorScheme.secondaryContainer),),
-                  )
-                ],
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                isApprovedChip(context, isApproved),
-                const SizedBox(width: 8),
-                TextButton(
-                  child: Text('delete'.tr()),
-                  onPressed: () {
-                    
-                  },
-                ),
-                const SizedBox(width: 8),
-              ],
-            ),
-          ],
-        ),
+    return Card(
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5.r)),
+                  child: SizedBox(
+                    height: isTablet ? 80.h : 100.h,
+                    width: isTablet ? 85.w : 110.w,
+                    child: Image.network(
+                      recipe.image,
+                      fit: BoxFit.fill,
+                    ),
+                  )),
+              SizedBox(width: 10,),
+              Text(recipe.title,
+                style: TextStyle(
+                    fontSize: isTablet ? 11.sp : 15.sp,
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.secondaryContainer),),
+            ],
+          ),
+          Align(child: isApprovedChip(context, isApproved), alignment: Alignment.bottomLeft),
+          MainButton(text: 'delete'.tr(), onPress: (){
+
+          })
+        ],
       ),
     );
   }
@@ -90,7 +72,7 @@ class SubmittedCard extends StatelessWidget {
           'pending'.tr(),
             style: TextStyle(fontSize: isTablet ? 11.sp : 15.sp,
                 fontWeight: FontWeight.w600,
-                color: theme.colorScheme.secondary)
+                color: theme.colorScheme.secondaryContainer)
           )
       ),
     );

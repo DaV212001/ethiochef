@@ -41,7 +41,6 @@ class _BasicsStepState extends State<BasicsStep> {
   late File? currentImage;
   final _formKey = GlobalKey<FormState>();
   bool imageInvalid = false;
-
   @override
   void initState() {
     currentImage = widget.image;
@@ -102,9 +101,39 @@ class _BasicsStepState extends State<BasicsStep> {
           //   hint: "enter_dish_serving_size".tr(),
           //   inputType: TextInputType.number,
           // ),
+          Container(
+            padding: EdgeInsets.all(12),
+            decoration: BoxDecoration(
+                border: Border.all(
+                    color: theme.colorScheme.primary,
+                    width: 1
+                )
+            ),
+            child: Column(
+              children: [
+                Text("awards_title".tr(),
+                    style: TextStyle(
+                        fontSize: isTablet ? 13.sp : 17.sp,
+                        fontWeight: FontWeight.w800,
+                        color: theme.colorScheme.primary)
+                ),
+                Text("awards".tr(),
+                    style: TextStyle(
+                        fontSize: isTablet ? 11.sp : 15.sp,
+                        fontWeight: FontWeight.w600,
+                        color: theme.colorScheme.secondaryContainer)
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
           Row(
             children: [
               Checkbox(
+                activeColor: theme.colorScheme.primary,
+                checkColor: theme.colorScheme.tertiary,
                   value: hasAgreed,
                   onChanged: (val){
                     print(hasAgreed);
@@ -114,7 +143,8 @@ class _BasicsStepState extends State<BasicsStep> {
                     print(hasAgreed);
                     widget.hasUserAgreed(hasAgreed);
                     print("Not called");
-                  }),
+                  },
+              ),
               SizedBox(
                 width: 300,
                 child: Container(
@@ -134,10 +164,11 @@ class _BasicsStepState extends State<BasicsStep> {
             isFirst: true,
             next: () async {
               if(hasAgreed == false){
-                await QuickAlert.show(
+               return await QuickAlert.show(
                   context: context,
-                  type: QuickAlertType.error,
-                  showCancelBtn: true,
+                  barrierDismissible: true,
+                  type: QuickAlertType.warning,
+                  showCancelBtn: false,
                   showConfirmBtn: true,
                   title: "food_submission_agreement_title".tr(),
                   text: 'food_submission_agreement'.tr(),
@@ -147,12 +178,7 @@ class _BasicsStepState extends State<BasicsStep> {
                   onConfirmBtnTap: (){
                     setState(() {
                       hasAgreed = true;
-                    });
-                    Navigator.pop(context);
-                  },
-                  cancelBtnText: 'cancel'.tr(),
-                  onCancelBtnTap: (){
-                    Navigator.pop(context);
+                    });                 // Navigator.pop(context);
                   },
                   confirmBtnColor: Colors.red,
                   cancelBtnTextStyle: TextStyle(

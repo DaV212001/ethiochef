@@ -17,6 +17,7 @@ import 'layout/successfully_added.dart';
 import 'package:cloudinary_url_gen/cloudinary.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
 class UploadRecipeScreen extends StatefulWidget {
   String type;
   UploadRecipeScreen({super.key, required this.type});
@@ -41,6 +42,7 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
   File? image = null;
   File? video = null;
   bool agreed = false;
+  bool isLoading = false;
 BannerAd? _bannerAd;
   @override
   void initState() {
@@ -48,13 +50,16 @@ BannerAd? _bannerAd;
     super.initState();
   }
   String videoUrl = "";
+  String videoPath = "";
+  int statusCode = 0;
   Future<void> uploadVideo() async {
+    print("video ========== ${video}");
     var request = http.MultipartRequest(
       'POST',
       Uri.parse('https://api.cloudinary.com/v1_1/ttreeadvert/video/upload'),
     );
 
-    request.files.add(await http.MultipartFile.fromPath('file', video!.path));
+    request.files.add(await http.MultipartFile.fromPath('file', videoPath));
     request.fields['upload_preset'] = 'my_uploads';
 
     try {
@@ -128,6 +133,7 @@ BannerAd? _bannerAd;
   }
 
   List<Widget> steps() {
+    final ThemeData theme = Theme.of(context);
     return [
       if (_bannerAd != null)
         Align(
@@ -196,146 +202,176 @@ BannerAd? _bannerAd;
       ),
       Visibility(
         visible: activeStep == 3,
-        child: VideoStep(
-          isCompetition: false,
-          video: video,
-          updateVideo: (video) {
-            print("===========video $video");
-            setState(() {
-              this.video = video;
-            });
-          },
-          next: (video) async {
-           if(widget.type == "recipe"){
-             Map<String, String> ingredientMap = {
-               'ingredient': 'ingredient',
-             };
-             print("ingredientMap = $ingredientMap");
-             for (int i = 0; i < itemControllers.length; i++) {
-               String ingredient = itemControllers[i].text;
-               String quantity = quantityControllers[i].text;
+        child: Center(
+          child: Container(
+            child: isLoading == true ? Column(
+              children: [
+                Text(
+                "uploading_title".tr(),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 15.sp,
+                ),
+              ),
+                Text(
+                  "uploading_body".tr(),
+                  style: TextStyle(
+                    color: theme.colorScheme.tertiary,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 17.sp,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                CircularProgressIndicator(),
+              ],
+            ):VideoStep(
+              isCompetition: false,
+              video: video,
+              updateVideo: (video) {
+                print("===========video $video");
+                setState(() {
+                  this.video = video;
+                });
+              },
+              next: (video) async {
+                setState(() {
+                  isLoading = true;
+                });
+               if(widget.type == "recipe"){
+                 Map<String, String> ingredientMap = {
+                   'ingredient': 'ingredient',
+                 };
+                 print("ingredientMap = $ingredientMap");
+                 for (int i = 0; i < itemControllers.length; i++) {
+                   String ingredient = itemControllers[i].text;
+                   String quantity = quantityControllers[i].text;
 
-               ingredientMap = {
-                 '${i+1}': quantity,
-               };
-               ingredients.add(ingredientMap);
+                   ingredientMap = {
+                     '${i+1}': quantity,
+                   };
+                   ingredients.add(ingredientMap);
 
-             }
-             for(int i=0;i<stepControllers.length;i++){
-               String stepString = stepControllers[i].text;
-               step.add(stepString);
-             }
+                 }
+                 for(int i=0;i<stepControllers.length;i++){
+                   String stepString = stepControllers[i].text;
+                   step.add(stepString);
+                 }
 
-             int stepNumber = 1;
-             for (String instruction in step) {
-               stepToCreate["$stepNumber"] = instruction;
-               stepNumber++;
-             }
+                 int stepNumber = 1;
+                 for (String instruction in step) {
+                   stepToCreate["$stepNumber"] = instruction;
+                   stepNumber++;
+                 }
 
-             for (var map in ingredients) {
-               ingredientToCreate.addAll(map);
-             }
-             print("video ${video}");
-             Recipe newRecipe = Recipe(
-                 name: nameController.text,
-                 description: descriptionController.text,
-                 prepTime: prepTimeController.text,
-                 servingSize: servingSizeController.text,
-                 steps: step,
-                 image: image,
-                 video: video,
-                 ingredient: ingredients,
-                ingredientToCreate: ingredientToCreate,
-                stepToCreate: stepToCreate
-             );
+                 for (var map in ingredients) {
+                   ingredientToCreate.addAll(map);
+                 }
+                 print("video ${video}");
+                 Recipe newRecipe = Recipe(
+                     name: nameController.text,
+                     description: descriptionController.text,
+                     prepTime: prepTimeController.text,
+                     servingSize: servingSizeController.text,
+                     steps: step,
+                     image: image,
+                     video: video,
+                     ingredient: ingredients,
+                     ingredientToCreate: ingredientToCreate,
+                     stepToCreate: stepToCreate
+                 );
 
-             print("Add RECIPE");
-             RecipeService service = RecipeService();
-             var response = await service.createFood(newRecipe);
-             if(response.statusCode == 200) {
-               await uploadVideo();
-               print("Video uploaded");
-               pushNewScreen(
-                 context,
-                 screen: SuccessfullyAdded(),
-                 withNavBar: true,
-                 pageTransitionAnimation: PageTransitionAnimation.cupertino,
-               );
-             }
-             // Recipe.addRecipe(newRecipe);
-             // SnackBar success = SnackBar(
-             //     padding: EdgeInsets.symmetric(vertical: 10),
-             //     content: Text(
-             //       "submitted_successfully".tr(),
-             //     ));
-             // ScaffoldMessenger.of(context).showSnackBar(success);
-
-             setState(() {
-               nameController.text = '';
-             descriptionController.text = '';
-             prepTimeController.text = '';
-             servingSizeController.text = '';
-             itemControllers = [TextEditingController()];
-             stepControllers = [TextEditingController()];
-             quantityControllers = [TextEditingController()];
-               image = null;
-               video = null;
-             ingredients = [];
-               step = [];
-             ingredientToCreate = {};
-               stepToCreate = {};
-               activeStep = 0;
-             });
-
-
-           }else{
-             Map<String, String> ingredientMap = {
-               'ingredient': 'ingredient',
-               'quantity': 'quantity',
-             };
-             for (int i = 0; i < itemControllers.length; i++) {
-               String ingredient = itemControllers[i].text;
-               String quantity = quantityControllers[i].text;
-
-               ingredientMap = {
-                 'ingredient': quantity,
-                 'quantity': ingredient,
-               };
-               ingredients.add(ingredientMap);
-
-             }
-             for(int i=0;i<stepControllers.length;i++){
-               String stepString = stepControllers[i].text;
-               step.add(stepString);
-             }
-             Competition newRecipe = Competition(
-                 name: nameController.text,
-                 description: descriptionController.text,
-                 prepTime: prepTimeController.text,
-                 servingSize: servingSizeController.text,
-                 steps: step,
-                 imageFile: image,
-                 videoFile: video,
-                 ingredient: ingredients
-             );
+                 print("video ========== ${video}");
+                 videoPath = video!.path;
+                 print("videoPath ========== ${videoPath}");
+                 print("Add RECIPE");
+                 RecipeService service = RecipeService();
+                 var response = await service.createFood(newRecipe);
+                 print("video ========== ${video}");
+                 if(response.statusCode == 200) {
+                   statusCode = 200;
+                   print(response.statusCode);
+                   await uploadVideo();
+                   print("Video uploaded");
+                   pushNewScreen(
+                     context,
+                     screen: SuccessfullyAdded(),
+                     withNavBar: true,
+                     pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                   );
+                 }
+                 setState(() {
+                   isLoading = true;
+                   nameController.text = '';
+                 descriptionController.text = '';
+                 prepTimeController.text = '';
+                 servingSizeController.text = '';
+                 itemControllers = [TextEditingController()];
+                 stepControllers = [TextEditingController()];
+                 quantityControllers = [TextEditingController()];
+                   image = null;
+                   video = null;
+                 ingredients = [];
+                   step = [];
+                 ingredientToCreate = {};
+                   stepToCreate = {};
+                   activeStep = 0;
+                 });
 
 
-             Competition.addCompetition(newRecipe);
-             setState(() {
-               activeStep = 0;
-             });
-           }
-          },
-          back: decrementStep,
+               }else{
+                 Map<String, String> ingredientMap = {
+                   'ingredient': 'ingredient',
+                   'quantity': 'quantity',
+                 };
+                 for (int i = 0; i < itemControllers.length; i++) {
+                   String ingredient = itemControllers[i].text;
+                   String quantity = quantityControllers[i].text;
+
+                   ingredientMap = {
+                     'ingredient': quantity,
+                     'quantity': ingredient,
+                   };
+                   ingredients.add(ingredientMap);
+
+                 }
+                 for(int i=0;i<stepControllers.length;i++){
+                   String stepString = stepControllers[i].text;
+                   step.add(stepString);
+                 }
+                 Competition newRecipe = Competition(
+                     name: nameController.text,
+                     description: descriptionController.text,
+                     prepTime: prepTimeController.text,
+                     servingSize: servingSizeController.text,
+                     steps: step,
+                     imageFile: image,
+                     videoFile: video,
+                     ingredient: ingredients
+                 );
+
+
+                 Competition.addCompetition(newRecipe);
+                 setState(() {
+                   activeStep = 0;
+                 });
+               }
+              },
+              back: decrementStep,
+            ),
+          ),
         ),
       )
     ];
   }
 
   Future<void> incrementStep() async {
-    setState(() {
-      activeStep++;
-    });
+
+      setState(() {
+        activeStep++;
+      });
+
   }
 
   void decrementStep() {

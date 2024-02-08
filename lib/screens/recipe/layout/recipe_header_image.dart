@@ -210,7 +210,7 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
                     child: circularBackground(
                       child: Icon(
                         CupertinoIcons.text_bubble,
-                        color: theme.colorScheme.onSecondary,
+                        color: theme.colorScheme.primary,
                       ),
                     ),
                   )
@@ -263,7 +263,7 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
                   isLiked
                       ? CupertinoIcons.hand_thumbsup_fill
                       : CupertinoIcons.hand_thumbsup,
-                  color: theme.colorScheme.onSecondary,
+                  color: theme.colorScheme.primary,
                 ),
               ),
             ),

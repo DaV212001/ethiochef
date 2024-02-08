@@ -30,7 +30,7 @@ class EmptyRecipe extends StatelessWidget {
               Icons.fastfood_outlined
           ),
           Text(
-            "empty_submitted_recipes".tr(),
+            "awards".tr(),
             textAlign: TextAlign.center,
             style: TextStyle(
               color: theme.colorScheme.primary,

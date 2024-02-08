@@ -30,8 +30,9 @@ class _StepsHeaderState extends State<StepsHeader> {
             : stepNumber == 2
             ? 'ingredients'.tr()
             : stepNumber == 3
-            ? 'steps'.tr()
-            : 'video'.tr()
+            ? 'steps'.tr():
+          stepNumber == 4 ? 'waiting'.tr():
+          'video'.tr()
       );
     });
     return EasyStepper(

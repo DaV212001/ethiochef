@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/screens/recipe_status/my_submitted_recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
@@ -92,7 +93,7 @@ class _SuccessfullyAddedState extends State<SuccessfullyAdded> {
                       onPressed: () {
                         pushNewScreen(
                           context,
-                          screen: MyRecipes(),
+                          screen: SubmittedRecipe(),
                           withNavBar: false,
                           pageTransitionAnimation: PageTransitionAnimation.cupertino,
                         );

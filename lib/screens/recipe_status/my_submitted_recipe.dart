@@ -87,29 +87,27 @@ class _SubmittedRecipeState extends State<SubmittedRecipe> with SingleTickerProv
     if(recipe.isEmpty){
       return EmptyRecipe();
     }
-    return SafeArea(
-      child: ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        itemCount: recipe.length,
-        itemBuilder: (BuildContext context, int index) {
-          return GestureDetector(
-            onTap: (){
-              pushNewScreen(
-                context,
-                screen: SubmittedDescription(recipe: recipe[index],),
-                withNavBar: false,
-                pageTransitionAnimation: PageTransitionAnimation.cupertino,
-              );
-            },
-            child: SubmittedCard(
-              recipe: recipe[index],
-              name: recipe[index].title,
-              isApproved: recipe[index].approved
-            ),
-          );
-        },),
-    );
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      physics: BouncingScrollPhysics(),
+      itemCount: recipe.length,
+      itemBuilder: (BuildContext context, int index) {
+        return GestureDetector(
+          onTap: (){
+            pushNewScreen(
+              context,
+              screen: SubmittedDescription(recipe: recipe[index],),
+              withNavBar: false,
+              pageTransitionAnimation: PageTransitionAnimation.cupertino,
+            );
+          },
+          child: SubmittedCard(
+            recipe: recipe[index],
+            name: recipe[index].title,
+            isApproved: recipe[index].approved
+          ),
+        );
+      },);
   }
 }

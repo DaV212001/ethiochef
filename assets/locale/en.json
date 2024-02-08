@@ -177,10 +177,12 @@
   "my_recipes": "My Recipes",
   "no_saved_recipes": "No saved recipes yet please bookmark your favourite recipes",
   "delete": "Delete",
+  "submitted_recipes": "Uploaded Recipes",
   "saved": "Food has been saved to your recipes",
   "vote_for_contestants": "Vote for contestants",
   "search_for_food": "Enter food name",
   "food_submission_agreement_title": "Agree that",
   "food_submission_agreement": "By checking this box, you agree that the food you have posted will be owned by our company and may be used on various media platforms. Thank you for your understanding and cooperation in this matter.Your contribution is appreciated!",
-
+"awards": "Get ready to win big! If your food post receives over 1000 likes, you could take home a brand new refrigerator. Plus, with 500-999 likes, you'll walk away with a Birr 10,000 prize,and even if you hit 400-499 likes, you could still win Birr 5000. Share your culinary creations and watch the rewards roll in!  \uD83C\uDF1F\uD83C\uDF89",
+  "awards_title": "Rewards"
 }
