@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ethio_chef/services/user_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -89,12 +90,54 @@ class FirebaseService {
     print("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
     final prefs = await SharedPreferences.getInstance();
     final tokenRegistered = prefs.getBool('firebase_token_registered') ?? false;
-    if (tokenRegistered && !login) {
-      print("heeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeerrrrrrrrrrrrrrrrrrrrrr");
-    } else {
+    print("==============================================================================================");
+    print("tokenRegistered = $tokenRegistered");
+    print("login = $login");
+    print("==============================================================================================");
+    if(tokenRegistered == false && login == false){
+      print("not logged in");
+      final fCMToken = await _firebaseMessaging.getToken();
+      print(fCMToken);
+      final body = jsonEncode({"token": fCMToken});
+      print(body);
+      var response =
+      await http.post(Uri.parse("${Constants.url}/user/push/register"),
+          headers: {
+            'Content-type': 'application/json'
+          },
+          body: body);
+      print("==================================http.post============================================================");
+      print(response.body);
+      print(response.statusCode);
+      print("==================================http.post============================================================");
+      if (response.statusCode == 200) {
+        print('firebase_token_registered');
+        await prefs.setBool('firebase_token_registered', true);
+      }
+    }else if(tokenRegistered == true && login == false){
+      print("not logged in");
+      final fCMToken = await _firebaseMessaging.getToken();
+      print(fCMToken);
+      final body = jsonEncode({"token": fCMToken});
+      print(body);
+      var response =
+      await http.post(Uri.parse("${Constants.url}/user/push/register"),
+          body: {"token": fCMToken});
+      print("=======================================");
+      print(response.body);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print('firebase_token_registered');
+        await prefs.setBool('firebase_token_registered', true);
+      }
+    }else if(tokenRegistered == true && login == true){
+      final userService = UserService();
+      var userData = await userService.fetchUserProfile();
+      print(userData);
+      print(userData?.userId);
       final access_token = await AuthService.getAuthorizationToken();
       if(access_token == "none"){
-        print("not logged in");
+
         return;
       }
       print("access_token $access_token");
@@ -104,10 +147,32 @@ class FirebaseService {
       print(body);
       var response =
       await http.post(Uri.parse("${Constants.url}/user/push/register"),
-          headers: {
-            'Authorization': 'JWT $access_token',
-          },
-          body: {"token": fCMToken});
+          body: {"token": fCMToken, "user_id": userData?.userId.toString()});
+      print("=======================================");
+      print(response.body);
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print('firebase_token_registered');
+        await prefs.setBool('firebase_token_registered', true);
+      }
+    }else if(tokenRegistered == false && login == true){
+      final userService = UserService();
+      var userData = await userService.fetchUserProfile();
+      print(userData);
+      print(userData?.userId);
+      final access_token = await AuthService.getAuthorizationToken();
+      if(access_token == "none"){
+
+        return;
+      }
+      print("access_token $access_token");
+      final fCMToken = await _firebaseMessaging.getToken();
+      print(fCMToken);
+      final body = jsonEncode({"token": fCMToken});
+      print(body);
+      var response =
+      await http.post(Uri.parse("${Constants.url}/user/push/register"),
+          body: {"token": fCMToken, "user_id": userData?.userId.toString()});
       print("=======================================");
       print(response.body);
       print(response.statusCode);
@@ -116,6 +181,36 @@ class FirebaseService {
         await prefs.setBool('firebase_token_registered', true);
       }
     }
+    // if (tokenRegistered && !login) {
+    //
+    //   print("heeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeerrrrrrrrrrrrrrrrrrrrrr");
+    // } else {
+    //
+    //   final userService = UserService();
+    //   var userData = await userService.fetchUserProfile();
+    //   print(userData);
+    //   print(userData?.userId);
+    //   final access_token = await AuthService.getAuthorizationToken();
+    //   if(access_token == "none"){
+    //
+    //     return;
+    //   }
+    //   print("access_token $access_token");
+    //   final fCMToken = await _firebaseMessaging.getToken();
+    //   print(fCMToken);
+    //   final body = jsonEncode({"token": fCMToken});
+    //   print(body);
+    //   var response =
+    //   await http.post(Uri.parse("${Constants.url}/user/push/register"),
+    //       body: {"token": fCMToken, "user_id": userData?.userId});
+    //   print("=======================================");
+    //   print(response.body);
+    //   print(response.statusCode);
+    //   if (response.statusCode == 200) {
+    //     print('firebase_token_registered');
+    //     await prefs.setBool('firebase_token_registered', true);
+    //   }
+    // }
   }
 }
 Future<void> handleBackgroundMessage(RemoteMessage message) async {

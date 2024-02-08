@@ -11,6 +11,7 @@ import '../../models/verification.dart';
 import '../../services/payment_service.dart';
 import '../../services/user_service.dart';
 import '../../utils/screen_utils.dart';
+import '../../widgets/loading.dart';
 import '../../widgets/price_card.dart';
 import '../auth/layout/payment_screen.dart';
 
@@ -41,7 +42,8 @@ class AllSubscriptions extends StatefulWidget {
 class _AllSubscriptionsState extends State<AllSubscriptions> {
   List<h.SubscriptionPlans> subscriptionPlans = [];
   List<h.SubscriptionPlans> userSubscriptionPlans = [];
-  late String duration_user;
+  Map<String, dynamic> userSubscription = {};
+  late String duration_user = "";
 
   int user_id = 2;
   String first_name = "";
@@ -83,10 +85,17 @@ class _AllSubscriptionsState extends State<AllSubscriptions> {
       subscriptionPlans = response;
     });
 
+    print("fetchUserSubscriptions");
     var response1 = await service.fetchUserSubscriptions();
+    print(response1);
     setState(() {
+      print("Setting");
       userSubscriptionPlans = response1;
+      print("Seted");
     });
+    print("userSubscriptionPlans $userSubscriptionPlans");
+    print("userSubscriptionPlans ${userSubscriptionPlans[0].duration}");
+    print("userSubscriptionPlans ${userSubscriptionPlans[0].plan}");
   }
 
   Future<void> getUserData() async {
@@ -142,7 +151,7 @@ class _AllSubscriptionsState extends State<AllSubscriptions> {
                   }
                   else {
                     return Center(
-                      child: CircularProgressIndicator(),
+                      child: Loading(),
                     );
                   }
                 }

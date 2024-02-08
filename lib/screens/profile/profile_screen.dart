@@ -11,6 +11,7 @@ import '../../models/user.dart';
 import '../../models/user_profile.dart';
 import '../../services/authorization_service.dart';
 import '../../services/user_service.dart';
+import '../../utils/screen_utils.dart';
 import '../../widgets/error_card.dart';
 import '../../widgets/loading.dart';
 import '../../widgets/main_button.dart';
@@ -244,6 +245,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
   @override
   Widget buildUserScreen(UserProfile user, FooterData data) {
+    final bool isTablet = ScreenUtils.isTablet(context);
+    ThemeData theme = Theme.of(context);
     return SafeArea(
       child: Scaffold(
         body: ListView(
@@ -268,24 +271,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
               ),
-            if(user.message=="User is not subscribed")
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: RouteCard(
-                  onTap: (){
-                    pushNewScreen(
-                      context,
-                      screen: AllSubscriptions(
-                        returnPrice: (n){
+            // if(user.message=="User is not subscribed")
+              GestureDetector(
+                onTap: (){
+                  pushNewScreen(
+                    context,
+                    screen: AllSubscriptions(
+                      returnPrice: (n){
 
-                        }, isSignUp: false, first_name: '', last_name: '', phone: '',
-                      ),
-                      withNavBar: false,
-                      pageTransitionAnimation: PageTransitionAnimation.cupertino,
-                    );
-                  },
-                  title: 'please_subscribe_now'.tr(),
-                  icon: Icons.money,
+                      }, isSignUp: false, first_name: '', last_name: '', phone: '',
+                    ),
+                    withNavBar: false,
+                    pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                  );
+                },
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  width: double.infinity,
+                  color: Colors.red,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Text('please_subscribe_now'.tr(),
+                      style: TextStyle(
+                          fontSize: isTablet ? 11.sp : 15.sp,
+                          fontWeight: FontWeight.w600,
+                          color: theme.colorScheme.secondary),),
+                  ),
                 ),
               )
               ,

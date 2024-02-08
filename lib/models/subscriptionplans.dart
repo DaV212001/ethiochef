@@ -22,8 +22,13 @@ class SubscriptionPlans{
 
   SubscriptionPlans.fromJson(Map<dynamic, dynamic> json) {
     print(json);
+    if(json['plan_en'] != null){
+      plan = json['plan_en'];
+    }else{
+      plan = json['plan'][Language.getLocaleCode()] ?? json['plan']['en'];
+    }
     id = json['id'];
-    plan = json['plan'][Language.getLocaleCode()] ?? json['plan']['en'];
+
     price = json['price'];
     duration = json['duration']??0;
     created_at = DateTime.parse(json['created_at']);

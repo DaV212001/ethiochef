@@ -161,6 +161,8 @@ class UserService {
       'Content-Type': 'application/json',
       'Authorization': 'JWT ${access_token}',
     });
+    print(response.statusCode);
+    print(response.body);
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
       var subscriptionPlansData = jsonData['data']['subscription'];
@@ -170,6 +172,7 @@ class UserService {
             SubscriptionPlans.fromJson(subscriptionPlansData))
             .toList();
       } else if (subscriptionPlansData is Map) {
+        print("USER SUBSCRIPTION");
         subscriptionPlans = [SubscriptionPlans.fromJson(subscriptionPlansData)];
         print(subscriptionPlans.length);
       }
