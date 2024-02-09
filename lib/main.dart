@@ -30,7 +30,9 @@ void main() async {
     statusBarColor: AppTheme.primaryColor
   ));
   WidgetsFlutterBinding.ensureInitialized();
+  print("==========================MobileAds.instance.initialize()====================================");
   MobileAds.instance.initialize();
+  print("=========================MobileAds.instance.initialize()=====================================");
   await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 15));
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp(
@@ -120,14 +122,12 @@ class _EthioChefState extends State<EthioChef> {
   @override
   Widget build(BuildContext context) {
     Language.selectedLanguage = Language.getSelectedLanguage(context);
-    print("main 1");
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ModelTheme())
       ],
       child: Consumer<ModelTheme>(
           builder: (context, ModelTheme themeNotifier, child) {
-            print("main 2");
         // themeNotifier.isDark = false; // using to check dark theme
             Widget homeScreen;
             // print("First Time User status $isFirstTimeUser");
@@ -140,7 +140,6 @@ class _EthioChefState extends State<EthioChef> {
               print("To Main Screen");
               homeScreen = MainScreen();
             }
-            print("main 3");
         return ScreenUtilInit(
           designSize: const Size(412, 892),//Never change this value
           child: MaterialApp(

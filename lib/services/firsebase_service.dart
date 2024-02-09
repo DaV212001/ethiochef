@@ -97,6 +97,9 @@ class FirebaseService {
     if(tokenRegistered == false && login == false){
       print("not logged in");
       final fCMToken = await _firebaseMessaging.getToken();
+      await prefs.setBool('firebase_token_registered', true);
+      var to = prefs.getString('firebase_token_registered');
+      print(to);
       print(fCMToken);
       final body = jsonEncode({"token": fCMToken});
       print(body);
@@ -110,47 +113,6 @@ class FirebaseService {
       print(response.body);
       print(response.statusCode);
       print("==================================http.post============================================================");
-      if (response.statusCode == 200) {
-        print('firebase_token_registered');
-        await prefs.setBool('firebase_token_registered', true);
-      }
-    }else if(tokenRegistered == true && login == false){
-      print("not logged in");
-      final fCMToken = await _firebaseMessaging.getToken();
-      print(fCMToken);
-      final body = jsonEncode({"token": fCMToken});
-      print(body);
-      var response =
-      await http.post(Uri.parse("${Constants.url}/user/push/register"),
-          body: {"token": fCMToken});
-      print("=======================================");
-      print(response.body);
-      print(response.statusCode);
-      if (response.statusCode == 200) {
-        print('firebase_token_registered');
-        await prefs.setBool('firebase_token_registered', true);
-      }
-    }else if(tokenRegistered == true && login == true){
-      final userService = UserService();
-      var userData = await userService.fetchUserProfile();
-      print(userData);
-      print(userData?.userId);
-      final access_token = await AuthService.getAuthorizationToken();
-      if(access_token == "none"){
-
-        return;
-      }
-      print("access_token $access_token");
-      final fCMToken = await _firebaseMessaging.getToken();
-      print(fCMToken);
-      final body = jsonEncode({"token": fCMToken});
-      print(body);
-      var response =
-      await http.post(Uri.parse("${Constants.url}/user/push/register"),
-          body: {"token": fCMToken, "user_id": userData?.userId.toString()});
-      print("=======================================");
-      print(response.body);
-      print(response.statusCode);
       if (response.statusCode == 200) {
         print('firebase_token_registered');
         await prefs.setBool('firebase_token_registered', true);

@@ -29,8 +29,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   @override
   void initState() {
-    _future = fetchData();
     _loadAd();
+    _future = fetchData();
     super.initState();
   }
   String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
@@ -38,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   BannerAd? _bannerAd2;
   BannerAd? _bannerAd3;
   void _loadAd() async {
+    print("Loading Ads");
     BannerAd(
       adUnitId: _adbannerUnitId,
       request: const AdRequest(),
@@ -45,12 +46,18 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       listener: BannerAdListener(
         // Called when an ad is successfully received.
         onAdLoaded: (ad) {
+          print("ad1 ============= ${ad.adUnitId}");
+          print("ad1 ============= ${ad.responseInfo}");
           setState(() {
             _bannerAd = ad as BannerAd;
           });
+          print("_bannerAd ============= $_bannerAd");
         },
         // Called when an ad request failed.
         onAdFailedToLoad: (ad, err) {
+          print("ad1 ============= ${ad.adUnitId}");
+          print("ad1 ============= ${ad.responseInfo}");
+          print("err1 ============= $err");
           ad.dispose();
         },
         // Called when an ad opens an overlay that covers the screen.
@@ -69,13 +76,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       listener: BannerAdListener(
         // Called when an ad is successfully received.
         onAdLoaded: (ad) {
+          print("ad2 ============= $ad");
           setState(() {
             _bannerAd2 = ad as BannerAd;
-
           });
+          print("_bannerAd2 ============= $_bannerAd2");
         },
         // Called when an ad request failed.
         onAdFailedToLoad: (ad, err) {
+          print("ad2 ============= ${ad.adUnitId}");
+          print("ad2 ============= ${ad.responseInfo}");
+          print("err2 ============= $err");
           ad.dispose();
         },
         // Called when an ad opens an overlay that covers the screen.
@@ -94,13 +105,17 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       listener: BannerAdListener(
         // Called when an ad is successfully received.
         onAdLoaded: (ad) {
+          print("ad3 ============= $ad");
           setState(() {
             _bannerAd3 = ad as BannerAd;
-
           });
+          print("_bannerAd3 ============= $_bannerAd3");
         },
         // Called when an ad request failed.
         onAdFailedToLoad: (ad, err) {
+          print("ad3 ============= ${ad.adUnitId}");
+          print("ad3 ============= ${ad.responseInfo}");
+          print("err3 ============= $err");
           ad.dispose();
         },
         // Called when an ad opens an overlay that covers the screen.
@@ -115,21 +130,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   Future<dynamic> fetchData() async {
     try {
-      print('fetchData');
       final categoryService = CategoryService();
       final mealService = MealService();
       final promotionService = PromotionService();
       final categoryData = await categoryService.fetchCategories();
       final breakFast = await mealService.fetchAllBreakfast();
-      print("fetch breakFast done");
       final lunch = await mealService.fetchAllLunch();
-      print("fetch lunch done");
       final superMeal = await mealService.fetchAllSuper();
-      print("fetch superMeal done");
       final dinner = await mealService.fetchAllDinner();
-      print("fetch dinner done");
       final promotionsData = await promotionService.fetchPromotions();
-      print("fetch promotionsData done");
       return [categoryData, breakFast, lunch, superMeal, dinner,promotionsData];
     } catch (error) {
       rethrow;

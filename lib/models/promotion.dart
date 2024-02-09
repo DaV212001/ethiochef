@@ -22,9 +22,7 @@ class Promotion {
     }
     String image = json['image'];
     String i = clearPath(image);
-    print(i);
     String thumbnail = Constants.ImageAPI + i;
-    print(thumbnail);
     return Promotion(
       id: json['id'] as int,
       name: "Promotion",

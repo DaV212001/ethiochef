@@ -77,9 +77,6 @@ class FoodService{
       final response = await http.get(
           Uri.parse('${Constants.url}/user/food/category/$categoryId/?limit=1000&lang=${Language.getLocaleCode()}')
       );
-      print("fetchFoodByCategoryId");
-      print(response.body);
-      print(response.statusCode);
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final List<dynamic> foodList = data['data'];
