@@ -5,45 +5,45 @@ import '../models/error_data.dart';
 
 class ErrorUtil {
   static ErrorData internalServerError = ErrorData(
-    title: "500_title".tr(),
-    body: "500_body".tr(),
-    image: "assets/images/errors/internal_server.svg",
+    title: "".tr(),
+    body: "".tr(),
+    image: "",
     buttonText: "refresh".tr(),
   );
   static ErrorData serviceUnavailableError = ErrorData(
-    title: "503_title".tr(),
-    body: "503_body".tr(),
-    image: "assets/images/errors/service_unavailable.svg",
+    title: "".tr(),
+    body: "".tr(),
+    image: "",
     buttonText: "refresh".tr(),
   );
   static ErrorData notFoundError = ErrorData(
-    title: "404_title".tr(),
-    body: "404_body".tr(),
-    image: "assets/images/errors/not_found.svg",
+    title: "".tr(),
+    body: "".tr(),
+    image: "",
     buttonText: "refresh".tr(),
   );
   static ErrorData gatewayTimeOutError = ErrorData(
-    title: "504_title".tr(),
-    body: "504_body".tr(),
-    image: "assets/images/errors/gateway_timeout.svg",
+    title: "".tr(),
+    body: "".tr(),
+    image: "",
     buttonText: "refresh".tr(),
   );
   static ErrorData unauthorizedError = ErrorData(
-    title: "401_title".tr(),
-    body: "401_body".tr(),
-    image: "assets/images/errors/unauthorized.svg",
+    title: "".tr(),
+    body: "".tr(),
+    image: "",
     buttonText: "refresh".tr(),
   );
   static ErrorData forbiddenError = ErrorData(
-    title: "403_title".tr(),
-    body: "403_body".tr(),
-    image: "assets/images/errors/forbidden.svg",
-    buttonText: "Go Back",
+    title: "".tr(),
+    body: "".tr(),
+    image: "",
+    buttonText: "refresh".tr()
   );
   static ErrorData tooManyRequestsError = ErrorData(
-    title: "429_title".tr(),
-    body: "429_body".tr(),
-    image: "assets/images/errors/too_many_requests.svg",
+    title: "".tr(),
+    body: "".tr(),
+    image: "",
     buttonText: "Retry",
   );
   static ErrorData emptyCategory = ErrorData(
@@ -68,7 +68,7 @@ class ErrorUtil {
     image: "assets/images/errors/empty_list.svg"
   );
   static ErrorData emptySearchQueryError = ErrorData(
-    title: "empty_search_query_title".tr(),
+    title: "".tr(),
     body: "",
     image: "assets/images/errors/empty_search_query.svg"
   );
@@ -85,8 +85,8 @@ class ErrorUtil {
     buttonText: "refresh".tr(),
   );
   static ErrorData uploadingVideo = ErrorData(
-    title: "uploading_title".tr(),
-    body: "uploading_body".tr(),
+    title: "".tr(),
+    body: "".tr(),
     image: "",
     buttonText: "cancel".tr(),
   );
