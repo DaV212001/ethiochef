@@ -155,6 +155,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   int amount = 0;
   @override
   Widget build(BuildContext context) {
+    final bool isTablet = ScreenUtils.isTablet(context);
+    ThemeData theme = Theme.of(context);
     return RefreshWidget(
       child: SafeArea(
         child: Scaffold(
@@ -178,29 +180,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   //TODO: check this code esti
                   if(snapshot.data == null){
                     return Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("another_account_login".tr()),
-                          MainButton(
-                            isLoading: isLoading,
-                            text: "log_out".tr(),
-                            onPress: () async {
-                              setState(() {
-                                isLoading = true;
-                              });
-                              await AuthService.logout();
-                              SharedPreferences shared = await SharedPreferences.getInstance();
-                              await shared.remove('savedRecipes');
-                              await shared.remove('ethioChef_authorization_token');
-                              Phoenix.rebirth(context);
-                              setState(() {
-                                isLoading = false;
-                              });
-                            }
-                          )
-                        ]
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.error,
+                              color: theme.colorScheme.error,
+                              size: 100,
+                            ),
+                            Text("another_account_login".tr(),
+                                style: TextStyle(
+                                    fontSize: isTablet ? 11.sp : 15.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: theme.colorScheme.error)
+
+                            ),
+                            MainButton(
+                              isLoading: isLoading,
+                              text: "log_out".tr(),
+                              onPress: () async {
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                await AuthService.logout();
+                                SharedPreferences shared = await SharedPreferences.getInstance();
+                                await shared.remove('savedRecipes');
+                                await shared.remove('ethioChef_authorization_token');
+                                Phoenix.rebirth(context);
+                                setState(() {
+                                  isLoading = false;
+                                });
+                              }
+                            )
+                          ]
+                        ),
                       ),
                     );
                   }
@@ -210,23 +226,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("another_account_login".tr()),
-                            MainButton(
-                                isLoading: isLoading,
-                                text: "log_out".tr(),
-                                onPress: () async {
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-                                  await AuthService.logout();
-                                  SharedPreferences shared = await SharedPreferences.getInstance();
-                                  await shared.remove('savedRecipes');
-                                  await shared.remove('ethioChef_authorization_token');
-                                  Phoenix.rebirth(context);
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-                                }
+                            Icon(
+                              Icons.error,
+                              color: theme.colorScheme.error,
+                              size: 100,
+                            ),
+                            Text("another_account_login".tr(),
+                                style: TextStyle(
+                                    fontSize: isTablet ? 11.sp : 15.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: theme.colorScheme.error)
+
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: MainButton(
+                                  isLoading: isLoading,
+                                  text: "log_out".tr(),
+                                  onPress: () async {
+                                    setState(() {
+                                      isLoading = true;
+                                    });
+                                    await AuthService.logout();
+                                    SharedPreferences shared = await SharedPreferences.getInstance();
+                                    await shared.remove('savedRecipes');
+                                    await shared.remove('ethioChef_authorization_token');
+                                    Phoenix.rebirth(context);
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                  }
+                              ),
                             )
                           ]
                       ),
@@ -271,7 +301,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
               ),
-            // if(user.message=="User is not subscribed")
+            if(user.message=="User is not subscribed")
               GestureDetector(
                 onTap: (){
                   pushNewScreen(
@@ -290,7 +320,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: double.infinity,
                   color: Colors.red,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
                     child: Text('please_subscribe_now'.tr(),
                       style: TextStyle(
                           fontSize: isTablet ? 11.sp : 15.sp,

@@ -10,7 +10,7 @@ import '../models/user.dart';
 import '../utils/constants.dart';
 import 'authorization_service.dart';
 class CompetitionService {
-  Future<List<Competition>> fetchCompetitions(int pageKey) async {
+  Future<List<Competition>> fetchCompetitions() async {
     List<Competition>? competitionslist;
     try {
       var res = await http.get(
@@ -29,26 +29,21 @@ class CompetitionService {
       throw Exception(e);
     }
 
-
-    if (pageKey > competitionslist.length) {
-      throw Exception();
-    }
-
-    await Future.delayed(Duration(seconds: 1));
     return competitionslist;
   }
 
-  Future<http.Response> sendCompetitionVideo(String video_string) async {
+  Future<http.Response> sendCompetitionVideo(String video_string, int competitionId) async {
     var access_token = await AuthService.getAuthorizationToken();
-    var body = json.encode({"video": video_string});
+    var body = jsonEncode({"video": video_string, "contest_id": competitionId});
     print("Body");
     print(body);
     final response = await http.post(
         Uri.parse("${Constants.url}/user/contest/upload"),
         headers: {
-          'Authorization': 'JWT $access_token'
+          'Authorization': 'JWT $access_token',
+          'Content-type': 'application/json'
         },
-        body: {"video": video_string});
+        body: body);
     print(response.body);
     print(response.statusCode);
     if(response.statusCode == 200){
@@ -59,15 +54,18 @@ class CompetitionService {
   Future<http.Response>? likeCompetition(int id) async {
     var access_token = await AuthService.getAuthorizationToken();
     final response;
+
+    var requestBody = jsonEncode({
+      "contest_id": id
+    });
     try {
       response = await http.post(
         Uri.parse("${Constants.url}/user/contest/like"),
         headers: {
-          'Authorization': 'JWT $access_token'
+          'Content-type': 'application/json',
+          'Authorization': 'JWT $access_token',
         },
-        body: {
-          "contest_id": id.toString()
-        },
+        body: requestBody,
       );
       print("res.statusCode  == = == = = == = = = ${response.statusCode}");
       print("response.body  == = == = = == = = = ${response.body}");

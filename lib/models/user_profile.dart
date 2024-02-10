@@ -11,6 +11,7 @@ class UserProfile {
   final int? dueDate;
   final DateTime? lastPaidDate;
   String? message;
+  bool? isFromSMS;
 
   UserProfile({
     this.id,
@@ -21,6 +22,7 @@ class UserProfile {
     this.status,
     this.dueDate,
     this.lastPaidDate, this. message = 'User is subscribed',
+    this.isFromSMS
   });
 
   factory UserProfile.fromJson(Map<String, dynamic> json) {
@@ -34,6 +36,7 @@ class UserProfile {
       status: json['status'],
       dueDate: json['due_date']??0,
       lastPaidDate: DateTime.parse(json['last_paid_date']),
+        isFromSMS: json['isFromSMS']
     );
   }
 }

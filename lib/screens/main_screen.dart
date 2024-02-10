@@ -58,7 +58,7 @@ class _MainScreenState extends State<MainScreen> {
     return [
       HomeScreen(),
       CategoriesScreen(),
-      UploadRecipeScreen(type: "recipe"),
+      UploadRecipeScreen(),
       CompetitionsScreen(),
       isLoggedIn ? ProfileScreen():AuthScreen(isSignIn: true)
     ];

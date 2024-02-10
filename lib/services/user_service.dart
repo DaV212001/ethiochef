@@ -55,7 +55,7 @@ class UserService {
       var refresh_token = jsonDecode(response.body)['data']['refresh_token'];
       await SubscriptionStatus().checkStatus();
       await AuthService.setAuthorizationToken(access_token);
-      await FirebaseService().checkTokenRegistration(true);
+      await FirebaseService().checkTokenRegistration();
       await AuthService.setRefreshToken(refresh_token);
     }
     return response;

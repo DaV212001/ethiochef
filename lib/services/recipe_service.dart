@@ -15,7 +15,7 @@ class RecipeService{
             Uri.parse("${Constants.url}/user/food-video/create"),
         );
         request.headers['Authorization'] = 'JWT $access_token';
-
+        print(recipe.steps);
         String steps = jsonEncode(recipe.stepToCreate);
         String ingredient = jsonEncode(recipe.ingredientToCreate);
         request.fields['title'] = recipe.name!;
@@ -51,7 +51,27 @@ class RecipeService{
 
         return http.Response(responseString, response.statusCode);
     }
-
+    Future<void> deleteUserFoodRecipe(int id) async {
+        print("id $id");
+        try {
+            final access_token = await AuthService.getAuthorizationToken();
+            final response = await http.post(
+                Uri.parse(
+                    '${Constants.url}/user/food-video/delete/$id'),
+                headers: {
+                    'Authorization': 'JWT $access_token'
+                });
+            print("response.body== ${response.body}==response.body");
+            print("response.statusCode ${response.statusCode}");
+            if (response.statusCode == 200) {
+                print(response.body);
+            } else {
+                throw Exception(response.statusCode.toString());
+            }
+        } catch (error) {
+            rethrow;
+        }
+    }
     Future<List<MySubmittedRecipe>> fetchDishes() async {
 
         final access_token = await AuthService.getAuthorizationToken();
@@ -60,7 +80,7 @@ class RecipeService{
             headers: {
                 'Authorization': 'JWT $access_token'
             },);
-
+        print(response.body);
         if (response.statusCode == 200) {
             Map<String, dynamic> jsonData = jsonDecode(response.body);
             List<dynamic> dishesData = jsonData['data'];

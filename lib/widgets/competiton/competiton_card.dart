@@ -35,6 +35,7 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
 
     switch(status){
       case 'Not logged in':
+        setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           padding: const EdgeInsets.symmetric(vertical: 20),
           content: Text('Please subscribe to see ingredients and steps'.tr()),
@@ -43,6 +44,7 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
         break;
 
       case 'Another user logged in':
+        setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           padding: const EdgeInsets.symmetric(vertical: 20),
           content: Text('another_account_login'.tr()),
@@ -68,6 +70,7 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
         break;
 
       case 'User is not subscribed':
+        setState(() => _isLoading = false);
         pushNewScreen(
           context,
           withNavBar: false,

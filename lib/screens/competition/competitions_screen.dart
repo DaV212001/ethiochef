@@ -8,7 +8,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
+import '../../services/subscription_checker.dart';
+import '../../services/user_service.dart';
+import '../../utils/screen_utils.dart';
+import '../../widgets/error_card.dart';
+import '../../widgets/loading.dart';
 import '../../widgets/pull_to_refresh.dart';
+import '../../widgets/youtube_video_player.dart';
+import '../auth/auth_screen.dart';
+import '../subscription/all_subscriptions.dart';
+import 'layout/competition_header.dart';
+import 'layout/competition_header_image.dart';
+import 'layout/contestants_carousel.dart';
 import 'layout/upload_video.dart';
 
 class CompetitionsScreen extends StatefulWidget {
@@ -19,15 +32,12 @@ class CompetitionsScreen extends StatefulWidget {
 }
 
 class _CompetitionsScreenState extends State<CompetitionsScreen> {
-  late Future<List<Competition>> items;
 
-  final PagingController<int, Competition> _pagingController =
-      PagingController(firstPageKey: 1);
-
-  Future<List<Competition>> fetchData(int pageKey) async {
+  Future? _future;
+  Future<dynamic> fetchCompetition() async {
     try {
       final service = CompetitionService();
-      final data = await service.fetchCompetitions(pageKey);
+      final data = await service.fetchCompetitions();
       return data;
     } catch (error) {
       print('Error: $error');
@@ -37,15 +47,119 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      fetchData(pageKey).then((data) {
-        _pagingController.appendPage(data, pageKey + 1);
-      }).catchError((error) {
-        _pagingController.error = error;
-      });
-    });
+    _future = fetchCompetition();
     _loadAd();
     super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return RefreshWidget(
+        onRefresh:()async{
+          setState(() {
+            _future = fetchCompetition();
+          });
+        },
+      child: Scaffold(
+        body: FutureBuilder(
+            future: _future,
+            builder: (context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Loading();
+              }
+              if (snapshot.hasError) {
+                return Center(
+                    child: ErrorCard(
+                      errorType: snapshot.error.toString(),
+                      refresh: () {
+                        setState(() {
+                          _future = fetchCompetition();
+                        });
+                      },
+                    ));
+              }
+              return buildCompetitionPage(snapshot.data as List<Competition>);
+            }),
+      ),
+    );
+  }
+  Widget buildCompetitionPage(List<Competition> competition){
+
+    ThemeData theme = Theme.of(context);
+    return Scaffold(
+        body: SafeArea(
+          child: Column(children: [
+            ScreenHead(
+              hasNotification: true,
+              screen: 1,
+              searchHint: "search_for_category".tr(),
+            ),
+            if (_bannerAd != null)
+              Align(
+                alignment: Alignment.topCenter,
+                child: SafeArea(
+                  child: SizedBox(
+                    width: _bannerAd!.size.width.toDouble(),
+                    height: _bannerAd!.size.height.toDouble(),
+                    child: AdWidget(ad: _bannerAd!),
+                  ),
+                ),
+              ),
+            ListView(
+              scrollDirection: Axis.vertical,
+              physics: BouncingScrollPhysics(),
+              shrinkWrap: true,
+              children:[ Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CompetitionHeaderImage(
+                    image: competition[0].image.toString(),
+                  ),
+                  CompetitionHeader(
+                    competition: competition[0],
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  if (competition[0].video != null)
+                    YoutubeVideoPlayer(
+                      link: competition[0].video!,
+                    ),
+                  if(competition[0].competitor!.isNotEmpty)
+                    Contestants(contestant: competition[0].competitor, contest_id: competition[0].id!)
+                  // ShareButton(food: PlaceHolderData.food)
+                ],
+              )],
+            ),
+            if (_bannerAd2 != null)
+              Align(
+                  alignment: Alignment.topCenter,
+                  child: SafeArea(
+                      child: SizedBox(
+                        width: _bannerAd2!.size.width.toDouble(),
+                        height: _bannerAd2!.size.height.toDouble(),
+                        child: AdWidget(ad: _bannerAd2!),
+                      )
+                  )
+              )
+          ]),
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: theme.colorScheme.primary,
+          onPressed: () async {
+            setState(() {
+              isLoading = true;
+            });
+            await handleSubscriptionStatus(context, competition[0].id!);
+            setState(() {
+              isLoading = false;
+            });
+          },
+          child: isLoading == true ? CircularProgressIndicator(
+            color: Colors.white,
+          ):Icon(Icons.add, color: Colors.white),
+        )
+    );
   }
   String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
   BannerAd? _bannerAd;
@@ -126,70 +240,118 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
       ),
     ).load();
   }
+  bool isLoading = false;
 
-  @override
-  Widget build(BuildContext context) {
+  Widget buildCompetition(BuildContext context, List<Competition> competition) {
+    final bool isTablet = ScreenUtils.isTablet(context);
     ThemeData theme = Theme.of(context);
-    return RefreshWidget(
-      child: Scaffold(
-          body: SafeArea(
-        child: SingleChildScrollView(
-            physics: NeverScrollableScrollPhysics(),
-            child: Column(children: [
-              ScreenHead(
-                hasNotification: true,
-                screen: 1,
-                searchHint: "search_for_category".tr(),
+    return ListView.builder(
+      itemCount: competition.length,
+      itemBuilder: (context, index) {
+      return SingleChildScrollView(
+        child: DefaultTabController(
+          length: 2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CompetitionHeaderImage(
+                image: competition[index].image.toString(),
               ),
-              if (_bannerAd != null)
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: SafeArea(
-                    child: SizedBox(
-                      width: _bannerAd!.size.width.toDouble(),
-                      height: _bannerAd!.size.height.toDouble(),
-                      child: AdWidget(ad: _bannerAd!),
-                    ),
-                  ),
-                ),
+              CompetitionHeader(
+                competition: competition[index],
+              ),
               SizedBox(
-                  height: 600.h,
-                  child: VerticalCompetitionList(
-                    // bannerAd: _bannerAd3,
-                      pagingController: _pagingController)),
-              if (_bannerAd2 != null)
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: SafeArea(
-                    child: SizedBox(
-                      width: _bannerAd2!.size.width.toDouble(),
-                      height: _bannerAd2!.size.height.toDouble(),
-                      child: AdWidget(ad: _bannerAd2!),
-                    )
-                  )
-                )
-            ])),
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: theme.colorScheme.primary,
-          onPressed: () {
-            pushNewScreen(context,
-                screen: UploadCompetitionVideo(), withNavBar: false);
-          },
-        child: Icon(Icons.add,color: Colors.white)
-      ),
-      ),
-        onRefresh:()async{
-          setState(() {
-            _pagingController.refresh();
-          });
+                height: 10.h,
+              ),
+              if (competition[index].video != null)
+                YoutubeVideoPlayer(
+                  link: competition[index].video!,
+                ),
+              if(competition[index].competitor!.isNotEmpty)
+                Contestants(contestant: competition[index].competitor, contest_id: competition[index].id!)
+              // ShareButton(food: PlaceHolderData.food)
+            ],
+          ),
+        ),
+      );
+    },);
+  }
+  Future<void> handleSubscriptionStatus(BuildContext context, int competition) async {
+    String? status = SubscriptionStatus().status;
+
+    switch (status) {
+      case "Not logged in":
+        showSnackBarAndNavigate(context, 'please_subscribe_to_see_ingredients_and_steps'.tr(), AuthScreen(isSignIn: true));
+        break;
+      case "Another user logged in":
+        showSnackBarAndNavigate(context, 'another_account_login'.tr(), AuthScreen(isSignIn: true));
+        break;
+      case "User is subscribed":
+        final userService = UserService();
+        var userData = await userService.fetchUserProfile();
+
+        if (userData!.isFromSMS == false) {
+          pushNewScreen(context, screen: UploadCompetitionVideo(competitionId: competition!), withNavBar: false);
+        } else {
+          showSubscriptionAlert(context);
         }
-    );
+        break;
+      case "User is not subscribed":
+        pushNewScreen(context, withNavBar: false, screen: AllSubscriptions(returnPrice: (int) {}, first_name: "", last_name: "", isSignUp: false, phone: ""));
+        break;
+    }
+    setState(() {
+      isLoading = false;
+    });
   }
 
-  @override
-  void dispose() {
-    _pagingController.dispose();
-    super.dispose();
+  void showSubscriptionAlert(BuildContext context) {
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.error,
+      showCancelBtn: true,
+      showConfirmBtn: true,
+      text: 'sms_payment_error'.tr(),
+      titleAlignment: TextAlign.center,
+      textAlignment: TextAlign.center,
+      confirmBtnText: 'pay'.tr(),
+      onConfirmBtnTap: () {
+        pushNewScreen(context, withNavBar: false, screen: AllSubscriptions(returnPrice: (int) {}, first_name: "", last_name: "", isSignUp: false, phone: ""));
+      },
+      cancelBtnText: 'cancel'.tr(),
+      onCancelBtnTap: () {
+        Navigator.pop(context);
+      },
+      confirmBtnColor: Colors.red,
+      cancelBtnTextStyle: TextStyle(
+        color: Colors.black,
+        fontWeight: FontWeight.bold,
+      ),
+      backgroundColor: Colors.white,
+      headerBackgroundColor: Colors.grey,
+      confirmBtnTextStyle: const TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+      ),
+      barrierColor: Colors.red,
+      titleColor: Colors.red,
+      textColor: Colors.red,
+    );
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  void showSnackBarAndNavigate(BuildContext context, String message, Widget route) {
+    setState(() {
+      isLoading = false;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        padding: EdgeInsets.symmetric(vertical: 20),
+        content: Text(message),
+      ),
+    );
+    pushNewScreen(context, withNavBar: false, screen: route);
   }
 }

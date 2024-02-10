@@ -116,7 +116,7 @@ class _EthioChefState extends State<EthioChef> {
   }
   Future<void> _checkFirstTimeUser() async {
     print("check login status");
-    await FirebaseService().checkTokenRegistration(false);
+    await FirebaseService().checkTokenRegistration();
   }
 
   @override
@@ -132,11 +132,9 @@ class _EthioChefState extends State<EthioChef> {
             Widget homeScreen;
             // print("First Time User status $isFirstTimeUser");
             if(isLoggedIn == false){
-              print("Logged in status = $isLoggedIn");
               print("To Auth Screen");
               homeScreen = AuthScreen();
             }else {
-              print("Logged in status = $isLoggedIn");
               print("To Main Screen");
               homeScreen = MainScreen();
             }

@@ -127,7 +127,7 @@ class _MyRecipesState extends State<MyRecipes> {
         backgroundColor:  theme.colorScheme.primary,
           onPressed: () {
             pushNewScreen(context,
-                screen: UploadRecipeScreen(type: "recipe"), withNavBar: false);
+                screen: UploadRecipeScreen(), withNavBar: false);
           },
         child: Icon(
           Icons.add,

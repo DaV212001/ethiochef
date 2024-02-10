@@ -100,80 +100,6 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
                           color: theme.colorScheme.onSecondary,
                         ),
                       )),
-                  // Expanded(
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.end,
-                  //     children: [
-                  //       GestureDetector(
-                  //         onTap: () {
-                  //           pushNewScreen(
-                  //               context,
-                  //               screen: AddEditComment(
-                  //                   isEditing: false,
-                  //                   foodId: widget.foodId,
-                  //                   refresh: widget.refresh
-                  //               )
-                  //           );
-                  //         },
-                  //         child: circularBackground(
-                  //           child: Icon(
-                  //             CupertinoIcons.text_bubble,
-                  //             color: theme.colorScheme.onSecondary,
-                  //           ),
-                  //         ),
-                  //       )
-                  //     ],
-                  //   ),
-                  // ),
-                  // SizedBox(
-                  //   width: 5.h,
-                  // ),
-                  // GestureDetector(
-                  // onTap: () async {
-                  //     print(Food.savedRecipes.toString());
-                  //     // Use the custom function to check if the widget.food is in the savedRecipes list
-                  //     if (Food.savedRecipes.any((food) => Food.isSameFood(food, widget.food!))) {
-                  //     Food.deleteRecipe(widget.food!);
-                  //     Food.savedRecipes = await Food.loadRecipesFromSharedPrefs();
-                  //     setState(() {
-                  //
-                  //     });
-                  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('delete'.tr())));
-                  //     } else {
-                  //     Food.addRecipe(widget.food!);
-                  //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('saved'.tr())));
-                  //     }
-                  //     setState(() {
-                  //     isSaved = !isSaved;
-                  //     });
-                  //     print('secondcheck: ${Food.savedRecipes.toString()}');
-                  //     },
-                  //   child: circularBackground(child: Icon(
-                  //     isSaved?CupertinoIcons.bookmark_fill:CupertinoIcons.bookmark
-                  //   )),
-                  // ),
-                  // SizedBox(
-                  //   width: 5.h,
-                  // ),
-                  // GestureDetector(
-                  //   onTap: () async{
-                  //     print("isLiked pressed widget.isLiked = ${isLiked}");
-                  //     if(isLiked == false) {
-                  //       await likeFood();
-                  //     }else{
-                  //       print("unlike");
-                  //     await unLikeFood();
-                  //     }
-                  //   },
-                  //   child: circularBackground(
-                  //     child: Icon(
-                  //       isLiked
-                  //           ? CupertinoIcons.hand_thumbsup_fill
-                  //           : CupertinoIcons.hand_thumbsup,
-                  //       color: theme.colorScheme.onSecondary,
-                  //     ),
-                  //   ),
-                  // ),
                 ]
               )
             )
@@ -182,16 +108,6 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-          //   GestureDetector(
-          //       onTap: () {
-          //         Navigator.of(context).pop();
-          //       },
-          //       child: circularBackground(
-          //         child: Icon(
-          //           Icons.arrow_back,
-          //           color: theme.colorScheme.onSecondary,
-          //         ),
-          //       )),
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -290,21 +206,12 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
         await service.likeFood(widget.foodId);
         if (response.statusCode == 200) {
           widget.refresh();
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('liked_food_successful'.tr())),
-          );
           return true;
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('liked_food_failed'.tr())),
-          );
           throw Exception();
         }
       } catch (e) {
         print(e);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('liked_food_failed'.tr())),
-        );
       }
       return false;
   }
@@ -315,22 +222,13 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
         var response =
         await service.unLikeFood(widget.foodId);
         if (response == true) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('unliked_food_successful'.tr())),
-          );
           widget.refresh();
           return true;
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('unliked_food_failed'.tr())),
-          );
           throw Exception();
         }
       } catch (e) {
         print(e);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('unliked_food_successful'.tr())),
-        );
       }
       return false;
     }

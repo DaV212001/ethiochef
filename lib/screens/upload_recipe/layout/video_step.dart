@@ -93,7 +93,7 @@ class _VideoStepState extends State<VideoStep> {
         MainButton(
           isLoading: isLoading,
           width: 200.w,
-          text: 'submit_a_recipe'.tr(),
+          text: 'submit_a_competition'.tr(),
           onPress: () {
             if (currentVideo == null && videoInvalid == false) {
 

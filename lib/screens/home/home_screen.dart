@@ -46,18 +46,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       listener: BannerAdListener(
         // Called when an ad is successfully received.
         onAdLoaded: (ad) {
-          print("ad1 ============= ${ad.adUnitId}");
-          print("ad1 ============= ${ad.responseInfo}");
+          print(ad.responseInfo);
+          print(ad.adUnitId);
           setState(() {
             _bannerAd = ad as BannerAd;
           });
-          print("_bannerAd ============= $_bannerAd");
-        },
+          },
         // Called when an ad request failed.
         onAdFailedToLoad: (ad, err) {
-          print("ad1 ============= ${ad.adUnitId}");
-          print("ad1 ============= ${ad.responseInfo}");
-          print("err1 ============= $err");
+          print("eeeeeeeeeeeeeeeeeeerrrrrrrrrrrrrrrrroooooooooooooooorrrrrrrrrrrrr");
+          print(err);
           ad.dispose();
         },
         // Called when an ad opens an overlay that covers the screen.
@@ -76,17 +74,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       listener: BannerAdListener(
         // Called when an ad is successfully received.
         onAdLoaded: (ad) {
-          print("ad2 ============= $ad");
+          print(ad.responseInfo);
+          print(ad.adUnitId);
           setState(() {
             _bannerAd2 = ad as BannerAd;
           });
-          print("_bannerAd2 ============= $_bannerAd2");
         },
         // Called when an ad request failed.
         onAdFailedToLoad: (ad, err) {
-          print("ad2 ============= ${ad.adUnitId}");
-          print("ad2 ============= ${ad.responseInfo}");
-          print("err2 ============= $err");
+          print("eeeeeeeeeeeeeeeeeeerrrrrrrrrrrrrrrrroooooooooooooooorrrrrrrrrrrrr");
+          print(err);
           ad.dispose();
         },
         // Called when an ad opens an overlay that covers the screen.
@@ -105,17 +102,16 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       listener: BannerAdListener(
         // Called when an ad is successfully received.
         onAdLoaded: (ad) {
-          print("ad3 ============= $ad");
+          print(ad.responseInfo);
+          print(ad.adUnitId);
           setState(() {
             _bannerAd3 = ad as BannerAd;
           });
-          print("_bannerAd3 ============= $_bannerAd3");
         },
         // Called when an ad request failed.
         onAdFailedToLoad: (ad, err) {
-          print("ad3 ============= ${ad.adUnitId}");
-          print("ad3 ============= ${ad.responseInfo}");
-          print("err3 ============= $err");
+          print("eeeeeeeeeeeeeeeeeeerrrrrrrrrrrrrrrrroooooooooooooooorrrrrrrrrrrrr");
+          print(err);
           ad.dispose();
         },
         // Called when an ad opens an overlay that covers the screen.

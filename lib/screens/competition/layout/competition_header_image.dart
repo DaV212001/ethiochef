@@ -27,22 +27,6 @@ class _CompetitionHeaderImageState extends State<CompetitionHeaderImage> {
         height: height * 0.4,
         child: CachedImage(url: widget.image, fit: BoxFit.cover),
       ),
-      Positioned(
-        top: 5,
-        left: 10,
-        child: SafeArea(
-          child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: circularBackground(
-                child: Icon(
-                  Icons.arrow_back,
-                  color: theme.colorScheme.onSecondary,
-                ),
-              )),
-        ),
-      )
     ]);
   }
 

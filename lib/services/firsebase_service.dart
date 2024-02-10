@@ -86,7 +86,12 @@ class FirebaseService {
         });
   }
 
-  Future<void> checkTokenRegistration(bool login) async {
+  Future<void> checkTokenRegistration() async {
+    bool login = true;
+    final access_token = await AuthService.getAuthorizationToken();
+    if(access_token == "none"){
+      login = false;
+    }
     print("hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
     final prefs = await SharedPreferences.getInstance();
     final tokenRegistered = prefs.getBool('firebase_token_registered') ?? false;
@@ -98,8 +103,6 @@ class FirebaseService {
       print("not logged in");
       final fCMToken = await _firebaseMessaging.getToken();
       await prefs.setBool('firebase_token_registered', true);
-      var to = prefs.getString('firebase_token_registered');
-      print(to);
       print(fCMToken);
       final body = jsonEncode({"token": fCMToken});
       print(body);
@@ -130,11 +133,14 @@ class FirebaseService {
       print("access_token $access_token");
       final fCMToken = await _firebaseMessaging.getToken();
       print(fCMToken);
-      final body = jsonEncode({"token": fCMToken});
+      final body = jsonEncode({"token": fCMToken,"user_id": userData?.userId});
       print(body);
       var response =
       await http.post(Uri.parse("${Constants.url}/user/push/register"),
-          body: {"token": fCMToken, "user_id": userData?.userId.toString()});
+          headers: {
+            'Content-type': 'application/json'
+          },
+          body: body);
       print("=======================================");
       print(response.body);
       print(response.statusCode);

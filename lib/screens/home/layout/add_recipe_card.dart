@@ -74,7 +74,7 @@ class AddRecipeCard extends StatelessWidget {
                     child: OutlinedButton(
                         onPressed: () {
                           pushNewScreen(context,
-                              screen: UploadRecipeScreen(type: "recipe"), withNavBar: false);
+                              screen: UploadRecipeScreen(), withNavBar: false);
                         },
                         style: ButtonStyle(
                           side: MaterialStateProperty.all<BorderSide>(

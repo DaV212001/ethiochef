@@ -53,7 +53,7 @@ class EmptyRecipe extends StatelessWidget {
               onPress: () async {
                 pushNewScreen(
                   context,
-                  screen: UploadRecipeScreen(type: "recipe"),
+                  screen: UploadRecipeScreen(),
                   withNavBar: false,
                   pageTransitionAnimation: PageTransitionAnimation.cupertino,
                 );

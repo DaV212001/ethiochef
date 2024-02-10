@@ -79,8 +79,8 @@ class ErrorUtil {
     buttonText: "refresh".tr(),
   );
   static ErrorData unknownError = ErrorData(
-    title: "unknown_title".tr(),
-    body: "unknown_body".tr(),
+    title: "".tr(),
+    body: "".tr(),
     image: "assets/images/errors/unknown.svg",
     buttonText: "refresh".tr(),
   );

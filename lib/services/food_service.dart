@@ -153,18 +153,14 @@ class FoodService{
     var requestBody = jsonEncode({
       "food_id": foodId
     });
-    print("requestBody ${{
-      "food_id": foodId
-    }}");
+    print("requestBody $requestBody");
     var response = await http.post(
         Uri.parse("${Constants.url}/user/food/like"),
         headers: {
           'Content-type': 'application/json',
           'Authorization': 'JWT $accessToken',
         },
-        body: jsonEncode({
-          "food_id": foodId
-        })
+        body: requestBody
     );
     print("Response Body  == ${response.body} == Response Body");
     print(response.statusCode);

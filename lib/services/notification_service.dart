@@ -58,7 +58,7 @@ class NotificationService {
     print("id $id");
     try {
       final access_token = await AuthService.getAuthorizationToken();
-      final response = await http.post(
+      final response = await http.delete(
           Uri.parse(
               '${Constants.url}/user/notifications/read/$id'),
           headers: {

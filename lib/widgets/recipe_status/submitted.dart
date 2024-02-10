@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/services/recipe_service.dart';
 import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -43,8 +44,9 @@ class SubmittedCard extends StatelessWidget {
             ],
           ),
           Align(child: isApprovedChip(context, isApproved), alignment: Alignment.bottomLeft),
-          MainButton(text: 'delete'.tr(), onPress: (){
-
+          MainButton(text: 'delete'.tr(), onPress: () async {
+            RecipeService service = RecipeService();
+            await service.deleteUserFoodRecipe(recipe.id);
           })
         ],
       ),

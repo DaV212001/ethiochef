@@ -101,31 +101,6 @@ class _BasicsStepState extends State<BasicsStep> {
           //   hint: "enter_dish_serving_size".tr(),
           //   inputType: TextInputType.number,
           // ),
-          Container(
-            padding: EdgeInsets.all(12),
-            decoration: BoxDecoration(
-                border: Border.all(
-                    color: theme.colorScheme.primary,
-                    width: 1
-                )
-            ),
-            child: Column(
-              children: [
-                Text("awards_title".tr(),
-                    style: TextStyle(
-                        fontSize: isTablet ? 13.sp : 17.sp,
-                        fontWeight: FontWeight.w800,
-                        color: theme.colorScheme.primary)
-                ),
-                Text("awards".tr(),
-                    style: TextStyle(
-                        fontSize: isTablet ? 11.sp : 15.sp,
-                        fontWeight: FontWeight.w600,
-                        color: theme.colorScheme.secondaryContainer)
-                ),
-              ],
-            ),
-          ),
           SizedBox(
             height: 10,
           ),
