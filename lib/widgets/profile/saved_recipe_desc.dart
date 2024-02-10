@@ -59,7 +59,7 @@ class _SavedRecipeDescriptionState extends State<SavedRecipeDescription> {
                                     child: circularBackground(
                                       child: Icon(
                                         Icons.arrow_back,
-                                        color: theme.colorScheme.onSecondary,
+                                        color: theme.colorScheme.primary,
                                       ),
                                     ),
                                   ),

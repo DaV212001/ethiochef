@@ -92,6 +92,7 @@ class _SubmittedRecipeState extends State<SubmittedRecipe> with SingleTickerProv
     if(recipe.isEmpty){
       return EmptyRecipe();
     }
+
     return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,

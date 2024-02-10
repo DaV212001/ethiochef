@@ -194,5 +194,8 @@
   "resend": "Resend",
   "failed_to_send_recipe": "Failed to send food recipe",
   "please_try_again": "Please try again",
-  "about_description": "Whether you’re looking for healthy recipes and guides, family projects and meal plans, the latest gadget reviews, foodie travel inspiration or just the perfect recipe for dinner tonight, we’re here to help"
+  "about_description": "Whether you’re looking for healthy recipes and guides, family projects and meal plans, the latest gadget reviews, foodie travel inspiration or just the perfect recipe for dinner tonight, we’re here to help",
+  "extend": "Extend",
+  "delete_subscription_warning": "By deleting your subscription you delete your account!!",
+  "your_sub": "Your subscription"
 }

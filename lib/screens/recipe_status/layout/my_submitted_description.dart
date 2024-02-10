@@ -64,7 +64,7 @@ class _SubmittedDescriptionState extends State<SubmittedDescription> with Single
                               child: circularBackground(
                                 child: Icon(
                                   Icons.arrow_back,
-                                  color: theme.colorScheme.onSecondary,
+                                  color: theme.colorScheme.primary,
                                 ),
                               )),
                         ],
@@ -104,7 +104,7 @@ class _SubmittedDescriptionState extends State<SubmittedDescription> with Single
                     style: TextStyle(
                         fontSize: isTablet ? 15.sp : 20.sp,
                         fontWeight: FontWeight.w300,
-                        color: theme.colorScheme.onTertiary),
+                        color: theme.colorScheme.secondaryContainer),
                   ),
                 ),
                 Padding(
@@ -120,19 +120,18 @@ class _SubmittedDescriptionState extends State<SubmittedDescription> with Single
                               selectedIndex = index;
                             });
                           },
-                          unselectedBorderColor: Colors.transparent,
                           backgroundColor: theme.colorScheme.primary,
                           unselectedBackgroundColor: Colors.transparent,
                           unselectedLabelStyle:  TextStyle(
                               fontSize: isTablet ? 11.sp : 15.sp,
                               fontWeight: FontWeight.w500,
-                              color: theme.colorScheme.onTertiary),
+                              color: theme.colorScheme.primary),
                           labelStyle:  TextStyle(
                               fontSize: isTablet ? 11.sp : 15.sp,
                               fontWeight: FontWeight.w600,
-                              color: theme.colorScheme.secondary),
+                              color: theme.colorScheme.secondaryContainer),
                           contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                          radius: 2,
+                          radius: 5,
                           tabs: [
                             Tab(
                                 text: "ingredients".tr()

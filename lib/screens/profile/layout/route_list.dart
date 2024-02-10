@@ -190,11 +190,6 @@ class _RouteListState extends State<RouteList> {
           physics: BouncingScrollPhysics(),
           children: [
             RouteContainer(
-              routePart: other,
-              indexTwo: 3,
-              routeName: tr("other"),
-            ),
-            RouteContainer(
               routePart: general,
               indexTwo: 2,
               routeName: tr("general"),
@@ -215,6 +210,11 @@ class _RouteListState extends State<RouteList> {
                 ),
               ),
             ),
+            RouteContainer(
+              routePart: other,
+              indexTwo: 3,
+              routeName: tr("other"),
+            )
           ],
         ),
       ),

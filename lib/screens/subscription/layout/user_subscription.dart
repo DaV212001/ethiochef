@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quickalert/quickalert.dart';
@@ -30,7 +31,7 @@ class _UserSubscriptionState extends State<UserSubscription> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-            'Your subscription',
+            'your_sub'.tr(),
             style: TextStyle(
                 fontSize: 17.sp,
                 fontWeight: FontWeight.w800,
@@ -52,7 +53,7 @@ class _UserSubscriptionState extends State<UserSubscription> {
                 widget.userSubscriptionPlans[index].duration
                     .toString() + " Months left" : "0";
                 return SubscriptionCard(
-                  buttonName: 'Delete',
+                  buttonName: 'delete'.tr(),
                   plan: widget.userSubscriptionPlans[index].plan!,
                   price: widget.userSubscriptionPlans[index].price
                       .toString(),
@@ -65,14 +66,14 @@ class _UserSubscriptionState extends State<UserSubscription> {
                       showCancelBtn: true,
                       showConfirmBtn: true,
                       title: "WARNING",
-                      text: 'By deleting your subscription you delete your account!!',
+                      text: 'delete_subscription_warning'.tr(),
                       titleAlignment: TextAlign.center,
                       textAlignment: TextAlign.center,
-                      confirmBtnText: 'Delete',
+                      confirmBtnText: 'delete'.tr(),
                       onConfirmBtnTap: (){
                         deleteSubscription(index);
                       },
-                      cancelBtnText: 'Cancel',
+                      cancelBtnText: 'cancel'.tr(),
                       onCancelBtnTap: (){
                         Navigator.pop(context);
                       },
@@ -101,7 +102,7 @@ class _UserSubscriptionState extends State<UserSubscription> {
         Divider(thickness: 1, height: 1,),
         SizedBox(height: 5,),
         Text(
-            'Extend your subscription',
+            'extend'.tr(),
             style: TextStyle(
                 fontSize: 17.sp,
                 fontWeight: FontWeight.w800,
