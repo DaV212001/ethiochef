@@ -1,3 +1,4 @@
+import 'package:abushakir/abushakir.dart';
 import 'package:ethio_chef/models/language.dart';
 import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +53,7 @@ class _PriceCardState extends State<PriceCard> {
               ),
             ),
             Text(
-              '${Language.getLocaleCode() == 'en'? 'Good until': "እስከ"} ${DateFormat('MMMM dd, yyyy').format(expirationDate)}',
+              '${Language.getLocaleCode() == 'en'? 'Good until': "እስከ"} ${Language.getLocaleCode() == 'en'?DateFormat('MMMM dd, yyyy').format(expirationDate): '${EtDatetime.fromMillisecondsSinceEpoch(expirationDate.millisecondsSinceEpoch,).monthGeez} ${EtDatetime.fromMillisecondsSinceEpoch(expirationDate.millisecondsSinceEpoch,).day}, ${EtDatetime.fromMillisecondsSinceEpoch(expirationDate.millisecondsSinceEpoch,).year}'}',
               style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 12

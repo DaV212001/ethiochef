@@ -27,28 +27,28 @@ class ErrorCard extends StatelessWidget {
           width: isFood! ? isTablet ? 250.w : 300.w:isTablet ? 250.w : 300.w,
           height: isFood! ? isTablet ? 80.h : 80.h: isTablet ? 300.h : 300.h,
         ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
-          child: Text(
-            error.title,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: theme.colorScheme.primary,
-                fontSize: isTablet ? 18.sp : 20.sp,
-                fontWeight: FontWeight.bold),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
-          child: Text(
-            error.body,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: theme.unselectedWidgetColor,
-                fontSize:isTablet ? 12.sp :  15.sp,
-                fontWeight: FontWeight.bold),
-          ),
-        ),
+        // Padding(
+        //   padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+        //   child: Text(
+        //     error.title,
+        //     textAlign: TextAlign.center,
+        //     style: TextStyle(
+        //         color: theme.colorScheme.primary,
+        //         fontSize: isTablet ? 18.sp : 20.sp,
+        //         fontWeight: FontWeight.bold),
+        //   ),
+        // ),
+        // Padding(
+        //   padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+        //   child: Text(
+        //     error.body,
+        //     textAlign: TextAlign.center,
+        //     style: TextStyle(
+        //         color: theme.unselectedWidgetColor,
+        //         fontSize:isTablet ? 12.sp :  15.sp,
+        //         fontWeight: FontWeight.bold),
+        //   ),
+        // ),
         SizedBox(height: 10.h),
         buildButton(error.buttonText)
       ],
