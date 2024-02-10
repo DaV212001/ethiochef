@@ -1,4 +1,9 @@
+
+
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../utils/screen_utils.dart';
 
 class RouteLabelCards extends StatelessWidget {
   String text;
@@ -6,6 +11,8 @@ class RouteLabelCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isTablet = ScreenUtils.isTablet(context);
+    ThemeData theme = Theme.of(context);
     return Container(
       height: 40,
       width: double.infinity,
@@ -15,8 +22,11 @@ class RouteLabelCards extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4.0),
             child: Text(text,
-                style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black)),
-          ),
+              style: TextStyle(
+                  fontSize: isTablet ? 11.sp : 15.sp,
+                  fontWeight: FontWeight.w600,
+                  color: theme.colorScheme.secondaryContainer),),),
+
         ],
       ),
     );;

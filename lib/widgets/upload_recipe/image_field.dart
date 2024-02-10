@@ -102,12 +102,12 @@ class _ImageFieldState extends State<ImageField> {
                               Icons.image_outlined,
                               size: 30,
                               color:
-                                  theme.unselectedWidgetColor.withOpacity(0.85),
+                                  theme.colorScheme.primary.withOpacity(0.85),
                             ),
                             SizedBox(width: 10),
                             Text("tap_here_to_add_an_image".tr(),
                                 style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.unselectedWidgetColor
+                                  color: theme.colorScheme.primary
                                       .withOpacity(0.85),
                                 ))
                           ],

@@ -97,7 +97,7 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
                       child: circularBackground(
                         child: Icon(
                           Icons.arrow_back,
-                          color: theme.colorScheme.onSecondary,
+                          color: theme.colorScheme.primary
                         ),
                       )),
                 ]

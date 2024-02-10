@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../../../theme/model_theme.dart';
 import '../../../widgets/profile/route_container.dart';
 import '../../../widgets/profile/saved_recipe.dart';
+import '../../app_documentation/about.dart';
 import '../../app_documentation/faq_screen.dart';
 import '../../app_documentation/privacy_policies_screen.dart';
 import '../../app_documentation/terms_and_conditions_screen.dart';
@@ -169,12 +170,12 @@ class _RouteListState extends State<RouteList> {
         "leadingIcon": Icons.info_outline_rounded,
         "onTap": () {
           print("about");
-          // pushNewScreen(
-          //   context,
-          //   screen: AboutScreen(),
-          //   withNavBar: false,
-          //   pageTransitionAnimation: PageTransitionAnimation.cupertino,
-          // );
+          pushNewScreen(
+            context,
+            screen: AboutScreen(),
+            withNavBar: false,
+            pageTransitionAnimation: PageTransitionAnimation.cupertino,
+          );
         },
         "trailing":
         Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary)
@@ -188,6 +189,11 @@ class _RouteListState extends State<RouteList> {
           scrollDirection: Axis.vertical,
           physics: BouncingScrollPhysics(),
           children: [
+            RouteContainer(
+              routePart: other,
+              indexTwo: 3,
+              routeName: tr("other"),
+            ),
             RouteContainer(
               routePart: general,
               indexTwo: 2,
@@ -209,11 +215,6 @@ class _RouteListState extends State<RouteList> {
                 ),
               ),
             ),
-            RouteContainer(
-              routePart: other,
-              indexTwo: 3,
-              routeName: tr("other"),
-            )
           ],
         ),
       ),

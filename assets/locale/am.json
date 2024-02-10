@@ -103,16 +103,16 @@
   "tap_here_to_add_a_video": "ቪዲዮ ለማስገባት እዚህ ይንኩ።",
   "tap_here_to_add_an_image": "ምስል ለማስገባት እዚህ ይንኩ።",
   "subscription_plans": "የደንበኝነት ምዝገባ አይነቶች",
-  "change_theme": "ጭብጥ ቀይር",
+  "change_theme": "እይታ ቀይር",
   "change_language": "ቋንቋ ቀይር",
   "recipe_status": "የምግብ አሰራር ሁኔታ",
   "competition_status": "የውድድር ሁኔታ",
   "privacy_policy": "የግላዊነት መረጃ",
   "faq": "ተደጋጋሚ ጥያቄዎች",
   "terms_and_conditions": "ዉሎች እና ሁኔታዎች",
-  "about": "ስለ እኛ",
+  "about": "ስለ ኢትዮ ሼፍ",
   "general": "አጠቃላይ",
-  "status": "ሁኔታ",
+  "status": "የምግብ ሁኔታ",
   "other": "ሌላ",
   "edit": "ፕሮፋይል ቀይር",
 
@@ -192,5 +192,6 @@
   "pay": "ይቀይሩ",
   "resend": "እንደገና ይላኩ",
   "failed_to_send_recipe": "የምግብ አዘገጃጀት መላክ አልተቻለም",
-  "please_try_again": "እባክዎ እንደገና ይሞክሩ"
+  "please_try_again": "እባክዎ እንደገና ይሞክሩ",
+  "about_description": "ኢትዮ ሼፍ አገር በቀል ድህረ ገፅ ሲሆን ሁሉም ነገር በኢንተርኔት በሆነበት በዚህ ዘመን ብዙ ሰዎች በቤታቸው ሆነው የምግብ አዘገጃጀት መማር ይፈልጋሉ ሆኖም አትዮ ሼፍ ይህን ችግር ለመፍታት ስልክዎን በመጠቀም የኢትዮ ሼፍ ዌብሳይትን፣ሞባይል አፕሊኬሽን እንዲሁም ዩቱዩብ በመጠቀም የተለያዩ ባህላዊ እና ዘመናዊ የምግብ አስራሮችን አቅርቦሎታል፡፡"
 }

@@ -181,11 +181,11 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
               unselectedLabelStyle:  TextStyle(
                   fontSize: isTablet ? 11.sp : 15.sp,
                   fontWeight: FontWeight.w500,
-                  color: theme.colorScheme.onTertiary),
+                  color: theme.colorScheme.primary),
               labelStyle:  TextStyle(
                   fontSize: isTablet ? 11.sp : 15.sp,
                   fontWeight: FontWeight.w600,
-                  color: theme.colorScheme.secondary),
+                  color: theme.colorScheme.secondaryContainer),
               contentPadding: EdgeInsets.symmetric(horizontal: 10),
               radius: 5,
               tabs: tabs,

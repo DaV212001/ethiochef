@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../utils/screen_utils.dart';
 import '../auth/language_selector_button.dart';
 import '../change_theme.dart';
 
@@ -17,6 +19,7 @@ class RouteCard extends StatefulWidget {
 class _RouteCardState extends State<RouteCard> {
   @override
   Widget build(BuildContext context) {
+    final bool isTablet = ScreenUtils.isTablet(context);
     ThemeData theme = Theme.of(context);
     return GestureDetector(
       onTap: widget.onTap,
@@ -27,7 +30,11 @@ class _RouteCardState extends State<RouteCard> {
             Icon(widget.icon, color: theme.primaryColor),
             SizedBox(width: 10,),
             Expanded(
-              child: Text(widget.title, style: TextStyle(color: Colors.black),),
+              child: Text(widget.title,
+                style: TextStyle(
+                    fontSize: isTablet ? 11.sp : 15.sp,
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.secondaryContainer),),
             ),
             Container(
               child: widget.title == "change_language".tr()? LanguageSelectorButton(

@@ -13,32 +13,32 @@ class ThemeProvider extends ChangeNotifier{
 class AppTheme {
 
   static ThemeData lightTheme = ThemeData(
-    brightness: Brightness.light,
-    primaryColor: primaryColor,
-    unselectedWidgetColor: gray,
-    cardColor: antiFlashWhite,
-    scaffoldBackgroundColor: white,
-    fontFamily: "Manrope",
-    buttonTheme: ButtonThemeData(
-        colorScheme: ColorScheme.light(
-            primary: primaryColor, secondary: white, primaryContainer: denim_O20)),
-    canvasColor: gold,
-    colorScheme: ColorScheme.light(
-        primary: primaryColor,
-        primaryContainer: denim_O20,
-        tertiaryContainer: cocoaBrown2,
-        secondary: antiFlashWhite,
-        onSecondary: grey,
-        secondaryContainer: russet,
-        onTertiary: gray,
-        tertiary: gunmetal,
-        error: tomato,
-        inversePrimary: gold,
-        inverseSurface: gold_O40,
-        background: silver
-    ),
-    bottomNavigationBarTheme:
-    BottomNavigationBarThemeData(backgroundColor: white)
+      brightness: Brightness.light,
+      primaryColor: primaryColor,
+      unselectedWidgetColor: gray,
+      cardColor: antiFlashWhite,
+      scaffoldBackgroundColor: white,
+      fontFamily: "Manrope",
+      buttonTheme: ButtonThemeData(
+          colorScheme: ColorScheme.light(
+              primary: primaryColor, secondary: white, primaryContainer: denim_O20)),
+      canvasColor: gold,
+      colorScheme: ColorScheme.light(
+          primary: primaryColor,
+          primaryContainer: denim_O20,
+          tertiaryContainer: cocoaBrown2,
+          secondary: antiFlashWhite,
+          onSecondary: grey,
+          secondaryContainer: russet,
+          onTertiary: gray,
+          tertiary: gunmetal,
+          error: tomato,
+          inversePrimary: gold,
+          inverseSurface: gold_O40,
+          background: silver
+      ),
+      bottomNavigationBarTheme:
+      BottomNavigationBarThemeData(backgroundColor: white)
   );
 
   static ThemeData darkTheme = ThemeData(
@@ -53,10 +53,10 @@ class AppTheme {
             primary: primaryColor, secondary: white, primaryContainer: denim_O20)),
     canvasColor: gold,
     colorScheme: ColorScheme.dark(
-        primary: gold,
+        primary: cocoaBrown,
         primaryContainer: gold_O40,
-        secondary: antiFlashWhite,
-        secondaryContainer: cadetGray,
+        secondary: russet,
+        secondaryContainer: antiFlashWhite,
         tertiary: antiFlashWhite,
         error: tomato,
         inversePrimary: primaryColor,
@@ -105,8 +105,8 @@ class AppTheme {
   static BorderRadius allBorderRadius = BorderRadius.all(Radius.circular(5.r));
 
   static BoxConstraints  inputFieldIconTablet = BoxConstraints(
-    minWidth: 25.w,
-    minHeight: 15.h
+      minWidth: 25.w,
+      minHeight: 15.h
   );
   static TextStyle inputFieldStyleTablet = TextStyle(fontSize: 10.sp);
   static TextStyle inputFieldErrorStyleTablet = TextStyle(fontSize: 10.sp);
@@ -114,3 +114,4 @@ class AppTheme {
   static TextStyle snackBarStyle = TextStyle(fontSize: 15.sp);
 
 }
+

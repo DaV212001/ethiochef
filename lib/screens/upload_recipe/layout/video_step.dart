@@ -82,7 +82,7 @@ class _VideoStepState extends State<VideoStep> {
                     "uploading_body".tr(),
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        color: theme.unselectedWidgetColor,
+                        color: theme.colorScheme.secondaryContainer,
                         fontSize:isTablet ? 12.sp :  15.sp,
                         fontWeight: FontWeight.bold),
                   ),

@@ -35,19 +35,18 @@ class _RecipeScreenTabState extends State<RecipeScreenTab> {
                 selectedIndex = index;
               });
             },
-            unselectedBorderColor: Colors.transparent,
             backgroundColor: theme.colorScheme.primary,
             unselectedBackgroundColor: Colors.transparent,
             unselectedLabelStyle:  TextStyle(
                 fontSize: isTablet ? 11.sp : 15.sp,
                 fontWeight: FontWeight.w500,
-                color: theme.colorScheme.onTertiary),
+                color: theme.colorScheme.primary),
             labelStyle:  TextStyle(
                 fontSize: isTablet ? 11.sp : 15.sp,
                 fontWeight: FontWeight.w600,
-                color: theme.colorScheme.secondary),
+                color: theme.colorScheme.secondaryContainer),
             contentPadding: EdgeInsets.symmetric(horizontal: 10),
-            radius: 2,
+            radius: 5,
             tabs: [
               Tab(
                   text: "ingredients".tr()
