@@ -4,10 +4,13 @@ import 'package:ethio_chef/utils/screen_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import '../../models/error_data.dart';
 import '../../models/submitted_recipe.dart';
 import '../../services/recipe_service.dart';
+import '../../utils/error_util.dart';
 import '../../widgets/error_card.dart';
 import '../../widgets/loading.dart';
+import '../../widgets/main_button.dart';
 import '../../widgets/recipe_status/empty_recipe.dart';
 import '../../widgets/recipe_status/submitted.dart';
 import 'layout/my_submitted_description.dart';
@@ -67,15 +70,17 @@ class _SubmittedRecipeState extends State<SubmittedRecipe> with SingleTickerProv
               return Loading();
             }
             if (snapshot.hasError) {
+              ErrorData error = ErrorUtil.getErrorType(snapshot.error.toString());
               return Center(
-                  child: ErrorCard(
-                    errorType: snapshot.error.toString(),
-                    refresh: () {
-                      setState(() {
-                        _future = fetchData();
-                      });
-                    },
-                  ));
+                  child: MainButton(
+                      width: 200.w,
+                      text: error.buttonText!,
+                      onPress: (){
+                        setState(() {
+                          _future = fetchData();
+                        });
+                      })
+                  );
             }
             return buildRecipeScreen(snapshot.data as List<MySubmittedRecipe>);
           }),
