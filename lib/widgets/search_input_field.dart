@@ -57,21 +57,21 @@ class _SearchInputFieldState extends State<SearchInputField> {
         },
         decoration: InputDecoration(
           hintText: widget.hint,
-          hintStyle: TextStyle(color: theme.colorScheme.onTertiary,
+          hintStyle: TextStyle(color: theme.colorScheme.secondaryContainer,
             fontSize: isTablet ? 11.sp : 15.sp,
             fontWeight: FontWeight.w300),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(5)),
             borderSide: BorderSide(
-              color: theme.colorScheme.onTertiary,
+              color: theme.colorScheme.primary,
               width: 1,
             ),
           ),
           prefixIcon: Icon(CupertinoIcons.search,
-              color: theme.colorScheme.onTertiary),
+              color: theme.colorScheme.primary),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: theme.colorScheme.onTertiary,
+              color: theme.colorScheme.primary,
               width: 1,
             ),
             borderRadius: BorderRadius.all(Radius.circular(5)),

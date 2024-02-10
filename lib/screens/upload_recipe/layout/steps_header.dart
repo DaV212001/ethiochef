@@ -31,13 +31,12 @@ class _StepsHeaderState extends State<StepsHeader> {
             ? 'ingredients'.tr()
             : stepNumber == 3
             ? 'steps'.tr():
-          stepNumber == 4 ? 'waiting'.tr():
           'video'.tr()
       );
     });
     return EasyStepper(
       activeStep: widget.activeStep,
-      activeStepTextColor: Colors.black87,
+      activeStepTextColor: theme.colorScheme.primary,
       finishedStepTextColor: Colors.black87,
       internalPadding: 0,
       showLoadingAnimation: false,
@@ -48,7 +47,7 @@ class _StepsHeaderState extends State<StepsHeader> {
         lineSpace: 0,
         lineType: LineType.normal,
         defaultLineColor: theme.unselectedWidgetColor,
-        finishedLineColor: theme.colorScheme.primaryContainer,
+        finishedLineColor: theme.colorScheme.primary,
       ),
       steps: steps,
       // onStepReached: (index) => setState(() => activeStep = index),

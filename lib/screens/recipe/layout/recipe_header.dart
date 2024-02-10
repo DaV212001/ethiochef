@@ -129,7 +129,7 @@ class RecipeHeader extends StatelessWidget {
               style: TextStyle(
                   fontSize: isTablet ? 15.sp : 20.sp,
                   fontWeight: FontWeight.w300,
-                  color: theme.colorScheme.onTertiary),
+                  color: theme.colorScheme.secondaryContainer),
             ),
           ],
         ));

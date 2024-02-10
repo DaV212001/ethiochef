@@ -100,9 +100,11 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
+
+
     Color inactiveColor = Theme
         .of(context)
-        .colorScheme.onSecondary;
+        .colorScheme.secondaryContainer;
     Color activeColor = Theme
         .of(context)
         .colorScheme

@@ -45,7 +45,7 @@ class _LanguageSelectorButtonState extends State<LanguageSelectorButton> {
                 style: TextStyle(
                     fontSize: isTablet ? 11.sp : 15.sp,
                     fontWeight: FontWeight.w600,
-                    color: theme.colorScheme.secondaryContainer),)
+                    color: theme.colorScheme.primary),)
             ],
           ),
         ),

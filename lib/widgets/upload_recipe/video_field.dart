@@ -98,12 +98,12 @@ class _VideoFieldState extends State<VideoField> {
           Icon(
             Icons.video_camera_back_outlined,
             size: 30,
-            color: theme.unselectedWidgetColor.withOpacity(0.85),
+            color: theme.colorScheme.primary.withOpacity(0.85).withOpacity(0.85),
           ),
           SizedBox(width: 10),
           Text("tap_here_to_add_a_video".tr(),
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.unselectedWidgetColor.withOpacity(0.85),
+                color: theme.colorScheme.primary.withOpacity(0.85)
               ))
         ],
       ),
