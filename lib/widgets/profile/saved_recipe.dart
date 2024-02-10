@@ -76,33 +76,38 @@ class _SavedRecipeState extends State<SavedRecipe> {
             ):
             Food.savedRecipes.length == 0?
               Center(
-                child: Text('no_saved_recipes', style: TextStyle(
+                child: Text("no_saved_recipes".tr(), style: TextStyle(
                     color: Colors.black
                 )),
-              ): ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: Food.savedRecipes.length,
-              itemBuilder: (BuildContext context, int index) {
-                var resp = Food.savedRecipes[index];
-                return GestureDetector(
-                  onTap: (){
-                    print("tap");
-                    pushNewScreen(
-                      context,
-                      screen: SavedRecipeDescription(food: resp),
-                      withNavBar: false,
-                      pageTransitionAnimation: PageTransitionAnimation.cupertino,
-                    );
-                  },
-                  child: SavedRecipeCard(
-                    recipe: resp,
-                    name: resp.name.toString(),
-                    imageUrl: File(resp.thumbnail),
-                  ),
-                );
-              },)
+              ): SizedBox(
+              height: 200,
+                child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                ),
+                itemCount: Food.savedRecipes.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var resp = Food.savedRecipes[index];
+                  return GestureDetector(
+                    onTap: (){
+                      print("tap");
+                      pushNewScreen(
+                        context,
+                        screen: SavedRecipeDescription(food: resp),
+                        withNavBar: false,
+                        pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                      );
+                    },
+                    child: SavedRecipeCard(
+                      recipe: resp,
+                      name: resp.name.toString(),
+                      imageUrl: File(resp.thumbnail),
+                    ),
+                  );
+                },
+            ),
+              )
+
           ],
         ),
       ),

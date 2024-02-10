@@ -113,7 +113,8 @@ class _MyRecipesState extends State<MyRecipes> {
                       pageTransitionAnimation: PageTransitionAnimation.cupertino,
                     );
                   },
-                  child: RecipeCard(
+                  child:
+                  RecipeCard(
                     recipe: resp,
                     name: resp.name.toString(),
                     imageUrl: resp.image,
