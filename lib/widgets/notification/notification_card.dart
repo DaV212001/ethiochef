@@ -74,8 +74,9 @@ class _NotificationCardState extends State<NotificationCard> {
                   Text(
                     DateFormat.yMMMd().format(widget.data.date),
                     style: TextStyle(
-                      fontSize: isTablet ? 10.sp : 12.sp,
-                    ),
+                        fontSize: isTablet ? 10.sp : 12.sp,
+                        fontWeight: FontWeight.w400,
+                        color: theme.colorScheme.secondaryContainer),
                   ),
                 ],
               ),
@@ -102,9 +103,9 @@ class _NotificationCardState extends State<NotificationCard> {
                         Text(
                           widget.data.title,
                           style: TextStyle(
-                            fontSize: isTablet ? 13.sp : 15.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
+                              fontSize: isTablet ? 11.sp : 15.sp,
+                              fontWeight: FontWeight.w600,
+                              color: theme.colorScheme.primary),
                         ),
                         SizedBox(
                           height: 5.h,
@@ -112,8 +113,9 @@ class _NotificationCardState extends State<NotificationCard> {
                         Text(
                           widget.data.body,
                           style: TextStyle(
-                            fontSize: isTablet ? 10.sp : 12.sp,
-                          ),
+                              fontSize: isTablet ? 10.sp : 13.sp,
+                              fontWeight: FontWeight.w400,
+                              color: theme.colorScheme.secondaryContainer),
                         ),
                       ],
                     ),
