@@ -90,6 +90,7 @@ dependencies:
   google_mobile_ads: ^4.0.0
   firebase_analytics: ^10.8.0
   quickalert: ^1.0.2
+  abushakir: ^1.0.0
 
 
 
