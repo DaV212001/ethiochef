@@ -45,19 +45,19 @@ class _StepsHeaderState extends State<StepsHeader> {
     EasyStep(
         title:'delivery'.tr(),
         activeIcon: Icon(
-          Icons.local_shipping,
+          Icons.subscriptions,
           grade: 1.1,
-          color: theme.primaryColor,
+          color: theme.colorScheme.primary,
         ),
         icon: Icon(
-          Icons.local_shipping,
+          Icons.subscriptions,
           grade: 1.1,
           color: theme.unselectedWidgetColor,
         ),
         finishIcon: Icon(
           Icons.check_circle,
           grade: 1.1,
-          color: theme.primaryColor,
+          color: theme.colorScheme.primary,
         )
     ),
     EasyStep(
@@ -65,7 +65,7 @@ class _StepsHeaderState extends State<StepsHeader> {
         activeIcon: Icon(
           Icons.payment,
           grade: 1.1,
-          color: theme.primaryColor,
+          color: theme.colorScheme.primary,
         ),
         icon: Icon(
           Icons.payment,
@@ -75,25 +75,25 @@ class _StepsHeaderState extends State<StepsHeader> {
         finishIcon: Icon(
           Icons.check_circle,
           grade: 1.1,
-          color: theme.primaryColor,
+          color: theme.colorScheme.primary,
         )
     ),
     EasyStep(
-        title:'summary'.tr(),
+        title:'payment'.tr(),
         activeIcon: Icon(
-          Icons.list,
+          Icons.list_alt,
           grade: 1.1,
-          color: theme.primaryColor,
+          color: theme.colorScheme.primary,
         ),
         icon: Icon(
-          Icons.list,
+          Icons.list_alt,
           grade: 1.1,
           color: theme.unselectedWidgetColor,
         ),
         finishIcon: Icon(
           Icons.check_circle,
           grade: 1.1,
-          color: theme.primaryColor,
+          color: theme.colorScheme.primary,
         )
     )
   ];

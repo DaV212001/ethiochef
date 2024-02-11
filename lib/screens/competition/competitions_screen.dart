@@ -84,15 +84,63 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
     );
   }
   Widget buildCompetitionPage(List<Competition> competition){
-
-    ThemeData theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
+    final bool isTablet = ScreenUtils.isTablet(context);
+    if(competition.isEmpty){
+      return Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Container(
+          height: isTablet ? 600.h : 450.h,
+          width: isTablet ? 275.w : 400.w,
+          padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+          margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        color: theme.colorScheme.primary,
+                        width: 1
+                    )
+                ),
+                child: Column(
+                  children: [
+                    Text("no_competition_currently".tr(),
+                        style: TextStyle(
+                            fontSize: isTablet ? 11.sp : 15.sp,
+                            fontWeight: FontWeight.w600,
+                            color: theme.colorScheme.secondaryContainer)
+                    ),
+                    Text("awards_title".tr(),
+                        style: TextStyle(
+                            fontSize: isTablet ? 13.sp : 17.sp,
+                            fontWeight: FontWeight.w800,
+                            color: theme.colorScheme.primary)
+                    ),
+                    Text("awards".tr(),
+                        style: TextStyle(
+                            fontSize: isTablet ? 11.sp : 15.sp,
+                            fontWeight: FontWeight.w600,
+                            color: theme.colorScheme.secondaryContainer)
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
     return Scaffold(
         body: SafeArea(
           child: Column(children: [
             ScreenHead(
               hasNotification: true,
               screen: 1,
-              searchHint: "search_for_category".tr(),
+              searchHint: "search".tr(),
             ),
             if (_bannerAd != null)
               Align(
@@ -144,21 +192,50 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
               )
           ]),
         ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: theme.colorScheme.primary,
-          onPressed: () async {
-            setState(() {
-              isLoading = true;
-            });
-            await handleSubscriptionStatus(context, competition[0].id!);
-            setState(() {
-              isLoading = false;
-            });
-          },
-          child: isLoading == true ? CircularProgressIndicator(
-            color: Colors.white,
-          ):Icon(Icons.add, color: Colors.white),
-        )
+
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(bottom: 10.0),
+          child: FloatingActionButton.extended(
+            autofocus: true,
+            elevation: 4,
+            isExtended: true,
+            tooltip: 'upload_video'.tr(),
+            onPressed: () async {
+              setState(() {
+                isLoading = true;
+              });
+              await handleSubscriptionStatus(context, competition[0].id!);
+              setState(() {
+                isLoading = false;
+              });
+              },
+            icon: const Icon(Icons.play_arrow, color: Colors.white),
+            label: isLoading == true ? CircularProgressIndicator(
+              color: Colors.white,
+            ):Text('upload_video'.tr(),
+              style: TextStyle(
+                  fontSize: isTablet ? 13.sp : 15.sp,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.white),),
+            backgroundColor: theme.colorScheme.primary,
+          ),
+        ),
+
+        // floatingActionButton: FloatingActionButton(
+        //   backgroundColor: theme.colorScheme.primary,
+        //   onPressed: () async {
+        //     setState(() {
+        //       isLoading = true;
+        //     });
+        //     await handleSubscriptionStatus(context, competition[0].id!);
+        //     setState(() {
+        //       isLoading = false;
+        //     });
+        //   },
+        //   child: isLoading == true ? CircularProgressIndicator(
+        //     color: Colors.white,
+        //   ):Icon(Icons.add, color: Colors.white),
+        // )
     );
   }
   String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';

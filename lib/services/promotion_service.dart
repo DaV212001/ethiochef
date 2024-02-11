@@ -7,7 +7,8 @@ import '../models/promotion.dart';
 class PromotionService{
   Future<List<Promotion>> fetchPromotions() async {
     final response = await http.get(Uri.parse('${Constants.url}/user/promotion'));
-
+    print(response.body);
+    print(response.statusCode);
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       final promotions = data['data'] as List<dynamic>;

@@ -38,7 +38,7 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
     if(isLoading) {
       return Scaffold(
         appBar: MainAppBar(
-          title: "Terms and conditions".tr(),
+          title: "terms_and_conditions".tr(),
           hasMainIcons: false,
         ),
         body: Center(child: CircularProgressIndicator()),
@@ -47,7 +47,7 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
     if(termsAndConditions.length == 0) {
       return Scaffold(
         appBar: MainAppBar(
-          title: "Terms and conditions".tr(),
+          title: "terms_and_conditions".tr(),
           hasMainIcons: false,
         ),
         body: Center(
@@ -57,10 +57,10 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
                     fetchTermsAndConditions();
                   });
                 },
-                infoTitle: "No terms and conditions",
-                infoBody: "No terms and conditions currently",
+                infoTitle: "no_terms_and_conditions".tr(),
+                infoBody: "",
                 closeText: "",
-                buttonText: "Reload",
+                buttonText: "refresh".tr(),
                 infoImage: "",
                 closeBtn: false))
       );
@@ -68,7 +68,7 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
     final bool isTablet = ScreenUtils.isTablet(context);
     return Scaffold(
         appBar: MainAppBar(
-          title: "Terms and conditions".tr(),
+          title: "terms_and_conditions".tr(),
           hasMainIcons: false,
         ),
         body: Padding(

@@ -58,7 +58,7 @@ class _LanguageSelectorButtonState extends State<LanguageSelectorButton> {
                   style: TextStyle(
                       fontSize: isTablet ? 11.sp : 15.sp,
                       fontWeight: FontWeight.w600,
-                      color: theme.colorScheme.secondaryContainer)
+                      color: theme.colorScheme.primary)
               ),
             ),
           ),
@@ -81,7 +81,7 @@ class _LanguageSelectorButtonState extends State<LanguageSelectorButton> {
           padding: const EdgeInsets.symmetric(vertical: 6),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
-            color: Theme.of(context).colorScheme.surface,
+            color: Theme.of(context).colorScheme.secondary
           ),
           offset: const Offset(0, 8),
         ),

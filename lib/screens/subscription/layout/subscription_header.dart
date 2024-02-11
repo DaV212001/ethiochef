@@ -24,15 +24,12 @@ class SubscriptionHeader extends StatelessWidget {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(
                               Radius.circular(100)),
-                          color: Theme
-                              .of(context)
-                              .colorScheme
-                              .onPrimary),
+                          color: Colors.white),
 
                       child: Icon(
                         Icons.arrow_back,
                         color: theme.colorScheme
-                            .onSecondary,
+                            .primary,
                       ),
                     )),
 

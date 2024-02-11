@@ -237,9 +237,16 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
     if(activeStep == 0){
       await checkSubscription();
     }
-    setState(() {
-      activeStep++;
-    });
+    if(activeStep == 0 && isSubscribed){
+      setState(() {
+        activeStep++;
+      });
+    }
+    if(activeStep != 0){
+      setState(() {
+        activeStep++;
+      });
+    }
   }
 
   void decrementStep() {
@@ -360,6 +367,14 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
   Future<void> checkSubscription() async {
     String? status = SubscriptionStatus().status;
     switch(status){
+      case null:
+
+        pushNewScreen(
+          context,
+          withNavBar: false,
+          screen: AuthScreen(isSignIn: true),
+        );
+        break;
       case "Not logged in":
         SnackBar logIn =SnackBar(
             padding: EdgeInsets.symmetric(vertical: 20),

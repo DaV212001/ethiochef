@@ -58,7 +58,7 @@ class SubmittedCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10)),
-        color: isApproved==true?theme.colorScheme.primary:theme.colorScheme.tertiaryContainer,
+        color: isApproved==true?theme.colorScheme.primary:Colors.white,
       ),
       child: Container(
         decoration: BoxDecoration(
@@ -69,12 +69,12 @@ class SubmittedCard extends StatelessWidget {
       'approved'.tr(),
             style: TextStyle(fontSize: isTablet ? 11.sp : 15.sp,
                 fontWeight: FontWeight.w600,
-                color: theme.colorScheme.secondary)
+                color: Colors.white)
         ):Text(
           'pending'.tr(),
             style: TextStyle(fontSize: isTablet ? 11.sp : 15.sp,
                 fontWeight: FontWeight.w600,
-                color: theme.colorScheme.secondaryContainer)
+                color: Colors.black)
           )
       ),
     );

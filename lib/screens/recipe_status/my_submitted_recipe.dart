@@ -10,6 +10,7 @@ import '../../widgets/error_card.dart';
 import '../../widgets/loading.dart';
 import '../../widgets/recipe_status/empty_recipe.dart';
 import '../../widgets/recipe_status/submitted.dart';
+import '../../widgets/recipe_status/submitted_recipe_card.dart';
 import 'layout/my_submitted_description.dart';
 
 class SubmittedRecipe extends StatefulWidget {
@@ -84,31 +85,31 @@ class _SubmittedRecipeState extends State<SubmittedRecipe> with SingleTickerProv
 
   Widget buildRecipeScreen(List<MySubmittedRecipe> recipe){
     bool isTablet = ScreenUtils.isTablet(context);
+    final double desiredItemWidth = isTablet ? 130.w : 150.w;
+    final double desiredItemHeight = isTablet ? 220.h : 250.h;
+    final double screenWidth = ScreenUtils.width(context);
+    final int crossAxisCount = (screenWidth / desiredItemWidth).floor();
+    final double childAspectRatio = desiredItemWidth / desiredItemHeight;
     if(recipe.isEmpty){
       return EmptyRecipe();
     }
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
 
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      physics: BouncingScrollPhysics(),
+        crossAxisCount: crossAxisCount,
+        childAspectRatio: childAspectRatio,
+        mainAxisSpacing: isTablet ? 5 : 0,
+      ),
       itemCount: recipe.length,
+      shrinkWrap: true,
       itemBuilder: (BuildContext context, int index) {
-        return GestureDetector(
-          onTap: (){
-            pushNewScreen(
-              context,
-              screen: SubmittedDescription(recipe: recipe[index],),
-              withNavBar: false,
-              pageTransitionAnimation: PageTransitionAnimation.cupertino,
-            );
-          },
-          child: SubmittedCard(
+        var resp = recipe[index];
+        return SubmittedRecipeCard(
             recipe: recipe[index],
             name: recipe[index].title,
             isApproved: recipe[index].approved
-          ),
         );
-      },);
+      },
+    );
   }
 }

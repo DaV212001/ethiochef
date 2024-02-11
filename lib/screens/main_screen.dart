@@ -9,6 +9,7 @@ import 'package:ethio_chef/screens/pre_login_user_screen.dart';
 import 'package:ethio_chef/screens/profile/profile_screen.dart';
 import 'package:ethio_chef/screens/upload_recipe/upload_recipe_screen.dart';
 import 'package:ethio_chef/services/subscription_checker.dart';
+import 'package:ethio_chef/widgets/loading.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   late PersistentTabController _controller;
   bool isLoggedIn = false;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -38,20 +40,28 @@ class _MainScreenState extends State<MainScreen> {
     _controller = PersistentTabController();
   }
   Future<void> _checkFirstTimeUser() async {
+    setState(() {
+      isLoading = true;
+    });
     await SubscriptionStatus().checkStatus();
     print("check login status");
     var token = await AuthService.getAuthorizationToken();
     if(token=="none"){
       print("pre login");
       setState(() {
+        isLoading = false;
         isLoggedIn = false;
       });
     }else{
       print("post login");
       setState(() {
+        isLoading = false;
         isLoggedIn = true;
       });
     }
+    setState(() {
+      isLoading = false;
+    });
     print("Logged in status = $isLoggedIn");
   }
   List<Widget> _buildScreens() {
@@ -60,7 +70,13 @@ class _MainScreenState extends State<MainScreen> {
       CategoriesScreen(),
       UploadRecipeScreen(),
       CompetitionsScreen(),
-      isLoggedIn ? ProfileScreen():AuthScreen(isSignIn: true)
+      isLoading == true ? Scaffold(
+        body: Column(
+          children: [
+            Loading()
+          ],
+        ),
+      ) : isLoggedIn ? ProfileScreen():AuthScreen(isSignIn: true)
     ];
   }
 
@@ -80,14 +96,14 @@ class _MainScreenState extends State<MainScreen> {
       popAllScreensOnTapOfSelectedTab: true,
       popActionScreens: PopActionScreensType.all,
       decoration: NavBarDecoration(
-        borderRadius: BorderRadius.circular(15.0),
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight:Radius.circular(15)),
         colorBehindNavBar: Theme
             .of(context)
             .scaffoldBackgroundColor,
       ),
       itemAnimationProperties: ItemAnimationProperties(
         duration: Duration(milliseconds: 200),
-        curve: Curves.ease,
+        curve: Curves.ease
       ),
       screenTransitionAnimation: ScreenTransitionAnimation(
         animateTabTransition: true,

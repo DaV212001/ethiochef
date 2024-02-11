@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../models/language.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/screen_utils.dart';
 import '../main_button.dart';
@@ -31,7 +32,11 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: AppTheme.allBorderRadius,
-        color: theme.colorScheme.tertiaryContainer
+        color: Color(0xFFF8FAFC),
+        border: Border.all(
+      color: theme.colorScheme.primary,
+        width: 0.3
+      )
       ),
       child: Column(
         children: [
@@ -40,23 +45,27 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
           ),
           Text(
             widget.plan!,
-            style: Theme
-                .of(context)
-                .textTheme
-                .headlineMedium,
+            style: TextStyle(
+                fontSize: isTablet ? 18.sp : 23.sp,
+                fontWeight: FontWeight.w600,
+                color: theme.colorScheme.primary),
           ),
           SizedBox(
             height: 20.h,
           ),
           Text(
-            'Price: ${widget.price
-                .toString()}',
-            style: Theme
-                .of(context)
-                .textTheme
-                .bodyMedium,
+            '${Language.getLocaleCode() == 'en'? 'Birr': "ብር"} ${widget.price}',
+            style: TextStyle(
+                fontSize: isTablet ? 11.sp : 15.sp,
+                fontWeight: FontWeight.w600,
+                color: theme.colorScheme.surface),
           ),
-          if(widget.duration != '0')Text('Duration: ${widget.duration}'),
+          // if(widget.duration != '0')Text('${Language.getLocaleCode() == 'en'? 'Good until': "እስከ"}: ${widget.duration}',
+        if(widget.duration != '0')Text('${widget.duration}',
+              style: TextStyle(
+                  fontSize: isTablet ? 11.sp : 15.sp,
+                  fontWeight: FontWeight.w600,
+                  color: theme.colorScheme.surface)),
           SizedBox(
             height: 20.h,
           ),

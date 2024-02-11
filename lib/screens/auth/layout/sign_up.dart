@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/screens/subscription/layout/payment.dart';
 import 'package:ethio_chef/widgets/input_field.dart';
 import 'package:ethio_chef/widgets/auth/phone_input_field.dart';
 import 'package:flutter/cupertino.dart';
@@ -113,29 +114,18 @@ class _SignUpState extends State<SignUp> {
             text: "sign_up_button".tr(),
             onPress: () async {
               if (_formKey.currentState!.validate()) {
-                setState(() {
-                  isLoading = true;
-                });
-                await pushNewScreen(context,
-                    screen: AllSubscriptions(
-                      first_name: firstNameController.text,
-                      last_name: lastNameController.text,
-                      phone: "0"+phoneController.text,
-                      isSignUp: true,
-                      returnPrice: (price){
-                        setState(() {
-                          amount = price;
-                        });
-                      },
-                    )
-                );
+                Map userData =
+                {
+                  "phone": phoneController.text,
+                  "first_name": firstNameController.text,
+                  "last_name": lastNameController.text
+                };
 
-                RestartWidget.restartApp(context);
-                // Navigator.pushReplacement(context,
-                //     MaterialPageRoute(
-                //         builder: (BuildContext context)=>MainScreen())
-                // );
-                // await _registration();
+                await pushNewScreen(context,
+                    screen:  PaymentCheckout(
+                        isSignUp: true,
+                        userData: userData
+                    ));
               }
             }
           ),

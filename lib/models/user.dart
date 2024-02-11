@@ -24,6 +24,7 @@ class User{
         this.updatedAt});
 
   factory User.fromJson(Map<String, dynamic> json) {
+
     String profile_picture = "";
       if(json['profile_picture'] !=null){
         String clearPath(String path) {
@@ -43,7 +44,6 @@ class User{
         profile_image = profile_picture;
       }
     return User(
-
     id: json['id'] as int?,
     firstName: json['first_name'] as String,
     lastName: json['last_name'] as String,

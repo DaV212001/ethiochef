@@ -129,7 +129,7 @@ class _SubmittedDescriptionState extends State<SubmittedDescription> with Single
                           labelStyle:  TextStyle(
                               fontSize: isTablet ? 11.sp : 15.sp,
                               fontWeight: FontWeight.w600,
-                              color: theme.colorScheme.secondaryContainer),
+                              color: Colors.white),
                           contentPadding: EdgeInsets.symmetric(horizontal: 10),
                           radius: 5,
                           tabs: [

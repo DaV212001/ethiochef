@@ -139,7 +139,26 @@ class UserService {
       throw Exception(response.statusCode.toString());
     }
   }
-
+  Future<List<SubscriptionPlans>> fetchAllSubscriptionPlans() async {
+    List<SubscriptionPlans> subscriptionPlans = [];
+    final response = await http.get(
+      Uri.parse("${Constants.url}/pay/plans"),
+    );
+    print("==============fetchSubscriptionPlans response.body====================");
+    print(response.body);
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      print("Subscriptions Retrieved ${jsonData['data']}");
+      var subscriptionPlansData = jsonData['data'] as List;
+      subscriptionPlans = subscriptionPlansData
+          .map((subscriptionPlansData) =>
+          SubscriptionPlans.fromAllSubscriptionPlansJson(subscriptionPlansData))
+          .toList();
+      return subscriptionPlans;
+    } else {
+      throw Exception(response.statusCode.toString());
+    }
+  }
   Future<http.Response> createUserSubscription(
       int subscription_id, int user_id) async {
     final Uri url = Uri.parse("${Constants.url}/user/subscription/create");
@@ -163,9 +182,10 @@ class UserService {
     });
     print(response.statusCode);
     print(response.body);
+
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
-      var subscriptionPlansData = jsonData['data']['subscription'];
+      var subscriptionPlansData = jsonData['data'];
       if (subscriptionPlansData is List) {
         subscriptionPlans = subscriptionPlansData
             .map((subscriptionPlansData) =>
@@ -174,7 +194,6 @@ class UserService {
       } else if (subscriptionPlansData is Map) {
         print("USER SUBSCRIPTION");
         subscriptionPlans = [SubscriptionPlans.fromJson(subscriptionPlansData)];
-        print(subscriptionPlans.length);
       }
       return subscriptionPlans;
     } else {

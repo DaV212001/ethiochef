@@ -7,44 +7,44 @@ class ErrorUtil {
   static ErrorData internalServerError = ErrorData(
     title: "".tr(),
     body: "".tr(),
-    image: "",
+    image: "assets/images/errors/unknown.svg",
     buttonText: "refresh".tr(),
   );
   static ErrorData serviceUnavailableError = ErrorData(
     title: "".tr(),
     body: "".tr(),
-    image: "",
+    image: "assets/images/errors/unknown.svg",
     buttonText: "refresh".tr(),
   );
   static ErrorData notFoundError = ErrorData(
     title: "".tr(),
     body: "".tr(),
-    image: "",
+    image: "assets/images/errors/no_connection.svg",
     buttonText: "refresh".tr(),
   );
   static ErrorData gatewayTimeOutError = ErrorData(
     title: "".tr(),
     body: "".tr(),
-    image: "",
+    image: "assets/images/errors/no_connection.svg",
     buttonText: "refresh".tr(),
   );
   static ErrorData unauthorizedError = ErrorData(
     title: "".tr(),
     body: "".tr(),
-    image: "",
+    image: "assets/images/errors/unknown.svg",
     buttonText: "refresh".tr(),
   );
   static ErrorData forbiddenError = ErrorData(
     title: "".tr(),
     body: "".tr(),
-    image: "",
+    image: "assets/images/errors/unknown.svg",
     buttonText: "refresh".tr()
   );
   static ErrorData tooManyRequestsError = ErrorData(
     title: "".tr(),
     body: "".tr(),
-    image: "",
-    buttonText: "Retry",
+    image: "assets/images/errors/no_connection.svg",
+    buttonText: "refresh".tr(),
   );
   static ErrorData emptyCategory = ErrorData(
     title: "empty_category".tr(),
@@ -79,15 +79,15 @@ class ErrorUtil {
     buttonText: "refresh".tr(),
   );
   static ErrorData unknownError = ErrorData(
-    title: "".tr(),
+    title: "assets/images/errors/no_connection.svg".tr(),
     body: "".tr(),
     image: "assets/images/errors/unknown.svg",
     buttonText: "refresh".tr(),
   );
   static ErrorData uploadingVideo = ErrorData(
     title: "".tr(),
-    body: "".tr(),
-    image: "",
+    body: "",
+    image: "assets/images/errors/no_connection.svg",
     buttonText: "cancel".tr(),
   );
 

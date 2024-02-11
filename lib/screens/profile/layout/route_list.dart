@@ -1,5 +1,6 @@
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/screens/subscription/layout/payment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -39,16 +40,22 @@ class _RouteListState extends State<RouteList> {
         "title": "subscription_plans".tr(),
         "leadingIcon": Icons.subscriptions_outlined,
         "onTap": () async {
+          // pushNewScreen(
+          //   context,
+          //   screen: AllSubscriptions(
+          //     first_name: '',
+          //     last_name: '',
+          //     phone: '',
+          //     isSignUp: false,
+          //     returnPrice: (price){
+          //
+          //     }),
+          //   withNavBar: false,
+          //   pageTransitionAnimation: PageTransitionAnimation.cupertino,
+          // );
           pushNewScreen(
             context,
-            screen: AllSubscriptions(
-              first_name: '',
-              last_name: '',
-              phone: '',
-              isSignUp: false,
-              returnPrice: (price){
-
-              }),
+            screen: PaymentCheckout(isSignUp: false),
             withNavBar: false,
             pageTransitionAnimation: PageTransitionAnimation.cupertino,
           );

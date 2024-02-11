@@ -195,7 +195,18 @@
   "failed_to_send_recipe": "Failed to send food recipe",
   "please_try_again": "Please try again",
   "about_description": "Whether you’re looking for healthy recipes and guides, family projects and meal plans, the latest gadget reviews, foodie travel inspiration or just the perfect recipe for dinner tonight, we’re here to help",
-  "extend": "Extend",
+  "extend": "Do you want to extend your subscription?",
+  "approved": "Approved",
   "delete_subscription_warning": "By deleting your subscription you delete your account!!",
-  "your_sub": "Your subscription"
+  "your_sub": "Your subscription",
+  "no_competition_currently": "There are no competitions currently, we will inform you when there is one!!",
+  "no_terms_and_conditions": "No terms and conditions",
+  "payment": "Make payment",
+  "please_select_payment_method": "Please select payment method",
+  "verify": "Please verify your account information and subscription plan",
+  "payment_method": "The payment method you chose",
+  "subscription_plan": "Subscription plan you chose",
+  "please_select_a_plan": "Please select a subscription plan",
+  "verify_extension": "Please verify your subscription plan",
+  "upload_video": "Upload video"
 }
