@@ -1,4 +1,4 @@
-package com.peace.ethio_chef
+package com.peacetechnology.ethiochef
 
 import io.flutter.embedding.android.FlutterActivity
 
