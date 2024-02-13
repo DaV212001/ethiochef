@@ -75,7 +75,7 @@ class _MainAppBarState extends State<MainAppBar> {
       return IconButton(
         icon:  Padding(
           padding: EdgeInsets.symmetric(horizontal: 5),
-          child: Icon(Icons.arrow_back),
+          child: Icon(Icons.arrow_back, size: 10),
         ),
         onPressed: () {
           if (widget.specialBackButton == null) {

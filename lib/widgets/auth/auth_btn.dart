@@ -29,7 +29,7 @@ class AuthBtn extends StatelessWidget {
                     onPressed: isLoading ? null : onPress,
                     child: Visibility(
                       visible: isLoading,
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator(color: Colors.white),
                       replacement: Text(
                         text,
                           style: TextStyle(
@@ -38,6 +38,7 @@ class AuthBtn extends StatelessWidget {
                               color: theme.colorScheme.secondary)
                       )
                     ),style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(theme.colorScheme.primary),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(40.0)

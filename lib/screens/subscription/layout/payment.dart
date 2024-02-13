@@ -2,12 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/payment_methods.dart';
 import 'package:ethio_chef/screens/subscription/layout/payment_step.dart';
 import 'package:ethio_chef/screens/subscription/layout/stepper_buttons.dart';
-import 'package:ethio_chef/screens/subscription/layout/subscription_summary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'dart:convert';
-
 import '../../../main.dart';
 import '../../../models/subscriptionplans.dart';
 import '../../../models/user.dart';
@@ -16,20 +14,21 @@ import '../../../services/user_service.dart';
 import '../../../widgets/error_card.dart';
 import '../../../widgets/loading.dart';
 import '../../../widgets/main_app_bar.dart';
+import '../../../widgets/main_button.dart';
 import '../../../widgets/subscription/steps_header.dart';
 import '../../auth/layout/payment_screen.dart';
 import 'all_subscription_plans_steps.dart';
 
 class PaymentCheckout extends StatefulWidget {
   SubscriptionPlans? selectedSubscriptionPlan;
-  bool increaseActiveStep;
   Map? userData;
-  bool isSignUp;
+  bool? isInActiveUserSubscription;
+  bool? isNormalSubscription;
   PaymentCheckout({super.key,
     this.userData,
-    required this.isSignUp,
     this.selectedSubscriptionPlan,
-  this.increaseActiveStep = false
+  this.isInActiveUserSubscription = false,
+    this.isNormalSubscription = false
   });
 
   @override
@@ -46,9 +45,6 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
   bool showBackButton = true;
 
   Future<dynamic> fetchData() async {
-    if(widget.increaseActiveStep == true){
-      activeStep = 1;
-    }
     try {
       final paymentService = PaymentService();
       print("fetchPaymentData");
@@ -57,7 +53,7 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
       print("fetchSubscriptionPlans");
       final allSubscriptionData = await subscriptionData.fetchAllSubscriptionPlans();
       final userService = UserService();
-      if(widget.isSignUp == false && widget.increaseActiveStep==false){
+      if(widget.isNormalSubscription==true){
         print("fetchUserSubscriptions");
         final userSubscriptionPlan = await userService.fetchUserSubscriptions();
         return [allSubscriptionData, paymentData, userSubscriptionPlan]; 
@@ -78,7 +74,7 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: MainAppBar(
-          title: widget.isSignUp == true ? 'payment'.tr(): 'your_sub'.tr(),
+          title: widget.isNormalSubscription == true ? 'payment'.tr(): 'your_sub'.tr(),
           hasMainIcons: false,
         ),
         body: SafeArea(
@@ -99,13 +95,13 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
                         },
                       ));
                 }
-                if(widget.isSignUp == false){
+                if(widget.isNormalSubscription == true){
                   return buildSubscriptionScreen(
                       snapshot.data[0] as List<SubscriptionPlans>,
                       snapshot.data[1] as List<PaymentMethods>,
                       snapshot.data[2] as List<SubscriptionPlans>);
                 }
-                return buildSignUpScreen(
+                return buildIsInActiveUserSubscription(
                     snapshot.data[0] as List<SubscriptionPlans>,
                     snapshot.data[1] as List<PaymentMethods>);
               },
@@ -113,7 +109,7 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
   }
 
 
-  Widget buildSignUpScreen(
+  Widget buildIsInActiveUserSubscription(
       List<SubscriptionPlans> subscriptionPlans,
       List<PaymentMethods> payment) {
     return SingleChildScrollView(
@@ -121,11 +117,10 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
         padding: EdgeInsets.symmetric(horizontal: 15.w),
         child: Column(
           children: [
-            StepsHeader(activeStep: activeStep,isSignUp: widget.isSignUp, increaseActiveStep: widget.increaseActiveStep,),
+            StepsHeader(activeStep: activeStep),
             Visibility(
               visible: activeStep == 0,
               child: AllSubscriptionStep(
-                isSignUp: widget.isSignUp,
                 subscriptionPlans: subscriptionPlans,
                 returnPrice: (subscriptionPrice){
                   setState(() {
@@ -141,8 +136,8 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
                       activeStep++;
                     });
                   }
-                },
-              ),
+                }, isNormalSubscription: widget.isNormalSubscription!
+              )
             ),
             Visibility(
               visible: activeStep == 1,
@@ -158,34 +153,13 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
                     );
                     return;
                   }else{
-                    setState(() {
-                      activeStep++;
-                    });
+                    makePayment();
                   }
                 }
               )
             ),
-            Visibility(
-              visible: activeStep == 2,
-              child: widget.isSignUp == true? SubscriptionSummaryStep(
-                userData: widget.userData,
-                isSignUp: true,
-                paymentSelected: paymentMethod,
-                subscriptionPlan: widget.increaseActiveStep==false?subscriptionPlan:widget.selectedSubscriptionPlan
-              ): SubscriptionSummaryStep(
-                paymentSelected: paymentMethod,
-                subscriptionPlan: subscriptionPlan,
-                isSignUp: false,
-              ),
-            ),
-              PaymentStepperControlButtons(
-                isSignUp: widget.isSignUp,
-                  increaseActiveStep:widget.increaseActiveStep,
-                  showBackButton: showBackButton,
-                  awaitResponse: awaitResponse,
-                  next: incrementStep,
-                  back: decrementStep,
-                  index: activeStep)
+            if(activeStep != 0)
+            MainButton(width: double.infinity, onPress: decrementStep!, text: 'back'.tr())
           ],
         ),
       ),
@@ -202,11 +176,11 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
         padding: EdgeInsets.symmetric(horizontal: 15.w),
         child: Column(
           children: [
-            StepsHeader(activeStep: activeStep, isSignUp: widget.isSignUp, increaseActiveStep: widget.increaseActiveStep),
+            StepsHeader(activeStep: activeStep),
             Visibility(
               visible: activeStep == 0,
               child: AllSubscriptionStep(
-                isSignUp: widget.isSignUp,
+                isNormalSubscription: widget.isNormalSubscription!,
                 subscriptionPlans: subscriptionPlans,
                  userSubscriptionPlans:userSubscriptionPlan,
                 returnPrice: (subscription){
@@ -230,35 +204,15 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
                   print(paymentSelected.bank_name);
                   setState(() {
                     paymentMethod = paymentSelected;
-                    activeStep++;
                   });
                   print(subscriptionPlan!.duration);
                   print(user!.firstName);
+                  makePayment();
                 },
               ),
             ),
-            Visibility(
-              visible: activeStep == 2,
-              child: widget.isSignUp == true? SubscriptionSummaryStep(
-                userData: widget.userData,
-                isSignUp: widget.isSignUp,
-                paymentSelected: paymentMethod,
-                subscriptionPlan: widget.selectedSubscriptionPlan ,
-              ): SubscriptionSummaryStep(
-                user: userSubscriptionPlan[0].user,
-                paymentSelected: paymentMethod,
-                subscriptionPlan: subscriptionPlan,
-                isSignUp: widget.isSignUp,
-              ),
-            ),
-            PaymentStepperControlButtons(
-              increaseActiveStep: widget.increaseActiveStep,
-                isSignUp: widget.isSignUp,
-                showBackButton: showBackButton,
-                awaitResponse: awaitResponse,
-                next: incrementStep,
-                back: decrementStep,
-                index: activeStep)
+            if(activeStep != 0)
+              MainButton(width: double.infinity, onPress: decrementStep!, text: 'back'.tr())
           ],
         ),
       ),
@@ -266,11 +220,7 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
   }
 
   Future<void> incrementStep() async {
-    if (activeStep == 2) {
-      setState(() {
-        awaitResponse = true;
-      });
-      await makePayment();
+    if (activeStep == 1) {
     }
   }
 
@@ -278,7 +228,7 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
     if (activeStep == 1) {
       subscriptionPlan = null;
     }
-    if (activeStep == 2) {
+    if (activeStep == 1) {
         paymentMethod = null;
         setState(() {
           awaitResponse = false;
@@ -291,23 +241,24 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
   makePayment() async {
      final service = PaymentService();
      late var response;
-     if(widget.isSignUp == true){
-       print("Signing up");
-       print(widget.selectedSubscriptionPlan!.price);
-       print(widget.selectedSubscriptionPlan!.duration);
-       User unWanted = User(
-         firstName: "",
-         lastName: ""
-       );//used to avoid the null values
-       response = await service.makePayment(
-           widget.userData!, paymentMethod!.id, unWanted, widget.selectedSubscriptionPlan!.price!, widget.isSignUp
-       );
-     }else{
+     if(widget.isNormalSubscription == true){
        Map unWanted = {};//used to avoid the null values
        response = await service.makePayment(
-           unWanted, paymentMethod!.id, user!, subscriptionPlan!.price!, widget.isSignUp
+           unWanted, paymentMethod!.id, user!, subscriptionPlan!.price!, false
+       );
+     }else{
+       print("isInActiveUser Signing up");
+       print(subscriptionPlan!.price);
+       print(subscriptionPlan!.duration);
+       User unWanted = User(
+           firstName: "",
+           lastName: ""
+       );
+       response = await service.makePayment(
+           widget.userData!, paymentMethod!.id, unWanted, subscriptionPlan!.price!, true
        );
      }
+
      if(response.statusCode==200) {
        var checkoutUrl = jsonDecode(response.body)['data']['checkout_url'];
        print(jsonDecode(response.body)['data']['checkout_url']);
@@ -323,4 +274,5 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
        awaitResponse = false;
      });
   }
+
 }

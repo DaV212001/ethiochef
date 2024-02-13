@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/subscriptionplans.dart';
+import 'package:ethio_chef/screens/auth/layout/payment_methods.dart';
 import 'package:ethio_chef/screens/subscription/layout/payment.dart';
 import 'package:ethio_chef/widgets/input_field.dart';
 import 'package:ethio_chef/widgets/auth/phone_input_field.dart';
@@ -161,12 +162,11 @@ class _SignUpState extends State<SignUp> {
                   "last_name": lastNameController.text
                 };
 
+
                 await pushNewScreen(context,
-                    screen:  PaymentCheckout(
-                        isSignUp: true,
-                        userData: userData,
-                        selectedSubscriptionPlan: selectedSubscriptionPlan,
-                      increaseActiveStep: true
+                    screen:  PaymentMethodScreen(
+                        userData:userData,
+                        selectedSubscriptionPlan: selectedSubscriptionPlan!
                     ));
               }
             }

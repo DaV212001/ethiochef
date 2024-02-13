@@ -8,18 +8,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../../../models/subscriptionplans.dart';
+import '../../../services/user_service.dart';
 import '../../../utils/screen_utils.dart';
 import '../../../widgets/price_card.dart';
 
 class AllSubscriptionStep extends StatefulWidget {
   final Function(SubscriptionPlans) returnPrice;
-  bool isSignUp;
+  bool isNormalSubscription;
   List<SubscriptionPlans> subscriptionPlans;
   List<SubscriptionPlans>? userSubscriptionPlans;
   AllSubscriptionStep({super.key,
     required this.returnPrice,
     required this.subscriptionPlans,
-    required this.isSignUp,
+    required this.isNormalSubscription,
     this.userSubscriptionPlans
   });
 
@@ -37,11 +38,21 @@ class _AllSubscriptionStepState extends State<AllSubscriptionStep> {
    int currentMonth = DateTime
        .now()
        .month;
+   bool isFromBank = false;
   @override
   void initState() {
+    checkIsFromSMS();
     super.initState();
   }
-
+  checkIsFromSMS()async{
+    final userService = UserService();
+    var userData = await userService.fetchUserProfile();
+    if (userData!.isFromSMS == false) {
+    setState(() {
+      isFromBank = true;
+    });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +71,7 @@ class _AllSubscriptionStepState extends State<AllSubscriptionStep> {
         // SubscriptionHeader(
         //     isStepper: true
         // ),
-        if(widget.isSignUp == false)
+        if(widget.isNormalSubscription == true && isFromBank == true)
           UserSubscription(
             duration_user: duration_user,
             subscriptionPlans: widget.userSubscriptionPlans!,

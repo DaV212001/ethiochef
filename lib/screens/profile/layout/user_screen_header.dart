@@ -87,7 +87,11 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
            ),
          ),
           SizedBox(width: 5.h),
-          ElevatedButton(onPressed: (){
+          ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStatePropertyAll(theme.colorScheme.primary)
+              ),
+              onPressed: (){
             String? str = widget.user.user?.phone.toString();
             String? phone = str?.substring(1);
             print(phone);

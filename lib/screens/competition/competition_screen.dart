@@ -125,7 +125,7 @@ class _CompetitionScreenState extends State<CompetitionScreen> {
       textAlignment: TextAlign.center,
       confirmBtnText: 'pay'.tr(),
       onConfirmBtnTap: () {
-        pushNewScreen(context, withNavBar: false, screen: PaymentCheckout(isSignUp: false, increaseActiveStep: false,));
+        pushNewScreen(context, withNavBar: false, screen: PaymentCheckout(isNormalSubscription: true));
       },
       cancelBtnText: 'cancel'.tr(),
       onCancelBtnTap: () {

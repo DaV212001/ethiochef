@@ -385,7 +385,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
       case "User is not subscribed":
         pushNewScreen(
           context,
-          screen: PaymentCheckout(isSignUp: false, increaseActiveStep: false),
+          screen: PaymentCheckout(isNormalSubscription: true),
           withNavBar: false,
           pageTransitionAnimation: PageTransitionAnimation.cupertino,
         );
@@ -408,7 +408,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
       textAlignment: TextAlign.center,
       confirmBtnText: 'pay'.tr(),
       onConfirmBtnTap: () {
-        pushNewScreen(context, withNavBar: false, screen: PaymentCheckout(isSignUp: false, increaseActiveStep: false,));
+        pushNewScreen(context, withNavBar: false, screen: PaymentCheckout(isNormalSubscription: true));
       },
       cancelBtnText: 'cancel'.tr(),
       onCancelBtnTap: () {

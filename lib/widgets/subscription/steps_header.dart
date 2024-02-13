@@ -5,9 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class StepsHeader extends StatefulWidget {
   final int activeStep;
-  bool isSignUp;
-  bool increaseActiveStep;
-  StepsHeader({super.key, required this.activeStep, required this.isSignUp, required this.increaseActiveStep});
+  StepsHeader({super.key, required this.activeStep});
 
   @override
   State<StepsHeader> createState() => _StepsHeaderState();
@@ -37,51 +35,13 @@ class _StepsHeaderState extends State<StepsHeader> {
         defaultLineColor: theme.unselectedWidgetColor,
         finishedLineColor: theme.colorScheme.primaryContainer,
       ),
-      steps: widget.isSignUp == true && widget.increaseActiveStep == false? normalSteps(theme) : widget.isSignUp == false && widget.increaseActiveStep == false ? normalSteps(theme):signUpSteps(theme),
+      steps: steps(theme),
       showTitle: false,//Todo make true when you can avoid the padding
       // onStepReached: (index) => setState(() => activeStep = index),
     );
   }
 
-  List<EasyStep> signUpSteps(ThemeData theme) => [
-    EasyStep(
-        title:'payment'.tr(),
-        activeIcon: Icon(
-          Icons.payment,
-          grade: 1.1,
-          color: theme.colorScheme.primary,
-        ),
-        icon: Icon(
-          Icons.payment,
-          grade: 1.1,
-          color: theme.unselectedWidgetColor,
-        ),
-        finishIcon: Icon(
-          Icons.check_circle,
-          grade: 1.1,
-          color: theme.colorScheme.primary,
-        )
-    ),
-    EasyStep(
-        title:'payment'.tr(),
-        activeIcon: Icon(
-          Icons.list_alt,
-          grade: 1.1,
-          color: theme.colorScheme.primary,
-        ),
-        icon: Icon(
-          Icons.list_alt,
-          grade: 1.1,
-          color: theme.unselectedWidgetColor,
-        ),
-        finishIcon: Icon(
-          Icons.check_circle,
-          grade: 1.1,
-          color: theme.colorScheme.primary,
-        )
-    )
-  ];
-  List<EasyStep> normalSteps(ThemeData theme) => [
+  List<EasyStep> steps(ThemeData theme) => [
       EasyStep(
           title:'delivery'.tr(),
           activeIcon: Icon(
@@ -109,24 +69,6 @@ class _StepsHeaderState extends State<StepsHeader> {
         ),
         icon: Icon(
           Icons.payment,
-          grade: 1.1,
-          color: theme.unselectedWidgetColor,
-        ),
-        finishIcon: Icon(
-          Icons.check_circle,
-          grade: 1.1,
-          color: theme.colorScheme.primary,
-        )
-    ),
-    EasyStep(
-        title:'payment'.tr(),
-        activeIcon: Icon(
-          Icons.list_alt,
-          grade: 1.1,
-          color: theme.colorScheme.primary,
-        ),
-        icon: Icon(
-          Icons.list_alt,
           grade: 1.1,
           color: theme.unselectedWidgetColor,
         ),

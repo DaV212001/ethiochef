@@ -188,7 +188,7 @@ class _SignInState extends State<SignIn> {
       onConfirmBtnTap: () {
         print(userData);
         pushNewScreen(context, withNavBar: false,
-            screen: PaymentCheckout(isSignUp: true,userData: userData, increaseActiveStep: false));
+            screen: PaymentCheckout(userData: userData, isInActiveUserSubscription: true,));
       },
       cancelBtnText: 'cancel'.tr(),
       confirmBtnColor: Colors.red,

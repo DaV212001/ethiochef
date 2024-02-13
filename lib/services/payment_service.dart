@@ -86,7 +86,7 @@ class PaymentService {
       body = {
         "id": paymentId,
         "amount": paymentAmount,
-        "phone_number": "251"+userData['phone'],
+        "phone_number": userData['phone'],
         "first_name": userData['first_name'],
         "last_name": userData['last_name']
       };

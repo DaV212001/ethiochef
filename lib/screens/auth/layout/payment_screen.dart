@@ -17,11 +17,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MainAppBar(
-        title: "Web view",
+        title: "",
         hasMainIcons: false,
       ),
       body: InAppWebView(
-          initialUrlRequest: URLRequest(url: Uri.parse(widget.url))),
+          initialUrlRequest: URLRequest(url: WebUri.uri(Uri.parse(widget.url))))
     );
   }
 }

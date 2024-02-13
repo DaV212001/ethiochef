@@ -133,7 +133,7 @@ class _ContestantsState extends State<Contestants> {
                                     print("User is not subscribed");
                                     pushNewScreen(
                                       context,
-                                      screen: PaymentCheckout(isSignUp: false, increaseActiveStep: false),
+                                      screen: PaymentCheckout(isNormalSubscription: true),
                                       withNavBar: false,
                                       pageTransitionAnimation: PageTransitionAnimation.cupertino,
                                     );

@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/auth/auth_screen.dart';
+import 'package:ethio_chef/screens/subscription/layout/payment.dart';
 import 'package:ethio_chef/services/footer_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -310,10 +311,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onTap: (){
                 pushNewScreen(
                   context,
-                  screen: AllSubscriptions(
-                    returnPrice: (n){
-
-                    }, isSignUp: false, first_name: '', last_name: '', phone: '',
+                  screen: PaymentCheckout(
+                    isNormalSubscription: true
                   ),
                   withNavBar: false,
                   pageTransitionAnimation: PageTransitionAnimation.cupertino,

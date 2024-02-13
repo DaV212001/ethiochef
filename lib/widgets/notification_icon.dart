@@ -84,7 +84,7 @@ class NotificationIcon extends StatelessWidget {
               print("User is not subscribed");
               pushNewScreen(
                 context,
-                screen: PaymentCheckout(isSignUp: false, increaseActiveStep: false),
+                screen: PaymentCheckout(isNormalSubscription: true),
                 withNavBar: false,
                 pageTransitionAnimation: PageTransitionAnimation.cupertino,
               );

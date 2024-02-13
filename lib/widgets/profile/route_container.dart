@@ -42,7 +42,8 @@ class RouteContainer extends StatelessWidget {
               ),
               index ==indexTwo? SizedBox.shrink(): Divider(
                 thickness: 1,
-                height: 1
+                height: 1,
+                color: theme.colorScheme.primary
               )
             ],
           );
