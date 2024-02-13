@@ -277,113 +277,115 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget buildUserScreen(UserProfile user, FooterData data) {
     final bool isTablet = ScreenUtils.isTablet(context);
     ThemeData theme = Theme.of(context);
-    return SafeArea(
-      child: Scaffold(
-        body: ListView(
-          scrollDirection: Axis.vertical,
-          physics: BouncingScrollPhysics(),
-          children: [
-            UserScreenHeader(
-                user: user, reFresh: (){
+    return RefreshWidget(
+      onRefresh:()async{
+        setState(() {
+          _future = fetchData();
+        });
+      },
+      child: ListView(
+        scrollDirection: Axis.vertical,
+        physics: BouncingScrollPhysics(),
+        children: [
+          UserScreenHeader(
+              user: user, reFresh: (){
+            setState(() {
+              print("and should call this");
+              _future = fetchData();
+            });
+          }),
+          if(_bannerAd2 != null)
+            Align(
+              alignment: Alignment.topCenter,
+              child: SafeArea(
+                child: SizedBox(
+                  width: _bannerAd2!.size.width.toDouble(),
+                  height: _bannerAd2!.size.height.toDouble(),
+                  child: AdWidget(ad: _bannerAd2!),
+                ),
+              ),
+            ),
+          if(user.message=="User is not subscribed")
+            GestureDetector(
+              onTap: (){
+                pushNewScreen(
+                  context,
+                  screen: AllSubscriptions(
+                    returnPrice: (n){
+
+                    }, isSignUp: false, first_name: '', last_name: '', phone: '',
+                  ),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                );
+              },
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                width: double.infinity,
+                color: Colors.red,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
+                  child: Text('please_subscribe_now'.tr(),
+                    style: TextStyle(
+                        fontSize: isTablet ? 11.sp : 15.sp,
+                        fontWeight: FontWeight.w600,
+                        color: theme.colorScheme.secondary),),
+                ),
+              ),
+            )
+          ,
+          RouteList(
+            // banner: _bannerAd,
+            onRefresh: (){
               setState(() {
-                print("and should call this");
                 _future = fetchData();
               });
-            }),
-            if(_bannerAd2 != null)
-              Align(
-                alignment: Alignment.topCenter,
-                child: SafeArea(
-                  child: SizedBox(
-                    width: _bannerAd2!.size.width.toDouble(),
-                    height: _bannerAd2!.size.height.toDouble(),
-                    child: AdWidget(ad: _bannerAd2!),
-                  ),
-                ),
-              ),
-            if(user.message=="User is not subscribed")
-              GestureDetector(
-                onTap: (){
-                  pushNewScreen(
-                    context,
-                    screen: AllSubscriptions(
-                      returnPrice: (n){
-
-                      }, isSignUp: false, first_name: '', last_name: '', phone: '',
-                    ),
-                    withNavBar: false,
-                    pageTransitionAnimation: PageTransitionAnimation.cupertino,
-                  );
-                },
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  width: double.infinity,
-                  color: Colors.red,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
-                    child: Text('please_subscribe_now'.tr(),
-                      style: TextStyle(
-                          fontSize: isTablet ? 11.sp : 15.sp,
-                          fontWeight: FontWeight.w600,
-                          color: theme.colorScheme.secondary),),
-                  ),
-                ),
-              )
-              ,
-            RouteList(
-              // banner: _bannerAd,
-              onRefresh: (){
-                setState(() {
-                  _future = fetchData();
-                });
-              },
-            ),
-            if(_bannerAd3 != null)
-              Align(
-                alignment: Alignment.topCenter,
-                child: SafeArea(
-                  child: SizedBox(
-                    width: _bannerAd3!.size.width.toDouble(),
-                    height: _bannerAd3!.size.height.toDouble(),
-                    child: AdWidget(ad: _bannerAd3!),
-                  ),
-                ),
-              ),
-            SizedBox(height: 5.h,),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              child: MainButton(
-                  isLoading: isLoading,
-                  text: "log_out".tr(),
-                  onPress: () async {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    UserService service = UserService();
-                    await service.logOut(user.user!.id!);
-                    await AuthService.logout();
-                    SharedPreferences shared = await SharedPreferences.getInstance();
-                    await shared.remove('savedRecipes');
-                    await shared.remove('ethioChef_authorization_token');
-                    await shared.clear();
-                    Phoenix.rebirth(context);
-                    setState(() {
-                      isLoading = false;
-                    });
-                  }
-              ),
-            ),
-            SizedBox(height: 5.h,),
+            },
+          ),
+          if(_bannerAd3 != null)
             Align(
-              alignment: Alignment.bottomCenter,
-              child: UserScreenFooter(footerData:data),
+              alignment: Alignment.topCenter,
+              child: SafeArea(
+                child: SizedBox(
+                  width: _bannerAd3!.size.width.toDouble(),
+                  height: _bannerAd3!.size.height.toDouble(),
+                  child: AdWidget(ad: _bannerAd3!),
+                ),
+              ),
             ),
-            SizedBox(
-              height: 45,
+          SizedBox(height: 5.h,),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: MainButton(
+                isLoading: isLoading,
+                text: "log_out".tr(),
+                onPress: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  UserService service = UserService();
+                  await service.logOut(user.user!.id!);
+                  await AuthService.logout();
+                  SharedPreferences shared = await SharedPreferences.getInstance();
+                  await shared.remove('savedRecipes');
+                  await shared.remove('ethioChef_authorization_token');
+                  await shared.clear();
+                  Phoenix.rebirth(context);
+                  setState(() {
+                    isLoading = false;
+                  });
+                }
             ),
-          ],
-        ),
-
+          ),
+          SizedBox(height: 5.h,),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: UserScreenFooter(footerData:data),
+          ),
+          SizedBox(
+            height: 45,
+          ),
+        ],
       ),
     );
   }

@@ -24,6 +24,7 @@ class RecipeService{
         request.fields['serving'] = "0";
         request.fields['steps'] = steps;
         request.fields['ingredients'] = ingredient;
+        request.fields['video'] = recipe.videoUrl!;
             print("Uploading 3");
             var fileStream = http.ByteStream(recipe.image!.openRead());
             var length = await recipe.image?.length();

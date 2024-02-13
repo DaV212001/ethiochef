@@ -22,7 +22,8 @@ class MySubmittedRecipe {
     required this.cookingTime, required this.createdAt, required this.updatedAt, required this.approved});
 
   factory MySubmittedRecipe.fromJson(Map<String, dynamic> json) {
-
+    print(json);
+    print(json['video']);
     String clearPath(String path) {
       final parts = path.split('/public_html');
       return parts.last;

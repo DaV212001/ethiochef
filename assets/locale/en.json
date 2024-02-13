@@ -208,5 +208,7 @@
   "subscription_plan": "Subscription plan you chose",
   "please_select_a_plan": "Please select a subscription plan",
   "verify_extension": "Please verify your subscription plan",
-  "upload_video": "Upload video"
+  "upload_video": "Upload video",
+  "ended_subscription": "Your subscription has ended please pay inorder to user the application!!",
+  "new_version": "Update Application"
 }

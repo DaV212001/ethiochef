@@ -39,7 +39,7 @@ class AppTheme {
         surface: russet
       ),
       bottomNavigationBarTheme:
-      BottomNavigationBarThemeData(backgroundColor: white)
+      BottomNavigationBarThemeData(backgroundColor: seasalt)
   );
 
   static ThemeData darkTheme = ThemeData(

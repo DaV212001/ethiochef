@@ -21,7 +21,8 @@ class UserProfile {
     this.subscription,
     this.status,
     this.dueDate,
-    this.lastPaidDate, this. message = 'User is subscribed',
+    this.lastPaidDate,
+    this. message = 'User is subscribed',
     this.isFromSMS
   });
 
@@ -36,7 +37,7 @@ class UserProfile {
       status: json['status'],
       dueDate: json['due_date']??0,
       lastPaidDate: DateTime.parse(json['last_paid_date']),
-        isFromSMS: json['isFromSMS']
+      isFromSMS: json['isFromSMS']
     );
   }
 }

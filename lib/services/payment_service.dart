@@ -94,7 +94,7 @@ class PaymentService {
       body = {
         "id": paymentId,
         "amount": paymentAmount,
-        "phone_number": user.phone.toString(),
+        "phone_number": "251"+user.phone.toString(),
         "first_name": user.firstName,
         "last_name": user.lastName
       };

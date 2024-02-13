@@ -14,6 +14,7 @@ class Recipe {
   File? video;
   List<Map<String, String>>? ingredient = [];
   Map<String, dynamic> ingredientToCreate;
+  String? videoUrl;
 
   Recipe(
       {
@@ -27,6 +28,7 @@ class Recipe {
         this.video,
         required this.ingredientToCreate,
         required this.stepToCreate,
+        this.videoUrl
       });
 
   factory Recipe.fromJson(Map<String, dynamic> json) {

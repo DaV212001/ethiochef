@@ -20,6 +20,7 @@ import '../../services/user_service.dart';
 import '../../widgets/loading.dart';
 import '../auth/auth_screen.dart';
 import '../subscription/all_subscriptions.dart';
+import '../subscription/layout/payment.dart';
 import 'layout/successfully_added.dart';
 
 class UploadRecipeScreen extends StatefulWidget {
@@ -194,7 +195,7 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
                 Text(
                   "uploading_body".tr(),
                   style: TextStyle(
-                    color: theme.colorScheme.secondary,
+                    color: theme.colorScheme.secondaryContainer,
                     fontWeight: FontWeight.normal,
                     fontSize: 17.sp,
                   ),
@@ -223,7 +224,7 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
                 print(videoPath);
                 print("=======================================================================================================");
                 print("Checking user $isSubscribed");
-                await createFood();
+                await uploadVideo();
               },
               back: decrementStep,
             ),
@@ -234,15 +235,18 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
   }
 
   Future<void> incrementStep() async {
-    if(activeStep == 0){
-      await checkSubscription();
-    }
-    if(activeStep == 0 && isSubscribed){
+    if(activeStep != 0){
+      print("increment 3");
       setState(() {
         activeStep++;
       });
     }
-    if(activeStep != 0){
+    if(activeStep == 0){
+      print("increment 1");
+      await checkSubscription();
+    }
+    if(activeStep == 0 && isSubscribed){
+      print("increment 2");
       setState(() {
         activeStep++;
       });
@@ -255,7 +259,7 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
     });
   }
 
-  Future<void> createFood() async {
+  Future<void> createFood(String url) async {
     try {
       print("=======================================================================================");
       print(videoPath);
@@ -290,32 +294,32 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
 
       // Create new recipe object
       print("1");
-      Recipe newRecipe = Recipe(
-          name: nameController.text,
-          description: descriptionController.text,
-          prepTime: prepTimeController.text,
-          servingSize: servingSizeController.text,
-          steps: step,
-          image: image,
-          video: video,
-          ingredient: ingredients,
-          ingredientToCreate: ingredientToCreate,
-          stepToCreate: stepToCreate
-      );
-      print("2");
-      RecipeService service = RecipeService();
-      var response = await service.createFood(newRecipe);
-
-      if (response.statusCode == 200) {
-        await uploadVideo();
-        reset();
-        pushNewScreen(
-          context,
-          screen: SuccessfullyAdded(),
-          withNavBar: true,
-          pageTransitionAnimation: PageTransitionAnimation.cupertino,
+        Recipe newRecipe = Recipe(
+            name: nameController.text,
+            description: descriptionController.text,
+            prepTime: prepTimeController.text,
+            servingSize: servingSizeController.text,
+            steps: step,
+            image: image,
+            video: video,
+            ingredient: ingredients,
+            ingredientToCreate: ingredientToCreate,
+            stepToCreate: stepToCreate,
+            videoUrl: url
         );
-      } else {
+        print("2");
+        RecipeService service = RecipeService();
+        var response = await service.createFood(newRecipe);
+
+        if (response.statusCode == 200) {
+          reset();
+          pushNewScreen(
+            context,
+            screen: SuccessfullyAdded(),
+            withNavBar: true,
+            pageTransitionAnimation: PageTransitionAnimation.cupertino,
+          );
+      }else{
         showRetryDialog();
       }
     } catch (error) {
@@ -325,6 +329,7 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
   }
 
   void showRetryDialog() {
+    reset();
     showDialog(
       context: context,
       builder: (context) {
@@ -346,7 +351,7 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
 
   void reset() {
     setState(() {
-      isLoading = true;
+      isLoading = false;
       nameController.text = '';
       descriptionController.text = '';
       prepTimeController.text = '';
@@ -402,33 +407,84 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
       case "User is not subscribed":
         pushNewScreen(
           context,
+          screen: PaymentCheckout(isSignUp: false, increaseActiveStep: false),
           withNavBar: false,
-          screen: AllSubscriptions(returnPrice: (int ) {  },
-              first_name: "",
-              last_name: "",
-              isSignUp: false,
-              phone: ""),
+          pageTransitionAnimation: PageTransitionAnimation.cupertino,
         );
         break;
     }
   }
-
+  //
+  // Future<void> uploadVideo() async {
+  //   var request = http.MultipartRequest(
+  //     'POST',
+  //     Uri.parse('https://api.cloudinary.com/v1_1/ttreeadvert/video/upload'),
+  //   );
+  //
+  //   request.files.add(await http.MultipartFile.fromPath('file', videoPath));
+  //   request.fields['upload_preset'] = 'my_uploads';
+  //   // CloudName: dohotrrss
+  //   // API key: 688618625183713
+  //   // API Secret: il2BQtXbW1_s89oLqL-3klI_sqk
+  //   // API ENV variable:  CLOUDINARY_URL=cloudinary://688618625183713:il2BQtXbW1_s89oLqL-3klI_sqk@dohotrrss
+  //   try {
+  //     var response = await request.send();
+  //     var responseJson = await http.Response.fromStream(response).then((value) {
+  //       var jsonRes = jsonDecode(value.body);
+  //       setState(() {
+  //         videoUrl = jsonRes['url'];
+  //       });
+  //     });
+  //   } catch (error) {
+  //     print(error);
+  //   }
+  // }
   Future<void> uploadVideo() async {
+    print("Uploading 1");
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('https://api.cloudinary.com/v1_1/ttreeadvert/video/upload'),
+      Uri.parse('https://api.cloudinary.com/v1_1/dohotrrss/video/upload'),
     );
+    //   https://api.cloudinary.com/v1_1/ttreeadvert/video/upload
+    //   CloudName: dohotrrss
+    //   API key: 688618625183713
+    //   API Secret: il2BQtXbW1_s89oLqL-3klI_sqk
+    //   API ENV variable:  CLOUDINARY_URL=cloudinary://688618625183713:il2BQtXbW1_s89oLqL-3klI_sqk@dohotrrss
+
+    print("Uploading 2");
+    request.headers['Authorization'] = 'Basic YWxhZGRpbjpvcGVuc2VzYW1l';
+    print("Uploading 3");
 
     request.files.add(await http.MultipartFile.fromPath('file', videoPath));
-    request.fields['upload_preset'] = 'my_uploads';
-
+    print("Uploading 4");
+    request.fields['upload_preset'] = 'ethiochef';
+    print("Uploading 5");
+    // CloudName: dohotrrss
+    // API key: 688618625183713
+    // API Secret: il2BQtXbW1_s89oLqL-3klI_sqk
+    // API ENV variable:  CLOUDINARY_URL=cloudinary://688618625183713:il2BQtXbW1_s89oLqL-3klI_sqk@dohotrrss
     try {
+      print("Uploading 6");
       var response = await request.send();
-      var responseJson = await http.Response.fromStream(response).then((value) {
+      var responseJson = await http.Response.fromStream(response).then((value) async {
         var jsonRes = jsonDecode(value.body);
+        print("Uploading 7");
+        print("jsonRes $jsonRes");
+        print(response.stream);
+        print(response.headers);
+        print(response.statusCode);
+        print(response.reasonPhrase);
         setState(() {
           videoUrl = jsonRes['url'];
         });
+        print("jsonRes $jsonRes");
+        print("videoUrl $videoUrl");
+
+      if(response.statusCode == 200){
+        await createFood(jsonRes['url']);
+      }else{
+        showRetryDialog();
+      }
       });
     } catch (error) {
       print(error);

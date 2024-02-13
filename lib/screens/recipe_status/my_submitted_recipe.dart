@@ -86,7 +86,7 @@ class _SubmittedRecipeState extends State<SubmittedRecipe> with SingleTickerProv
   Widget buildRecipeScreen(List<MySubmittedRecipe> recipe){
     bool isTablet = ScreenUtils.isTablet(context);
     final double desiredItemWidth = isTablet ? 130.w : 150.w;
-    final double desiredItemHeight = isTablet ? 220.h : 250.h;
+    final double desiredItemHeight = isTablet ? 220.h : 200.h;
     final double screenWidth = ScreenUtils.width(context);
     final int crossAxisCount = (screenWidth / desiredItemWidth).floor();
     final double childAspectRatio = desiredItemWidth / desiredItemHeight;

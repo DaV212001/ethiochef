@@ -207,5 +207,7 @@
   "payment_method": "የመረጡት የክፍያ ዘዴ",
   "subscription_plan": "የመረጡት የሰብስክሪብሽን ዕቅድ",
   "please_select_a_plan": "እባክዎ የሰብስክሪብሽን ዕቅድ ይምረጡ",
-  "upload_video": "ቪዲዮ ይላኩ"
+  "upload_video": "ቪዲዮ ይላኩ",
+  "ended_subscription": "የእርስዎ ኮንትራት አብቅቷል እባክዎ አፕሊክሽኑን ለመጠቀም ይክፈሉ",
+  "new_version": "መተግበሪያውን ያሻሽሉ"
 }

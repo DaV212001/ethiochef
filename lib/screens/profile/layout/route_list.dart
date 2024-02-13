@@ -18,6 +18,7 @@ import '../../recipe_status/my_submitted_recipe.dart';
 import '../../subscription/all_subscriptions.dart';
 import 'competition_status/my_competition.dart';
 
+import 'package:url_launcher/url_launcher.dart';
 
 class RouteList extends StatefulWidget {
   final Function()? onRefresh;
@@ -55,7 +56,7 @@ class _RouteListState extends State<RouteList> {
           // );
           pushNewScreen(
             context,
-            screen: PaymentCheckout(isSignUp: false),
+            screen: PaymentCheckout(isSignUp: false, increaseActiveStep: false),
             withNavBar: false,
             pageTransitionAnimation: PageTransitionAnimation.cupertino,
           );
@@ -186,6 +187,16 @@ class _RouteListState extends State<RouteList> {
         },
         "trailing":
         Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary)
+      },
+      {
+        "title": "new_version".tr(),
+        "leadingIcon": Icons.settings_applications,
+        "onTap": () {
+          print("new_version");
+          _launchUrl();
+        },
+        "trailing":
+        Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary)
       }
     ];
     return Padding(
@@ -219,13 +230,18 @@ class _RouteListState extends State<RouteList> {
             ),
             RouteContainer(
               routePart: other,
-              indexTwo: 3,
+              indexTwo: 4,
               routeName: tr("other"),
             )
           ],
         ),
       ),
     );
+  }
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(Uri.parse("https://play.google.com/store/apps/details?id=com.peacetechnology.ethiochef"))) {
+      throw Exception('Could not launch https://play.google.com/store/apps/details?id=com.peacetechnology.ethiochef');
+    }
   }
 }
 

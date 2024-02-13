@@ -10,6 +10,7 @@ import 'package:ethio_chef/screens/profile/profile_screen.dart';
 import 'package:ethio_chef/screens/upload_recipe/upload_recipe_screen.dart';
 import 'package:ethio_chef/services/subscription_checker.dart';
 import 'package:ethio_chef/widgets/loading.dart';
+import 'package:ethio_chef/widgets/pull_to_refresh.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -70,11 +71,20 @@ class _MainScreenState extends State<MainScreen> {
       CategoriesScreen(),
       UploadRecipeScreen(),
       CompetitionsScreen(),
-      isLoading == true ? Scaffold(
-        body: Column(
-          children: [
-            Loading()
-          ],
+      isLoading == true ? RefreshWidget(
+        onRefresh: ()async{
+          _checkFirstTimeUser();
+        },
+        child: Center(
+          child: Scaffold(
+            body: Center(
+              child: Column(
+                children: [
+                  Center(child: Loading())
+                ],
+              ),
+            ),
+          ),
         ),
       ) : isLoggedIn ? ProfileScreen():AuthScreen(isSignIn: true)
     ];

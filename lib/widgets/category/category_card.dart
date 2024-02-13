@@ -12,6 +12,7 @@ import '../../models/recipe_show_checker.dart';
 import '../../screens/auth/auth_screen.dart';
 import '../../screens/recipe/recipe_screen.dart';
 import '../../screens/subscription/all_subscriptions.dart';
+import '../../screens/subscription/layout/payment.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/screen_utils.dart';
 import '../cached_image.dart';
@@ -80,12 +81,9 @@ class _CategoryCardState extends State<CategoryCard> {
             print("User is not subscribed hereeeeeeeeeeeeeeeeeeeeeeee");
             pushNewScreen(
               context,
+              screen: PaymentCheckout(isSignUp: false, increaseActiveStep: false),
               withNavBar: false,
-              screen: AllSubscriptions(returnPrice: (int ) {  },
-                first_name: "",
-                last_name: "",
-                isSignUp:
-                false,phone: "",),
+              pageTransitionAnimation: PageTransitionAnimation.cupertino,
             );
             break;
         }

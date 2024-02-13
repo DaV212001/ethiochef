@@ -74,10 +74,10 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
                        fontSize: 20.sp,
                        fontWeight: FontWeight.w800,
                        color: theme.colorScheme.secondaryContainer)),
-               if(widget.user.user?.email != '')
+               if(widget.user.user?.email != null)
                SizedBox(height: 5.h),
-               if(widget.user.user?.email != '')
-               Text(widget.user.user?.email ?? '',
+               if(widget.user.user?.email != null)
+               Text(widget.user.user!.email.toString(),
                    style:
                    TextStyle(
                        fontSize: 15.sp,

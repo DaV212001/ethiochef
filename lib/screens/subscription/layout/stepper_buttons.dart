@@ -9,12 +9,16 @@ class PaymentStepperControlButtons extends StatelessWidget {
   final Function()? back;
   final bool awaitResponse;
   final bool showBackButton;
+  final bool isSignUp;
+  final bool? increaseActiveStep;
 
   const PaymentStepperControlButtons(
       {super.key,
+        this.increaseActiveStep,
         required this.next,
         this.back,
         required this.index,
+        required this.isSignUp,
         this.awaitResponse = false,
         this.showBackButton = true});
 
@@ -23,7 +27,16 @@ class PaymentStepperControlButtons extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
+        if(index != 0 && isSignUp == false && increaseActiveStep==false)
+          MainButton(width: 175, onPress: back!, text: 'back'.tr()),
         if (index != 0)
+          if(index == 1 && isSignUp == true && increaseActiveStep == false )
+          MainButton(width: 175, onPress: back!, text: 'back'.tr()),
+        if(index ==2 && isSignUp != true && increaseActiveStep != false)
+          MainButton(width: 175, onPress: back!, text: 'back'.tr()),
+        if(index ==2 && isSignUp != false && increaseActiveStep != true)
+          MainButton(width: 175, onPress: back!, text: 'back'.tr()),
+        if(index ==2 && isSignUp == true && increaseActiveStep == true)
           MainButton(width: 175, onPress: back!, text: 'back'.tr()),
         Spacer(),
         if (index == 2)

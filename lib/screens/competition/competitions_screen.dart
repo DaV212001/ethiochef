@@ -1,12 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/competition.dart';
-import 'package:ethio_chef/screens/competition/layout/vertical_competition_list.dart';
+import 'package:ethio_chef/screens/subscription/layout/payment.dart';
 import 'package:ethio_chef/services/competition_service.dart';
 import 'package:ethio_chef/widgets/screen_head.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
@@ -18,7 +17,6 @@ import '../../widgets/loading.dart';
 import '../../widgets/pull_to_refresh.dart';
 import '../../widgets/youtube_video_player.dart';
 import '../auth/auth_screen.dart';
-import '../subscription/all_subscriptions.dart';
 import 'layout/competition_header.dart';
 import 'layout/competition_header_image.dart';
 import 'layout/contestants_carousel.dart';
@@ -87,110 +85,116 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
     final ThemeData theme = Theme.of(context);
     final bool isTablet = ScreenUtils.isTablet(context);
     if(competition.isEmpty){
-      return Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Container(
-          height: isTablet ? 600.h : 450.h,
-          width: isTablet ? 275.w : 400.w,
-          padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
-          margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color: theme.colorScheme.primary,
-                        width: 1
-                    )
-                ),
-                child: Column(
-                  children: [
-                    Text("no_competition_currently".tr(),
-                        style: TextStyle(
-                            fontSize: isTablet ? 11.sp : 15.sp,
-                            fontWeight: FontWeight.w600,
-                            color: theme.colorScheme.secondaryContainer)
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Center(
+            child: Container(
+              height: isTablet ? 600.h : 450.h,
+              width: isTablet ? 275.w : 400.w,
+              padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+              margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: theme.colorScheme.primary,
+                            width: 1
+                        )
                     ),
-                    Text("awards_title".tr(),
-                        style: TextStyle(
-                            fontSize: isTablet ? 13.sp : 17.sp,
-                            fontWeight: FontWeight.w800,
-                            color: theme.colorScheme.primary)
+                    child: Column(
+                      children: [
+                        Text("no_competition_currently".tr(),
+                            style: TextStyle(
+                                fontSize: isTablet ? 11.sp : 15.sp,
+                                fontWeight: FontWeight.w600,
+                                color: theme.colorScheme.secondaryContainer)
+                        ),
+                        Text("awards_title".tr(),
+                            style: TextStyle(
+                                fontSize: isTablet ? 13.sp : 17.sp,
+                                fontWeight: FontWeight.w800,
+                                color: theme.colorScheme.primary)
+                        ),
+                        Text("awards".tr(),
+                            style: TextStyle(
+                                fontSize: isTablet ? 11.sp : 15.sp,
+                                fontWeight: FontWeight.w600,
+                                color: theme.colorScheme.secondaryContainer)
+                        ),
+                      ],
                     ),
-                    Text("awards".tr(),
-                        style: TextStyle(
-                            fontSize: isTablet ? 11.sp : 15.sp,
-                            fontWeight: FontWeight.w600,
-                            color: theme.colorScheme.secondaryContainer)
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       );
     }
     return Scaffold(
-        body: SafeArea(
-          child: Column(children: [
-            ScreenHead(
-              hasNotification: true,
-              screen: 1,
-              searchHint: "search".tr(),
-            ),
-            if (_bannerAd != null)
-              Align(
-                alignment: Alignment.topCenter,
-                child: SafeArea(
-                  child: SizedBox(
-                    width: _bannerAd!.size.width.toDouble(),
-                    height: _bannerAd!.size.height.toDouble(),
-                    child: AdWidget(ad: _bannerAd!),
-                  ),
-                ),
+        body: SingleChildScrollView(
+          child: SafeArea(
+            child: Column(children: [
+              ScreenHead(
+                hasNotification: true,
+                screen: 1,
+                searchHint: "search".tr(),
               ),
-            ListView(
-              scrollDirection: Axis.vertical,
-              physics: BouncingScrollPhysics(),
-              shrinkWrap: true,
-              children:[ Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CompetitionHeaderImage(
-                    image: competition[0].image.toString(),
-                  ),
-                  CompetitionHeader(
-                    competition: competition[0],
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  if (competition[0].video != null)
-                    YoutubeVideoPlayer(
-                      link: competition[0].video!,
-                    ),
-                  if(competition[0].competitor!.isNotEmpty)
-                    Contestants(contestant: competition[0].competitor, contest_id: competition[0].id!)
-                  // ShareButton(food: PlaceHolderData.food)
-                ],
-              )],
-            ),
-            if (_bannerAd2 != null)
-              Align(
+              if (_bannerAd != null)
+                Align(
                   alignment: Alignment.topCenter,
                   child: SafeArea(
-                      child: SizedBox(
-                        width: _bannerAd2!.size.width.toDouble(),
-                        height: _bannerAd2!.size.height.toDouble(),
-                        child: AdWidget(ad: _bannerAd2!),
-                      )
-                  )
-              )
-          ]),
+                    child: SizedBox(
+                      width: _bannerAd!.size.width.toDouble(),
+                      height: _bannerAd!.size.height.toDouble(),
+                      child: AdWidget(ad: _bannerAd!),
+                    ),
+                  ),
+                ),
+              ListView(
+                scrollDirection: Axis.vertical,
+                physics: BouncingScrollPhysics(),
+                shrinkWrap: true,
+                children:[ Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CompetitionHeaderImage(
+                      image: competition[0].image.toString(),
+                    ),
+                    CompetitionHeader(
+                      competition: competition[0],
+                    ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
+                    if (competition[0].video != null)
+                      YoutubeVideoPlayer(
+                        link: competition[0].video!,
+                      ),
+                    if(competition[0].competitor!.isNotEmpty)
+                      Contestants(contestant: competition[0].competitor, contest_id: competition[0].id!)
+                    // ShareButton(food: PlaceHolderData.food)
+                  ],
+                )],
+              ),
+              if (_bannerAd2 != null)
+                Align(
+                    alignment: Alignment.topCenter,
+                    child: SafeArea(
+                        child: SizedBox(
+                          width: _bannerAd2!.size.width.toDouble(),
+                          height: _bannerAd2!.size.height.toDouble(),
+                          child: AdWidget(ad: _bannerAd2!),
+                        )
+                    )
+                )
+            ]),
+          ),
         ),
 
         floatingActionButton: Padding(
@@ -364,8 +368,13 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
         showSnackBarAndNavigate(context, 'another_account_login'.tr(), AuthScreen(isSignIn: true));
         break;
       case "User is subscribed":
+        print("User is subscribed");
         final userService = UserService();
         var userData = await userService.fetchUserProfile();
+        print("userData ${userData!.isFromSMS}");
+        print("userData ${userData!.user!.firstName}");
+        print("userData ${userData!.user!.lastName}");
+        print("userData ${userData!.user!.id}");
 
         if (userData!.isFromSMS == false) {
           pushNewScreen(context, screen: UploadCompetitionVideo(competitionId: competition!), withNavBar: false);
@@ -374,7 +383,12 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
         }
         break;
       case "User is not subscribed":
-        pushNewScreen(context, withNavBar: false, screen: AllSubscriptions(returnPrice: (int) {}, first_name: "", last_name: "", isSignUp: false, phone: ""));
+        pushNewScreen(
+          context,
+          screen: PaymentCheckout(isSignUp: false, increaseActiveStep: false),
+          withNavBar: false,
+          pageTransitionAnimation: PageTransitionAnimation.cupertino,
+        );
         break;
     }
     setState(() {
@@ -386,14 +400,15 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
     QuickAlert.show(
       context: context,
       type: QuickAlertType.error,
-      showCancelBtn: true,
+      showCancelBtn: false,
       showConfirmBtn: true,
+      title: "",
       text: 'sms_payment_error'.tr(),
       titleAlignment: TextAlign.center,
       textAlignment: TextAlign.center,
       confirmBtnText: 'pay'.tr(),
       onConfirmBtnTap: () {
-        pushNewScreen(context, withNavBar: false, screen: AllSubscriptions(returnPrice: (int) {}, first_name: "", last_name: "", isSignUp: false, phone: ""));
+        pushNewScreen(context, withNavBar: false, screen: PaymentCheckout(isSignUp: false, increaseActiveStep: false,));
       },
       cancelBtnText: 'cancel'.tr(),
       onCancelBtnTap: () {

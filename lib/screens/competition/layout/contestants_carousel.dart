@@ -13,6 +13,7 @@ import '../../../widgets/cached_image.dart';
 import '../../../widgets/meal_card.dart';
 import '../../auth/auth_screen.dart';
 import '../../subscription/all_subscriptions.dart';
+import '../../subscription/layout/payment.dart';
 
 class Contestants extends StatefulWidget {
   final int contest_id;
@@ -45,150 +46,150 @@ class _ContestantsState extends State<Contestants> {
                   fontWeight: FontWeight.w800,
                   color: theme.colorScheme.secondaryContainer),
             )),
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Container(
-              height: height,
-              child: ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemExtent: width,
-                  itemCount: widget.contestant!.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Align(
-                          child: GestureDetector(
-                            onTap: ()async {
-                              setState(() {
-                                Loading = true;
-                              });
-                              print("voting");
-                              SnackBar checking =SnackBar(
-                                  padding: EdgeInsets.symmetric(vertical: 10),
-                                  showCloseIcon: true,
-                                  content: Text(
-                                      'Checking Subscription Please wait'.tr()
-                                  ));
-                              ScaffoldMessenger.of(context).showSnackBar(checking);
-                              String status = await Check.checkToShow();
-                              switch(status){
-                                case "Not logged in":
-                                  print("Not logged in");
-                                  SnackBar logIn =SnackBar(
-                                      padding: EdgeInsets.symmetric(vertical: 20),
-                                      content: Text(
-                                          'Please subscribe to see ingredients and steps'.tr()
-                                      ));
-                                  loginFunction();
-                                  ScaffoldMessenger.of(context).showSnackBar(logIn);
-                                  break;
-                                case "Another user logged in":
-                                  print("Another user logged in");
-                                  SnackBar logIn =SnackBar(
-                                      padding: EdgeInsets.symmetric(vertical: 20),
-                                      content: Text(
-                                          'another_account_login'.tr()
-                                      ));
-                                  ScaffoldMessenger.of(context).showSnackBar(logIn);
-                                  loginFunction();
-                                  break;
-                                case "User is subscribed":
-                                  print("User is subscribed");
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                height: height,
+                child: ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemExtent: width,
+                    itemCount: widget.contestant!.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Align(
+                            child: GestureDetector(
+                              onTap: ()async {
+                                setState(() {
+                                  Loading = true;
+                                });
+                                print("voting");
+                                SnackBar checking =SnackBar(
+                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    showCloseIcon: true,
+                                    content: Text(
+                                        'Checking Subscription Please wait'.tr()
+                                    ));
+                                ScaffoldMessenger.of(context).showSnackBar(checking);
+                                String status = await Check.checkToShow();
+                                switch(status){
+                                  case "Not logged in":
+                                    print("Not logged in");
+                                    SnackBar logIn =SnackBar(
+                                        padding: EdgeInsets.symmetric(vertical: 20),
+                                        content: Text(
+                                            'Please subscribe to see ingredients and steps'.tr()
+                                        ));
+                                    loginFunction();
+                                    ScaffoldMessenger.of(context).showSnackBar(logIn);
+                                    break;
+                                  case "Another user logged in":
+                                    print("Another user logged in");
+                                    SnackBar logIn =SnackBar(
+                                        padding: EdgeInsets.symmetric(vertical: 20),
+                                        content: Text(
+                                            'another_account_login'.tr()
+                                        ));
+                                    ScaffoldMessenger.of(context).showSnackBar(logIn);
+                                    loginFunction();
+                                    break;
+                                  case "User is subscribed":
+                                    print("User is subscribed");
 
 
-                                  CompetitionService cmp = CompetitionService();
-                                  print("voting 2");
+                                    CompetitionService cmp = CompetitionService();
+                                    print("voting 2");
 
-                                  try {
-                                    print("voting 3");
-                                    print(widget.contestant![index].id!);
-                                    print(widget.contest_id!);
-                                    var response = await cmp.voteContestant(widget.contestant![index].id!, widget.contest_id!);
+                                    try {
+                                      print("voting 3");
+                                      print(widget.contestant![index].id!);
+                                      print(widget.contest_id!);
+                                      var response = await cmp.voteContestant(widget.contestant![index].id!, widget.contest_id!);
 
-                                    if(response?.statusCode == 200){
+                                      if(response?.statusCode == 200){
+                                        setState(() {
+                                          Loading = false;
+                                        });
+                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Competition liked!')));
+                                      }
+                                    } catch(e){
                                       setState(() {
                                         Loading = false;
                                       });
-                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Competition liked!')));
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
                                     }
-                                  } catch(e){
-                                    setState(() {
-                                      Loading = false;
-                                    });
-                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
-                                  }
 
 
 
-                                  break;
-                                case "User is not subscribed":
-                                  print("User is not subscribed");
-                                  pushNewScreen(
-                                    context,
-                                    withNavBar: false,
-                                    screen: AllSubscriptions(returnPrice: (int ) {  },
-                                      first_name: "",
-                                      last_name: "",
-                                      isSignUp:
-                                      false,phone: "",),
-                                  );
-                                  break;
-                              }
+                                    break;
+                                  case "User is not subscribed":
+                                    print("User is not subscribed");
+                                    pushNewScreen(
+                                      context,
+                                      screen: PaymentCheckout(isSignUp: false, increaseActiveStep: false),
+                                      withNavBar: false,
+                                      pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                                    );
+                                    break;
+                                }
 
-                              setState(() {
-                                Loading = false;
-                              });
-                            },
-                            child: Container(
-                              width: 30,
-                              height: 30,
-                              decoration: BoxDecoration(color: Colors.orange, shape: BoxShape.circle),
-                              child: !Loading?Center(
-                                child: Icon(
-                                  Icons.thumb_up_sharp,
-                                  color: Colors.white,
-                                ),
-                              ): CircularProgressIndicator(),
-                            ),
-                          ),alignment: Alignment.topRight,
-                        ),
-                        ClipOval(
-                            child: CachedImage(
-                              url: widget.contestant![index].image!,
-                              fit: BoxFit.cover,
-                            )
-                        ),
-                        SizedBox(height: 5.h),
-                        Text("${widget.contestant![index].firstName.toString()} ${widget.contestant![index].lastName.toString()}",
+                                setState(() {
+                                  Loading = false;
+                                });
+                              },
+                              child: Container(
+                                width: 30,
+                                height: 30,
+                                decoration: BoxDecoration(color: Colors.orange, shape: BoxShape.circle),
+                                child: !Loading?Center(
+                                  child: Icon(
+                                    Icons.thumb_up_sharp,
+                                    color: Colors.white,
+                                  ),
+                                ): CircularProgressIndicator(),
+                              ),
+                            ),alignment: Alignment.topRight,
+                          ),
+                          ClipOval(
+                              child: CachedImage(
+                                url: widget.contestant![index].image!,
+                                fit: BoxFit.cover,
+                              )
+                          ),
+                          SizedBox(height: 5.h),
+                          Text("${widget.contestant![index].firstName.toString()} ${widget.contestant![index].lastName.toString()}",
 
-                          style: TextStyle(
-                              fontSize: isTablet ? 11.sp : 15.sp,
-                              fontWeight: FontWeight.w800,
-                              color: theme.colorScheme.secondaryContainer),
-                        ),
-                        SizedBox(height: 5.h),
-                        Text("${widget.contestant![index].phone.toString()}",
+                            style: TextStyle(
+                                fontSize: isTablet ? 11.sp : 15.sp,
+                                fontWeight: FontWeight.w800,
+                                color: theme.colorScheme.secondaryContainer),
+                          ),
+                          SizedBox(height: 5.h),
+                          Text("${widget.contestant![index].phone.toString()}",
 
-                          style: TextStyle(
-                              fontSize: isTablet ? 10.sp : 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: theme.colorScheme.secondaryContainer),),
-                        SizedBox(height: 5.h),
-                        Text(widget.contestant![index].votes.toString(),
+                            style: TextStyle(
+                                fontSize: isTablet ? 10.sp : 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: theme.colorScheme.secondaryContainer),),
+                          SizedBox(height: 5.h),
+                          Text(widget.contestant![index].votes.toString(),
 
-                          style: TextStyle(
-                              fontSize: isTablet ? 10.sp : 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: theme.colorScheme.secondaryContainer),),
+                            style: TextStyle(
+                                fontSize: isTablet ? 10.sp : 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: theme.colorScheme.secondaryContainer),),
 
-                      ]
-                    );
-                  }
+                        ]
+                      );
+                    }
+                ),
               ),
             ),
           ),
