@@ -82,17 +82,19 @@ class CompetitionService {
   Future<http.Response>? voteContestant(int contestant_id, int contest_id) async {
     print("voteContestant");
     var access_token = await AuthService.getAuthorizationToken();
+    var request_body = jsonEncode({
+      "contestant_id": contestant_id,
+      "contest_id": contest_id
+    });
     final response;
     try {
       response = await http.post(
         Uri.parse("${Constants.url}/user/contest/vote"),
         headers: {
-          'Authorization': 'JWT $access_token'
+          'Authorization': 'JWT $access_token',
+          'Content-type': 'application/json'
         },
-        body: {
-          "contestant_id": contestant_id.toString(),
-          "contest_id": contest_id.toString()
-        },
+        body: request_body
       );
       print("res.statusCode  == = == = = == = = = ${response.statusCode}");
       print("res.body  == = == = = == = = = ${response.body}");

@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:ethio_chef/models/subscriptionplans.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:path/path.dart';
 
 import '../models/user.dart';
 import '../models/user_profile.dart';
@@ -45,38 +44,44 @@ class UserService {
   }
 
   Future<http.Response> login(String phone) async {
-    String phone_number = "0" + phone;
-    var body = json.encode({"phone_number": phone_number});
+    String phone_number = "251" + phone;
     final response = await http.post(
         Uri.parse("https://apiv2.ethiochef.com/user/login"),
         body: {"phone_number": phone_number});
-    if(response.statusCode == 200){
-      var access_token = jsonDecode(response.body)['data']['session_token'];
-      var refresh_token = jsonDecode(response.body)['data']['refresh_token'];
-      await SubscriptionStatus().checkStatus();
-      await AuthService.setAuthorizationToken(access_token);
-      await FirebaseService().checkTokenRegistration();
-      await AuthService.setRefreshToken(refresh_token);
-    }
+    print(response.body);
+    print(response.statusCode);
+
     return response;
   }
 
 
   Future<http.Response> updateProfile(String firstName, String lastName, String email, String phoneNumber, File? image) async {
     User user = await fetchLoggedInUser();
+    print(user.lastName);
+    print(user.firstName);
+    print(user.id);
+
     final access_token = await AuthService.getAuthorizationToken();
+    print(access_token);
     var request = http.MultipartRequest(
       'POST',
       Uri.parse("${Constants.url}/user/profile/update/${user.id}"),
     );
-    String phone = "0"+phoneNumber;
+    String phone = "251"+phoneNumber;
     request.headers['Authorization'] = 'JWT $access_token';
     request.fields['first_name'] = firstName;
     request.fields['last_name'] = lastName;
-    request.fields['email'] = email;
+    if(email != ''){
+      print(email);
+      request.fields['email'] = email;
+    }
+
     request.fields['phone_number'] = phone;
 
+    print(image);
+    print("1");
     if (image != null) {
+      print(image);
       var fileStream = http.ByteStream(image.openRead());
       var length = await image.length();
 
@@ -89,10 +94,17 @@ class UserService {
 
       request.files.add(multipartFile);
     }
+    print("2");
 
     var response = await request.send();
-
+    print("3");
+    print(response.stream);
+    print(response.request);
+    print(response.reasonPhrase);
+    print(response.headers);
     var responseString = await response.stream.bytesToString();
+    print(responseString);
+    print(response.statusCode);
 
     return http.Response(responseString, response.statusCode);
   }
@@ -139,7 +151,26 @@ class UserService {
       throw Exception(response.statusCode.toString());
     }
   }
-
+  Future<List<SubscriptionPlans>> fetchAllSubscriptionPlans() async {
+    List<SubscriptionPlans> subscriptionPlans = [];
+    final response = await http.get(
+      Uri.parse("${Constants.url}/pay/plans"),
+    );
+    print("==============fetchSubscriptionPlans response.body====================");
+    print(response.body);
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      print("Subscriptions Retrieved ${jsonData['data']}");
+      var subscriptionPlansData = jsonData['data'] as List;
+      subscriptionPlans = subscriptionPlansData
+          .map((subscriptionPlansData) =>
+          SubscriptionPlans.fromAllSubscriptionPlansJson(subscriptionPlansData))
+          .toList();
+      return subscriptionPlans;
+    } else {
+      throw Exception(response.statusCode.toString());
+    }
+  }
   Future<http.Response> createUserSubscription(
       int subscription_id, int user_id) async {
     final Uri url = Uri.parse("${Constants.url}/user/subscription/create");
@@ -153,6 +184,7 @@ class UserService {
   }
 
   Future<List<SubscriptionPlans>> fetchUserSubscriptions() async {
+    // due_date
     List<SubscriptionPlans> subscriptionPlans = [];
     var access_token = await AuthService.getAuthorizationToken();
     User user = await fetchLoggedInUser();
@@ -163,9 +195,10 @@ class UserService {
     });
     print(response.statusCode);
     print(response.body);
+
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
-      var subscriptionPlansData = jsonData['data']['subscription'];
+      var subscriptionPlansData = jsonData['data'];
       if (subscriptionPlansData is List) {
         subscriptionPlans = subscriptionPlansData
             .map((subscriptionPlansData) =>
@@ -174,7 +207,6 @@ class UserService {
       } else if (subscriptionPlansData is Map) {
         print("USER SUBSCRIPTION");
         subscriptionPlans = [SubscriptionPlans.fromJson(subscriptionPlansData)];
-        print(subscriptionPlans.length);
       }
       return subscriptionPlans;
     } else {

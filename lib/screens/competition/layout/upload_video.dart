@@ -49,18 +49,29 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
   }
 
   Future<void> uploadVideo() async {
-    print("upload 1");
+    print("Uploading 1");
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('https://api.cloudinary.com/v1_1/ttreeadvert/video/upload'),
+      Uri.parse('https://api.cloudinary.com/v1_1/dohotrrss/video/upload'),
     );
-    print("upload 2");
+    //   https://api.cloudinary.com/v1_1/ttreeadvert/video/upload
+    //   CloudName: dohotrrss
+    //   API key: 688618625183713
+    //   API Secret: il2BQtXbW1_s89oLqL-3klI_sqk
+    //   API ENV variable:  CLOUDINARY_URL=cloudinary://688618625183713:il2BQtXbW1_s89oLqL-3klI_sqk@dohotrrss
+
+    print("Uploading 2");
+    request.headers['Authorization'] = 'Basic YWxhZGRpbjpvcGVuc2VzYW1l';
+    print("Uploading 3");
 
     request.files.add(await http.MultipartFile.fromPath('file', video!.path));
-    print("upload 3");
-    request.fields['upload_preset'] = 'my_uploads';
-    print("upload 4");
-
+    print("Uploading 4");
+    request.fields['upload_preset'] = 'ethiochef';
+    print("Uploading 5");
+    // CloudName: dohotrrss
+    // API key: 688618625183713
+    // API Secret: il2BQtXbW1_s89oLqL-3klI_sqk
+    // API ENV variable:  CLOUDINARY_URL=cloudinary://688618625183713:il2BQtXbW1_s89oLqL-3klI_sqk@dohotrrss
     try {
       print("sending");
       var response = await request.send();
@@ -81,7 +92,6 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
       showTryAgainDialog();
     }
   }
-
   void showTryAgainDialog() {
     showDialog(
       context: context,

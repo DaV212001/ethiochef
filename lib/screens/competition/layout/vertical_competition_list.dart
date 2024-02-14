@@ -63,16 +63,6 @@ class _VerticalCompetitionListState extends State<VerticalCompetitionList> {
                 ],
               ),
             ),
-            // SizedBox(height: 40,),
-            // Text(
-            //   "no_competition".tr(),
-            //   style: TextStyle(
-            //     color: theme.colorScheme.secondaryContainer,
-            //     fontWeight: FontWeight.normal,
-            //     fontSize: 17.sp,
-            //   ),
-            //   textAlign: TextAlign.center,
-            // ),
           ],
         ),
       );

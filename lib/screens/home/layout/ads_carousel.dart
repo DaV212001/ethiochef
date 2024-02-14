@@ -2,9 +2,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:ethio_chef/widgets/screen_head.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../models/promotion.dart';
 import '../../../theme/app_theme.dart';
+import '../../../utils/screen_utils.dart';
 import '../../../widgets/cached_image.dart';
 import '../../../widgets/home/ad_carousel_component.dart';
 
@@ -38,12 +40,20 @@ class _AdsCarouselState extends State<AdsCarousel> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isTablet = ScreenUtils.isTablet(context);
+
     ThemeData theme = Theme.of(context);
     return Container(
       color: theme.colorScheme.primary,
       child: Column(children: [
         Stack(
           children: [
+      if(widget.promotion.isEmpty)
+     Image.asset(
+    "assets/images/logo.png",
+    height: isTablet ? 250.h : 200.h,
+    ),
+            if(widget.promotion.isNotEmpty)
             CarouselSlider(
               items: widget.promotion.map((promotion) {
                 return Builder(
@@ -134,7 +144,7 @@ class _AdsCarouselState extends State<AdsCarousel> {
         ScreenHead(
           hasNotification: true,
           screen: 0,
-          searchHint: "search_for_category".tr(),
+          searchHint: "search".tr(),
         )
       ]),
     );

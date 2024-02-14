@@ -184,5 +184,19 @@
   "food_submission_agreement": "Sanduuqa kana irratti mallattoo kaa'uudhaan nyaanni isin maxxansitan kan dhaabbata keenyaa ta'uu fi waltajjiiwwan miidiyaa adda addaa irratti fayyadamuu akka danda'an walii galtaniittu. ",
   "submit_a_competition": "Viidiyoo tokko galchaa",
   "no_competition": "Dorgommii itti dabaluun jalqaba ta'i",
-  "about_description": "Itiyoosheef weebsayitii biyya kanatti hojjattamee yoo tahuu, yeroo wanti hundii karaa intarneetatin tahee kanatti namoonni baay`een haalhojii nyaataa mana isaanitti tahanii baruu ni barbaadu, ta`uus itiyoosheef rakkoo kana furuudhaaf bilbila harka keessa irra jiruun karaa weebsaaytii,applikeshinii akkasumas yuutiyuubi fayyadamuudhaan haal hojii nyaataa adaa fi ammayaawoo isiniif dhiyeessera."
+  "about_description": "Itiyoosheef weebsayitii biyya kanatti hojjattamee yoo tahuu, yeroo wanti hundii karaa intarneetatin tahee kanatti namoonni baay`een haalhojii nyaataa mana isaanitti tahanii baruu ni barbaadu, ta`uus itiyoosheef rakkoo kana furuudhaaf bilbila harka keessa irra jiruun karaa weebsaaytii,applikeshinii akkasumas yuutiyuubi fayyadamuudhaan haal hojii nyaataa adaa fi ammayaawoo isiniif dhiyeessera.",
+  "extend": "Maallaqa maallaqaa keessan dheeressuu barbaadduu?",
+  "approved": "Mirkanaa'e",
+  "delete_subscription_warning": "Subscription kee haquudhaan account kee haqta!!",
+  "your_sub": "Maallaqa maallaqaa keessan",
+  "no_competition_currently": "Yeroo ammaa kana dorgommiin hin jiru, gaafa jiru isin beeksifna!!",
+  "no_terms_and_conditions": "Haala fi tumaalee hin qabu",
+  "payment": "Kaffaltii raawwadhu",
+  "please_select_payment_method": "Mee mala kaffaltii filadhaa",
+  "verify": "Odeeffannoo herregaa fi karoora maallaqa galchuu keessanii mirkaneessaa",
+  "payment_method": "Mala kaffaltii ati filatte",
+  "subscription_plan": "Karoora maallaqa galchuu filatte",
+  "please_select_a_plan": "Maaloo karoora maallaqa galchuu filadhaa",
+  "verify_extension": "Maaloo karoora maallaqa galchuu keessan mirkaneessaa",
+  "upload_video": "Viidiyoo ol kaa'aa"
 }

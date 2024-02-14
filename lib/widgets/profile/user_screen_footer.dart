@@ -18,7 +18,7 @@ class UserScreenFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     print(footerData.toString());
-    Color color = Theme.of(context).primaryColor;
+    Color color = Theme.of(context).colorScheme.primary;
     bool isTablet = ScreenUtils.isTablet(context);
     return Column(
       children: [

@@ -1,5 +1,6 @@
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/screens/subscription/layout/payment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -12,11 +13,9 @@ import '../../app_documentation/about.dart';
 import '../../app_documentation/faq_screen.dart';
 import '../../app_documentation/privacy_policies_screen.dart';
 import '../../app_documentation/terms_and_conditions_screen.dart';
-import '../../recipe_status/my_recipe.dart';
 import '../../recipe_status/my_submitted_recipe.dart';
-import '../../subscription/all_subscriptions.dart';
-import 'competition_status/my_competition.dart';
 
+import 'package:url_launcher/url_launcher.dart';
 
 class RouteList extends StatefulWidget {
   final Function()? onRefresh;
@@ -41,14 +40,7 @@ class _RouteListState extends State<RouteList> {
         "onTap": () async {
           pushNewScreen(
             context,
-            screen: AllSubscriptions(
-              first_name: '',
-              last_name: '',
-              phone: '',
-              isSignUp: false,
-              returnPrice: (price){
-
-              }),
+            screen: PaymentCheckout(isNormalSubscription: true),
             withNavBar: false,
             pageTransitionAnimation: PageTransitionAnimation.cupertino,
           );
@@ -103,21 +95,6 @@ class _RouteListState extends State<RouteList> {
         "trailing":
         Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary)
       },
-      // {
-      //   "title": "competition_status".tr(),
-      //   "leadingIcon": Icons.incomplete_circle,
-      //   "onTap": () {
-      //     print("change_password");
-      //     pushNewScreen(
-      //       context,
-      //       screen: MyCompetition(),
-      //       withNavBar: false,
-      //       pageTransitionAnimation: PageTransitionAnimation.cupertino,
-      //     );
-      //   },
-      //   "trailing":
-      //   Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary)
-      // }
     ];
     final List<Map<String, dynamic>> other = [
       {
@@ -179,6 +156,16 @@ class _RouteListState extends State<RouteList> {
         },
         "trailing":
         Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary)
+      },
+      {
+        "title": "new_version".tr(),
+        "leadingIcon": Icons.settings_applications,
+        "onTap": () {
+          print("new_version");
+          _launchUrl();
+        },
+        "trailing":
+        Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary)
       }
     ];
     return Padding(
@@ -189,11 +176,6 @@ class _RouteListState extends State<RouteList> {
           scrollDirection: Axis.vertical,
           physics: BouncingScrollPhysics(),
           children: [
-            RouteContainer(
-              routePart: other,
-              indexTwo: 3,
-              routeName: tr("other"),
-            ),
             RouteContainer(
               routePart: general,
               indexTwo: 2,
@@ -215,10 +197,21 @@ class _RouteListState extends State<RouteList> {
                 ),
               ),
             ),
+            RouteContainer(
+              routePart: other,
+              indexTwo: 4,
+              routeName: tr("other"),
+            )
           ],
         ),
       ),
     );
+  }
+  Future<void> _launchUrl() async {
+    String url = "https://play.google.com/store/apps/details?id=com.peacetechnology.ethiochef";
+    if (!await launchUrl(Uri.parse(url))) {
+      throw Exception('Could not launch $url');
+    }
   }
 }
 

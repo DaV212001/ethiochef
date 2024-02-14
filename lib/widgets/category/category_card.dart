@@ -12,6 +12,7 @@ import '../../models/recipe_show_checker.dart';
 import '../../screens/auth/auth_screen.dart';
 import '../../screens/recipe/recipe_screen.dart';
 import '../../screens/subscription/all_subscriptions.dart';
+import '../../screens/subscription/layout/payment.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/screen_utils.dart';
 import '../cached_image.dart';
@@ -80,17 +81,15 @@ class _CategoryCardState extends State<CategoryCard> {
             print("User is not subscribed hereeeeeeeeeeeeeeeeeeeeeeee");
             pushNewScreen(
               context,
+              screen: PaymentCheckout(isNormalSubscription: true),
               withNavBar: false,
-              screen: AllSubscriptions(returnPrice: (int ) {  },
-                first_name: "",
-                last_name: "",
-                isSignUp:
-                false,phone: "",),
+              pageTransitionAnimation: PageTransitionAnimation.cupertino,
             );
             break;
         }
       },
       child: Card(
+        color: theme.cardColor,
         elevation: 1,
         child: ListView(
           physics: NeverScrollableScrollPhysics(),
@@ -105,6 +104,7 @@ class _CategoryCardState extends State<CategoryCard> {
     );
   }
   Widget buildBody(){
+    ThemeData theme = Theme.of(context);
     final bottom = profileHeight / 2;
     final top = coverHeight - profileHeight / 2;
     return Stack(
@@ -112,6 +112,7 @@ class _CategoryCardState extends State<CategoryCard> {
       alignment: Alignment.center,
       children: [
         Container(
+          color: theme.cardColor,
             margin: EdgeInsets.only(bottom: bottom),
             child: buildCoverImage()
         ),
@@ -125,6 +126,7 @@ class _CategoryCardState extends State<CategoryCard> {
   Widget buildCoverImage(){
     ThemeData theme = Theme.of(context);
     return Container(
+        color: theme.cardColor,
       height: coverHeight,
       width: double.infinity,
         child: ClipRRect(

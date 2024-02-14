@@ -30,7 +30,11 @@ class _AppBarSearchBarState extends State<AppBarSearchBar> {
     final bool isTablet = ScreenUtils.isTablet(context);
     return Container(
       decoration: BoxDecoration(
-          color: Color(0xFFF8FAFC),
+          color:
+          Theme
+              .of(context)
+              .bottomNavigationBarTheme
+              .backgroundColor!,
           borderRadius:  BorderRadius.only(
             topLeft:  Radius.circular(widget.isHome==true ? 20:0),
             topRight: Radius.circular(widget.isHome==true ? 20:0),
@@ -62,12 +66,12 @@ class _AppBarSearchBarState extends State<AppBarSearchBar> {
           ),
           prefixIcon: Icon(
             Icons.search,
-            color: theme.colorScheme.secondaryContainer,
+            color: theme.colorScheme.primary,
             size: isTablet ? 12.sp : 25.sp,
           ),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
-              color: theme.colorScheme.secondaryContainer,
+              color: theme.colorScheme.primary,
               width: 1.5.w,
             ),
             borderRadius:

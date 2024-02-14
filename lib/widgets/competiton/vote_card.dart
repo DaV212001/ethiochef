@@ -51,4 +51,82 @@ class _VoteCardState extends State<VoteCard> {
       ),
     );
   }
+  // Widget buildc(){
+  //   ThemeData theme = Theme.of(context);
+  //   return Card(
+  //     elevation: 12,
+  //     shape: RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.circular(20.0),
+  //     ),
+  //     color: theme.cardColor,
+  //     child: Column(
+  //       children: [
+  //         ClipRRect(
+  //           borderRadius: const BorderRadius.only(
+  //             topRight: Radius.circular(20),
+  //             topLeft: Radius.circular(20),
+  //           ),
+  //           child: CachedImage(
+  //             url: widget.competition.image.toString(),
+  //             fit: BoxFit.fill,
+  //           ),
+  //         ),
+  //         const ListTile(
+  //           title: Text(
+  //             'Melbourne Cricket Stadium',
+  //             style: TextStyle(
+  //               color: Colors.white,
+  //             ),
+  //           ),
+  //           subtitle: Text(
+  //             'Australia',
+  //             style: TextStyle(
+  //               color: Colors.grey,
+  //             ),
+  //           ),
+  //         ),
+  //         Padding(
+  //             padding:
+  //             EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+  //             child: Row(
+  //               children: [
+  //                 Expanded(
+  //                   child: TextButton(
+  //                     style: TextButton.styleFrom(
+  //                         backgroundColor: Colors.white),
+  //                     onPressed: () {},
+  //                     child: const Text(
+  //                       "Edit",
+  //                       style: TextStyle(
+  //                         color: Colors.black,
+  //                         fontSize: 20,
+  //                         fontWeight: FontWeight.w300,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 SizedBox(
+  //                   width: 20,
+  //                 ),
+  //                 Expanded(
+  //                   child: TextButton(
+  //                     style: TextButton.styleFrom(
+  //                         backgroundColor: Colors.red),
+  //                     onPressed: () {},
+  //                     child: const Text(
+  //                       "Delete",
+  //                       style: TextStyle(
+  //                         color: Colors.white,
+  //                         fontSize: 20,
+  //                         fontWeight: FontWeight.w300,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ],
+  //             ))
+  //       ],
+  //     ),
+  //   );
+  // }
 }

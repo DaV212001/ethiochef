@@ -2,20 +2,13 @@ import 'dart:async';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/models/language.dart';
 import 'package:ethio_chef/theme/model_theme.dart';
-import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 
 import '../../main.dart';
-import '../../screens/home/home_screen.dart';
-import '../../screens/main_screen.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:restart_app/restart_app.dart';
 
 import '../../utils/screen_utils.dart';
 
@@ -45,7 +38,7 @@ class _LanguageSelectorButtonState extends State<LanguageSelectorButton> {
                 style: TextStyle(
                     fontSize: isTablet ? 11.sp : 15.sp,
                     fontWeight: FontWeight.w600,
-                    color: theme.colorScheme.primary),)
+                    color: theme.colorScheme.secondaryContainer),)
             ],
           ),
         ),
@@ -58,7 +51,7 @@ class _LanguageSelectorButtonState extends State<LanguageSelectorButton> {
                   style: TextStyle(
                       fontSize: isTablet ? 11.sp : 15.sp,
                       fontWeight: FontWeight.w600,
-                      color: theme.colorScheme.secondaryContainer)
+                      color: theme.colorScheme.primary)
               ),
             ),
           ),
@@ -81,7 +74,7 @@ class _LanguageSelectorButtonState extends State<LanguageSelectorButton> {
           padding: const EdgeInsets.symmetric(vertical: 6),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
-            color: Theme.of(context).colorScheme.surface,
+            color: Theme.of(context).colorScheme.secondary
           ),
           offset: const Offset(0, 8),
         ),

@@ -7,7 +7,7 @@ class PhoneInputField extends StatelessWidget {
   final double height;
 
   const PhoneInputField(
-      {super.key, required this.controller, this.height = 75});
+      {super.key, required this.controller, this.height = 80});
 
   @override
   Widget build(BuildContext context) {

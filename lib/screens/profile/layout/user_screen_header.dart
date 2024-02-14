@@ -74,10 +74,10 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
                        fontSize: 20.sp,
                        fontWeight: FontWeight.w800,
                        color: theme.colorScheme.secondaryContainer)),
-               if(widget.user.user?.email != '')
+               if(widget.user.user?.email != null)
                SizedBox(height: 5.h),
-               if(widget.user.user?.email != '')
-               Text(widget.user.user?.email ?? '',
+               if(widget.user.user?.email != null)
+               Text(widget.user.user!.email.toString(),
                    style:
                    TextStyle(
                        fontSize: 15.sp,
@@ -87,7 +87,11 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
            ),
          ),
           SizedBox(width: 5.h),
-          ElevatedButton(onPressed: (){
+          ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStatePropertyAll(theme.colorScheme.primary)
+              ),
+              onPressed: (){
             String? str = widget.user.user?.phone.toString();
             String? phone = str?.substring(1);
             print(phone);

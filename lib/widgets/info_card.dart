@@ -81,6 +81,7 @@ class InfoCard extends StatelessWidget {
               SizedBox(height: 10.h),
               if(closeBtn)
               MainButton(
+                width: 200.w,
                   onPress: () {
                     Navigator.of(context).pop();
                   },

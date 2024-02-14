@@ -4,6 +4,8 @@ import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../utils/screen_utils.dart';
+
 class PriceCard extends StatefulWidget {
   final String title;
   final String price;
@@ -23,6 +25,8 @@ class _PriceCardState extends State<PriceCard> {
     DateTime now = DateTime.now();
     Duration duration = Duration(days: widget.duration*30);
     DateTime expirationDate = now.add(duration);
+    final bool isTablet = ScreenUtils.isTablet(context);
+    ThemeData theme = Theme.of(context);
     return  Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -42,27 +46,31 @@ class _PriceCardState extends State<PriceCard> {
               widget.billedText,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontFamily: 'Montserrat'
+                fontFamily: 'Montserrat',
+                color: Colors.black
               ),
             ),
             Text(
               '${Language.getLocaleCode() == 'en'? 'Birr': "ብር"} ${widget.price}',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Montserrat'
+                  fontFamily: 'Montserrat',
+                  color: Colors.black
               ),
             ),
             Text(
               '${Language.getLocaleCode() == 'en'? 'Good until': "እስከ"} ${Language.getLocaleCode() == 'en'?DateFormat('MMMM dd, yyyy').format(expirationDate): '${EtDatetime.fromMillisecondsSinceEpoch(expirationDate.millisecondsSinceEpoch,).monthGeez} ${EtDatetime.fromMillisecondsSinceEpoch(expirationDate.millisecondsSinceEpoch,).day}, ${EtDatetime.fromMillisecondsSinceEpoch(expirationDate.millisecondsSinceEpoch,).year}'}',
               style: TextStyle(
                   fontFamily: 'Montserrat',
-                  fontSize: 12
+                  fontSize: 12,
+                  color: Colors.black
               )
             ),
             GestureDetector(
               onTap: widget.onPress,
               child: Container(
                 decoration: BoxDecoration(
+
                   borderRadius: BorderRadius.circular(30),
                   color: Color(0xFFF5801E)
                 ),
@@ -73,7 +81,8 @@ class _PriceCardState extends State<PriceCard> {
                       '${Language.getLocaleCode() == 'en'? 'Get plan': "ሰብስክራይብ ያድርጉ"}',
                         style: TextStyle(
                             fontFamily: 'Montserrat',
-                          fontSize: 12
+                          fontSize: 12,
+                            color: theme.colorScheme.secondaryContainer
                         )
                     ),
                   ),

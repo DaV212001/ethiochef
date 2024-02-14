@@ -91,21 +91,18 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 children: [
                   ButtonsTabBar(
                     onTap: (index) => setState(() => selectedIndex = index),
-                    unselectedBorderColor: Colors.transparent,
                     backgroundColor: theme.colorScheme.primary,
                     unselectedBackgroundColor: Colors.transparent,
-                    unselectedLabelStyle: TextStyle(
-                      fontSize: isTablet ? 11.sp : 15.sp,
-                      fontWeight: FontWeight.w500,
-                      color: theme.colorScheme.onTertiary,
-                    ),
-                    labelStyle: TextStyle(
-                      fontSize: isTablet ? 11.sp : 15.sp,
-                      fontWeight: FontWeight.w600,
-                      color: theme.colorScheme.secondary,
-                    ),
+                    unselectedLabelStyle:  TextStyle(
+                        fontSize: isTablet ? 11.sp : 15.sp,
+                        fontWeight: FontWeight.w500,
+                        color: theme.colorScheme.primary),
+                    labelStyle:  TextStyle(
+                        fontSize: isTablet ? 11.sp : 15.sp,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white),
                     contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                    radius: 2,
+                    radius: 5,
                     tabs: [
                       Tab(text: 'read'.tr()),
                       Tab(text: 'unread'.tr()),

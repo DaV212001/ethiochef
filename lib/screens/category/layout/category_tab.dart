@@ -166,7 +166,7 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
             ScreenHead(
               hasNotification: true,
               screen: 1,
-              searchHint: "search_for_category".tr(),
+              searchHint: "search".tr(),
             ),
             ButtonsTabBar(
               onTap: (index) {
@@ -185,7 +185,7 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
               labelStyle:  TextStyle(
                   fontSize: isTablet ? 11.sp : 15.sp,
                   fontWeight: FontWeight.w600,
-                  color: theme.colorScheme.secondaryContainer),
+                  color: Colors.white),
               contentPadding: EdgeInsets.symmetric(horizontal: 10),
               radius: 5,
               tabs: tabs,

@@ -35,9 +35,10 @@ class MainButton extends StatelessWidget {
                   fontSize: 15.sp,
                   fontWeight: FontWeight.w800,
                   color: theme.colorScheme.secondary)
-          ),
+          )
         ),
         style: ButtonStyle(
+          backgroundColor: MaterialStatePropertyAll(theme.colorScheme.primary),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),

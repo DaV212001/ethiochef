@@ -73,7 +73,7 @@ class _SuccessfullyAddedState extends State<SuccessfullyAdded> {
               Text(
                 "submitted_successfully".tr(),
                 style: TextStyle(
-                  color: theme.colorScheme.tertiary,
+                  color: theme.colorScheme.primary,
                   fontWeight: FontWeight.normal,
                   fontSize: 17.sp,
                 ),

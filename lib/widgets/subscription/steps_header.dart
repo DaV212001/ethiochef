@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class StepsHeader extends StatefulWidget {
   final int activeStep;
-  const StepsHeader({super.key, required this.activeStep});
+  StepsHeader({super.key, required this.activeStep});
 
   @override
   State<StepsHeader> createState() => _StepsHeaderState();
@@ -42,30 +42,30 @@ class _StepsHeaderState extends State<StepsHeader> {
   }
 
   List<EasyStep> steps(ThemeData theme) => [
-    EasyStep(
-        title:'delivery'.tr(),
-        activeIcon: Icon(
-          Icons.local_shipping,
-          grade: 1.1,
-          color: theme.primaryColor,
-        ),
-        icon: Icon(
-          Icons.local_shipping,
-          grade: 1.1,
-          color: theme.unselectedWidgetColor,
-        ),
-        finishIcon: Icon(
-          Icons.check_circle,
-          grade: 1.1,
-          color: theme.primaryColor,
-        )
-    ),
+      EasyStep(
+          title:'delivery'.tr(),
+          activeIcon: Icon(
+            Icons.subscriptions,
+            grade: 1.1,
+            color: theme.colorScheme.primary,
+          ),
+          icon: Icon(
+            Icons.subscriptions,
+            grade: 1.1,
+            color: theme.unselectedWidgetColor,
+          ),
+          finishIcon: Icon(
+            Icons.check_circle,
+            grade: 1.1,
+            color: theme.colorScheme.primary,
+          )
+      ),
     EasyStep(
         title:'payment'.tr(),
         activeIcon: Icon(
           Icons.payment,
           grade: 1.1,
-          color: theme.primaryColor,
+          color: theme.colorScheme.primary,
         ),
         icon: Icon(
           Icons.payment,
@@ -75,25 +75,7 @@ class _StepsHeaderState extends State<StepsHeader> {
         finishIcon: Icon(
           Icons.check_circle,
           grade: 1.1,
-          color: theme.primaryColor,
-        )
-    ),
-    EasyStep(
-        title:'summary'.tr(),
-        activeIcon: Icon(
-          Icons.list,
-          grade: 1.1,
-          color: theme.primaryColor,
-        ),
-        icon: Icon(
-          Icons.list,
-          grade: 1.1,
-          color: theme.unselectedWidgetColor,
-        ),
-        finishIcon: Icon(
-          Icons.check_circle,
-          grade: 1.1,
-          color: theme.primaryColor,
+          color: theme.colorScheme.primary,
         )
     )
   ];

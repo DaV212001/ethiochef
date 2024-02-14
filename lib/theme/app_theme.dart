@@ -31,14 +31,15 @@ class AppTheme {
           onSecondary: grey,
           secondaryContainer: russet,
           onTertiary: gray,
-          tertiary: gunmetal,
+          tertiary: russet,
           error: tomato,
           inversePrimary: gold,
           inverseSurface: gold_O40,
-          background: silver
+          background: silver,
+        surface: russet
       ),
       bottomNavigationBarTheme:
-      BottomNavigationBarThemeData(backgroundColor: white)
+      BottomNavigationBarThemeData(backgroundColor: seasalt)
   );
 
   static ThemeData darkTheme = ThemeData(
@@ -57,12 +58,14 @@ class AppTheme {
         primaryContainer: gold_O40,
         secondary: russet,
         secondaryContainer: antiFlashWhite,
-        tertiary: antiFlashWhite,
+        tertiaryContainer: silver,
+        tertiary: russet,
         error: tomato,
         inversePrimary: primaryColor,
-        inverseSurface: denim_O20),
+        inverseSurface: denim_O20,
+        surface: russet),
     bottomNavigationBarTheme:
-    BottomNavigationBarThemeData(backgroundColor: prussianBlue),
+    BottomNavigationBarThemeData(backgroundColor: prussianBlue2),
   );
   static Color cocoaBrown = const Color(0xFFFEC20A);//
   static Color primaryColor = const Color(0xFFD2691E);//

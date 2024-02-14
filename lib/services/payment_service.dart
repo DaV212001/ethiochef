@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../models/payment_methods.dart';
+import '../models/user.dart';
 import '../models/verification.dart';
+import '../utils/constants.dart';
 
 class PaymentService {
   Future<Verification> getChapaCheckoutLink(int amount, String email,
@@ -60,5 +63,50 @@ class PaymentService {
     final jsonData = json.decode(response.body);
     print(jsonData);
     return jsonData['message'] == 'Payment not paid yet';
+  }
+  Future<List<PaymentMethods>> fetchAllPayments() async{
+    print("fetchAllPayments");
+    final response = await http.get(
+      Uri.parse('${Constants.url}/pay/payment-methods'),
+    );
+    print("response.statusCode = ${response.statusCode}");
+    print("response.statusCode = ${response.body}");
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      final List<dynamic> paymentData = jsonData['data'];
+      print("paymentData $paymentData");
+      return paymentData.map((comment) => PaymentMethods.fromJson(comment)).toList();
+    } else {
+      throw Exception('Failed to fetch payment methods');
+    }
+  }
+  Future<http.Response> makePayment(Map userData, int paymentId, User user, int paymentAmount, bool isSignUp) async {
+    var body = {};
+    if(isSignUp){
+      body = {
+        "id": paymentId,
+        "amount": paymentAmount,
+        "phone_number": userData['phone'],
+        "first_name": userData['first_name'],
+        "last_name": userData['last_name']
+      };
+    }else{
+      body = {
+        "id": paymentId,
+        "amount": paymentAmount,
+        "phone_number": "251"+user.phone.toString(),
+        "first_name": user.firstName,
+        "last_name": user.lastName
+      };
+    }
+    var requestBody = jsonEncode(body);
+    print("requestBody $requestBody");
+    var response = await http.post(Uri.parse("${Constants.url}/pay"),
+        headers: {"Content-type": "application/json"},
+        body: requestBody);
+    print(response.body);
+    print(response.statusCode);
+
+    return response;
   }
 }

@@ -16,6 +16,7 @@ import '../../services/user_service.dart';
 import '../../utils/screen_utils.dart';
 import '../auth/auth_screen.dart';
 import '../subscription/all_subscriptions.dart';
+import '../subscription/layout/payment.dart';
 import 'layout/contestants_carousel.dart';
 import 'layout/upload_video.dart';
 
@@ -91,9 +92,13 @@ class _CompetitionScreenState extends State<CompetitionScreen> {
         showSnackBarAndNavigate(context, 'another_account_login'.tr(), AuthScreen(isSignIn: true));
         break;
       case "User is subscribed":
+        print("User is subscribed");
         final userService = UserService();
         var userData = await userService.fetchUserProfile();
-
+        print("userData ${userData!.isFromSMS}");
+        print("userData ${userData!.user!.firstName}");
+        print("userData ${userData!.user!.lastName}");
+        print("userData ${userData!.user!.id}");
         if (userData!.isFromSMS == false) {
           pushNewScreen(context, screen: UploadCompetitionVideo(competitionId: widget.competition.id!), withNavBar: false);
         } else {
@@ -120,7 +125,7 @@ class _CompetitionScreenState extends State<CompetitionScreen> {
       textAlignment: TextAlign.center,
       confirmBtnText: 'pay'.tr(),
       onConfirmBtnTap: () {
-        pushNewScreen(context, withNavBar: false, screen: AllSubscriptions(returnPrice: (int) {}, first_name: "", last_name: "", isSignUp: false, phone: ""));
+        pushNewScreen(context, withNavBar: false, screen: PaymentCheckout(isNormalSubscription: true));
       },
       cancelBtnText: 'cancel'.tr(),
       onCancelBtnTap: () {
