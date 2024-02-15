@@ -1,28 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/subscriptionplans.dart';
 import 'package:ethio_chef/screens/auth/layout/payment_methods.dart';
-import 'package:ethio_chef/screens/subscription/layout/payment.dart';
 import 'package:ethio_chef/widgets/input_field.dart';
 import 'package:ethio_chef/widgets/auth/phone_input_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:http/http.dart' as http;
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
-import '../../../main.dart';
-import '../../../models/user.dart';
-import '../../../services/payment_service.dart';
-import '../../../services/user_service.dart';
-import '../../../theme/app_theme.dart';
-import '../../../utils/screen_utils.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../widgets/auth/auth_btn.dart';
-import '../../../widgets/info_card.dart';
 import '../../../widgets/subscription/subscription_drop_down.dart';
-import '../../main_screen.dart';
-import '../../subscription/all_subscriptions.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -40,47 +28,6 @@ class _SignUpState extends State<SignUp> {
   TextEditingController promoCodeController = TextEditingController();
   int amount = 0;
   late bool isLoading = false;
-  Future<http.Response?> _registration() async {
-    final bool isTablet = ScreenUtils.isTablet(context);
-    SnackBar success = SnackBar(
-        padding: EdgeInsets.symmetric(vertical: 20),
-        content: Text(
-          "registration_successful".tr(),
-        ));
-    SnackBar failed = SnackBar(
-      padding: EdgeInsets.symmetric(vertical: 20),
-        content: Text(
-          "registration_failed".tr(),
-        ));
-    try {
-      User user = User(
-          firstName: firstNameController.text,
-          lastName: lastNameController.text,
-          phone: "0"+phoneController.text);
-
-      UserService service = UserService();
-      var response = await service.registerUser(user);
-      if (response.statusCode == 200) {
-        setState(() {
-          isLoading = false;
-        });
-        await ScaffoldMessenger.of(context).showSnackBar(success);
-        Navigator.pop(context);
-      } else {
-        setState(() {
-          isLoading = false;
-        });
-        ScaffoldMessenger.of(context).showSnackBar(failed);
-      }
-    } catch (e) {
-      print(e);
-      setState(() {
-        isLoading = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(failed);
-    }
-    return null;
-  }
   bool hasSelected = false;
   SubscriptionPlans? selectedSubscriptionPlan;
   @override
@@ -157,7 +104,7 @@ class _SignUpState extends State<SignUp> {
               if (_formKey.currentState!.validate() && hasSelected == true) {
                 Map userData =
                 {
-                  "phone": phoneController.text,
+                  "phone": "251"+phoneController.text,
                   "first_name": firstNameController.text,
                   "last_name": lastNameController.text
                 };

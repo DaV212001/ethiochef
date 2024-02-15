@@ -4,25 +4,15 @@ import 'package:cloudinary_flutter/cloudinary_context.dart';
 import 'package:cloudinary_url_gen/cloudinary.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/competition/layout/successfully_uploded.dart';
-import 'package:ethio_chef/screens/competition/layout/uploading.dart';
-import 'package:ethio_chef/widgets/main_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
-import 'package:quickalert/models/quickalert_type.dart';
-import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'dart:io';
 
 import '../../../services/competition_service.dart';
-import '../../../services/subscription_checker.dart';
-import '../../../services/user_service.dart';
 import '../../../utils/screen_utils.dart';
-import '../../../widgets/error_card.dart';
-import '../../../widgets/info_card.dart';
 import '../../../widgets/loading.dart';
 import '../../../widgets/main_button.dart';
-import '../../auth/auth_screen.dart';
-import '../../subscription/all_subscriptions.dart';
 import '../../upload_recipe/layout/video_step.dart';
 import 'package:http/http.dart' as http;
 

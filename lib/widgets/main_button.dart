@@ -28,7 +28,9 @@ class MainButton extends StatelessWidget {
         onPressed: isLoading ? null : onPress,
         child: Visibility(
           visible: isLoading,
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(
+            color: Colors.white,
+          ),
           replacement: Text(
             text,
               style: TextStyle(

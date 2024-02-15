@@ -55,7 +55,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     firstNameController.text = widget.firstName ?? '';
     lastNameController.text = widget.lastName ?? '';
     emailController.text = widget.email ?? '';
-    phoneNumberController.text = widget.phone ?? '';
+    if(widget.phone != '') {
+      String formattedNumber = widget.phone.substring(2);
+      phoneNumberController.text = formattedNumber;
+    }
     profilePicture = widget.imagePath;
     super.initState();
   }
@@ -123,12 +126,25 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   });
                   UserService userService = UserService();
                   print("Updating");
-                  var response = await userService.updateProfile(
-                      firstNameController.text,
-                      lastNameController.text,
-                      emailController.text,
-                      phoneNumberController.text,
-                      profilePicture);
+                  print(profilePicture);
+                  var response;
+                  if (profilePicture is File){
+                    response = await userService.updateProfile(
+                        firstNameController.text,
+                        lastNameController.text,
+                        emailController.text,
+                        phoneNumberController.text,
+                        profilePicture);
+                  }
+                  if(profilePicture is String){
+                    response = await userService.updateWithStringProfile(
+                        firstNameController.text,
+                        lastNameController.text,
+                        emailController.text,
+                        phoneNumberController.text,
+                        profilePicture);
+                  }
+
                   if(response.statusCode == 200){
                     SnackBar success = SnackBar(
                         padding: EdgeInsets.symmetric(vertical: 20),

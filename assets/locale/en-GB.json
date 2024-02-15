@@ -198,5 +198,14 @@
   "subscription_plan": "Karoora maallaqa galchuu filatte",
   "please_select_a_plan": "Maaloo karoora maallaqa galchuu filadhaa",
   "verify_extension": "Maaloo karoora maallaqa galchuu keessan mirkaneessaa",
-  "upload_video": "Viidiyoo ol kaa'aa"
+  "upload_video": "Viidiyoo ol kaa'aa",
+  "update_title": "Version haaraan ni argama!",
+  "update_body": "Amaloota fi qabiyyee haaraa hunda argachuuf amma haaromsi.",
+
+  "extra_skills": "Ogummaa keetiin maallaqa dabalataa argadhu",
+  "do_you_have_skills_title": "Ati ogeessa?",
+  "do_you_have_skills_description": "Kanaafuu nyaata hojjattan bilbila keessan irratti filmii godhachuun chef Habashaatti erguun galii dabalataa argachuu dandeessu",
+  "buy_your_food": "- Nyaata keessan birrii 300 hanga 1000 bitachuu dandeenya",
+  "profile_update_successful": "Fooyya'iinsi piroofaayilii milkaa'eera",
+  "profile_update_failed": "Fooyya'iinsi piroofaayilii hin milkoofne"
 }

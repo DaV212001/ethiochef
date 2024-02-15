@@ -38,7 +38,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
     if(isLoading) {
       return Scaffold(
         appBar: MainAppBar(
-          title: "Privacy Policy".tr(),
+          title: "privacy_policy".tr(),
           hasMainIcons: false,
         ),
         body: Center(child: CircularProgressIndicator()),

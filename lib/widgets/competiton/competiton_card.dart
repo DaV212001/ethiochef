@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/competition.dart';
-import 'package:ethio_chef/screens/competition/competition_screen.dart';
 import 'package:ethio_chef/services/competition_service.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:ethio_chef/widgets/cached_image.dart';
@@ -11,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/recipe_show_checker.dart';
 import '../../screens/auth/auth_screen.dart';
+import '../../screens/competition/competitions_screen.dart';
 import '../../screens/subscription/all_subscriptions.dart';
 import '../../utils/screen_utils.dart';
 
@@ -103,7 +103,7 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
         pushNewScreen(
           context,
           withNavBar: false,
-          screen: CompetitionScreen(competition: widget.competition),
+          screen: CompetitionsScreen()
         );
       },
       child: Container(

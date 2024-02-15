@@ -51,7 +51,7 @@ class _VoteCardState extends State<VoteCard> {
       ),
     );
   }
-  // Widget buildc(){
+  // Widget buildcard(){
   //   ThemeData theme = Theme.of(context);
   //   return Card(
   //     elevation: 12,
@@ -129,4 +129,5 @@ class _VoteCardState extends State<VoteCard> {
   //     ),
   //   );
   // }
+
 }

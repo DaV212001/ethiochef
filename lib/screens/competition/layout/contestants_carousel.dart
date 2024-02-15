@@ -31,7 +31,7 @@ class _ContestantsState extends State<Contestants> {
   @override
   Widget build(BuildContext context) {
     final bool isTablet = ScreenUtils.isTablet(context);
-    double height = 270;
+    double height = 220;
     double width = 165;
     ThemeData theme = Theme.of(context);
     return Column(
@@ -48,149 +48,98 @@ class _ContestantsState extends State<Contestants> {
             )),
         Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Container(
-                height: height,
-                child: ListView.builder(
-                    physics: BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemExtent: width,
-                    itemCount: widget.contestant!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Align(
-                            child: GestureDetector(
-                              onTap: ()async {
-                                setState(() {
-                                  Loading = true;
-                                });
-                                print("voting");
-                                SnackBar checking =SnackBar(
-                                    padding: EdgeInsets.symmetric(vertical: 10),
-                                    showCloseIcon: true,
-                                    content: Text(
-                                        'Checking Subscription Please wait'.tr()
-                                    ));
-                                ScaffoldMessenger.of(context).showSnackBar(checking);
-                                String status = await Check.checkToShow();
-                                switch(status){
-                                  case "Not logged in":
-                                    print("Not logged in");
-                                    SnackBar logIn =SnackBar(
-                                        padding: EdgeInsets.symmetric(vertical: 20),
-                                        content: Text(
-                                            'Please subscribe to see ingredients and steps'.tr()
-                                        ));
-                                    loginFunction();
-                                    ScaffoldMessenger.of(context).showSnackBar(logIn);
-                                    break;
-                                  case "Another user logged in":
-                                    print("Another user logged in");
-                                    SnackBar logIn =SnackBar(
-                                        padding: EdgeInsets.symmetric(vertical: 20),
-                                        content: Text(
-                                            'another_account_login'.tr()
-                                        ));
-                                    ScaffoldMessenger.of(context).showSnackBar(logIn);
-                                    loginFunction();
-                                    break;
-                                  case "User is subscribed":
-                                    print("User is subscribed");
+          child: Container(
+            height: height,
+            child: ListView.builder(
+                physics: BouncingScrollPhysics(),
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemExtent: width,
+                itemCount: widget.contestant!.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                    color: theme.cardColor,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CachedImage(
+                          url: widget.contestant![index].image!,
+                          fit: BoxFit.cover,
+                        ),
+                        SizedBox(height: 5.h),
+                        Text("${widget.contestant![index].firstName.toString()} ${widget.contestant![index].lastName.toString()}",
 
+                          style: TextStyle(
+                              fontSize: isTablet ? 11.sp : 15.sp,
+                              fontWeight: FontWeight.w800,
+                              color: theme.colorScheme.secondaryContainer),
+                        ),
+                        SizedBox(height: 5.h),
+                        Text("${widget.contestant![index].phone.toString()}",
 
-                                    CompetitionService cmp = CompetitionService();
-                                    print("voting 2");
+                          style: TextStyle(
+                              fontSize: isTablet ? 10.sp : 14.sp,
+                              fontWeight: FontWeight.w400,
+                              color: theme.colorScheme.secondaryContainer),),
+                        SizedBox(height: 5.h),
+                        Text('votes'.tr(args: [widget.contestant![index].votes.toString()]),
+                          style: TextStyle(
+                              fontSize: isTablet ? 10.sp : 14.sp,
+                              fontWeight: FontWeight.w500,
+                              color: theme.colorScheme.secondaryContainer),),
+                        Align(
+                          child: GestureDetector(
+                            onTap: ()async {
+                              setState(() {
+                                Loading = true;
+                              });
+                              print("voting");
 
-                                    try {
-                                      print("voting 3");
-                                      print(widget.contestant![index].id!);
-                                      print(widget.contest_id!);
-                                      var response = await cmp.voteContestant(widget.contestant![index].id!, widget.contest_id!);
+                              CompetitionService cmp = CompetitionService();
+                              print("voting 2");
 
-                                      if(response?.statusCode == 200){
-                                        setState(() {
-                                          Loading = false;
-                                        });
-                                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Competition liked!')));
-                                      }
-                                    } catch(e){
-                                      setState(() {
-                                        Loading = false;
-                                      });
-                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
-                                    }
+                              try {
+                                print("voting 3");
+                                print(widget.contestant![index].id!);
+                                print(widget.contest_id!);
+                                var response = await cmp.voteContestant(widget.contestant![index].id!, widget.contest_id!);
 
-
-
-                                    break;
-                                  case "User is not subscribed":
-                                    print("User is not subscribed");
-                                    pushNewScreen(
-                                      context,
-                                      screen: PaymentCheckout(isNormalSubscription: true),
-                                      withNavBar: false,
-                                      pageTransitionAnimation: PageTransitionAnimation.cupertino,
-                                    );
-                                    break;
+                                if(response?.statusCode == 200){
+                                  setState(() {
+                                    Loading = false;
+                                  });
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Competition liked!')));
                                 }
-
+                              } catch(e){
                                 setState(() {
                                   Loading = false;
                                 });
-                              },
-                              child: Container(
-                                width: 30,
-                                height: 30,
-                                decoration: BoxDecoration(color: Colors.orange, shape: BoxShape.circle),
-                                child: !Loading?Center(
-                                  child: Icon(
-                                    Icons.thumb_up_sharp,
-                                    color: Colors.white,
-                                  ),
-                                ): CircularProgressIndicator(),
-                              ),
-                            ),alignment: Alignment.topRight,
-                          ),
-                          ClipOval(
-                              child: CachedImage(
-                                url: widget.contestant![index].image!,
-                                fit: BoxFit.cover,
-                              )
-                          ),
-                          SizedBox(height: 5.h),
-                          Text("${widget.contestant![index].firstName.toString()} ${widget.contestant![index].lastName.toString()}",
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                              }
 
-                            style: TextStyle(
-                                fontSize: isTablet ? 11.sp : 15.sp,
-                                fontWeight: FontWeight.w800,
-                                color: theme.colorScheme.secondaryContainer),
-                          ),
-                          SizedBox(height: 5.h),
-                          Text("${widget.contestant![index].phone.toString()}",
+                              setState(() {
+                                Loading = false;
+                              });
+                            },
+                            child: Container(
+                              width: 30,
+                              height: 30,
+                              child: !Loading?Center(
+                                child: Icon(
+                                  Icons.favorite_border,
+                                  color: theme.colorScheme.primary,
+                                ),
+                              ): CircularProgressIndicator(),
+                            ),
+                          ),alignment: Alignment.bottomLeft,
+                        )
 
-                            style: TextStyle(
-                                fontSize: isTablet ? 10.sp : 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: theme.colorScheme.secondaryContainer),),
-                          SizedBox(height: 5.h),
-                          Text(widget.contestant![index].votes.toString(),
 
-                            style: TextStyle(
-                                fontSize: isTablet ? 10.sp : 14.sp,
-                                fontWeight: FontWeight.w500,
-                                color: theme.colorScheme.secondaryContainer),),
-
-                        ]
-                      );
-                    }
-                ),
-              ),
+                      ]
+                    ),
+                  );
+                }
             ),
           ),
         )

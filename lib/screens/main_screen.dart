@@ -70,7 +70,22 @@ class _MainScreenState extends State<MainScreen> {
       HomeScreen(),
       CategoriesScreen(),
       UploadRecipeScreen(),
-      CompetitionsScreen(),
+      isLoading == true ? RefreshWidget(
+        onRefresh: ()async{
+          _checkFirstTimeUser();
+        },
+        child: Center(
+          child: Scaffold(
+            body: Center(
+              child: Column(
+                children: [
+                  Center(child: Loading())
+                ],
+              ),
+            ),
+          ),
+        ),
+      ) : isLoggedIn ? CompetitionsScreen():AuthScreen(isSignIn: true),
       isLoading == true ? RefreshWidget(
         onRefresh: ()async{
           _checkFirstTimeUser();

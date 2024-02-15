@@ -100,7 +100,7 @@ class _CategoryCardState extends State<CategoryCard> {
             buildContent(context)
           ],
         ),
-      ),
+      )
     );
   }
   Widget buildBody(){

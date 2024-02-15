@@ -82,25 +82,43 @@ class _BasicsStepState extends State<BasicsStep> {
             height: 100,
           ),
           SizedBox(
-            height: 10,
+            height: 20,
           ),
-          // InputField(
-          //   icon: Icons.timer_outlined,
-          //   controller: widget.prepTimeController,
-          //   label: "preparation_times".tr(),
-          //   hint: "enter_dish_preparation_in_minutes".tr(),
-          //   inputType: TextInputType.number,
-          // ),
-          SizedBox(
-            height: 10,
+          Container(
+            padding: EdgeInsets.all(12),
+            decoration: BoxDecoration(
+                border: Border.all(
+                    color: theme.colorScheme.primary,
+                    width: 1
+                )
+            ),
+            child: Column(
+              children: [
+                Text(
+                  'do_you_have_skills_title'.tr(),
+                  style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.primary),),
+                Text(
+                  'do_you_have_skills_description'.tr(),
+                  style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.secondaryContainer),),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  'buy_your_food'.tr(),
+                  style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.secondaryContainer),),
+
+              ],
+            ),
           ),
-          // InputField(
-          //   icon: Icons.people_outline,
-          //   controller: widget.servingSizeController,
-          //   label: "serving_sizes".tr(),
-          //   hint: "enter_dish_serving_size".tr(),
-          //   inputType: TextInputType.number,
-          // ),
           SizedBox(
             height: 10,
           ),

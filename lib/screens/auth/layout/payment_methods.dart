@@ -15,7 +15,7 @@ import '../../../utils/screen_utils.dart';
 import '../../../widgets/error_card.dart';
 import '../../../widgets/loading.dart';
 import '../../../widgets/main_app_bar.dart';
-import '../../../widgets/subscription/payment_circular_card.dart';
+import '../../../widgets/subscription/payment_card.dart';
 import '../../subscription/layout/payment.dart';
 
 class PaymentMethodScreen extends StatefulWidget {
@@ -90,10 +90,9 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
       itemCount: payments!.length,
       shrinkWrap: true,
       itemBuilder: (BuildContext context, int index) {
-        var resp = payments![index];
-        return CircularPaymentCard(
-          payment_name: payments![index].bank_name,
-          image_url: payments![index].image.toString(),
+        return RectangularPaymentCard(
+          payment_name: payments[index].bank_name,
+          image_url: payments[index].image.toString(),
           press: () async {
             final service = PaymentService();
             User unWanted = User(
@@ -101,7 +100,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                 lastName: ""
             );
             var response = await service.makePayment(
-                widget.userData!, payments![index]!.id, unWanted, widget.selectedSubscriptionPlan.price!, true
+                widget.userData, payments[index].id, unWanted, widget.selectedSubscriptionPlan.price!, true
             );
 
             if(response.statusCode==200) {

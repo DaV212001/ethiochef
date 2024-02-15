@@ -11,10 +11,15 @@ import '../utils/constants.dart';
 import 'authorization_service.dart';
 class CompetitionService {
   Future<List<Competition>> fetchCompetitions() async {
+    var access_token = await AuthService.getAuthorizationToken();
     List<Competition>? competitionslist;
     try {
       var res = await http.get(
-          Uri.parse("${Constants.url}/user/contest/competiton"));
+          Uri.parse("${Constants.url}/user/contest/competiton"),
+        headers: {
+      'Authorization': 'JWT $access_token',
+      'Content-type': 'application/json'
+      },);
       print("res.statusCode  == = == = = = == = = = ${res.statusCode}");
       print(res.body);
       var data = jsonDecode(res.body);

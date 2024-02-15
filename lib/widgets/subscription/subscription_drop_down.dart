@@ -66,7 +66,7 @@ class _SubscriptionDropDownState extends State<SubscriptionDropDown> {
               ));
         }
         return buildDropDownMenu(snapshot.data as List<SubscriptionPlans>);
-      },
+      }
     );
   }
   bool hasSelected = false;
@@ -99,7 +99,7 @@ class _SubscriptionDropDownState extends State<SubscriptionDropDown> {
           print(widget.selectedSubscriptionPlan!.price);
           print(widget.selectedSubscriptionPlan!.duration);
           print(hasSelected);
-          widget.onChange(value!);
+          widget.onChange(value);
         },
         dropdownStyleData: DropdownStyleData(
           width: double.infinity,
@@ -113,12 +113,13 @@ class _SubscriptionDropDownState extends State<SubscriptionDropDown> {
         ),
         menuItemStyleData: MenuItemStyleData(
           customHeights: List<double>.filled(subscriptionPlans.length, 48),
-          padding: const EdgeInsets.only(left: 16, right: 16),
-        ),
-      ),
+          padding: const EdgeInsets.only(left: 16, right: 16)
+        )
+      )
     );
   }
   Widget buildCard(SubscriptionPlans item){
+    ThemeData theme = Theme.of(context);
     DateTime now = DateTime.now();
     Duration duration = Duration(days: item.duration!*30);
     DateTime expirationDate = now.add(duration);
@@ -130,7 +131,7 @@ class _SubscriptionDropDownState extends State<SubscriptionDropDown> {
           style: TextStyle(
               fontWeight: FontWeight.bold,
               fontFamily: 'Montserrat',
-              color: Colors.black
+              color: theme.colorScheme.secondaryContainer
           ),
         ),
         Text(
@@ -138,13 +139,14 @@ class _SubscriptionDropDownState extends State<SubscriptionDropDown> {
             style: TextStyle(
                 fontFamily: 'Montserrat',
                 fontSize: 12,
-                color: Colors.black
+                color: theme.colorScheme.secondaryContainer
             )
-        ),
-      ],
+        )
+      ]
     );
   }
   Widget buildShowableCard(SubscriptionPlans item){
+    ThemeData theme = Theme.of(context);
     DateTime now = DateTime.now();
     Duration duration = Duration(days: item.duration!*30);
     DateTime expirationDate = now.add(duration);
@@ -157,7 +159,7 @@ class _SubscriptionDropDownState extends State<SubscriptionDropDown> {
           style: TextStyle(
               fontWeight: FontWeight.bold,
               fontFamily: 'Montserrat',
-              color: Colors.black
+              color: theme.colorScheme.secondaryContainer
           ),
         ),
         SizedBox(width: 10),
@@ -166,35 +168,11 @@ class _SubscriptionDropDownState extends State<SubscriptionDropDown> {
           style: TextStyle(
               fontWeight: FontWeight.bold,
               fontFamily: 'Montserrat',
-              color: Colors.black
-          ),
-        ),
-      ],
+              color: theme.colorScheme.secondaryContainer
+          )
+        )
+      ]
     );
   }
 
-}
-class CustomScrollPhysics extends ScrollPhysics {
-  CustomScrollPhysics({ScrollPhysics? parent}) : super(parent: parent);
-
-  @override
-  ScrollPhysics applyTo(ScrollPhysics? ancestor) {
-    return CustomScrollPhysics(parent: buildParent(ancestor));
-  }
-
-  @override
-  double getScrollPosition(
-      ScrollMetrics position,
-      double velocity,
-      ) {
-    return position.pixels;
-  }
-
-  @override
-  Simulation? createBallisticSimulation(
-      ScrollMetrics position,
-      double velocity,
-      ) {
-    return null;
-  }
 }

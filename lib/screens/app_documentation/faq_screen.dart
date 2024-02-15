@@ -33,7 +33,7 @@ class _FaqScreenState extends State<FaqScreen> {
     if(isLoading)
     return Scaffold(
       appBar: MainAppBar(
-        title: "FAQ".tr(),
+        title: "faq".tr(),
         hasMainIcons: false,
       ),
       body: Center(child: CircularProgressIndicator()),
@@ -41,7 +41,7 @@ class _FaqScreenState extends State<FaqScreen> {
     if(faqs.length== 0)
       return Scaffold(
         appBar: MainAppBar(
-          title: "FAQ".tr(),
+          title: "faq".tr(),
           hasMainIcons: false,
         ),
         body: Center(
@@ -58,7 +58,7 @@ class _FaqScreenState extends State<FaqScreen> {
       );
     return Scaffold(
       appBar: MainAppBar(
-        title: "FAQ".tr(),
+        title: "faq".tr(),
         hasMainIcons: false,
       ),
       body: ListView.builder(

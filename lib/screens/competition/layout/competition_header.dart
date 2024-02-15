@@ -35,13 +35,13 @@ class CompetitionHeader extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                     color: theme.colorScheme.primary),
               ),
-              Text(
-                "votes".tr(args: [competition.votes.toString()]),
-                style: TextStyle(
-                    fontSize: isTablet ? 10.sp : 14.sp,
-                    fontWeight: FontWeight.w400,
-                    color: theme.colorScheme.secondaryContainer),
-              ),
+              // Text(
+              //   "votes".tr(args: [competition.votes.toString()]),
+              //   style: TextStyle(
+              //       fontSize: isTablet ? 10.sp : 14.sp,
+              //       fontWeight: FontWeight.w400,
+              //       color: theme.colorScheme.secondaryContainer),
+              // ),
             ],
           ),
         ),

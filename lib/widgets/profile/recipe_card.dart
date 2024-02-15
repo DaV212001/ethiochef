@@ -33,6 +33,7 @@ class RecipeCard extends StatelessWidget {
           //   ),
           // ),
           Card(
+            color: theme.cardColor,
             elevation: 3,
             child: Container(
                 padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),

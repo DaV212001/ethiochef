@@ -36,10 +36,9 @@ class ProfileWidget extends StatelessWidget {
                     bottom: 0,
                     right: 0,
                     child: Ink(
-                      color: Colors.white,
                       child: InkWell(
                           onTap: onClicked,
-                          child: buildEditIcon(theme.primaryColor)),
+                          child: buildEditIcon(theme.colorScheme.primary)),
                     ),
                   ),
               ],
@@ -69,12 +68,7 @@ class ProfileWidget extends StatelessWidget {
                 url: imagePath!,
                 fit: BoxFit.cover,
               )
-                  : IconButton(
-                  onPressed: onClicked,
-                  icon: Icon(
-                    CupertinoIcons.camera,
-                    size: 50.sp,
-                  ))),
+                  : Image.asset("assets/images/logo.png",width: 50.sp, height: 50.sp)),
         ),
       ),
     );

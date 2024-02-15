@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
+import '../../models/AdMods.dart';
 import '../../models/promotion.dart';
 import '../../models/category.dart';
 import '../../models/food.dart';
 import '../../services/category_service.dart';
 import '../../services/meal_service.dart';
 import '../../services/promotion_service.dart';
+import '../../utils/update_manager.dart';
 import '../../widgets/error_card.dart';
 import '../../widgets/loading.dart';
 import '../../widgets/pull_to_refresh.dart';
@@ -29,103 +31,15 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   @override
   void initState() {
-    _loadAd();
+    AdMod.loadAd();
     _future = fetchData();
     super.initState();
-  }
-  String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
-  BannerAd? _bannerAd;
-  BannerAd? _bannerAd2;
-  BannerAd? _bannerAd3;
-  void _loadAd() async {
-    print("Loading Ads");
-    BannerAd(
-      adUnitId: _adbannerUnitId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        // Called when an ad is successfully received.
-        onAdLoaded: (ad) {
-          print(ad.responseInfo);
-          print(ad.adUnitId);
-          setState(() {
-            _bannerAd = ad as BannerAd;
-          });
-          },
-        // Called when an ad request failed.
-        onAdFailedToLoad: (ad, err) {
-          print("eeeeeeeeeeeeeeeeeeerrrrrrrrrrrrrrrrroooooooooooooooorrrrrrrrrrrrr");
-          print(err);
-          ad.dispose();
-        },
-        // Called when an ad opens an overlay that covers the screen.
-        onAdOpened: (Ad ad) {},
-        // Called when an ad removes an overlay that covers the screen.
-        onAdClosed: (Ad ad) {},
-        // Called when an impression occurs on the ad.
-        onAdImpression: (Ad ad) {},
-      ),
-    ).load();
-
-    BannerAd(
-      adUnitId: _adbannerUnitId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        // Called when an ad is successfully received.
-        onAdLoaded: (ad) {
-          print(ad.responseInfo);
-          print(ad.adUnitId);
-          setState(() {
-            _bannerAd2 = ad as BannerAd;
-          });
-        },
-        // Called when an ad request failed.
-        onAdFailedToLoad: (ad, err) {
-          print("eeeeeeeeeeeeeeeeeeerrrrrrrrrrrrrrrrroooooooooooooooorrrrrrrrrrrrr");
-          print(err);
-          ad.dispose();
-        },
-        // Called when an ad opens an overlay that covers the screen.
-        onAdOpened: (Ad ad) {},
-        // Called when an ad removes an overlay that covers the screen.
-        onAdClosed: (Ad ad) {},
-        // Called when an impression occurs on the ad.
-        onAdImpression: (Ad ad) {},
-      ),
-    ).load();
-
-    BannerAd(
-      adUnitId: _adbannerUnitId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        // Called when an ad is successfully received.
-        onAdLoaded: (ad) {
-          print(ad.responseInfo);
-          print(ad.adUnitId);
-          setState(() {
-            _bannerAd3 = ad as BannerAd;
-          });
-        },
-        // Called when an ad request failed.
-        onAdFailedToLoad: (ad, err) {
-          print("eeeeeeeeeeeeeeeeeeerrrrrrrrrrrrrrrrroooooooooooooooorrrrrrrrrrrrr");
-          print(err);
-          ad.dispose();
-        },
-        // Called when an ad opens an overlay that covers the screen.
-        onAdOpened: (Ad ad) {},
-        // Called when an ad removes an overlay that covers the screen.
-        onAdClosed: (Ad ad) {},
-        // Called when an impression occurs on the ad.
-        onAdImpression: (Ad ad) {},
-      ),
-    ).load();
   }
 
   Future<dynamic> fetchData() async {
     try {
+      // UpdateManager um = UpdateManager();
+      // um.showUpdateDialog(context);
       final categoryService = CategoryService();
       final mealService = MealService();
       final promotionService = PromotionService();
@@ -181,22 +95,13 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         child: SingleChildScrollView(
             child: Column(
               children: [
-                if (_bannerAd != null)
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: SafeArea(
-                      child: SizedBox(
-                        width: _bannerAd!.size.width.toDouble(),
-                        height: _bannerAd!.size.height.toDouble(),
-                        child: AdWidget(ad: _bannerAd!),
-                      ),
-                    ),
-                  ),
+
+                if (AdMod.adNullChecker(1) == true)
+                  AdMod.displayAd1(),
                 AdsCarousel(promotion: promotion),
                 SizedBox(
                   height: 5.h,
                 ),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Column(
@@ -208,42 +113,24 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         breakfast: breakfast,
                         lunch: lunch,
                         superMeal: superMeal,
-                        dinner: dinner,
-                      ),
-                      if (_bannerAd2 != null)
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: SafeArea(
-                            child: SizedBox(
-                              width: _bannerAd2!.size.width.toDouble(),
-                              height: _bannerAd2!.size.height.toDouble(),
-                              child: AdWidget(ad: _bannerAd2!),
-                            ),
-                          ),
-                        ),
+                        dinner: dinner,),
+
+                      if (AdMod.adNullChecker(2) == true)
+                        AdMod.displayAd2(),
                       CategoryCarousel(category: category),
-                      if (_bannerAd3 != null)
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: SafeArea(
-                            child: SizedBox(
-                              width: _bannerAd3!.size.width.toDouble(),
-                              height: _bannerAd3!.size.height.toDouble(),
-                              child: AdWidget(ad: _bannerAd3!),
-                            ),
-                          ),
-                        ),
+                      if (AdMod.adNullChecker(3) == true)
+                        AdMod.displayAd3(),
                       SizedBox(
                         height: 15.h,
                       ),
                       SizedBox(
                         height: 15.h,
-                      ),
-                    ],
-                  ),
+                      )
+                    ]
+                  )
                 )
-              ],)
-        ),
+              ])
+        )
       ),
         onRefresh: ()async{
           setState(() {

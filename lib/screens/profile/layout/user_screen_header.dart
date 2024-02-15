@@ -92,6 +92,7 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
                 backgroundColor: MaterialStatePropertyAll(theme.colorScheme.primary)
               ),
               onPressed: (){
+                print(widget.user.user?.phone);
             String? str = widget.user.user?.phone.toString();
             String? phone = str?.substring(1);
             print(phone);

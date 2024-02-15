@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/models/AdMods.dart';
 import 'package:ethio_chef/screens/auth/auth_screen.dart';
 import 'package:ethio_chef/screens/subscription/layout/payment.dart';
 import 'package:ethio_chef/services/footer_service.dart';
@@ -41,89 +42,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     _future = fetchData();
-    _loadAd();
+    AdMod.loadAd();
     super.initState();
   }
-  String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
-  BannerAd? _bannerAd;
-  BannerAd? _bannerAd2;
-  BannerAd? _bannerAd3;
-  void _loadAd() async {
-    BannerAd(
-      adUnitId: _adbannerUnitId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        // Called when an ad is successfully received.
-        onAdLoaded: (ad) {
-          setState(() {
-            _bannerAd = ad as BannerAd;
-          });
-        },
-        // Called when an ad request failed.
-        onAdFailedToLoad: (ad, err) {
-          ad.dispose();
-        },
-        // Called when an ad opens an overlay that covers the screen.
-        onAdOpened: (Ad ad) {},
-        // Called when an ad removes an overlay that covers the screen.
-        onAdClosed: (Ad ad) {},
-        // Called when an impression occurs on the ad.
-        onAdImpression: (Ad ad) {},
-      ),
-    ).load();
-
-    BannerAd(
-      adUnitId: _adbannerUnitId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        // Called when an ad is successfully received.
-        onAdLoaded: (ad) {
-          setState(() {
-            _bannerAd2 = ad as BannerAd;
-
-          });
-        },
-          // Called when an ad request failed.
-          onAdFailedToLoad: (ad, err) {
-    ad.dispose();
-    },
-      // Called when an ad opens an overlay that covers the screen.
-      onAdOpened: (Ad ad) {},
-      // Called when an ad removes an overlay that covers the screen.
-      onAdClosed: (Ad ad) {},
-      // Called when an impression occurs on the ad.
-      onAdImpression: (Ad ad) {},
-    ),
-    ).load();
-
-    BannerAd(
-      adUnitId: _adbannerUnitId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        // Called when an ad is successfully received.
-        onAdLoaded: (ad) {
-          setState(() {
-            _bannerAd3 = ad as BannerAd;
-
-          });
-        },
-        // Called when an ad request failed.
-        onAdFailedToLoad: (ad, err) {
-          ad.dispose();
-        },
-        // Called when an ad opens an overlay that covers the screen.
-        onAdOpened: (Ad ad) {},
-        // Called when an ad removes an overlay that covers the screen.
-        onAdClosed: (Ad ad) {},
-        // Called when an impression occurs on the ad.
-        onAdImpression: (Ad ad) {},
-      ),
-    ).load();
-  }
-
 
 
   Future<dynamic> fetchData() async {
@@ -175,7 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             setState(() {
                               _future = fetchData();
                             });
-                          },
+                          }
                         ));
                   }
                   //TODO: check this code esti
@@ -295,17 +216,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               _future = fetchData();
             });
           }),
-          if(_bannerAd2 != null)
-            Align(
-              alignment: Alignment.topCenter,
-              child: SafeArea(
-                child: SizedBox(
-                  width: _bannerAd2!.size.width.toDouble(),
-                  height: _bannerAd2!.size.height.toDouble(),
-                  child: AdWidget(ad: _bannerAd2!),
-                ),
-              ),
-            ),
+          if (AdMod.adNullChecker(1) == true)
+            AdMod.displayAd1(),
           if(user.message=="User is not subscribed")
             GestureDetector(
               onTap: (){
@@ -341,17 +253,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               });
             },
           ),
-          if(_bannerAd3 != null)
-            Align(
-              alignment: Alignment.topCenter,
-              child: SafeArea(
-                child: SizedBox(
-                  width: _bannerAd3!.size.width.toDouble(),
-                  height: _bannerAd3!.size.height.toDouble(),
-                  child: AdWidget(ad: _bannerAd3!),
-                ),
-              ),
-            ),
+          if (AdMod.adNullChecker(3) == true)
+            AdMod.displayAd3(),
           SizedBox(height: 5.h,),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),

@@ -95,6 +95,7 @@ class _SubmittedRecipeCardState extends State<SubmittedRecipeCard> {
         }
       },
       child: Card(
+        color: theme.cardColor,
         elevation: 1,
         child: ListView(
           physics: NeverScrollableScrollPhysics(),
@@ -109,6 +110,7 @@ class _SubmittedRecipeCardState extends State<SubmittedRecipeCard> {
     );
   }
   Widget buildBody(){
+    ThemeData theme = Theme.of(context);
     final bottom = profileHeight / 2;
     final top = coverHeight - profileHeight / 2;
     return Stack(
@@ -116,6 +118,7 @@ class _SubmittedRecipeCardState extends State<SubmittedRecipeCard> {
       alignment: Alignment.center,
       children: [
         Container(
+            color: theme.cardColor,
             margin: EdgeInsets.only(bottom: bottom),
             child: buildCoverImage()
         ),
@@ -129,6 +132,7 @@ class _SubmittedRecipeCardState extends State<SubmittedRecipeCard> {
   Widget buildCoverImage(){
     ThemeData theme = Theme.of(context);
     return Container(
+      color: theme.cardColor,
         height: coverHeight,
         width: double.infinity,
         child: ClipRRect(
@@ -140,21 +144,25 @@ class _SubmittedRecipeCardState extends State<SubmittedRecipeCard> {
 
     );
   }
-  Widget buildProfileImage()=>ClipOval(
-      child: Material(
-        elevation: 8.0,
-        shape: CircleBorder(),
-        child: CircleAvatar(
-          backgroundColor: Colors.white,
-          child: Image.asset(
-            'assets/images/logo.png',
-            height: 80,
-            fit: BoxFit.fill,
+  Widget buildProfileImage(){
+    ThemeData theme = Theme.of(context);
+    return ClipOval(
+        child: Material(
+          elevation: 8.0,
+          color: theme.cardColor,
+          shape: CircleBorder(),
+          child: CircleAvatar(
+            backgroundColor: Colors.white,
+            child: Image.asset(
+              'assets/images/logo.png',
+              height: 80,
+              fit: BoxFit.fill,
+            ),
+            radius: profileHeight/2,
           ),
-          radius: profileHeight/2,
-        ),
-      )
-  );
+        )
+    );
+  }
   Widget buildContent(context) {
     final bool isTablet = ScreenUtils.isTablet(context);
     ThemeData theme = Theme.of(context);

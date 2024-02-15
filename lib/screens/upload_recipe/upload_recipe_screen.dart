@@ -13,6 +13,7 @@ import 'package:quickalert/quickalert.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../../models/AdMods.dart';
 import '../../models/recipe.dart';
 import '../../services/recipe_service.dart';
 import '../../services/subscription_checker.dart';
@@ -48,39 +49,16 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
   bool agreed = false;
   bool isLoading = false;
   bool isSubscribed = false;
-  BannerAd? _bannerAd;
   String videoUrl = "";
   String videoPath = "";
   int statusCode = 0;
 
   @override
   void initState() {
-    _loadAd();
+    AdMod.loadAd();
     super.initState();
   }
 
-  String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
-
-  void _loadAd() async {
-    BannerAd(
-      adUnitId: _adbannerUnitId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          setState(() {
-            _bannerAd = ad as BannerAd;
-          });
-        },
-        onAdFailedToLoad: (ad, err) {
-          ad.dispose();
-        },
-        onAdOpened: (Ad ad) {},
-        onAdClosed: (Ad ad) {},
-        onAdImpression: (Ad ad) {},
-      ),
-    ).load();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +69,7 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
         foregroundColor: theme.colorScheme.primary,
         elevation: 0,
         title: Text(
-          "submit_a_recipe".tr(),
+          "extra_skills".tr(),
           style: TextStyle(
             fontSize: 19.sp,
             fontWeight: FontWeight.w600,
@@ -113,17 +91,8 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
   List<Widget> steps() {
     final ThemeData theme = Theme.of(context);
     return [
-      if (_bannerAd != null)
-        Align(
-          alignment: Alignment.topCenter,
-          child: SafeArea(
-            child: SizedBox(
-              width: _bannerAd!.size.width.toDouble(),
-              height: _bannerAd!.size.height.toDouble(),
-              child: AdWidget(ad: _bannerAd!),
-            ),
-          ),
-        ),
+    if (AdMod.adNullChecker(1) == true)
+      AdMod.displayAd1(),
       StepsHeader(activeStep: activeStep),
       Visibility(
         visible: activeStep == 0,

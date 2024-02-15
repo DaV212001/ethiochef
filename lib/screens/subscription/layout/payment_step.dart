@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../../../utils/screen_utils.dart';
-import '../../../widgets/subscription/payment_circular_card.dart';
+import '../../../widgets/subscription/payment_card.dart';
 
 class PaymentStep extends StatefulWidget {
   final List<PaymentMethods>? payments;
@@ -66,7 +66,7 @@ class _PaymentStepState extends State<PaymentStep> {
       shrinkWrap: true,
       itemBuilder: (BuildContext context, int index) {
         var resp = payments![index];
-        return CircularPaymentCard(
+        return RectangularPaymentCard(
             payment_name: widget.payments![index].bank_name,
             image_url: widget.payments![index].image.toString(),
             press: () {

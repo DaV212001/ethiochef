@@ -9,9 +9,11 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
+import '../../models/AdMods.dart';
 import '../../services/subscription_checker.dart';
 import '../../services/user_service.dart';
 import '../../utils/screen_utils.dart';
+import '../../widgets/competiton/no_competition.dart';
 import '../../widgets/error_card.dart';
 import '../../widgets/loading.dart';
 import '../../widgets/pull_to_refresh.dart';
@@ -46,7 +48,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
   @override
   void initState() {
     _future = fetchCompetition();
-    _loadAd();
+    AdMod.loadAd();
     super.initState();
   }
 
@@ -85,56 +87,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
     final ThemeData theme = Theme.of(context);
     final bool isTablet = ScreenUtils.isTablet(context);
     if(competition.isEmpty){
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Center(
-            child: Container(
-              height: isTablet ? 600.h : 450.h,
-              width: isTablet ? 275.w : 400.w,
-              padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
-              margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: theme.colorScheme.primary,
-                            width: 1
-                        )
-                    ),
-                    child: Column(
-                      children: [
-                        Text("no_competition_currently".tr(),
-                            style: TextStyle(
-                                fontSize: isTablet ? 11.sp : 15.sp,
-                                fontWeight: FontWeight.w600,
-                                color: theme.colorScheme.secondaryContainer)
-                        ),
-                        Text("awards_title".tr(),
-                            style: TextStyle(
-                                fontSize: isTablet ? 13.sp : 17.sp,
-                                fontWeight: FontWeight.w800,
-                                color: theme.colorScheme.primary)
-                        ),
-                        Text("awards".tr(),
-                            style: TextStyle(
-                                fontSize: isTablet ? 11.sp : 15.sp,
-                                fontWeight: FontWeight.w600,
-                                color: theme.colorScheme.secondaryContainer)
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
+      return NoCompetitionCurrently();
     }
     return Scaffold(
         body: SingleChildScrollView(
@@ -145,17 +98,8 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                 screen: 1,
                 searchHint: "search".tr(),
               ),
-              if (_bannerAd != null)
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: SafeArea(
-                    child: SizedBox(
-                      width: _bannerAd!.size.width.toDouble(),
-                      height: _bannerAd!.size.height.toDouble(),
-                      child: AdWidget(ad: _bannerAd!),
-                    ),
-                  ),
-                ),
+              if (AdMod.adNullChecker(1) == true)
+                AdMod.displayAd1(),
               ListView(
                 scrollDirection: Axis.vertical,
                 physics: BouncingScrollPhysics(),
@@ -182,17 +126,8 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                   ],
                 )],
               ),
-              if (_bannerAd2 != null)
-                Align(
-                    alignment: Alignment.topCenter,
-                    child: SafeArea(
-                        child: SizedBox(
-                          width: _bannerAd2!.size.width.toDouble(),
-                          height: _bannerAd2!.size.height.toDouble(),
-                          child: AdWidget(ad: _bannerAd2!),
-                        )
-                    )
-                )
+              if (AdMod.adNullChecker(2) == true)
+                AdMod.displayAd2()
             ]),
           ),
         ),
@@ -222,141 +157,12 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                   fontWeight: FontWeight.w800,
                   color: Colors.white),),
             backgroundColor: theme.colorScheme.primary,
-          ),
-        ),
-
-        // floatingActionButton: FloatingActionButton(
-        //   backgroundColor: theme.colorScheme.primary,
-        //   onPressed: () async {
-        //     setState(() {
-        //       isLoading = true;
-        //     });
-        //     await handleSubscriptionStatus(context, competition[0].id!);
-        //     setState(() {
-        //       isLoading = false;
-        //     });
-        //   },
-        //   child: isLoading == true ? CircularProgressIndicator(
-        //     color: Colors.white,
-        //   ):Icon(Icons.add, color: Colors.white),
-        // )
+          )
+        )
     );
   }
-  String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
-  BannerAd? _bannerAd;
-  BannerAd? _bannerAd2;
-  BannerAd? _bannerAd3;
-  void _loadAd() async {
-    BannerAd(
-      adUnitId: _adbannerUnitId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        // Called when an ad is successfully received.
-        onAdLoaded: (ad) {
-          setState(() {
-            _bannerAd = ad as BannerAd;
-          });
-        },
-        // Called when an ad request failed.
-        onAdFailedToLoad: (ad, err) {
-          ad.dispose();
-        },
-        // Called when an ad opens an overlay that covers the screen.
-        onAdOpened: (Ad ad) {},
-        // Called when an ad removes an overlay that covers the screen.
-        onAdClosed: (Ad ad) {},
-        // Called when an impression occurs on the ad.
-        onAdImpression: (Ad ad) {},
-      ),
-    ).load();
 
-    BannerAd(
-      adUnitId: _adbannerUnitId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        // Called when an ad is successfully received.
-        onAdLoaded: (ad) {
-          setState(() {
-            _bannerAd2 = ad as BannerAd;
-
-          });
-        },
-        // Called when an ad request failed.
-        onAdFailedToLoad: (ad, err) {
-          ad.dispose();
-        },
-        // Called when an ad opens an overlay that covers the screen.
-        onAdOpened: (Ad ad) {},
-        // Called when an ad removes an overlay that covers the screen.
-        onAdClosed: (Ad ad) {},
-        // Called when an impression occurs on the ad.
-        onAdImpression: (Ad ad) {},
-      ),
-    ).load();
-
-    BannerAd(
-      adUnitId: _adbannerUnitId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        // Called when an ad is successfully received.
-        onAdLoaded: (ad) {
-          setState(() {
-            _bannerAd3 = ad as BannerAd;
-
-          });
-        },
-        // Called when an ad request failed.
-        onAdFailedToLoad: (ad, err) {
-          ad.dispose();
-        },
-        // Called when an ad opens an overlay that covers the screen.
-        onAdOpened: (Ad ad) {},
-        // Called when an ad removes an overlay that covers the screen.
-        onAdClosed: (Ad ad) {},
-        // Called when an impression occurs on the ad.
-        onAdImpression: (Ad ad) {},
-      ),
-    ).load();
-  }
   bool isLoading = false;
-
-  Widget buildCompetition(BuildContext context, List<Competition> competition) {
-    final bool isTablet = ScreenUtils.isTablet(context);
-    ThemeData theme = Theme.of(context);
-    return ListView.builder(
-      itemCount: competition.length,
-      itemBuilder: (context, index) {
-      return SingleChildScrollView(
-        child: DefaultTabController(
-          length: 2,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CompetitionHeaderImage(
-                image: competition[index].image.toString(),
-              ),
-              CompetitionHeader(
-                competition: competition[index],
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              if (competition[index].video != null)
-                YoutubeVideoPlayer(
-                  link: competition[index].video!,
-                ),
-              if(competition[index].competitor!.isNotEmpty)
-                Contestants(contestant: competition[index].competitor, contest_id: competition[index].id!)
-              // ShareButton(food: PlaceHolderData.food)
-            ],
-          ),
-        ),
-      );
-    },);
-  }
   Future<void> handleSubscriptionStatus(BuildContext context, int competition) async {
     String? status = SubscriptionStatus().status;
 
@@ -371,10 +177,6 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
         print("User is subscribed");
         final userService = UserService();
         var userData = await userService.fetchUserProfile();
-        print("userData ${userData!.isFromSMS}");
-        print("userData ${userData!.user!.firstName}");
-        print("userData ${userData!.user!.lastName}");
-        print("userData ${userData!.user!.id}");
 
         if (userData!.isFromSMS == false) {
           pushNewScreen(context, screen: UploadCompetitionVideo(competitionId: competition!), withNavBar: false);

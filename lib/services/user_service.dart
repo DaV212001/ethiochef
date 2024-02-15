@@ -53,8 +53,28 @@ class UserService {
 
     return response;
   }
-
-
+  Future<http.Response> updateWithStringProfile(String firstName, String lastName, String email, String phoneNumber, String image) async{
+    var requestBody = jsonEncode({
+      "first_name": firstName,
+      "last_name": lastName,
+      "email": email,
+      "phone_number": phoneNumber,
+      "profile_picture": image
+    });
+    print(requestBody);
+    User user = await fetchLoggedInUser();
+    final access_token = await AuthService.getAuthorizationToken();
+    print(access_token);
+    var response = await http.post(
+        Uri.parse('${Constants.url}/user/profile/update/${user.id}'),
+        headers: {
+          'Authorization': 'JWT $access_token',
+          'Content-type': 'application/json'
+        },
+        body: requestBody
+    );
+    return response;
+  }
   Future<http.Response> updateProfile(String firstName, String lastName, String email, String phoneNumber, File? image) async {
     User user = await fetchLoggedInUser();
     print(user.lastName);
