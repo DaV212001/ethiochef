@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/competition.dart';
+import 'package:ethio_chef/screens/competition/layout/contestant_description.dart';
 import 'package:ethio_chef/screens/subscription/layout/payment.dart';
 import 'package:ethio_chef/services/competition_service.dart';
 import 'package:ethio_chef/widgets/screen_head.dart';
@@ -109,6 +110,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                   children: [
                     CompetitionHeaderImage(
                       image: competition[0].image.toString(),
+                      video: competition[0].videoFromContestant.toString(),
                     ),
                     CompetitionHeader(
                       competition: competition[0],
@@ -121,8 +123,11 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                         link: competition[0].video!,
                       ),
                     if(competition[0].competitor!.isNotEmpty)
-                      Contestants(contestant: competition[0].competitor, contest_id: competition[0].id!)
-                    // ShareButton(food: PlaceHolderData.food)
+                      Contestants(
+                        competition: competition[0],
+                        contestant: competition[0].competitor,
+                        contest_id: competition[0].id!
+                      )
                   ],
                 )],
               ),

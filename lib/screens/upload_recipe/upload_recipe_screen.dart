@@ -5,11 +5,10 @@ import 'package:ethio_chef/screens/upload_recipe/layout/ingredients_step.dart';
 import 'package:ethio_chef/screens/upload_recipe/layout/steps_header.dart';
 import 'package:ethio_chef/screens/upload_recipe/layout/steps_step.dart';
 import 'package:ethio_chef/screens/upload_recipe/layout/video_step.dart';
+import 'package:ethio_chef/services/scheduled_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
-import 'package:quickalert/quickalert.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -17,10 +16,8 @@ import '../../models/AdMods.dart';
 import '../../models/recipe.dart';
 import '../../services/recipe_service.dart';
 import '../../services/subscription_checker.dart';
-import '../../services/user_service.dart';
 import '../../widgets/loading.dart';
 import '../auth/auth_screen.dart';
-import '../subscription/all_subscriptions.dart';
 import '../subscription/layout/payment.dart';
 import 'layout/successfully_added.dart';
 
@@ -281,6 +278,13 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
         var response = await service.createFood(newRecipe);
 
         if (response.statusCode == 200) {
+
+          await NotificationScheduled.showNotification(
+            id: 1,
+            payload: 'food.uploaded',
+            body: "submitted_successfully".tr(),
+            title: "successful".tr(),
+          );
           reset();
           pushNewScreen(
             context,
@@ -383,42 +387,12 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
         break;
     }
   }
-  //
-  // Future<void> uploadVideo() async {
-  //   var request = http.MultipartRequest(
-  //     'POST',
-  //     Uri.parse('https://api.cloudinary.com/v1_1/ttreeadvert/video/upload'),
-  //   );
-  //
-  //   request.files.add(await http.MultipartFile.fromPath('file', videoPath));
-  //   request.fields['upload_preset'] = 'my_uploads';
-  //   // CloudName: dohotrrss
-  //   // API key: 688618625183713
-  //   // API Secret: il2BQtXbW1_s89oLqL-3klI_sqk
-  //   // API ENV variable:  CLOUDINARY_URL=cloudinary://688618625183713:il2BQtXbW1_s89oLqL-3klI_sqk@dohotrrss
-  //   try {
-  //     var response = await request.send();
-  //     var responseJson = await http.Response.fromStream(response).then((value) {
-  //       var jsonRes = jsonDecode(value.body);
-  //       setState(() {
-  //         videoUrl = jsonRes['url'];
-  //       });
-  //     });
-  //   } catch (error) {
-  //     print(error);
-  //   }
-  // }
   Future<void> uploadVideo() async {
     print("Uploading 1");
     var request = http.MultipartRequest(
       'POST',
       Uri.parse('https://api.cloudinary.com/v1_1/dohotrrss/video/upload'),
     );
-    //   https://api.cloudinary.com/v1_1/ttreeadvert/video/upload
-    //   CloudName: dohotrrss
-    //   API key: 688618625183713
-    //   API Secret: il2BQtXbW1_s89oLqL-3klI_sqk
-    //   API ENV variable:  CLOUDINARY_URL=cloudinary://688618625183713:il2BQtXbW1_s89oLqL-3klI_sqk@dohotrrss
 
     print("Uploading 2");
     request.headers['Authorization'] = 'Basic YWxhZGRpbjpvcGVuc2VzYW1l';
@@ -428,10 +402,6 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
     print("Uploading 4");
     request.fields['upload_preset'] = 'ethiochef';
     print("Uploading 5");
-    // CloudName: dohotrrss
-    // API key: 688618625183713
-    // API Secret: il2BQtXbW1_s89oLqL-3klI_sqk
-    // API ENV variable:  CLOUDINARY_URL=cloudinary://688618625183713:il2BQtXbW1_s89oLqL-3klI_sqk@dohotrrss
     try {
       print("Uploading 6");
       var response = await request.send();

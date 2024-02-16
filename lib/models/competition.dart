@@ -14,6 +14,8 @@ class Competition {
   String? description;
   String? prepTime;
   String? servingSize;
+  String? videoFromContestant;
+  String? imageFromContestant;
   List<String>? steps;
   File? imageFile;
   File? videoFile;
@@ -24,6 +26,7 @@ class Competition {
   int? daysLeft;
   List<Contestant>? competitor;
   int? id;
+  String? winner;
   Competition(
       {
         this.ingredient,
@@ -39,7 +42,10 @@ class Competition {
         this.daysLeft,
         this.votes,
         this.competitor,
-        this.videoFile
+        this.videoFile,
+        this.videoFromContestant,
+        this.imageFromContestant,
+        this.winner
       });
 
   factory Competition.fromJson(Map<String, dynamic> json) {
@@ -47,6 +53,8 @@ class Competition {
     print("json $json");
     String? imagePath = json['image'];
     String videoPath = json['video'];
+    print(json['video']);
+    print("'''''''''''''''''''''''''''''''''''''''''''''''''''''''''");
     File? image;
     File? video;
     if (imagePath != null) {
@@ -69,9 +77,9 @@ if(competitors.isNotEmpty){
 }
 
 
-    DateTime fromtheresponse = DateTime.parse(json['end_date']);
-DateTime now =  DateTime.now();
-Duration daysleff = fromtheresponse.difference(now);
+      DateTime fromtheresponse = DateTime.parse(json['end_date']);
+  DateTime now =  DateTime.now();
+  Duration daysleff = fromtheresponse.difference(now);
     String clearPath(String path) {
       final parts = path.split('/public_html');
       return parts.last;
@@ -79,6 +87,7 @@ Duration daysleff = fromtheresponse.difference(now);
     String poster_image = json['poster_image'];
     String i = clearPath(poster_image);
     String thumbnail = Constants.ImageAPI + i;
+
     return Competition(
         name: json['name'][Language.getLocaleCode()]??json['name']['en'],
         description: json['description'][Language.getLocaleCode()]??json['description']['en'],
@@ -87,13 +96,9 @@ Duration daysleff = fromtheresponse.difference(now);
         daysLeft: daysleff.inDays,
         votes: vote.length,
         competitor: competitorss1??[],
-
-        // prepTime: json['prepTime'],
-        // servingSize: json['servingSize'],
-        // steps: List<String>.from(json['steps']),
-        // imageFile: image,
-        // ingredient: ingredientList,
-        // videoFile: video
+        imageFromContestant: poster_image,
+        videoFromContestant: json['video'],
+        winner: json['winner'] ?? ""
     );
   }
 

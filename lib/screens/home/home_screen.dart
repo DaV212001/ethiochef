@@ -1,8 +1,11 @@
 
+import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
+import 'package:timezone/data/latest.dart' as tz;
 import '../../models/AdMods.dart';
 import '../../models/promotion.dart';
 import '../../models/category.dart';
@@ -10,10 +13,11 @@ import '../../models/food.dart';
 import '../../services/category_service.dart';
 import '../../services/meal_service.dart';
 import '../../services/promotion_service.dart';
-import '../../utils/update_manager.dart';
+import '../../services/scheduled_notification_service.dart';
 import '../../widgets/error_card.dart';
 import '../../widgets/loading.dart';
 import '../../widgets/pull_to_refresh.dart';
+import '../recipe_status/my_submitted_recipe.dart';
 import 'layout/ads_carousel.dart';
 import 'layout/category_carousel.dart';
 import 'layout/meal_tab.dart';
@@ -25,12 +29,15 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+DateTime scheduleTime = DateTime.now();
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin{
 
   Future? _future;
 
   @override
   void initState() {
+    WidgetsFlutterBinding.ensureInitialized();
+    tz.initializeTimeZones();
     AdMod.loadAd();
     _future = fetchData();
     super.initState();
@@ -40,6 +47,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     try {
       // UpdateManager um = UpdateManager();
       // um.showUpdateDialog(context);
+      NotificationScheduled.init();
+      listenNotification();
       final categoryService = CategoryService();
       final mealService = MealService();
       final promotionService = PromotionService();
@@ -139,4 +148,42 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         }
     );
   }
+  void listenNotification() =>
+      NotificationScheduled.onNotifications.stream.listen((event) {
+        pushNewScreen(
+          context,
+          screen: SubmittedRecipe(),
+          withNavBar: false,
+          pageTransitionAnimation: PageTransitionAnimation.cupertino,
+        );
+      });
 }
+//
+// class DatePickerTxt extends StatefulWidget {
+//   const DatePickerTxt({
+//     Key? key,
+//   }) : super(key: key);
+//
+//   @override
+//   State<DatePickerTxt> createState() => _DatePickerTxtState();
+// }
+//
+// class _DatePickerTxtState extends State<DatePickerTxt> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return TextButton(
+//       onPressed: () {
+//         DatePicker.showDateTimePicker(
+//           context,
+//           showTitleActions: true,
+//           onChanged: (date) => scheduleTime = date,
+//           onConfirm: (date) {},
+//         );
+//       },
+//       child: const Text(
+//         'Select Date Time',
+//         style: TextStyle(color: Colors.blue),
+//       ),
+//     );
+//   }
+// }
