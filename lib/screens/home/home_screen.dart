@@ -1,12 +1,7 @@
-
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
-
-import 'package:timezone/data/latest.dart' as tz;
-import '../../models/AdMods.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../../models/promotion.dart';
 import '../../models/category.dart';
 import '../../models/food.dart';
@@ -14,6 +9,7 @@ import '../../services/category_service.dart';
 import '../../services/meal_service.dart';
 import '../../services/promotion_service.dart';
 import '../../services/scheduled_notification_service.dart';
+import '../../utils/update_manager.dart';
 import '../../widgets/error_card.dart';
 import '../../widgets/loading.dart';
 import '../../widgets/pull_to_refresh.dart';
@@ -36,9 +32,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   @override
   void initState() {
-    WidgetsFlutterBinding.ensureInitialized();
-    tz.initializeTimeZones();
-    AdMod.loadAd();
+    loadAd();
     _future = fetchData();
     super.initState();
   }
@@ -63,7 +57,56 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       rethrow;
     }
   }
+  static String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
+  static BannerAd? _bannerAd1;
+  static BannerAd? _bannerAd2;
+  static BannerAd? _bannerAd3;
 
+  void loadAd() async {
+    print("Loading Ads");
+    await BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          _bannerAd1 = ad as BannerAd;
+        },
+        onAdFailedToLoad: (ad, err) {
+          print("Error loading ad: $err");
+          ad.dispose();
+        },
+      ),
+    ).load();
+    await BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          _bannerAd2 = ad as BannerAd;
+        },
+        onAdFailedToLoad: (ad, err) {
+          print("Error loading ad: $err");
+          ad.dispose();
+        },
+      ),
+    ).load();
+    await BannerAd(
+        adUnitId: _adbannerUnitId,
+        request: const AdRequest(),
+        size: AdSize.banner,
+        listener: BannerAdListener(
+            onAdLoaded: (ad) {
+              _bannerAd3 = ad as BannerAd;
+            },
+            onAdFailedToLoad: (ad, err) {
+              print("Error loading ad: $err");
+              ad.dispose();
+            }
+        )
+    ).load();
+  }
   bool showAddRecipeCard = true;
   @override
   Widget build(BuildContext context) {
@@ -105,8 +148,18 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
             child: Column(
               children: [
 
-                if (AdMod.adNullChecker(1) == true)
-                  AdMod.displayAd1(),
+                if (_bannerAd1 != null)
+                  Align(
+                      alignment: Alignment.topCenter,
+                      child: SafeArea(
+                          child: SizedBox(
+                              width: _bannerAd1!.size.width.toDouble(),
+                              height: _bannerAd1!.size.height.toDouble(),
+                              child: AdWidget(ad: _bannerAd1!)
+                          )
+                      )
+                  ),
+
                 AdsCarousel(promotion: promotion),
                 SizedBox(
                   height: 5.h,
@@ -124,11 +177,29 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         superMeal: superMeal,
                         dinner: dinner,),
 
-                      if (AdMod.adNullChecker(2) == true)
-                        AdMod.displayAd2(),
+                      if (_bannerAd2 != null)
+                        Align(
+                            alignment: Alignment.topCenter,
+                            child: SafeArea(
+                                child: SizedBox(
+                                    width: _bannerAd2!.size.width.toDouble(),
+                                    height: _bannerAd2!.size.height.toDouble(),
+                                    child: AdWidget(ad: _bannerAd2!)
+                                )
+                            )
+                        ),
                       CategoryCarousel(category: category),
-                      if (AdMod.adNullChecker(3) == true)
-                        AdMod.displayAd3(),
+                      if (_bannerAd3 != null)
+                        Align(
+                            alignment: Alignment.topCenter,
+                            child: SafeArea(
+                                child: SizedBox(
+                                    width: _bannerAd3!.size.width.toDouble(),
+                                    height: _bannerAd3!.size.height.toDouble(),
+                                    child: AdWidget(ad: _bannerAd3!)
+                                )
+                            )
+                        ),
                       SizedBox(
                         height: 15.h,
                       ),

@@ -8,11 +8,11 @@ import 'package:ethio_chef/screens/upload_recipe/layout/video_step.dart';
 import 'package:ethio_chef/services/scheduled_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import '../../models/AdMods.dart';
 import '../../models/recipe.dart';
 import '../../services/recipe_service.dart';
 import '../../services/subscription_checker.dart';
@@ -52,10 +52,29 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
 
   @override
   void initState() {
-    AdMod.loadAd();
+    loadAd();
     super.initState();
   }
+  static String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
+  static BannerAd? _bannerAd1;
 
+  void loadAd() async {
+    print("Loading Ads");
+    await BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          _bannerAd1 = ad as BannerAd;
+        },
+        onAdFailedToLoad: (ad, err) {
+          print("Error loading ad: $err");
+          ad.dispose();
+        },
+      ),
+    ).load();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,8 +107,17 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
   List<Widget> steps() {
     final ThemeData theme = Theme.of(context);
     return [
-    if (AdMod.adNullChecker(1) == true)
-      AdMod.displayAd1(),
+      if (_bannerAd1 != null)
+        Align(
+            alignment: Alignment.topCenter,
+            child: SafeArea(
+                child: SizedBox(
+                    width: _bannerAd1!.size.width.toDouble(),
+                    height: _bannerAd1!.size.height.toDouble(),
+                    child: AdWidget(ad: _bannerAd1!)
+                )
+            )
+        ),
       StepsHeader(activeStep: activeStep),
       Visibility(
         visible: activeStep == 0,

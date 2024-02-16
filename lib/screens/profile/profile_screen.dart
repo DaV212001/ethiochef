@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/models/AdMods.dart';
 import 'package:ethio_chef/screens/auth/auth_screen.dart';
 import 'package:ethio_chef/screens/subscription/layout/payment.dart';
 import 'package:ethio_chef/services/footer_service.dart';
@@ -42,11 +41,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     _future = fetchData();
-    AdMod.loadAd();
+    loadAd();
     super.initState();
   }
 
+  static String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
+  static BannerAd? _bannerAd1;
+  static BannerAd? _bannerAd2;
 
+  void loadAd() async {
+    print("Loading Ads");
+    await BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          _bannerAd1 = ad as BannerAd;
+        },
+        onAdFailedToLoad: (ad, err) {
+          print("Error loading ad: $err");
+          ad.dispose();
+        },
+      ),
+    ).load();
+    await BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          _bannerAd2 = ad as BannerAd;
+        },
+        onAdFailedToLoad: (ad, err) {
+          print("Error loading ad: $err");
+          ad.dispose();
+        },
+      ),
+    ).load();
+  }
   Future<dynamic> fetchData() async {
     var access_token = await AuthService.getAuthorizationToken();
     if(access_token == 'none'){
@@ -216,8 +249,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
               _future = fetchData();
             });
           }),
-          if (AdMod.adNullChecker(1) == true)
-            AdMod.displayAd1(),
+          if (_bannerAd1 != null)
+            Align(
+                alignment: Alignment.topCenter,
+                child: SafeArea(
+                    child: SizedBox(
+                        width: _bannerAd1!.size.width.toDouble(),
+                        height: _bannerAd1!.size.height.toDouble(),
+                        child: AdWidget(ad: _bannerAd1!)
+                    )
+                )
+            ),
           if(user.message=="User is not subscribed")
             GestureDetector(
               onTap: (){
@@ -253,8 +295,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
               });
             },
           ),
-          if (AdMod.adNullChecker(3) == true)
-            AdMod.displayAd3(),
+          if (_bannerAd2 != null)
+            Align(
+                alignment: Alignment.topCenter,
+                child: SafeArea(
+                    child: SizedBox(
+                        width: _bannerAd2!.size.width.toDouble(),
+                        height: _bannerAd2!.size.height.toDouble(),
+                        child: AdWidget(ad: _bannerAd2!)
+                    )
+                )
+            ),
           SizedBox(height: 5.h,),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),

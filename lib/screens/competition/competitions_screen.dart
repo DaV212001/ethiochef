@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/competition.dart';
-import 'package:ethio_chef/screens/competition/layout/contestant_description.dart';
 import 'package:ethio_chef/screens/subscription/layout/payment.dart';
 import 'package:ethio_chef/services/competition_service.dart';
 import 'package:ethio_chef/widgets/screen_head.dart';
@@ -10,7 +9,6 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
-import '../../models/AdMods.dart';
 import '../../services/subscription_checker.dart';
 import '../../services/user_service.dart';
 import '../../utils/screen_utils.dart';
@@ -49,10 +47,44 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
   @override
   void initState() {
     _future = fetchCompetition();
-    AdMod.loadAd();
+    loadAd();
     super.initState();
   }
+  static String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
+  static BannerAd? _bannerAd1;
+  static BannerAd? _bannerAd2;
 
+  void loadAd() async {
+    print("Loading Ads");
+    await BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          _bannerAd1 = ad as BannerAd;
+        },
+        onAdFailedToLoad: (ad, err) {
+          print("Error loading ad: $err");
+          ad.dispose();
+        },
+      ),
+    ).load();
+    await BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          _bannerAd2 = ad as BannerAd;
+        },
+        onAdFailedToLoad: (ad, err) {
+          print("Error loading ad: $err");
+          ad.dispose();
+        },
+      ),
+    ).load();
+  }
   @override
   Widget build(BuildContext context) {
     return RefreshWidget(
@@ -99,8 +131,17 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                 screen: 1,
                 searchHint: "search".tr(),
               ),
-              if (AdMod.adNullChecker(1) == true)
-                AdMod.displayAd1(),
+              if (_bannerAd1 != null)
+                Align(
+                    alignment: Alignment.topCenter,
+                    child: SafeArea(
+                        child: SizedBox(
+                            width: _bannerAd1!.size.width.toDouble(),
+                            height: _bannerAd1!.size.height.toDouble(),
+                            child: AdWidget(ad: _bannerAd1!)
+                        )
+                    )
+                ),
               ListView(
                 scrollDirection: Axis.vertical,
                 physics: BouncingScrollPhysics(),
@@ -131,8 +172,17 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                   ],
                 )],
               ),
-              if (AdMod.adNullChecker(2) == true)
-                AdMod.displayAd2()
+              if (_bannerAd2 != null)
+                Align(
+                    alignment: Alignment.topCenter,
+                    child: SafeArea(
+                        child: SizedBox(
+                            width: _bannerAd2!.size.width.toDouble(),
+                            height: _bannerAd2!.size.height.toDouble(),
+                            child: AdWidget(ad: _bannerAd2!)
+                        )
+                    )
+                )
             ]),
           ),
         ),

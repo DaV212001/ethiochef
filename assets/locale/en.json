@@ -220,5 +220,6 @@
   "do_you_have_skills_description": "So you can earn extra income by filming the dishes you make on your phone and sending them to the Ethio chef",
   "buy_your_food": "- We can buy your food from 300 to 1000 birr",
   "profile_update_successful": "Profile update successful",
-  "profile_update_failed": "Profile update failed"
+  "profile_update_failed": "Profile update failed",
+  "vote": "Please vote"
 }
