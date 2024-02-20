@@ -10,11 +10,9 @@ import '../../../widgets/subscription/subscription_card.dart';
 
 class UserSubscription extends StatefulWidget {
 
-  List<h.SubscriptionPlans> subscriptionPlans = [];
   List<h.SubscriptionPlans> userSubscriptionPlans = [];
   String duration_user;
   UserSubscription({super.key,
-  required this.subscriptionPlans,
     required this.userSubscriptionPlans,
     required this.duration_user
   });

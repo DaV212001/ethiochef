@@ -1,16 +1,18 @@
-import 'package:ethio_chef/widgets/cached_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pod_player/pod_player.dart';
 
-import '../../../widgets/youtube_video_player.dart';
-
+import '../../../models/contestants.dart';
+import 'package:chewie/chewie.dart';
 class ContestantHeaderImage extends StatefulWidget {
   final String image;
   final String video;
-  const ContestantHeaderImage(
+  Contestant contestant;
+  ContestantHeaderImage(
       {super.key,
         required this.image,
-        required this.video
+        required this.video,
+        required this.contestant
       });
 
   @override
@@ -18,6 +20,37 @@ class ContestantHeaderImage extends StatefulWidget {
 }
 
 class _ContestantHeaderImageState extends State<ContestantHeaderImage> {
+  late VideoPlayerController _videoPlayerController;
+  late ChewieController _chewieController;
+  @override
+  void initState() {
+    print(widget.contestant.video);
+    super.initState();
+    _videoPlayerController = VideoPlayerController.network(widget.contestant.video.toString());
+    _videoPlayerController.initialize().then((_) {
+      print("=============================================================================================================================");
+      print(widget.contestant.video);
+      _chewieController = ChewieController(
+        videoPlayerController: _videoPlayerController,
+        autoPlay: true,
+        looping: true,
+      );
+      setState(() {});
+    });
+    _videoPlayerController.addListener(() {
+      if (_videoPlayerController.value.hasError) {
+        print(widget.contestant.video);
+        print('=============================================================================================================================Error: ${_videoPlayerController.value.errorDescription}');
+      }
+    });
+    _chewieController = ChewieController(
+      videoPlayerController: _videoPlayerController,
+      autoPlay: true,
+      looping: true,
+    );
+
+
+  }
 
 
   @override
@@ -25,22 +58,18 @@ class _ContestantHeaderImageState extends State<ContestantHeaderImage> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     ThemeData theme = Theme.of(context);
-    return Stack(children: [
-      if (widget.video != null&& widget.video!.isNotEmpty && widget.video != "")
-        SizedBox(
-          width: width,
-          height: height * 0.3,
-          child: YoutubeVideoPlayer(
-            link: widget.video.toString()
-          )
-        ),
-      if (widget.video == null || widget.video == "")
-        SizedBox(
-          width: width,
-          height: height * 0.4,
-          child: CachedImage(url: widget.image, fit: BoxFit.fill),
-        )
-    ]);
-  }
+    return SizedBox(
+        width: width,
+        height: height * 0.3,
+        child: _chewieController != null ? Chewie(controller: _chewieController)
+            : Center(child: CircularProgressIndicator()),
+    );
 
+  }
+  @override
+  void dispose() {
+    _videoPlayerController.dispose();
+    super.dispose();
+  }
 }
+

@@ -221,5 +221,9 @@
   "buy_your_food": "- We can buy your food from 300 to 1000 birr",
   "profile_update_successful": "Profile update successful",
   "profile_update_failed": "Profile update failed",
-  "vote": "Please vote"
+  "please_vote": "Please vote",
+  "sms_cannot_see_competition": "Since you have used SMS to register please subscribe using our banking system",
+  "no_update_available": "You are up to date",
+  "no": "{} is not available currently",
+  "sms_user_message": "You sent OK to 7753 to register"
 }

@@ -47,7 +47,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
     if(privacyPolicies.length == 0) {
       return Scaffold(
         appBar: MainAppBar(
-          title: "Privacy Policy".tr(),
+          title: "privacy_policy".tr(),
           hasMainIcons: false,
         ),
         body: Center(
@@ -55,10 +55,10 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                 onPress: () {
                   fetchPrivacyPolicies();
                 },
-                infoTitle: "No privacy policies",
-                infoBody: "No privacy policies currently",
+                infoTitle: "privacy_policy",
+                infoBody: "no".tr(args: ["privacy_policy".tr()]),
                 closeText: "",
-                buttonText: "Reload",
+                buttonText: "refresh".tr(),
                 infoImage: "",
                 closeBtn: false)),
       );
@@ -66,7 +66,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
     final bool isTablet = ScreenUtils.isTablet(context);
     return Scaffold(
         appBar: MainAppBar(
-        title: "Privacy Policy".tr(),
+        title: "privacy_policy".tr(),
     hasMainIcons: false,
     ),
     body: Padding(

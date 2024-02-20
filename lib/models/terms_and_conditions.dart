@@ -1,3 +1,5 @@
+import 'package:ethio_chef/models/language.dart';
+
 class TermsAndConditions{
   final String title;
   final String body;
@@ -9,8 +11,8 @@ class TermsAndConditions{
 
   factory TermsAndConditions.fromJson(Map<String, dynamic> json) {
     return TermsAndConditions(
-        title: json['title'],
-        body: json['body']
+        title: json['title'][Language.getLocaleCode()] ?? json['title']['en'],
+        body: json['body'][Language.getLocaleCode()] ?? json['body']['en']
     );
   }
 }

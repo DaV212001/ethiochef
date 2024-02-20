@@ -60,7 +60,7 @@ class InfoCard extends StatelessWidget {
             textAlign: TextAlign.start,
             style: TextStyle(
               fontSize: 20.sp,
-              color: theme.canvasColor,
+              color: theme.colorScheme.tertiary,
             ),
           ),
           Text(

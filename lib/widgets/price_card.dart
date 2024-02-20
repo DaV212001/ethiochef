@@ -26,6 +26,7 @@ class _PriceCardState extends State<PriceCard> {
     Duration duration = Duration(days: widget.duration*30);
     DateTime expirationDate = now.add(duration);
     final bool isTablet = ScreenUtils.isTablet(context);
+
     ThemeData theme = Theme.of(context);
     return  Container(
       decoration: BoxDecoration(

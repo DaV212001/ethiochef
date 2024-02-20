@@ -68,14 +68,18 @@ class _AllSubscriptionStepState extends State<AllSubscriptionStep> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // SubscriptionHeader(
-        //     isStepper: true
-        // ),
         if(widget.isNormalSubscription == true && isFromBank == true)
           UserSubscription(
             duration_user: duration_user,
-            subscriptionPlans: widget.userSubscriptionPlans!,
-            userSubscriptionPlans: widget.userSubscriptionPlans!,
+            userSubscriptionPlans: widget.userSubscriptionPlans!
+          ),
+        if(widget.isNormalSubscription == true && isFromBank == false)
+          Text(
+            "sms_user_message".tr(),
+            style: TextStyle(
+                fontSize: 15.sp,
+                fontWeight: FontWeight.bold,
+                color: theme.colorScheme.secondaryContainer),
           ),
         Text(
           "please_select_a_plan".tr(),

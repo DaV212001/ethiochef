@@ -39,8 +39,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
 
   Future<dynamic> fetchData() async {
     try {
-      // UpdateManager um = UpdateManager();
-      // um.showUpdateDialog(context);
+      UpdateManager um = UpdateManager();
+      um.showUpdateDialog(context);
       NotificationScheduled.init();
       listenNotification();
       final categoryService = CategoryService();

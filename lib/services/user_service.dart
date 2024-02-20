@@ -45,6 +45,7 @@ class UserService {
 
   Future<http.Response> login(String phone) async {
     String phone_number = "251" + phone;
+    print({"phone_number": phone_number});
     final response = await http.post(
         Uri.parse("https://apiv2.ethiochef.com/user/login"),
         body: {"phone_number": phone_number});

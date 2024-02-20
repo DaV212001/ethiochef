@@ -15,6 +15,7 @@ class AppTheme {
   static ThemeData lightTheme = ThemeData(
       brightness: Brightness.light,
       primaryColor: primaryColor,
+
       unselectedWidgetColor: gray,
       cardColor: antiFlashWhite,
       scaffoldBackgroundColor: white,

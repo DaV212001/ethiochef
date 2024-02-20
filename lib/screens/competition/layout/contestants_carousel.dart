@@ -21,11 +21,13 @@ class Contestants extends StatefulWidget {
   final int contest_id;
   final Competition competition;
   final List<Contestant>? contestant;
-
+  final Function() refresh;
   Contestants({super.key,
     required this.contestant,
     required this.contest_id,
-    required this.competition});
+    required this.competition,
+    required this.refresh
+  });
 
   @override
   State<Contestants> createState() => _ContestantsState();
@@ -33,11 +35,11 @@ class Contestants extends StatefulWidget {
 
 class _ContestantsState extends State<Contestants> {
   bool Loading = false;
-
+  bool isVoted = false;
   @override
   Widget build(BuildContext context) {
     final bool isTablet = ScreenUtils.isTablet(context);
-    double height = 220;
+    double height = 120;
     double width = 165;
     ThemeData theme = Theme.of(context);
     return Column(
@@ -63,91 +65,91 @@ class _ContestantsState extends State<Contestants> {
                 itemExtent: width,
                 itemCount: widget.contestant!.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(
-                      onTap: (){
-                        pushNewScreen(
-                            context,
-                            screen: ContestantDescription(
-                                competition: widget.competition,
-                                contestant: widget.contestant![index]));
-                      },
-                    child: Card(
-                      color: theme.cardColor,
+                  return Container(
+                    color: theme.cardColor,
+                    child: GestureDetector(
+                        onTap: (){
+                          pushNewScreen(
+                              context,
+                              screen: ContestantDescription(
+                                  competition: widget.competition,
+                                  contestant: widget.contestant![index]));
+                        },
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          CachedImage(
-                            url: widget.contestant![index].image!,
-                            fit: BoxFit.cover
-                          ),
-                          SizedBox(height: 5.h),
-                          Text("${widget.contestant![index].firstName.toString()} ${widget.contestant![index].lastName.toString()}",
-
+                          Text("${widget.contestant![index].firstName.toString()}",
                             style: TextStyle(
-                                fontSize: isTablet ? 11.sp : 15.sp,
+                                fontSize: isTablet ? 12.sp : 17.sp,
                                 fontWeight: FontWeight.w800,
                                 color: theme.colorScheme.secondaryContainer),
                           ),
-                          SizedBox(height: 5.h),
-                          Text("${widget.contestant![index].phone.toString()}",
 
-                            style: TextStyle(
-                                fontSize: isTablet ? 10.sp : 14.sp,
-                                fontWeight: FontWeight.w400,
-                                color: theme.colorScheme.secondaryContainer),),
                           SizedBox(height: 5.h),
                           Text('votes'.tr(args: [widget.contestant![index].votes.toString()]),
                             style: TextStyle(
                                 fontSize: isTablet ? 10.sp : 14.sp,
                                 fontWeight: FontWeight.w500,
                                 color: theme.colorScheme.secondaryContainer),),
-                          Align(
-                            child: GestureDetector(
-                              onTap: ()async {
-                                setState(() {
-                                  Loading = true;
-                                });
-                                print("voting");
+                          Row(
+                            children: [
+                              Text("please_vote".tr(),
+                                style: TextStyle(
+                                    fontSize: isTablet ? 11.sp : 15.sp,
+                                    fontWeight: FontWeight.w800,
+                                    color: theme.colorScheme.primary),
+                              ),
+                              SizedBox(width: 5,),
+                              GestureDetector(
+                                onTap: ()async {
+                                  setState(() {
+                                    Loading = true;
+                                  });
+                                  print("voting");
 
-                                CompetitionService cmp = CompetitionService();
-                                print("voting 2");
+                                  CompetitionService cmp = CompetitionService();
+                                  print("voting 2");
 
-                                try {
-                                  print("voting 3");
-                                  print(widget.contestant![index].id!);
-                                  print(widget.contest_id!);
-                                  var response = await cmp.voteContestant(widget.contestant![index].id!, widget.contest_id!);
+                                  try {
+                                    print("voting 3");
+                                    print(widget.contestant![index].id!);
+                                    print(widget.contest_id!);
+                                    var response = await cmp.voteContestant(widget.contestant![index].id!, widget.contest_id!);
 
-                                  if(response?.statusCode == 200){
+                                    if(response?.statusCode == 200){
+                                      setState(() {
+                                        Loading = false;
+                                      });
+                                      widget.refresh();
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Competition liked!')));
+                                    }
+                                  } catch(e){
                                     setState(() {
                                       Loading = false;
                                     });
-                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Competition liked!')));
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
                                   }
-                                } catch(e){
+
                                   setState(() {
                                     Loading = false;
                                   });
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
-                                }
+                                },
+                                child: Container(
+                                  width: 30,
+                                  height: 30,
+                                  child: !Loading?Center(
+                                      child: Icon(
+                                          Icons.favorite,
+                                          color: theme.colorScheme.primary
+                                      )
+                                  ): CircularProgressIndicator(),
+                                )
+                              )
 
-                                setState(() {
-                                  Loading = false;
-                                });
-                              },
-                              child: Container(
-                                width: 30,
-                                height: 30,
-                                child: !Loading?Center(
-                                  child: Icon(
-                                    Icons.favorite_border,
-                                    color: theme.colorScheme.primary,
-                                  ),
-                                ): CircularProgressIndicator(),
-                              ),
-                            ),alignment: Alignment.bottomLeft,
+                            ],
                           )
+
 
 
                         ]

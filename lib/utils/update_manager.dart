@@ -32,13 +32,11 @@ class UpdateManager {
       }
       final jsonData = json.decode(response.body)["data"][0];
       print(jsonData);
-      print(jsonData["latest_version_android"]);
-      print(jsonData["minimum_version_android"]);
       //todo get form api
       final updateInfoJson = {
         'latest_version_android': jsonData["latest_version_android"],
         'minimum_version_android': jsonData["minimum_version_android"],
-        "update_link_android": "https://play.google.com/store/apps/details?id=co.digitalmerkato",
+        "update_link_android": "https://play.google.com/store/apps/details?id=com.peacetechnology.ethiochef",
         'latest_version_ios': jsonData["latest_version_ios"],
         'minimum_version_ios': jsonData["minimum_version_ios"],
         "update_link_ios": ""
@@ -59,7 +57,9 @@ class UpdateManager {
       updateInfoJson['latest_version_$platform'].toString();
       String minimumVersion =
       updateInfoJson['minimum_version_$platform'].toString();
-
+      print("installedVersion $installedVersion");
+      print("latestVersion $latestVersion");
+      print("minimumVersion $minimumVersion");
       if (installedVersion == latestVersion) {
         return statusNoUpdate;
       } else if (isVersionNewer(installedVersion, minimumVersion)) {
@@ -72,7 +72,9 @@ class UpdateManager {
     }
     return statusNoUpdate;
   }
-
+  String updateUrl(){
+    return url;
+  }
   void showUpdateDialog(BuildContext context) async {
     if (popUpShowed) {
       return;
@@ -82,6 +84,7 @@ class UpdateManager {
       return;
     }
     bool requiredUpdate = updateStatus == statusRequiredUpdate;
+    print("requiredUpdate $requiredUpdate");
     popUpShowed = true;
     showDialog(
       context: context,

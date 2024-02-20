@@ -14,7 +14,6 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../../main.dart';
 import '../../../models/user.dart';
-import '../../../models/user_profile.dart';
 import '../../../services/authorization_service.dart';
 import '../../../services/firsebase_service.dart';
 import '../../../services/subscription_checker.dart';

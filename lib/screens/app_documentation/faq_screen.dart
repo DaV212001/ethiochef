@@ -49,10 +49,10 @@ class _FaqScreenState extends State<FaqScreen> {
                 onPress: () {
                   fetchFaqs();
                 },
-                infoTitle: "No faq",
-                infoBody: "No Frequently Asked Questions currently",
+                infoTitle: "faq".tr(),
+                infoBody: "no".tr(args: ["faq".tr()]),
                 closeText: "",
-                buttonText: "Reload",
+                buttonText: "refresh".tr(),
                 infoImage: "",
                 closeBtn: false))
       );

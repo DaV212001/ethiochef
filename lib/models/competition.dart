@@ -65,9 +65,6 @@ class Competition {
     }
     final ingredients = json['ingredient'] as List<dynamic>?;
 
-    final ingredientList = ingredients?.map((ingredient) {
-      return Map<String, String>.from(ingredient as Map<dynamic, dynamic>);
-    }).toList() ?? [];
 List vote = json['vote'] as List;
 
 var competitors = json['contestant'] as List;

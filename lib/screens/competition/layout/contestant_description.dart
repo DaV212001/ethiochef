@@ -24,8 +24,7 @@ class _ContestantDescriptionState extends State<ContestantDescription> {
   @override
   Widget build(BuildContext context) {
     String? firstName = widget.contestant.firstName;
-    String? lastName = widget.contestant.lastName;
-    String formattedName = "${firstName} ${lastName}";
+    String formattedName = "${firstName}";
     ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: MainAppBar(
@@ -42,7 +41,8 @@ class _ContestantDescriptionState extends State<ContestantDescription> {
                     SafeArea(
                         child: ContestantHeaderImage(
                             video: widget.competition.videoFromContestant!,
-                            image: widget.competition.image!
+                            image: widget.competition.image!,
+                            contestant: widget.contestant
                         )
                     ),
                     Padding(
@@ -60,10 +60,7 @@ class _ContestantDescriptionState extends State<ContestantDescription> {
                                     Container(
                                         width: 50,
                                         height: 50,
-                                        child: widget.contestant.image != null ? CachedImage(
-                                          url: widget.contestant.image!,
-                                          fit: BoxFit.cover,
-                                        ):Image.asset("assets/images/logo.png",width: 50.sp, height: 50.sp)
+                                        child: Image.asset("assets/images/logo.png",width: 50.sp, height: 50.sp)
                                     ),
                                     SizedBox(width: 10.h),
                                     Expanded(
@@ -76,11 +73,6 @@ class _ContestantDescriptionState extends State<ContestantDescription> {
                                                       fontSize: 20.sp,
                                                       fontWeight: FontWeight.w800,
                                                       color: theme.colorScheme.secondaryContainer)),
-                                              Text("${widget.contestant.phone}",
-                                                  style: TextStyle(
-                                                      fontSize: 20.sp,
-                                                      fontWeight: FontWeight.w800,
-                                                      color: theme.colorScheme.secondaryContainer))
                                             ]
                                         )
                                     ),

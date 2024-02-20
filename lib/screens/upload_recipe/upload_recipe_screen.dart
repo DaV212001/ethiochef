@@ -186,16 +186,6 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
                   ),
                 ),
                 SizedBox(height: 20,),
-                Text(
-                  "uploading_body".tr(),
-                  style: TextStyle(
-                    color: theme.colorScheme.secondaryContainer,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 17.sp,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 20,),
                 Loading(),
               ],
             ):VideoStep(

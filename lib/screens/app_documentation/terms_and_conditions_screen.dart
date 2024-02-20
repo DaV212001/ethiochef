@@ -57,8 +57,8 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
                     fetchTermsAndConditions();
                   });
                 },
-                infoTitle: "no_terms_and_conditions".tr(),
-                infoBody: "",
+                infoTitle: "terms_and_conditions".tr(),
+                infoBody: "no".tr(args: ["terms_and_conditions".tr()]),
                 closeText: "",
                 buttonText: "refresh".tr(),
                 infoImage: "",
