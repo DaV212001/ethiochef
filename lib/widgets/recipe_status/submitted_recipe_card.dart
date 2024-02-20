@@ -11,7 +11,8 @@ import '../../models/submitted_recipe.dart';
 import '../../screens/auth/auth_screen.dart';
 import '../../screens/recipe/recipe_screen.dart';
 import '../../screens/recipe_status/layout/my_submitted_description.dart';
-import '../../screens/subscription/all_subscriptions.dart';
+
+import '../../screens/subscription/layout/payment.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/screen_utils.dart';
 import '../cached_image.dart';
@@ -85,11 +86,7 @@ class _SubmittedRecipeCardState extends State<SubmittedRecipeCard> {
             pushNewScreen(
               context,
               withNavBar: false,
-              screen: AllSubscriptions(returnPrice: (int ) {  },
-                first_name: "",
-                last_name: "",
-                isSignUp:
-                false,phone: "",),
+              screen: PaymentCheckout(isNormalSubscription: true)
             );
             break;
         }

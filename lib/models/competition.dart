@@ -51,20 +51,8 @@ class Competition {
   factory Competition.fromJson(Map<String, dynamic> json) {
     print("==== ${json['contestant']}");
     print("json $json");
-    String? imagePath = json['image'];
-    String videoPath = json['video'];
     print(json['video']);
     print("'''''''''''''''''''''''''''''''''''''''''''''''''''''''''");
-    File? image;
-    File? video;
-    if (imagePath != null) {
-      image = File(imagePath);
-    }
-    if(videoPath != null){
-      video = File(videoPath);
-    }
-    final ingredients = json['ingredient'] as List<dynamic>?;
-
 List vote = json['vote'] as List;
 
 var competitors = json['contestant'] as List;

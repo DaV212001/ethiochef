@@ -1,11 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/language.dart';
-import 'package:ethio_chef/screens/subscription/layout/subscription_header.dart';
 import 'package:ethio_chef/screens/subscription/layout/user_subscription.dart';
-import 'package:ethio_chef/services/subscription_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../../../models/subscriptionplans.dart';
 import '../../../services/user_service.dart';

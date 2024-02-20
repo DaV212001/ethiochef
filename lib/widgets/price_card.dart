@@ -79,7 +79,7 @@ class _PriceCardState extends State<PriceCard> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      '${Language.getLocaleCode() == 'en'? 'Get plan': "ሰብስክራይብ ያድርጉ"}',
+                      '${Language.getLocaleCode() == 'en'? 'Get plan': "ይምረጡ"}',
                         style: TextStyle(
                             fontFamily: 'Montserrat',
                           fontSize: 12,

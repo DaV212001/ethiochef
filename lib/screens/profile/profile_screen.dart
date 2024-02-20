@@ -16,10 +16,8 @@ import '../../utils/screen_utils.dart';
 import '../../widgets/error_card.dart';
 import '../../widgets/loading.dart';
 import '../../widgets/main_button.dart';
-import '../../widgets/profile/route_card.dart';
 import '../../widgets/profile/user_screen_footer.dart';
 import '../../widgets/pull_to_refresh.dart';
-import '../subscription/all_subscriptions.dart';
 import 'layout/route_list.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 

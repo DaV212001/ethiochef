@@ -122,7 +122,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
         children: [
           Blur(
             blurColor: theme.colorScheme.primary,
-            blur: isFromSms==true? 2.5
+            blur: isLoading == false && isFromSms==true? 2.5
                 : 0,
             overlay: isFromSms==true?SizedBox.shrink():
             Scaffold(
@@ -214,7 +214,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               MainButton(
-                                  text: 'pay'.tr(),
+                                  text: 'yes'.tr(),
                                   onPress: () async {
                                     pushNewScreen(context, withNavBar: false, screen: PaymentCheckout(isNormalSubscription: true));
                                   }),

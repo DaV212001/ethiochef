@@ -60,7 +60,9 @@ class _ContestantDescriptionState extends State<ContestantDescription> {
                                     Container(
                                         width: 50,
                                         height: 50,
-                                        child: Image.asset("assets/images/logo.png",width: 50.sp, height: 50.sp)
+                                        child: widget.contestant!.image! !=""?
+                                        Image.network(widget.contestant!.image!, fit: BoxFit.fill,):
+                                        Image.asset("assets/images/logo.png",width: 50.sp, height: 50.sp)
                                     ),
                                     SizedBox(width: 10.h),
                                     Expanded(
