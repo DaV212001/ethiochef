@@ -62,6 +62,9 @@ class _FaqScreenState extends State<FaqScreen> {
         hasMainIcons: false,
       ),
       body: ListView.builder(
+        physics: BouncingScrollPhysics(),
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
         itemCount: faqs.length,
         itemBuilder: (context, index) {
           return ExpansionTile(

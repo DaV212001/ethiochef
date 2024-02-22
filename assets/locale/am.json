@@ -187,7 +187,7 @@
   "submit_a_competition": "የውድድር ቪዲዮ ያሰገቡ",
   "no_competition": "የውድድር ቪዲዮ ለማስገባት መጀመሪያ ይሁኑ።",
   "sms_payment_error": "ውድድር ላይ በመሳተፍ ተሸላሚ መሆነ ይፈልጋሉ?",
-  "yes": "አው",
+  "yes": "አዎን",
   "sms_cannot_see_competition": "ውድድር ላይ በመሳተፍ ተሸላሚ መሆነ ይፈልጋሉ?",
   "pay": "ይቀይሩ",
   "resend": "እንደገና ይላኩ",
@@ -206,7 +206,7 @@
   "verify_extension": "እባክዎ የሰብስክሪብሽን ዕቅድዎን ያረጋግጡ",
   "payment_method": "የመረጡት የክፍያ ዘዴ",
   "subscription_plan": "የመረጡት የሰብስክሪብሽን ዕቅድ",
-  "please_select_a_plan": "እባክዎ የአገልግሎት ጊዘ ይምረቱ ቢባል።",
+  "please_select_a_plan": "እባክዎ የሚፈልጉትን የአገልግሎት ጊዜ ይምረጡ።",
   "upload_video": "ቪዲዮ ይላኩ",
   "ended_subscription": "የእርስዎ ኮንትራት አብቅቷል እባክዎ አፕሊክሽኑን ለመጠቀም ይክፈሉ",
   "new_version": "መተግበሪያውን ያሻሽሉ",
@@ -223,5 +223,5 @@
   "no_update_available": "ስሪት ወቅታዊ ነው",
   "no": "በአሁኑ ጊዜ {} አልተገኘም",
   "please_vote": "ድምጽ ይስቱ",
-  "sms_user_message": "ባክዎ ይሚፈልጉትን የክፍያ አማራጭ  ይምረቱ።"
+  "sms_user_message": "እባክዎ የሚፈልጉትን የክፍያ አማራጭ ይምረጡ።"
 }

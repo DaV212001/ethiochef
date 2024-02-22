@@ -188,7 +188,7 @@ class _MainScreenState extends State<MainScreen> {
           color: Theme
               .of(context)
               .colorScheme
-              .onSecondary,
+              .secondaryContainer,
         ),
         inactiveIcon: SvgIcon(
           size: 20,

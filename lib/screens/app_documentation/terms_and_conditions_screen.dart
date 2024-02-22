@@ -35,6 +35,7 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     if(isLoading) {
       return Scaffold(
         appBar: MainAppBar(
@@ -74,32 +75,39 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
         body: Padding(
           padding: const EdgeInsets.only(top: 10, left: 12,right: 12),
           child: ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
+              physics: BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               itemCount: termsAndConditions.length,
               itemBuilder: (context, index) {
-                return Column(
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text(
-                      termsAndConditions[index].title,
+                  Text(
+                    "${termsAndConditions[index].title}. ",
+                    softWrap: true,
+                    overflow: TextOverflow.visible,
+                    style: TextStyle(
+                        fontSize: isTablet ? 15.sp : 19.sp,
+                        fontWeight: FontWeight.w600,
+                        color: theme.colorScheme.primary),
+                  ),
+                  SizedBox(width: 5,)
+                ,SizedBox(
+                    width: 360.sp,
+                    child: Text(
+                      "${termsAndConditions[index].body}",
+                      softWrap: true,
+                      overflow: TextOverflow.visible,
                       style: TextStyle(
-                          fontSize: isTablet ? 8.sp : 13.sp,
-                          fontWeight: FontWeight.w300),
-                    ),
-                    const Divider(),
-                    Text(
-                      termsAndConditions[index].body,
-                      style: TextStyle(
-                          fontSize: isTablet ? 11.sp : 16.sp,
-                          fontWeight: FontWeight.w500),
-                    ),
-
-                  ],
-                );
-              }),
+                          fontSize: isTablet ? 15.sp : 19.sp,
+                          fontWeight: FontWeight.w600,
+                          color: theme.colorScheme.secondaryContainer)
+                    )
+                  )
+                ]);
+              })
         )
     );
   }
