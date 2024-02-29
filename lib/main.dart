@@ -58,8 +58,8 @@ void main() async {
                   Locale('en'),
                 ],
                 path: 'assets/locale',
-                startLocale: Locale('am'),
-                fallbackLocale: const Locale('am'),
+                startLocale: Locale('en'),
+                fallbackLocale: const Locale('en'),
                 child: RestartWidget(child: EthioChef()))
   // ),
       )

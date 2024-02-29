@@ -59,7 +59,7 @@ class _DeepLinkHandlerState extends State<DeepLinkHandler> with WidgetsBindingOb
     });
 
     // Return true if the deep link matches the expected scheme and host
-    if (_latestUri != null && _latestUri?.scheme == 'https' && _latestUri?.host == 'ethiochef.com') {
+    if (_latestUri != null && _latestUri?.scheme == 'https' && _latestUri?.host == 'appdeeplink.ethiochef.com') {
       return true;
     }
 
@@ -73,11 +73,20 @@ class _DeepLinkHandlerState extends State<DeepLinkHandler> with WidgetsBindingOb
       builder: (context, setState)  {
         print('CHECKING TO SEEE IF WE CAN USE THE INITIAL URLLLLLL: $_initialUri');
         // Check if the deep link matches the expected scheme and host
-        if (!_navigated && ((_initialUri != null && _initialUri?.scheme == 'https' && _initialUri?.host == 'ethiochef.com') ||
-            (_latestUri != null && _latestUri?.scheme == 'https' && _latestUri?.host == 'ethiochef.com'))) {
+        if (!_navigated && ((_initialUri != null && _initialUri?.scheme == 'https' && _initialUri?.host == 'appdeeplink.ethiochef.com') ||
+            (_latestUri != null && _latestUri?.scheme == 'https' && _latestUri?.host == 'appdeeplink.ethiochef.com'))) {
           print('CHECKING FOR ORIGINALLL URL CORRECTNESS!!!!!: $_latestUri');
           // Extract the video file name from the deep link
           final foodId = _latestUri?.pathSegments.last??_initialUri?.pathSegments.last;
+          if(foodId == null){
+            _navigated =true;
+            return widget.child;
+          }
+          if(foodId == ''){
+            _navigated =true;
+            return widget.child;
+          }
+
           print('CHECKING FOR URL CORRECTNESS!!!!!:  $foodId');
           // get the food item from the url
           int foodID = int.parse(foodId!);

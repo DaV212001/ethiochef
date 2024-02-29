@@ -51,7 +51,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https"/>
-                <data android:host="ethiochef.com" />
+                <data android:host="appdeeplink.ethiochef.com" />
             </intent-filter>
             <!-- DEEP LINKING SET UP-->
 
