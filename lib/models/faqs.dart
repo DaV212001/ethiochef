@@ -1,3 +1,5 @@
+import 'language.dart';
+
 class FAQ{
   int? id;
   String? question;
@@ -14,9 +16,8 @@ class FAQ{
   });
 
   FAQ.fromJson(Map<dynamic, dynamic> json) {
-    id = json['id'];
-    question = json['question'];
-    answer = json['answer'];
+    question = json['question'][Language.getLocaleCode()] ?? json['question']['en'];
+    answer = json['answer'][Language.getLocaleCode()] ?? json['answer']['en'];
     createdAt = DateTime.parse(json['created_at']);
     updatedAt = DateTime.parse(json['updated_at']);
   }

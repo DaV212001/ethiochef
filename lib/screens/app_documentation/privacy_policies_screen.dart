@@ -35,6 +35,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     if(isLoading) {
       return Scaffold(
         appBar: MainAppBar(
@@ -47,7 +48,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
     if(privacyPolicies.length == 0) {
       return Scaffold(
         appBar: MainAppBar(
-          title: "Privacy Policy".tr(),
+          title: "privacy_policy".tr(),
           hasMainIcons: false,
         ),
         body: Center(
@@ -55,10 +56,10 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                 onPress: () {
                   fetchPrivacyPolicies();
                 },
-                infoTitle: "No privacy policies",
-                infoBody: "No privacy policies currently",
+                infoTitle: "privacy_policy",
+                infoBody: "no".tr(args: ["privacy_policy".tr()]),
                 closeText: "",
-                buttonText: "Reload",
+                buttonText: "refresh".tr(),
                 infoImage: "",
                 closeBtn: false)),
       );
@@ -66,37 +67,44 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
     final bool isTablet = ScreenUtils.isTablet(context);
     return Scaffold(
         appBar: MainAppBar(
-        title: "Privacy Policy".tr(),
+        title: "privacy_policy".tr(),
     hasMainIcons: false,
     ),
     body: Padding(
       padding: const EdgeInsets.only(top: 10, left: 12,right: 12),
       child: ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
+          physics: BouncingScrollPhysics(),
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
           itemCount: privacyPolicies.length,
           itemBuilder: (context, index) {
-                return Column(
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
-              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  privacyPolicies[index].title,
+                  "${privacyPolicies[index].title}. ",
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
                   style: TextStyle(
-                      fontSize: isTablet ? 8.sp : 13.sp,
-                      fontWeight: FontWeight.w300),
+                      fontSize: isTablet ? 15.sp : 19.sp,
+                      fontWeight: FontWeight.w600,
+                      color: theme.colorScheme.primary),
                 ),
-                const Divider(),
-                Text(
-                  privacyPolicies[index].body,
-                  style: TextStyle(
-                      fontSize: isTablet ? 11.sp : 16.sp,
-                      fontWeight: FontWeight.w500),
-                ),
-
-              ],
-            );
+                SizedBox(width: 5,)
+                ,SizedBox(
+                  width: 350.sp,
+                  child: Text(
+                    "${privacyPolicies[index].body}",
+                    softWrap: true,
+                    overflow: TextOverflow.visible,
+                    style: TextStyle(
+                        fontSize: isTablet ? 15.sp : 19.sp,
+                        fontWeight: FontWeight.w600,
+                        color: theme.colorScheme.secondaryContainer),
+                  ),
+                )
+              ],);
           }),
     )
     );

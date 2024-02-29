@@ -90,7 +90,9 @@ dependencies:
   firebase_analytics: ^10.8.0
   quickalert: ^1.0.2
   abushakir: ^1.0.0
-
+  flutter_datetime_picker: ^1.5.1
+  change_app_package_name: ^1.1.0
+  blur: ^3.1.0
 
 
 dev_dependencies:

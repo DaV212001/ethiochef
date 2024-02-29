@@ -141,7 +141,6 @@ class _AllSubscriptionsState extends State<AllSubscriptions> {
                           if(userSubscriptionPlans.isNotEmpty)
                             UserSubscription(
                               duration_user: duration_user,
-                              subscriptionPlans: subscriptionPlans,
                               userSubscriptionPlans: userSubscriptionPlans,
                             ),
                             Subscriptions()

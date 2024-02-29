@@ -15,6 +15,7 @@ class AppTheme {
   static ThemeData lightTheme = ThemeData(
       brightness: Brightness.light,
       primaryColor: primaryColor,
+
       unselectedWidgetColor: gray,
       cardColor: antiFlashWhite,
       scaffoldBackgroundColor: white,
@@ -54,7 +55,7 @@ class AppTheme {
             primary: primaryColor, secondary: white, primaryContainer: denim_O20)),
     canvasColor: gold,
     colorScheme: ColorScheme.dark(
-        primary: cocoaBrown,
+        primary: primaryColor,
         primaryContainer: gold_O40,
         secondary: russet,
         secondaryContainer: antiFlashWhite,
@@ -80,21 +81,18 @@ class AppTheme {
   static const Color tomato = Color(0xFFFD3A39);
 
   static const Color mikadoYellow = Color(0xFF7E3B0E);//
-  // static const Color antiFlashWhite = Color(0xFFD2691E);//
   static const Color platinum = const Color(0x11D2691E);//
   static const Color gray = const Color(0xAA646464); // //gray darker
   static const Color gunmetal = const Color(0xFFCCCACA);
   static const Color gold = const Color(0xFFECECEC);
 
-  static const Color prussianBlue = Color(0xFF27374D);
+  static const Color prussianBlue = Color(0xFF273C4D);
   static const Color prussianBlue2 = Color(0xFF1E293B);
   static const Color cadetGray = Color(0xFF9E9E9E); //gray
   static const Color denim_O20 = Color(0x33285EAC);
 
   static const Color gold_O40 = Color(0x66FED600);
   static const Color tyrianPurple_40 = Color(0x2659002E);
-  // static const Color tomato = Color(0xFFFE4A49);
-  // static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
 
   static TextStyle addressCardButton(Color color) =>

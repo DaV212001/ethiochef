@@ -11,9 +11,8 @@ import '../utils/screen_utils.dart';
 import 'app_bar_icon.dart';
 import '../models/recipe_show_checker.dart';
 import '../screens/auth/auth_screen.dart';
-import '../screens/notification/notification_screen.dart';
 import '../screens/subscription/all_subscriptions.dart';
-import '../services/authorization_service.dart';
+
 
 class MainAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;

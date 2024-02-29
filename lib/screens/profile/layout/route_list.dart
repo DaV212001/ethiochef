@@ -3,12 +3,17 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/subscription/layout/payment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import '../../../theme/model_theme.dart';
+import '../../../utils/update_manager.dart';
 import '../../../widgets/profile/route_container.dart';
 import '../../../widgets/profile/saved_recipe.dart';
+import '../../../widgets/update_card.dart';
 import '../../app_documentation/about.dart';
 import '../../app_documentation/faq_screen.dart';
 import '../../app_documentation/privacy_policies_screen.dart';
@@ -29,6 +34,7 @@ class RouteList extends StatefulWidget {
 }
 
 class _RouteListState extends State<RouteList> {
+  static final int statusNoUpdate = 0;
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ModelTheme>(context);
@@ -161,8 +167,9 @@ class _RouteListState extends State<RouteList> {
         "title": "new_version".tr(),
         "leadingIcon": Icons.settings_applications,
         "onTap": () {
+          checkIfUpdateIsAvailable();
           print("new_version");
-          _launchUrl();
+
         },
         "trailing":
         Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary)
@@ -207,11 +214,65 @@ class _RouteListState extends State<RouteList> {
       ),
     );
   }
+  Future<void> checkIfUpdateIsAvailable()async{
+    UpdateManager update = UpdateManager();
+    int status = await update.checkForUpdate();
+    String url = update.updateUrl();
+    if(status == statusNoUpdate){
+      noUpDateRequired(context);
+    }else{
+      updateIsAvailable(url);
+    }
+  }
   Future<void> _launchUrl() async {
     String url = "https://play.google.com/store/apps/details?id=com.peacetechnology.ethiochef";
     if (!await launchUrl(Uri.parse(url))) {
       throw Exception('Could not launch $url');
     }
+  }
+  void noUpDateRequired(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.success,
+      showCancelBtn: false,
+      showConfirmBtn: false,
+      title: "",
+      text: 'no_update_available'.tr(),
+      titleAlignment: TextAlign.center,
+      textAlignment: TextAlign.center,
+      confirmBtnColor: theme.colorScheme.primary,
+      backgroundColor: theme.colorScheme.secondary,
+      headerBackgroundColor: theme.colorScheme.primary,
+      barrierColor: Colors.transparent,
+      titleColor: theme.colorScheme.primary,
+      textColor: theme.colorScheme.primary
+    );
+  }
+  updateIsAvailable(String url){
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return WillPopScope(
+          onWillPop: () async {
+            return true;
+          },
+          child: Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.r),
+              ),
+              backgroundColor: Theme
+                  .of(context)
+                  .cardColor,
+              child: UpdateCard(
+                  isRequired: false,
+                  uri: Uri.parse(url)
+              )
+          ),
+        );
+      },
+    );
   }
 }
 

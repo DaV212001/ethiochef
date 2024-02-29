@@ -84,6 +84,28 @@ class CompetitionService {
     return response;
   }
 
+  Future<http.Response>? unVoteContestant(int contestant_id) async {
+    print("voteContestant");
+    var access_token = await AuthService.getAuthorizationToken();
+    var request_body = jsonEncode({
+      "contestant_id": contestant_id
+    });
+    final response;
+    try {
+      response = await http.post(
+        Uri.parse("${Constants.url}/user/contest/unvote/$contestant_id"),
+      );
+      print("res.statusCode  == = == = = == = = = ${response.statusCode}");
+      print("res.body  == = == = = == = = = ${response.body}");
+      var message = jsonDecode(response.body);
+      if (response.statusCode != 200) {
+        throw Exception('${response.statusCode.toString()}: ${message['message']}');
+      }
+    } catch (error) {
+      rethrow;
+    }
+    return response;
+  }
   Future<http.Response>? voteContestant(int contestant_id, int contest_id) async {
     print("voteContestant");
     var access_token = await AuthService.getAuthorizationToken();

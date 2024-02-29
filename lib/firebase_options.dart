@@ -55,7 +55,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCw1Vk3c3zvgpUojVFUaLNU1os5Jz8Mct8',
-    appId: '1:1038349049933:android:e085f91e4b4ff0d4e3fc04',
+    appId: '1:1038349049933:android:7c0cfe54cb426dbee3fc04',
     messagingSenderId: '1038349049933',
     projectId: 'ethiochef-f96a7',
     storageBucket: 'ethiochef-f96a7.appspot.com',

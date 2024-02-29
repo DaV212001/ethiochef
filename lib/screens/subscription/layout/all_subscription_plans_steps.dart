@@ -1,11 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/language.dart';
-import 'package:ethio_chef/screens/subscription/layout/subscription_header.dart';
 import 'package:ethio_chef/screens/subscription/layout/user_subscription.dart';
-import 'package:ethio_chef/services/subscription_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../../../models/subscriptionplans.dart';
 import '../../../services/user_service.dart';
@@ -68,14 +65,18 @@ class _AllSubscriptionStepState extends State<AllSubscriptionStep> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // SubscriptionHeader(
-        //     isStepper: true
-        // ),
         if(widget.isNormalSubscription == true && isFromBank == true)
           UserSubscription(
             duration_user: duration_user,
-            subscriptionPlans: widget.userSubscriptionPlans!,
-            userSubscriptionPlans: widget.userSubscriptionPlans!,
+            userSubscriptionPlans: widget.userSubscriptionPlans!
+          ),
+        if(widget.isNormalSubscription == true && isFromBank == false)
+          Text(
+            "sms_user_message".tr(),
+            style: TextStyle(
+                fontSize: 15.sp,
+                fontWeight: FontWeight.bold,
+                color: theme.colorScheme.secondaryContainer),
           ),
         Text(
           "please_select_a_plan".tr(),

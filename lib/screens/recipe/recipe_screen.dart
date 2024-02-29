@@ -1,4 +1,3 @@
-import 'package:ethio_chef/models/AdMods.dart';
 import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/screens/recipe/layout/recipe_header.dart';
 import 'package:ethio_chef/screens/recipe/layout/recipe_header_image.dart';
@@ -34,7 +33,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
   @override
   void initState() {
     _future = fetchData();
-    AdMod.loadAd();
+    loadAd();
     super.initState();
   }
   Future<dynamic> fetchData() async {
@@ -50,6 +49,56 @@ class _RecipeScreenState extends State<RecipeScreen> {
     } catch (error) {
       rethrow;
     }
+  }
+  static String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
+  static BannerAd? _bannerAd1;
+  static BannerAd? _bannerAd2;
+  static BannerAd? _bannerAd3;
+
+  void loadAd() async {
+    print("Loading Ads");
+    await BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          _bannerAd1 = ad as BannerAd;
+        },
+        onAdFailedToLoad: (ad, err) {
+          print("Error loading ad: $err");
+          ad.dispose();
+        },
+      ),
+    ).load();
+    await BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          _bannerAd2 = ad as BannerAd;
+        },
+        onAdFailedToLoad: (ad, err) {
+          print("Error loading ad: $err");
+          ad.dispose();
+        },
+      ),
+    ).load();
+    await BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          _bannerAd3 = ad as BannerAd;
+        },
+        onAdFailedToLoad: (ad, err) {
+          print("Error loading ad: $err");
+          ad.dispose();
+        },
+      ),
+    ).load();
   }
   @override
   Widget build(BuildContext context) {
@@ -95,8 +144,17 @@ class _RecipeScreenState extends State<RecipeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (AdMod.adNullChecker(1) == true)
-              AdMod.displayAd1(),
+            if (_bannerAd1 != null)
+              Align(
+                  alignment: Alignment.topCenter,
+                  child: SafeArea(
+                      child: SizedBox(
+                          width: _bannerAd1!.size.width.toDouble(),
+                          height: _bannerAd1!.size.height.toDouble(),
+                          child: AdWidget(ad: _bannerAd1!)
+                      )
+                  )
+              ),
             SafeArea(
               child: RecipeHeaderImage(
                 food: food,
@@ -125,8 +183,17 @@ class _RecipeScreenState extends State<RecipeScreen> {
                   RecipeScreenTab(
                     food: food,
                   ),
-                  if (AdMod.adNullChecker(2) == true)
-                    AdMod.displayAd2(),
+                  if (_bannerAd2 != null)
+                    Align(
+                        alignment: Alignment.topCenter,
+                        child: SafeArea(
+                            child: SizedBox(
+                                width: _bannerAd2!.size.width.toDouble(),
+                                height: _bannerAd2!.size.height.toDouble(),
+                                child: AdWidget(ad: _bannerAd2!)
+                            )
+                        )
+                    ),
                   CommentScreen(
                     foodId: food.id!,
                     comments: comment,
@@ -140,8 +207,17 @@ class _RecipeScreenState extends State<RecipeScreen> {
                   ),
                   if(!food.related_recipe!.isEmpty)
                   RecipeRelated(food: food.related_recipe),
-                  if (AdMod.adNullChecker(3) == true)
-                    AdMod.displayAd3()
+                  if (_bannerAd3 != null)
+                    Align(
+                        alignment: Alignment.topCenter,
+                        child: SafeArea(
+                            child: SizedBox(
+                                width: _bannerAd3!.size.width.toDouble(),
+                                height: _bannerAd3!.size.height.toDouble(),
+                                child: AdWidget(ad: _bannerAd3!)
+                            )
+                        )
+                    )
                 ],
               ),
             ),

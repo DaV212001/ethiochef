@@ -50,6 +50,7 @@ class ProfileWidget extends StatelessWidget {
   }
 
   Widget buildImage(Color color, BuildContext context) {
+    print(imagePath);
     final bool isTablet = ScreenUtils.isTablet(context);
     return ClipOval(
       child: Material(
@@ -64,10 +65,7 @@ class ProfileWidget extends StatelessWidget {
                 fit: BoxFit.cover,
               )
                   : imagePath != null
-                  ? CachedImage(
-                url: imagePath!,
-                fit: BoxFit.cover,
-              )
+                  ? Image.network(imagePath, fit: BoxFit.fill,)
                   : Image.asset("assets/images/logo.png",width: 50.sp, height: 50.sp)),
         ),
       ),

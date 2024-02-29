@@ -7,7 +7,7 @@ class PhoneInputField extends StatelessWidget {
   final double height;
 
   const PhoneInputField(
-      {super.key, required this.controller, this.height = 80});
+      {super.key, required this.controller, this.height = 85});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class PhoneInputField extends StatelessWidget {
         decoration: InputDecoration(
           prefixIcon: Icon(CupertinoIcons.phone),
           labelText: "phone_number".tr(),
-          prefixText: '+251 '
+          prefixText: '+251'
           // border: OutlineInputBorder(),
         ),
         validator: (value) {

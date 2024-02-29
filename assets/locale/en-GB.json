@@ -207,5 +207,23 @@
   "do_you_have_skills_description": "Kanaafuu nyaata hojjattan bilbila keessan irratti filmii godhachuun chef Habashaatti erguun galii dabalataa argachuu dandeessu",
   "buy_your_food": "- Nyaata keessan birrii 300 hanga 1000 bitachuu dandeenya",
   "profile_update_successful": "Fooyya'iinsi piroofaayilii milkaa'eera",
-  "profile_update_failed": "Fooyya'iinsi piroofaayilii hin milkoofne"
+  "profile_update_failed": "Fooyya'iinsi piroofaayilii hin milkoofne",
+
+  "sms_payment_error": "Dorgommii kana irratti hirmaachuu keetiin badhaafamuu barbaaddaa?",
+  "pay": "Jijjiiruu",
+  "yes": "Eeyyee",
+  "video_is_uploading": "Mee eegaa viidiyoon kun olkaa'amaa jira!",
+  "video_upload_failed": "Viidiyoon olkaa'uun hin milkoofne",
+  "resend": "Irra deebiin ergaa",
+  "failed_to_send_recipe": "Recipe nyaataa erguu dadhabe",
+  "please_try_again": "Mee irra deebi'ii yaalaa",
+  "new_version": "Appilikeeshinii Fooyyessi",
+  "update": "Odeeffannoo dhiyeenyaa",
+  "update_later": "Booda haaromsi",
+  "vote": " filadhaa",
+  "sms_cannot_see_competition": "Erga galmaa'uuf SMS fayyadamtan sirna baankii keenya fayyadamuun subscribe godhaa",
+  "no_update_available": "Yeroo ammaatti jirta",
+  "no": "{} yeroo ammaa hin argamu",
+  "please_vote": "Mee filadhaa",
+  "sms_user_message": "Galmaa'uuf 7753 irratti OK ergite"
 }

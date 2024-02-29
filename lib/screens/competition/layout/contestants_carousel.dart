@@ -1,25 +1,28 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/models/food.dart';
-import 'package:ethio_chef/widgets/horizontal_food_carousel.dart';
+import 'package:ethio_chef/widgets/main_button.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
+import '../../../models/competition.dart';
 import '../../../models/contestants.dart';
-import '../../../models/recipe_show_checker.dart';
 import '../../../services/competition_service.dart';
 import '../../../utils/screen_utils.dart';
-import '../../../widgets/cached_image.dart';
-import '../../../widgets/meal_card.dart';
 import '../../auth/auth_screen.dart';
-import '../../subscription/all_subscriptions.dart';
-import '../../subscription/layout/payment.dart';
+import 'contestant_description.dart';
 
 class Contestants extends StatefulWidget {
   final int contest_id;
+  final Competition competition;
   final List<Contestant>? contestant;
-
-  const Contestants({super.key, required this.contestant, required this.contest_id});
+  final Function() refresh;
+  Contestants({super.key,
+    required this.contestant,
+    required this.contest_id,
+    required this.competition,
+    required this.refresh
+  });
 
   @override
   State<Contestants> createState() => _ContestantsState();
@@ -27,11 +30,11 @@ class Contestants extends StatefulWidget {
 
 class _ContestantsState extends State<Contestants> {
   bool Loading = false;
-
+  bool isVoted = false;
   @override
   Widget build(BuildContext context) {
     final bool isTablet = ScreenUtils.isTablet(context);
-    double height = 220;
+    double height = 180;
     double width = 165;
     ThemeData theme = Theme.of(context);
     return Column(
@@ -57,86 +60,83 @@ class _ContestantsState extends State<Contestants> {
                 itemExtent: width,
                 itemCount: widget.contestant!.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Card(
+                  return Container(
                     color: theme.cardColor,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CachedImage(
-                          url: widget.contestant![index].image!,
-                          fit: BoxFit.cover,
-                        ),
-                        SizedBox(height: 5.h),
-                        Text("${widget.contestant![index].firstName.toString()} ${widget.contestant![index].lastName.toString()}",
+                    child: GestureDetector(
+                        onTap: (){
+                          pushNewScreen(
+                              context,
+                              screen: ContestantDescription(
+                                  competition: widget.competition,
+                                  contestant: widget.contestant![index]));
+                        },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          ClipOval(
+                            child: Container(
+                                width: 50,
+                                height: 50,
+                                child: widget.contestant![index].image! !=""?
+                                Image.network(widget.contestant![index].image!, fit: BoxFit.fill,):
+                                Image.asset("assets/images/logo.png",width: 50.sp, height: 50.sp)
+                            ),
+                          ),
+                          Text("${widget.contestant![index].firstName.toString()}",
+                            style: TextStyle(
+                                fontSize: isTablet ? 12.sp : 17.sp,
+                                fontWeight: FontWeight.w800,
+                                color: theme.colorScheme.secondaryContainer),
+                          ),
 
-                          style: TextStyle(
-                              fontSize: isTablet ? 11.sp : 15.sp,
-                              fontWeight: FontWeight.w800,
-                              color: theme.colorScheme.secondaryContainer),
-                        ),
-                        SizedBox(height: 5.h),
-                        Text("${widget.contestant![index].phone.toString()}",
+                          SizedBox(height: 5.h),
+                          Text('votes'.tr(args: [widget.contestant![index].votes.toString()]),
+                            style: TextStyle(
+                                fontSize: isTablet ? 10.sp : 14.sp,
+                                fontWeight: FontWeight.w500,
+                                color: theme.colorScheme.secondaryContainer),),
 
-                          style: TextStyle(
-                              fontSize: isTablet ? 10.sp : 14.sp,
-                              fontWeight: FontWeight.w400,
-                              color: theme.colorScheme.secondaryContainer),),
-                        SizedBox(height: 5.h),
-                        Text('votes'.tr(args: [widget.contestant![index].votes.toString()]),
-                          style: TextStyle(
-                              fontSize: isTablet ? 10.sp : 14.sp,
-                              fontWeight: FontWeight.w500,
-                              color: theme.colorScheme.secondaryContainer),),
-                        Align(
-                          child: GestureDetector(
-                            onTap: ()async {
-                              setState(() {
-                                Loading = true;
-                              });
-                              print("voting");
+                          SizedBox(width: 5,),
+                          MainButton(
+                              width: double.infinity,
+                              isLoading:Loading,
+                              text: "please_vote".tr(),
+                              onPress: ()async{
+                                setState(() {
+                                  Loading = true;
+                                });
+                                print("voting");
 
-                              CompetitionService cmp = CompetitionService();
-                              print("voting 2");
+                                CompetitionService cmp = CompetitionService();
+                                print("voting 2");
 
-                              try {
-                                print("voting 3");
-                                print(widget.contestant![index].id!);
-                                print(widget.contest_id!);
-                                var response = await cmp.voteContestant(widget.contestant![index].id!, widget.contest_id!);
+                                try {
+                                  print("voting 3");
+                                  print(widget.contestant![index].id!);
+                                  print(widget.contest_id!);
+                                  var response = await cmp.voteContestant(widget.contestant![index].id!, widget.contest_id!);
 
-                                if(response?.statusCode == 200){
+                                  if(response?.statusCode == 200){
+                                    setState(() {
+                                      Loading = false;
+                                    });
+                                    widget.refresh();
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Competition liked!')));
+                                  }
+                                } catch(e){
                                   setState(() {
                                     Loading = false;
                                   });
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Competition liked!')));
+                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
                                 }
-                              } catch(e){
+
                                 setState(() {
                                   Loading = false;
                                 });
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
-                              }
-
-                              setState(() {
-                                Loading = false;
-                              });
-                            },
-                            child: Container(
-                              width: 30,
-                              height: 30,
-                              child: !Loading?Center(
-                                child: Icon(
-                                  Icons.favorite_border,
-                                  color: theme.colorScheme.primary,
-                                ),
-                              ): CircularProgressIndicator(),
-                            ),
-                          ),alignment: Alignment.bottomLeft,
-                        )
-
-
-                      ]
+                              })
+                        ]
+                      ),
                     ),
                   );
                 }

@@ -187,8 +187,9 @@
   "awards_title": "Rewards",
   "submit_a_competition": "Submit a video",
   "no_competition": "Be the first to add a competition",
-  "sms_payment_error":"Since you have used SMS to register please subscribe using our banking system",
+  "sms_payment_error":"Do you want to be rewarded for participating in the competition?",
   "pay": "Change",
+  "yes": "Yes",
   "video_is_uploading": "Please wait the video is being uploaded!",
   "video_upload_failed": "Video upload failed",
   "resend": "Resend",
@@ -220,5 +221,10 @@
   "do_you_have_skills_description": "So you can earn extra income by filming the dishes you make on your phone and sending them to the Ethio chef",
   "buy_your_food": "- We can buy your food from 300 to 1000 birr",
   "profile_update_successful": "Profile update successful",
-  "profile_update_failed": "Profile update failed"
+  "profile_update_failed": "Profile update failed",
+  "please_vote": "Vote",
+  "sms_cannot_see_competition": "Since you have used SMS to register please subscribe using our banking system",
+  "no_update_available": "You are up to date",
+  "no": "{} is not available currently",
+  "sms_user_message": "Please choose your option"
 }

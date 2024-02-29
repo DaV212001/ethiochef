@@ -14,7 +14,7 @@ class ErrorUtil {
     title: "".tr(),
     body: "".tr(),
     image: "assets/images/errors/unknown.svg",
-    buttonText: "refresh".tr(),
+      buttonText: "refresh".tr(),
   );
   static ErrorData notFoundError = ErrorData(
     title: "".tr(),
@@ -88,7 +88,7 @@ class ErrorUtil {
     title: "".tr(),
     body: "",
     image: "assets/images/errors/no_connection.svg",
-    buttonText: "cancel".tr(),
+    buttonText: "refresh".tr(),
   );
 
   static ErrorData getErrorType(String type) {
