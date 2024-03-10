@@ -211,8 +211,6 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
                 },
               ),
             ),
-            if(activeStep != 0)
-              MainButton(width: double.infinity, onPress: decrementStep!, text: 'back'.tr())
           ],
         ),
       ),
@@ -258,7 +256,7 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
            widget.userData!, paymentMethod!.id, unWanted, subscriptionPlan!.price!, true
        );
      }
-
+print('response: ${response.body}');
      if(response.statusCode==200) {
        var checkoutUrl = jsonDecode(response.body)['data']['checkout_url'];
        print(jsonDecode(response.body)['data']['checkout_url']);

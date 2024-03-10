@@ -20,7 +20,7 @@ class ShareButton extends StatelessWidget {
       child: TextButton(
         onPressed: () {
           String text = "share_recipe".tr();
-          Share.shareUri(Uri.parse('https://appdeeplink.ethiochef.com/${food.id}'));
+          Share.shareUri(Uri.parse('https://appdeeplink.ethiochef.com/index.php/${food.id}'));
         },
         style: TextButton.styleFrom(
           padding: const EdgeInsets.all(10),

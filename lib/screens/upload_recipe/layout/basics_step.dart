@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/screens/competition/competitions_screen.dart';
 import 'package:ethio_chef/widgets/input_field.dart';
 import 'package:ethio_chef/widgets/upload_recipe/image_field.dart';
 import 'package:ethio_chef/widgets/upload_recipe/stepper_control_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../generated/assets.dart';
 import '../../../utils/screen_utils.dart';
 import '../../../widgets/main_button.dart';
 
@@ -119,6 +121,10 @@ class _BasicsStepState extends State<BasicsStep> {
                       fontSize: 15.sp,
                       fontWeight: FontWeight.bold,
                       color: theme.colorScheme.secondaryContainer),),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: supportButton(Colors.blue, 'https://t.me/ethiochef_support', Assets.socialTelegram, isTablet),
+                )
 
               ],
             ),

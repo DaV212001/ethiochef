@@ -23,6 +23,7 @@ class UpdateManager {
   Future<int> checkForUpdate() async {
     try {
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      print('version: ' + packageInfo.version);
       final response = await http.get(
           Uri.parse('${Constants.url}/user/app-version/latest'));
       print(response.body);
@@ -32,7 +33,7 @@ class UpdateManager {
       }
       final jsonData = json.decode(response.body)["data"][0];
       print(jsonData);
-      //todo get form api
+
       final updateInfoJson = {
         'latest_version_android': jsonData["latest_version_android"],
         'minimum_version_android': jsonData["minimum_version_android"],

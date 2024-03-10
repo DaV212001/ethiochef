@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:ethio_chef/services/scheduled_notification_service.dart';
 import 'package:ethio_chef/services/user_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -18,11 +19,51 @@ class FirebaseService {
       importance: Importance.high);
   final _localNotifications = FlutterLocalNotificationsPlugin();
 
-  void handleMessage(RemoteMessage? message) {
+  void handleMessage(RemoteMessage? message) async {
     print("here 1");
-    if (message == null) { print('message NULL'); return;}
-    navigatorKey.currentState?.pushNamed("/main");
-    navigatorKey.currentState?.pushNamed("/notification", arguments: message);
+    if (message!.notification == null) return;
+    if(message.notification?.title == 'breakfast'){
+      await NotificationScheduled.showNotification(
+          title: 'ኢትዮ ሼፍ',
+          body: 'ለቁርስ ጠቃሚ ምክር',
+          payload: 'Scheduled Notification :${message.notification?.title}'
+      );
+    }
+    else if(message.notification?.title == 'lunch'){
+      await NotificationScheduled.showNotification(
+          title: 'ኢትዮ ሼፍ',
+          body: 'ለምሳ ጠቃሚ ምክር',
+          payload: 'Scheduled Notification :${message.notification?.title}'
+      );
+    }
+    else if(message.notification?.title == 'supper'){
+      await NotificationScheduled.showNotification(
+          title: 'ኢትዮ ሼፍ',
+          body: 'ለመክሰስ ጠቃሚ ምክር',
+          payload: 'Scheduled Notification :${message.notification?.title}'
+      );
+    }
+    else if(message.notification?.title == 'dinner'){
+      await NotificationScheduled.showNotification(
+          title: 'ኢትዮ ሼፍ',
+          body: 'ለእራት ጠቃሚ ምክር',
+          payload: 'Scheduled Notification :${message.notification?.title}'
+      );
+    } else{
+      await _localNotifications.show(
+          message.notification.hashCode,
+          message.notification?.title,
+          message.notification?.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+                _androidChannel.id, _androidChannel.name,
+                channelDescription: _androidChannel.description,
+                priority: Priority.max,
+                icon: '@drawable/ic_launcher2'
+            ),
+          ),
+          payload: jsonEncode(message.toMap()));
+    }
   }
 
   Future initPushNotifications() async {
@@ -47,6 +88,34 @@ class FirebaseService {
       final notification = message.notification;
       print("here 8");
       if (notification == null) return;
+      if(message.notification?.title == 'breakfast'){
+        await NotificationScheduled.showNotification(
+          title: 'ኢትዮ ሼፍ',
+          body: 'ለቁርስ ጠቃሚ ምክር',
+          payload: 'Scheduled Notification :${message.notification?.title}'
+        );
+      }
+      else if(message.notification?.title == 'lunch'){
+        await NotificationScheduled.showNotification(
+            title: 'ኢትዮ ሼፍ',
+            body: 'ለምሳ ጠቃሚ ምክር',
+            payload: 'Scheduled Notification :${message.notification?.title}'
+        );
+      }
+      else if(message.notification?.title == 'supper'){
+        await NotificationScheduled.showNotification(
+            title: 'ኢትዮ ሼፍ',
+            body: 'ለመክሰስ ጠቃሚ ምክር',
+            payload: 'Scheduled Notification :${message.notification?.title}'
+        );
+      }
+      else if(message.notification?.title == 'dinner'){
+        await NotificationScheduled.showNotification(
+            title: 'ኢትዮ ሼፍ',
+            body: 'ለእራት ጠቃሚ ምክር',
+            payload: 'Scheduled Notification :${message.notification?.title}'
+        );
+      } else{
       await _localNotifications.show(
           notification.hashCode,
           notification.title,
@@ -60,6 +129,7 @@ class FirebaseService {
                 ),
           ),
           payload: jsonEncode(message.toMap()));
+      }
       print("here 9");
     });
   }
@@ -185,4 +255,32 @@ Future<void> handleBackgroundMessage(RemoteMessage message) async {
   print("Title: ${message.notification?.title}");
   print("Body: ${message.notification?.body}");
   print("Payload: ${message.data}");
+  if(message.notification?.title == 'breakfast'){
+    await NotificationScheduled.showNotification(
+        title: 'ኢትዮ ሼፍ',
+        body: 'ለቁርስ ጠቃሚ ምክር',
+        payload: 'Scheduled Notification :${message.notification?.title}'
+    );
+  }
+  else if(message.notification?.title == 'lunch'){
+    await NotificationScheduled.showNotification(
+        title: 'ኢትዮ ሼፍ',
+        body: 'ለምሳ ጠቃሚ ምክር',
+        payload: 'Scheduled Notification :${message.notification?.title}'
+    );
+  }
+  else if(message.notification?.title == 'supper'){
+    await NotificationScheduled.showNotification(
+        title: 'ኢትዮ ሼፍ',
+        body: 'ለመክሰስ ጠቃሚ ምክር',
+        payload: 'Scheduled Notification :${message.notification?.title}'
+    );
+  }
+  else if(message.notification?.title == 'dinner'){
+    await NotificationScheduled.showNotification(
+        title: 'ኢትዮ ሼፍ',
+        body: 'ለእራት ጠቃሚ ምክር',
+        payload: 'Scheduled Notification :${message.notification?.title}'
+    );
+  }
 }

@@ -1,11 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/subscriptionplans.dart';
 import 'package:ethio_chef/screens/auth/layout/payment_methods.dart';
+import 'package:ethio_chef/widgets/ad_block.dart';
 import 'package:ethio_chef/widgets/input_field.dart';
 import 'package:ethio_chef/widgets/auth/phone_input_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 
@@ -30,6 +32,68 @@ class _SignUpState extends State<SignUp> {
   late bool isLoading = false;
   bool hasSelected = false;
   SubscriptionPlans? selectedSubscriptionPlan;
+
+
+  @override
+  void initState() {
+
+    super.initState();
+    loadAd();
+
+  }
+
+  static String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
+  static BannerAd? _bannerAd1;
+  static BannerAd? _bannerAd2;
+  static BannerAd? _bannerAd3;
+
+  void loadAd() async {
+    print("Loading Ads");
+    await BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          _bannerAd1 = ad as BannerAd;
+        },
+        onAdFailedToLoad: (ad, err) {
+          print("Error loading ad: $err");
+          ad.dispose();
+        },
+      ),
+    ).load();
+    await BannerAd(
+      adUnitId: 'ca-app-pub-4750411587709054/1691458173',
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          _bannerAd2 = ad as BannerAd;
+        },
+        onAdFailedToLoad: (ad, err) {
+          print("Error loading ad: $err");
+          ad.dispose();
+        },
+      ),
+    ).load();
+    await BannerAd(
+        adUnitId: _adbannerUnitId,
+        request: const AdRequest(),
+        size: AdSize.banner,
+        listener: BannerAdListener(
+            onAdLoaded: (ad) {
+              _bannerAd3 = ad as BannerAd;
+            },
+            onAdFailedToLoad: (ad, err) {
+              print("Error loading ad: $err");
+              ad.dispose();
+            }
+        )
+    ).load();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -39,6 +103,9 @@ class _SignUpState extends State<SignUp> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
+          if (_bannerAd1 != null)
+            AdBlock(bannerAd: _bannerAd1, isbottom: false,),
+
           Image.asset("assets/images/sign_up_image.png", fit: BoxFit.fill,),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 30),
@@ -60,6 +127,9 @@ class _SignUpState extends State<SignUp> {
                   type: InputField.NameType,
                 ),
                 PhoneInputField(controller: phoneController),
+                if (_bannerAd2 != null)
+                  AdBlock(bannerAd: _bannerAd2, isbottom: false,),
+
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -70,26 +140,29 @@ class _SignUpState extends State<SignUp> {
                           fontWeight: FontWeight.bold,
                           color: theme.colorScheme.primary),
                     ),
-                    Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Theme.of(context).colorScheme.primary, width: 1),
-                            borderRadius: BorderRadius.circular(4),
-                            color: Theme.of(context).colorScheme.secondary,
-                        ),
-                      child: SubscriptionDropDown(
-                        selectedSubscriptionPlan: selectedSubscriptionPlan,
-                        onChange: (value) {
-                        print(value.price);
-                        print(value.duration);
-                        setState(() {
-                          selectedSubscriptionPlan = value;
-                          hasSelected = true;
-                        });
-                        print("Sign up prints");
-                        print(selectedSubscriptionPlan!.price);
-                        print(selectedSubscriptionPlan!.duration);
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              border: BorderDirectional(bottom: BorderSide(color: Colors.black, width: 1)),
+                              color: Colors.transparent,
+                          ),
+                        child: SubscriptionDropDown(
+                          selectedSubscriptionPlan: selectedSubscriptionPlan,
+                          onChange: (value) {
+                          print(value.price);
+                          print(value.duration);
+                          setState(() {
+                            selectedSubscriptionPlan = value;
+                            hasSelected = true;
+                          });
+                          print("Sign up prints");
+                          print(selectedSubscriptionPlan!.price);
+                          print(selectedSubscriptionPlan!.duration);
 
-                      },),
+                        },),
+                      ),
                     )
                   ],
                 )
@@ -118,6 +191,9 @@ class _SignUpState extends State<SignUp> {
               }
             }
           ),
+          if (_bannerAd3 != null)
+            AdBlock(bannerAd: _bannerAd3, isbottom: true,),
+
         ],
       ),
     );

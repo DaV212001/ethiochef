@@ -40,6 +40,7 @@ class _MainScreenState extends State<MainScreen> {
     _checkFirstTimeUser();
     _controller = PersistentTabController();
   }
+
   Future<void> _checkFirstTimeUser() async {
     setState(() {
       isLoading = true;
@@ -54,7 +55,7 @@ class _MainScreenState extends State<MainScreen> {
         isLoggedIn = false;
       });
     }else{
-      print("post login");
+      print("posTTT login");
       setState(() {
         isLoading = false;
         isLoggedIn = true;

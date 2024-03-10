@@ -1,6 +1,7 @@
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/subscription/layout/payment.dart';
+import 'package:ethio_chef/widgets/ad_block.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -194,16 +195,7 @@ class _RouteListState extends State<RouteList> {
               routeName: tr("status"),
             ),
             if(widget.banner != null)
-            Align(
-              alignment: Alignment.topCenter,
-              child: SafeArea(
-                child: SizedBox(
-                  width: widget.banner!.size.width.toDouble(),
-                  height: widget.banner!.size.height.toDouble(),
-                  child: AdWidget(ad: widget.banner!),
-                ),
-              ),
-            ),
+            AdBlock(bannerAd: widget.banner, isbottom: false,),
             RouteContainer(
               routePart: other,
               indexTwo: 4,

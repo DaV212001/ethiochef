@@ -6,6 +6,7 @@ import 'package:ethio_chef/screens/upload_recipe/layout/steps_header.dart';
 import 'package:ethio_chef/screens/upload_recipe/layout/steps_step.dart';
 import 'package:ethio_chef/screens/upload_recipe/layout/video_step.dart';
 import 'package:ethio_chef/services/scheduled_notification_service.dart';
+import 'package:ethio_chef/widgets/ad_block.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -108,16 +109,7 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
     final ThemeData theme = Theme.of(context);
     return [
       if (_bannerAd1 != null)
-        Align(
-            alignment: Alignment.topCenter,
-            child: SafeArea(
-                child: SizedBox(
-                    width: _bannerAd1!.size.width.toDouble(),
-                    height: _bannerAd1!.size.height.toDouble(),
-                    child: AdWidget(ad: _bannerAd1!)
-                )
-            )
-        ),
+        AdBlock(bannerAd: _bannerAd1, isbottom: false,),
       StepsHeader(activeStep: activeStep),
       Visibility(
         visible: activeStep == 0,

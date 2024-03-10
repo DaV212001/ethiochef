@@ -129,7 +129,6 @@ class _SubscriptionDropDownState extends State<SubscriptionDropDown> {
         Text(
           '${Language.getLocaleCode() == 'en'? 'Birr': "ብር"} ${item.price.toString()}',
           style: TextStyle(
-              fontWeight: FontWeight.bold,
               fontFamily: 'Montserrat',
               color: theme.colorScheme.secondaryContainer
           ),
@@ -157,7 +156,6 @@ class _SubscriptionDropDownState extends State<SubscriptionDropDown> {
         Text(
           '${Language.getLocaleCode() == 'en'? 'Birr': "ብር"} ${item.price.toString()}',
           style: TextStyle(
-              fontWeight: FontWeight.bold,
               fontFamily: 'Montserrat',
               color: theme.colorScheme.secondaryContainer
           ),
@@ -166,7 +164,6 @@ class _SubscriptionDropDownState extends State<SubscriptionDropDown> {
         Text(
             '${Language.getLocaleCode() == 'en'? 'Good until': "እስከ"} ${Language.getLocaleCode() == 'en'?DateFormat('MMMM dd, yyyy').format(expirationDate): '${EtDatetime.fromMillisecondsSinceEpoch(expirationDate.millisecondsSinceEpoch,).monthGeez} ${EtDatetime.fromMillisecondsSinceEpoch(expirationDate.millisecondsSinceEpoch,).day}, ${EtDatetime.fromMillisecondsSinceEpoch(expirationDate.millisecondsSinceEpoch,).year}'}',
           style: TextStyle(
-              fontWeight: FontWeight.bold,
               fontFamily: 'Montserrat',
               color: theme.colorScheme.secondaryContainer
           )

@@ -1,9 +1,10 @@
-import 'package:ethio_chef/services/food_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:uni_links/uni_links.dart';
 
-import '../models/food.dart';
+import '../screens/auth/auth_screen.dart';
+import '../services/authorization_service.dart';
+import '../widgets/loading.dart';
 import 'deep_link_navigator.dart';
 
 class DeepLinkHandler extends StatefulWidget {
@@ -29,6 +30,7 @@ class _DeepLinkHandlerState extends State<DeepLinkHandler> with WidgetsBindingOb
         setState(() {
           _initialUri = uri;
         });
+        _checkAndHandleDeepLink(uri);
       }
     });
   }
@@ -49,57 +51,56 @@ class _DeepLinkHandlerState extends State<DeepLinkHandler> with WidgetsBindingOb
     }
   }
 
-  @override
-  Future<bool> didPushRouteInformation(RouteInformation routeInformation) async {
-    print('DEVVVVV NOTIFYINGGGGG THATTTTT    didPushRouteInformation called');
-    print('ANDDDDD THAT I HAVE RLLLL: ${routeInformation.location!}');
-    final uri = Uri.parse(routeInformation.location!);
-    setState(() {
-      _latestUri = uri;
-    });
-
-    // Return true if the deep link matches the expected scheme and host
-    if (_latestUri != null && _latestUri?.scheme == 'https' && _latestUri?.host == 'appdeeplink.ethiochef.com') {
-      return true;
+  void _checkAndHandleDeepLink(Uri uri) {
+    if (_navigated) {
+      return;
     }
 
-    // Return false if the deep link does not match the expected scheme and host
-    return false;
+    // Check if the user is logged in
+    AuthService.getAuthorizationToken().then((token) {
+      if (token == "none") {
+        // User is not logged in, navigate to AuthScreen
+        Navigator.push(context, MaterialPageRoute(builder: (context) => AuthScreen(isSignIn: true, isfromDeepLink: true,)))
+            .then((value) {
+          // Check login status again after returning from AuthScreen
+          AuthService.getAuthorizationToken().then((newToken) {
+            if (newToken != "none") {
+              _navigateToDeepLink(uri);
+            }
+          });
+        });
+      } else {
+        // User is logged in, navigate to DeepLinkNavigation
+        _navigateToDeepLink(uri);
+      }
+    });
+  }
+
+  void _navigateToDeepLink(Uri uri) {
+    // Extract the last segment of the deep link URL into an int variable
+    final foodId = uri.pathSegments.last;
+
+    if (foodId == null || foodId == '') {
+      setState(() {
+        _navigated = true;
+      });
+      return;
+    }
+
+    int foodID = int.tryParse(foodId) ?? 0;
+
+    if (foodID > 0) {
+      // Navigate to DeepLinkNavigation with the extracted food ID
+      setState(() {
+        _navigated = true;
+      });
+      Navigator.push(context, MaterialPageRoute(builder: (context) => DeepLinkNavigation(foodID: foodID)));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return StatefulBuilder(
-      builder: (context, setState)  {
-        print('CHECKING TO SEEE IF WE CAN USE THE INITIAL URLLLLLL: $_initialUri');
-        // Check if the deep link matches the expected scheme and host
-        if (!_navigated && ((_initialUri != null && _initialUri?.scheme == 'https' && _initialUri?.host == 'appdeeplink.ethiochef.com') ||
-            (_latestUri != null && _latestUri?.scheme == 'https' && _latestUri?.host == 'appdeeplink.ethiochef.com'))) {
-          print('CHECKING FOR ORIGINALLL URL CORRECTNESS!!!!!: $_latestUri');
-          // Extract the video file name from the deep link
-          final foodId = _latestUri?.pathSegments.last??_initialUri?.pathSegments.last;
-          if(foodId == null){
-            _navigated =true;
-            return widget.child;
-          }
-          if(foodId == ''){
-            _navigated =true;
-            return widget.child;
-          }
-
-          print('CHECKING FOR URL CORRECTNESS!!!!!:  $foodId');
-          // get the food item from the url
-          int foodID = int.parse(foodId!);
-
-          // Navigate to VideoPlayerWidget with the video URL
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => DeepLinkNavigation(foodID: foodID)));
-          });
-          _navigated = true;
-        }
-        // If no deep link is detected, return the normal home screen of your app
-        return widget.child;
-      },
-    );
+    // If no deep link is detected, return the normal home screen of your app
+    return widget.child;
   }
 }

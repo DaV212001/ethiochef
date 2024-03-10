@@ -212,7 +212,7 @@
   "new_version": "መተግበሪያውን ያሻሽሉ",
   "update_title": "አዲስ አፕልኬሽን አለ!",
   "update_body": "አዳዲስ ነገሮችን ጨምረናል ፤ አዲሱን መተግበሪያ ያዉርዱ።",
-  "update": "አዘምን",
+  "update": "እሺ",
   "update_later": "በኋላ አዘምን",
   "extra_skills": "በሙያዎ ተጨማሪ ገንዘብ ያግኙ",
   "do_you_have_skills_title": "ባለሞያ ኖት?",
@@ -220,7 +220,7 @@
   "buy_your_food": "- የእርስዎን ምግብ ከ 300 እስከ 1000 ብር እንገዛዎታለን",
   "profile_update_successful": "ፕሮፋይል መቀየር ተሳክቷል።",
   "profile_update_failed": "ፕሮፋይል መቀየር አልተሳካም።",
-  "no_update_available": "ስሪት ወቅታዊ ነው",
+  "no_update_available": "አዲስ አፕልኬሽን የለም",
   "no": "በአሁኑ ጊዜ {} አልተገኘም",
   "please_vote": "ድምጽ ይስቱ",
   "sms_user_message": "እባክዎ የሚፈልጉትን የክፍያ አማራጭ ይምረጡ።"

@@ -1,6 +1,7 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/category/layout/vertical_food_list.dart';
+import 'package:ethio_chef/widgets/ad_block.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -153,16 +154,7 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
           mainAxisSize: MainAxisSize.max,
           children: [
             if (_bannerAd != null)
-              Align(
-                alignment: Alignment.topCenter,
-                child: SafeArea(
-                  child: SizedBox(
-                    width: _bannerAd!.size.width.toDouble(),
-                    height: _bannerAd!.size.height.toDouble(),
-                    child: AdWidget(ad: _bannerAd!),
-                  ),
-                ),
-              ),
+              AdBlock(bannerAd: _bannerAd, isbottom: false,),
             ScreenHead(
               hasNotification: true,
               screen: 1,
@@ -191,16 +183,7 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
               tabs: tabs,
             ),
 if(_bannerAd2 != null)
-              Align(
-                alignment: Alignment.topCenter,
-                child: SafeArea(
-                  child: SizedBox(
-                    width: _bannerAd2!.size.width.toDouble(),
-                    height: _bannerAd2!.size.height.toDouble(),
-                    child: AdWidget(ad: _bannerAd2!),
-                  )
-                )
-              ),
+              AdBlock(bannerAd: _bannerAd2, isbottom: false,),
              Expanded(
                     child: RefreshWidget(
                       child: VerticalFoodList(pagingController:
@@ -213,16 +196,7 @@ if(_bannerAd2 != null)
                     ),
                 ),
 if(_bannerAd3 != null)
-              Align(
-                alignment: Alignment.topCenter,
-                child: SafeArea(
-                  child: SizedBox(
-                    width: _bannerAd3!.size.width.toDouble(),
-                    height: _bannerAd3!.size.height.toDouble(),
-                    child: AdWidget(ad: _bannerAd3!),
-                  )
-                )
-              ),
+              AdBlock(bannerAd: _bannerAd3, isbottom: true,),
 
           ],
         ),

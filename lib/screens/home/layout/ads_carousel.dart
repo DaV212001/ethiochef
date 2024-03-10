@@ -28,7 +28,6 @@ class _AdsCarouselState extends State<AdsCarousel> {
 
   // List<PhotosModel> images = [];
 
-
   List imageList = [
     {"id": 1, "image_path": 'assets/images/photo_1.jpg'},
     {"id": 2, "image_path": 'assets/images/photo_2.jpg'},
@@ -48,64 +47,65 @@ class _AdsCarouselState extends State<AdsCarousel> {
       child: Column(children: [
         Stack(
           children: [
-      if(widget.promotion.isEmpty)
-     Image.asset(
-    "assets/images/logo.png",
-    height: isTablet ? 250.h : 200.h,
-    ),
-            if(widget.promotion.isNotEmpty)
-            CarouselSlider(
-              items: widget.promotion.map((promotion) {
-                return Builder(
-                  builder: (BuildContext context) {
-                    return Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: CachedImage(
-                            url: promotion.image,
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            height: 40,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.center,
-                                colors: [
-                                  theme.colorScheme.primary,
-                                  theme.colorScheme.primary.withOpacity(0.0), // Transparent black
-                                ],
-                              ),
-                            ),
-                            width: MediaQuery.of(context).size.width,
-                            child: SizedBox(),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              }).toList(),
-              carouselController: carouselController,
-              options: CarouselOptions(
-                scrollPhysics: const BouncingScrollPhysics(),
-                autoPlay: true,
-                aspectRatio: 2,
-                viewportFraction: 1,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    currentIndex = index;
-                  });
-                },
+            if (widget.promotion.isEmpty)
+              Image.asset(
+                "assets/images/logo.png",
+                height: isTablet ? 250.h : 200.h,
               ),
-            ),
+            if (widget.promotion.isNotEmpty)
+              CarouselSlider(
+                items: widget.promotion.map((promotion) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            child: CachedImage(
+                              url: promotion.image,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              height: 40,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.center,
+                                  colors: [
+                                    theme.colorScheme.primary,
+                                    theme.colorScheme.primary
+                                        .withOpacity(0.0), // Transparent black
+                                  ],
+                                ),
+                              ),
+                              width: MediaQuery.of(context).size.width,
+                              child: SizedBox(),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }).toList(),
+                carouselController: carouselController,
+                options: CarouselOptions(
+                  scrollPhysics: const BouncingScrollPhysics(),
+                  autoPlay: true,
+                  aspectRatio: 2,
+                  viewportFraction: 1,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      currentIndex = index;
+                    });
+                  },
+                ),
+              ),
             Positioned(
                 bottom: 10,
                 right: 0,

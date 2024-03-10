@@ -90,7 +90,7 @@ class _MainAppBarState extends State<MainAppBar> {
       return BackButton(
         style: ButtonStyle(
             iconSize:MaterialStateProperty.resolveWith<double?>((Set<MaterialState> states) {
-              return isTablet? 40.sp : 10.sp;
+              return isTablet? 40.sp : 25.sp;
             })
         ),
         onPressed: () {

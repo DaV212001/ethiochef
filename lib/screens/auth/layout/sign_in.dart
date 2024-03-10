@@ -4,9 +4,11 @@ import 'dart:convert';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/auth/auth_screen.dart';
 import 'package:ethio_chef/screens/subscription/layout/payment.dart';
+import 'package:ethio_chef/widgets/ad_block.dart';
 import 'package:ethio_chef/widgets/auth/auth_link.dart';
 import 'package:ethio_chef/widgets/auth/phone_input_field.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:quickalert/models/quickalert_type.dart';
@@ -22,7 +24,11 @@ import '../../../utils/screen_utils.dart';
 import '../../../widgets/auth/auth_btn.dart';
 
 class SignIn extends StatefulWidget {
-  const SignIn({super.key});
+  final bool? isfromDeepLink;
+  final bool? isFromNotification;
+  const SignIn({super.key, this.isfromDeepLink, this.isFromNotification});
+
+
 
   @override
   State<SignIn> createState() => _SignInState();
@@ -35,12 +41,77 @@ class _SignInState extends State<SignIn> {
   bool isNotLoggedin = false;
 
   @override
+  void initState() {
+    super.initState();
+    loadAd();
+
+  }
+
+  static String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
+  static BannerAd? _bannerAd1;
+  static BannerAd? _bannerAd2;
+  static BannerAd? _bannerAd3;
+
+  void loadAd() async {
+    print("Loading Ads");
+    await BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          _bannerAd1 = ad as BannerAd;
+        },
+        onAdFailedToLoad: (ad, err) {
+          print("Error loading ad: $err");
+          ad.dispose();
+        },
+      ),
+    ).load();
+    await BannerAd(
+      adUnitId: 'ca-app-pub-4750411587709054/1691458173',
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          _bannerAd2 = ad as BannerAd;
+        },
+        onAdFailedToLoad: (ad, err) {
+          print("Error loading ad: $err");
+          ad.dispose();
+        },
+      ),
+    ).load();
+    await BannerAd(
+        adUnitId: _adbannerUnitId,
+        request: const AdRequest(),
+        size: AdSize.banner,
+        listener: BannerAdListener(
+            onAdLoaded: (ad) {
+              _bannerAd3 = ad as BannerAd;
+            },
+            onAdFailedToLoad: (ad, err) {
+              print("Error loading ad: $err");
+              ad.dispose();
+            }
+        )
+    ).load();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
       child: Column(
         children: [
+          if (_bannerAd1 != null)
+            AdBlock(bannerAd: _bannerAd1, isbottom: false,),
+
           Image.asset("assets/images/sign_in_image.png", fit: BoxFit.fill,),
+          if (_bannerAd3 != null)
+            AdBlock(bannerAd: _bannerAd3, isbottom: false,),
+
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 30),
             child: Column(
@@ -72,6 +143,9 @@ class _SignInState extends State<SignIn> {
                       isSignIn: false,
                     ));
               }),
+          if (_bannerAd2 != null)
+            AdBlock(bannerAd: _bannerAd2, isbottom: true,),
+
           if(isNotLoggedin)
           Center(
             child: Container(
@@ -150,8 +224,26 @@ class _SignInState extends State<SignIn> {
             isNotLoggedin = false;
           });
 
-          RestartWidget.restartApp(context);
-          ScaffoldMessenger.of(context).showSnackBar(success);
+          if(widget.isfromDeepLink != null){
+            if(widget.isfromDeepLink == true){
+              Navigator.pop(context);
+            } else{
+              RestartWidget.restartApp(context);
+              ScaffoldMessenger.of(context).showSnackBar(success);
+            }
+          }else{
+            if(widget.isFromNotification != null){
+              if(widget.isFromNotification == true){
+                print('IS NOTIFFFFFFFFFFFFFFFF');
+                SubscriptionStatus().updateStatus('User is subscribed');
+                Navigator.pop(context);
+              } else{
+                RestartWidget.restartApp(context);
+                ScaffoldMessenger.of(context).showSnackBar(success);
+              }
+
+            }
+          }
         }
       }else {
         // The login failed.

@@ -17,7 +17,8 @@ class StepperControlButtons extends StatelessWidget {
       children: [
         if (!isFirst) MainButton(width: 175, onPress: back!, text: 'back'.tr()),
         Spacer(),
-        MainButton(width: 175, onPress: next, text: 'next'.tr())
+        MainButton(width: 175, onPress: next, text: 'next'.tr()),
+
       ],
     );
   }

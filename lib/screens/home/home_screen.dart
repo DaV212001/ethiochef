@@ -10,6 +10,7 @@ import '../../services/meal_service.dart';
 import '../../services/promotion_service.dart';
 import '../../services/scheduled_notification_service.dart';
 import '../../utils/update_manager.dart';
+import '../../widgets/ad_block.dart';
 import '../../widgets/error_card.dart';
 import '../../widgets/loading.dart';
 import '../../widgets/pull_to_refresh.dart';
@@ -41,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     try {
       UpdateManager um = UpdateManager();
       um.showUpdateDialog(context);
-      NotificationScheduled.init();
+      NotificationScheduled.init(context: context);
       listenNotification();
       final categoryService = CategoryService();
       final mealService = MealService();
@@ -79,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       ),
     ).load();
     await BannerAd(
-      adUnitId: _adbannerUnitId,
+      adUnitId: 'ca-app-pub-4750411587709054/1691458173',
       request: const AdRequest(),
       size: AdSize.banner,
       listener: BannerAdListener(
@@ -149,16 +150,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               children: [
 
                 if (_bannerAd1 != null)
-                  Align(
-                      alignment: Alignment.topCenter,
-                      child: SafeArea(
-                          child: SizedBox(
-                              width: _bannerAd1!.size.width.toDouble(),
-                              height: _bannerAd1!.size.height.toDouble(),
-                              child: AdWidget(ad: _bannerAd1!)
-                          )
-                      )
-                  ),
+                  AdBlock(bannerAd: _bannerAd1, isbottom: false,),
 
                 AdsCarousel(promotion: promotion),
                 SizedBox(
@@ -178,28 +170,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                         dinner: dinner,),
 
                       if (_bannerAd2 != null)
-                        Align(
-                            alignment: Alignment.topCenter,
-                            child: SafeArea(
-                                child: SizedBox(
-                                    width: _bannerAd2!.size.width.toDouble(),
-                                    height: _bannerAd2!.size.height.toDouble(),
-                                    child: AdWidget(ad: _bannerAd2!)
-                                )
-                            )
-                        ),
+                        AdBlock(bannerAd: _bannerAd2, isbottom: false,),
                       CategoryCarousel(category: category),
                       if (_bannerAd3 != null)
-                        Align(
-                            alignment: Alignment.topCenter,
-                            child: SafeArea(
-                                child: SizedBox(
-                                    width: _bannerAd3!.size.width.toDouble(),
-                                    height: _bannerAd3!.size.height.toDouble(),
-                                    child: AdWidget(ad: _bannerAd3!)
-                                )
-                            )
-                        ),
+                        AdBlock(bannerAd: _bannerAd3, isbottom: false,),
                       SizedBox(
                         height: 15.h,
                       ),
@@ -229,6 +203,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         );
       });
 }
+
+
 //
 // class DatePickerTxt extends StatefulWidget {
 //   const DatePickerTxt({

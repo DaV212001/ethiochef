@@ -3,6 +3,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/competition.dart';
 import 'package:ethio_chef/screens/subscription/layout/payment.dart';
 import 'package:ethio_chef/services/competition_service.dart';
+import 'package:ethio_chef/widgets/ad_block.dart';
+import 'package:ethio_chef/widgets/profile/user_screen_footer.dart';
 import 'package:ethio_chef/widgets/screen_head.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,21 +12,25 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
+import '../../generated/assets.dart';
+import '../../models/footer_data.dart';
 import '../../services/subscription_checker.dart';
 import '../../services/user_service.dart';
+import '../../theme/app_theme.dart';
 import '../../utils/screen_utils.dart';
 import '../../widgets/competiton/no_competition.dart';
 import '../../widgets/error_card.dart';
 import '../../widgets/loading.dart';
 import '../../widgets/main_button.dart';
 import '../../widgets/pull_to_refresh.dart';
+import '../../widgets/svg_icon.dart';
 import '../../widgets/youtube_video_player.dart';
 import '../auth/auth_screen.dart';
 import 'layout/competition_header.dart';
 import 'layout/competition_header_image.dart';
 import 'layout/contestants_carousel.dart';
 import 'layout/upload_video.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 class CompetitionsScreen extends StatefulWidget {
   const CompetitionsScreen({super.key});
 
@@ -94,7 +100,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
       ),
     ).load();
     await BannerAd(
-      adUnitId: _adbannerUnitId,
+      adUnitId: 'ca-app-pub-4750411587709054/1691458173',
       request: const AdRequest(),
       size: AdSize.banner,
       listener: BannerAdListener(
@@ -218,6 +224,10 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                                   onPress: () async {
                                     pushNewScreen(context, withNavBar: false, screen: PaymentCheckout(isNormalSubscription: true));
                                   }),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: supportButton(Colors.blue, 'https://t.me/ethiochef_support', Assets.socialTelegram, isTablet),
+                              )
                             ],
                           )
                         ],
@@ -229,6 +239,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
       ),
     );
   }
+
   Widget buildCompetitionPage(List<Competition> competition){
     final ThemeData theme = Theme.of(context);
     final bool isTablet = ScreenUtils.isTablet(context);
@@ -246,16 +257,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                 searchHint: "search".tr(),
               ),
               if (_bannerAd1 != null)
-                Align(
-                    alignment: Alignment.topCenter,
-                    child: SafeArea(
-                        child: SizedBox(
-                            width: _bannerAd1!.size.width.toDouble(),
-                            height: _bannerAd1!.size.height.toDouble(),
-                            child: AdWidget(ad: _bannerAd1!)
-                        )
-                    )
-                ),
+                AdBlock(bannerAd: _bannerAd1, isbottom: false,),
               ListView(
                 scrollDirection: Axis.vertical,
                 physics: BouncingScrollPhysics(),
@@ -292,16 +294,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                 )],
               ),
               if (_bannerAd2 != null)
-                Align(
-                    alignment: Alignment.topCenter,
-                    child: SafeArea(
-                        child: SizedBox(
-                            width: _bannerAd2!.size.width.toDouble(),
-                            height: _bannerAd2!.size.height.toDouble(),
-                            child: AdWidget(ad: _bannerAd2!)
-                        )
-                    )
-                )
+                AdBlock(bannerAd: _bannerAd2, isbottom: false,)
             ])
           ),
         ),
@@ -437,5 +430,38 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
       ),
     );
     pushNewScreen(context, withNavBar: false, screen: route);
+  }
+}
+
+
+Widget supportButton(
+    Color color, String? link, String image, bool isTablet) {
+  if (link == null) return SizedBox.shrink();
+  return Ink(
+    child: InkWell(
+      onTap: () {
+        _launchUrl(link, isTablet);
+      },
+      child: Row(
+        children: [
+          SvgIcon(
+            color: color,
+            image: image,
+            size: 50.sp,
+          ),
+          Text("-ጥያቄ ካሎት በቴሌግራም ያናግሩን")
+        ],
+      ),
+    ),
+  );
+}
+Future<void> _launchUrl(String url, bool isTablet) async {
+  final Uri _url = Uri.parse(url);
+  if (!await launchUrl(_url)) {
+    SnackBar(
+        content: Text(
+          'open_link_failed'.tr(),
+          style: isTablet ? AppTheme.snackBarStyleTablet : AppTheme.snackBarStyle,
+        ));
   }
 }
