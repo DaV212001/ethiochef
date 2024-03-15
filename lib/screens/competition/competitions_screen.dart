@@ -279,6 +279,10 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                       YoutubeVideoPlayer(
                         link: competition[0].video!,
                       ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: supportButton(Colors.blue, 'https://t.me/ethiochef_support', Assets.socialTelegram, isTablet),
+                    ),
                     if(competition[0].competitor!.isNotEmpty)
                       Contestants(
                         refresh: (){
@@ -434,8 +438,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
 }
 
 
-Widget supportButton(
-    Color color, String? link, String image, bool isTablet) {
+Widget supportButton( Color color,  String? link,  String image,  bool isTablet, {String? text}) {
   if (link == null) return SizedBox.shrink();
   return Ink(
     child: InkWell(
@@ -449,7 +452,9 @@ Widget supportButton(
             image: image,
             size: 50.sp,
           ),
-          Text("-ጥያቄ ካሎት በቴሌግራም ያናግሩን")
+          SizedBox(
+            width: 330.w,
+              child: Text(text??"get_support".tr(), softWrap: true, maxLines: 2,))
         ],
       ),
     ),

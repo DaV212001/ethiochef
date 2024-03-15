@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/generated/assets.dart';
+import 'package:ethio_chef/main.dart';
 import 'package:ethio_chef/screens/category/categories_screen.dart';
 import 'package:ethio_chef/screens/competition/competitions_screen.dart';
 import 'package:ethio_chef/screens/home/home_screen.dart';
@@ -18,6 +19,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../services/authorization_service.dart';
+import '../services/firsebase_service.dart';
 import '../services/user_service.dart';
 import 'package:ethio_chef/screens/auth/auth_screen.dart';
 
@@ -38,10 +40,18 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     _checkFirstTimeUser();
+
+    if(navigatorKey.currentContext != null){
+      print('CONTEXT NOT NULL');
+    }else{
+      print('CONTEXT NULL');
+    }
+
     _controller = PersistentTabController();
   }
 
   Future<void> _checkFirstTimeUser() async {
+    await FirebaseService().initNotification();
     setState(() {
       isLoading = true;
     });

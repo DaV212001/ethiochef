@@ -225,5 +225,9 @@
   "no_update_available": "Yeroo ammaatti jirta",
   "no": "{} yeroo ammaa hin argamu",
   "please_vote": "Mee filadhaa",
-  "sms_user_message": "Galmaa'uuf 7753 irratti OK ergite"
+  "sms_user_message": "Galmaa'uuf 7753 irratti OK ergite",
+  "get_support": "-Gaaffii yoo qabaattan telegramiin nu haasofsiisaa",
+  "rec_food": "Kabajamtoota maatii Ethio Chef gosa nyaataa akka isin barsiifnu barbaaddan nuuf barreessaa",
+  "already_voted": "Dorgomaa kanaaf sagalee kenne",
+  "agree_with_privacy_policy": "Haala fi tumaalee irratti walii gala"
 }

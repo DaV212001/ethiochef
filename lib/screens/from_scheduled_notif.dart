@@ -4,18 +4,25 @@ import 'dart:math';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/recipe/recipe_screen.dart';
 import 'package:ethio_chef/screens/subscription/layout/payment.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:restart_app/restart_app.dart';
 
 import '../models/food.dart';
+import '../models/language.dart';
 import '../services/authorization_service.dart';
 import '../services/subscription_checker.dart';
 import '../utils/constants.dart';
 import '../utils/error_util.dart';
 import 'package:http/http.dart' as http;
 
+import '../utils/screen_utils.dart';
+import '../widgets/ad_block.dart';
+import '../widgets/category/category_card.dart';
 import '../widgets/error_card.dart';
 import 'auth/auth_screen.dart';
 
@@ -33,7 +40,7 @@ class _FromNotifState extends State<FromNotif> {
       await ErrorUtil.checkConnection();
       final access_token = await AuthService.getAuthorizationToken();
       final response = await http.get(
-        Uri.parse('${Constants.url}/user/food/breakfast?&limit=1000&lang=am'),
+        Uri.parse('${Constants.url}/user/food/breakfast?&limit=1000&lang=${Language.getLocaleCode()}'),
         headers: {'Authorization': 'JWT $access_token'},
       );
       if (response.statusCode == 200) {
@@ -41,7 +48,7 @@ class _FromNotifState extends State<FromNotif> {
         final List<dynamic> foodList = data['data'];
         print(
             'BREAKFAST FETCHEDEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDDDDDDDDDDD');
-        return foodList.map((json) => Food.fromMealJson(json, 1)).toList();
+        return foodList.map((json) => Food.fromMealJson(json, 1, false)).toList();
       } else {
         throw Exception(response.statusCode.toString());
       }
@@ -55,18 +62,18 @@ class _FromNotifState extends State<FromNotif> {
       await ErrorUtil.checkConnection();
       final access_token = await AuthService.getAuthorizationToken();
       final response = await http.get(
-        Uri.parse('${Constants.url}/user/food/lunch?&limit=1000&lang=am'),
+        Uri.parse('${Constants.url}/user/food/lunch?&limit=1000&lang=${Language.getLocaleCode()}'),
         headers: {
           'Authorization': 'JWT $access_token',
         },
       );
-
+print(response.body);
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final List<dynamic> foodList = data['data'];
         print(
             'LUNCH FETCHEDEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDDDDDDDDDDD');
-        return foodList.map((json) => Food.fromMealJson(json, 2)).toList();
+        return foodList.map((json) => Food.fromMealJson(json, 2, false)).toList();
       } else {
         throw Exception(response.statusCode.toString());
       }
@@ -80,7 +87,7 @@ class _FromNotifState extends State<FromNotif> {
       await ErrorUtil.checkConnection();
       final access_token = await AuthService.getAuthorizationToken();
       final response = await http.get(
-        Uri.parse('${Constants.url}/user/food/super?&limit=1000&lang=am'),
+        Uri.parse('${Constants.url}/user/food/super?&limit=1000&lang=${Language.getLocaleCode()}'),
         headers: {
           'Authorization': 'JWT $access_token',
         },
@@ -91,7 +98,7 @@ class _FromNotifState extends State<FromNotif> {
         final List<dynamic> foodList = data['data'];
         print(
             'SUPPER FETCHEDEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDDDDDDDDDDD');
-        return foodList.map((json) => Food.fromMealJson(json, 3)).toList();
+        return foodList.map((json) => Food.fromMealJson(json, 3, false)).toList();
       } else {
         throw Exception(response.statusCode.toString());
       }
@@ -105,7 +112,7 @@ class _FromNotifState extends State<FromNotif> {
       await ErrorUtil.checkConnection();
       final access_token = await AuthService.getAuthorizationToken();
       final response = await http.get(
-        Uri.parse('${Constants.url}/user/food/dinner?&limit=1000&lang=am'),
+        Uri.parse('${Constants.url}/user/food/dinner?&limit=1000&lang=${Language.getLocaleCode()}'),
         headers: {
           'Authorization': 'JWT $access_token',
         },
@@ -116,7 +123,7 @@ class _FromNotifState extends State<FromNotif> {
         final List<dynamic> foodList = data['data'];
         print(
             'DINNER FETCHEDEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDDDDDDDDDDD');
-        return foodList.map((json) => Food.fromMealJson(json, 4)).toList();
+        return foodList.map((json) => Food.fromMealJson(json, 4, false)).toList();
       } else {
         throw Exception(response.statusCode.toString());
       }
@@ -127,8 +134,8 @@ class _FromNotifState extends State<FromNotif> {
 
   List<Food> _mealList = [];
 
-  Future<List<Food>>? _fetchMeals;
-  Future<List<Food>> _fetchMealsAtSpecificTime() async {
+  Future<dynamic>? _fetchMeals;
+  Future<dynamic> _fetchMealsAtSpecificTime() async {
     Future<List<Food>> Function() fetchFunction = () {
       switch (widget.timeOfDay) {
         case 'breakfast':
@@ -146,7 +153,9 @@ class _FromNotifState extends State<FromNotif> {
 
     try {
       final List<Food> meals = await fetchFunction();
-      return _selectRandomMeals(meals);
+      final List<Food> list1 = _selectRandomMeals(meals);
+      final List<Food> list2 = _selectRandomMeals(meals);
+      return [list1, list2];
     } catch (error) {
       // Handle error
       print('Error fetching meals: $error');
@@ -164,6 +173,7 @@ class _FromNotifState extends State<FromNotif> {
   }
 
   void _navigateToRecipeScreen(Food selectedFood) {
+    print('FROM NOTIF NAVIGATION TO RECIPE SCREEN');
     SubscriptionStatus st= SubscriptionStatus();
     st.checkStatus();
     String? status = st.status;
@@ -223,25 +233,85 @@ class _FromNotifState extends State<FromNotif> {
   void initState() {
     super.initState();
     _fetchMeals = _fetchMealsAtSpecificTime();
+    loadAd();
+  }
+
+
+  static String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
+  static BannerAd? _bannerAd1;
+  static BannerAd? _bannerAd2;
+  static BannerAd? _bannerAd3;
+
+  void loadAd() async {
+    print("Loading Ads");
+    await BannerAd(
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          _bannerAd1 = ad as BannerAd;
+        },
+        onAdFailedToLoad: (ad, err) {
+          print("Error loading ad: $err");
+          ad.dispose();
+        },
+      ),
+    ).load();
+    await BannerAd(
+      adUnitId: 'ca-app-pub-4750411587709054/1691458173',
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          _bannerAd2 = ad as BannerAd;
+        },
+        onAdFailedToLoad: (ad, err) {
+          print("Error loading ad: $err");
+          ad.dispose();
+        },
+      ),
+    ).load();
+    await BannerAd(
+        adUnitId: 'ca-app-pub-4750411587709054/2820228086',
+        request: const AdRequest(),
+        size: AdSize.banner,
+        listener: BannerAdListener(
+            onAdLoaded: (ad) {
+              _bannerAd3 = ad as BannerAd;
+            },
+            onAdFailedToLoad: (ad, err) {
+              print("Error loading ad: $err");
+              ad.dispose();
+            }
+        )
+    ).load();
   }
 
   @override
   Widget build(BuildContext context) {
+    final bool isTablet = ScreenUtils.isTablet(context);
+    final double desiredItemWidth = isTablet ? 130.w : 150.w;
+    final double desiredItemHeight = isTablet ? 220.h : 200.h;
+    final double screenWidth = ScreenUtils.width(context);
+
+    final int crossAxisCount = (screenWidth / desiredItemWidth).floor();
+    final double childAspectRatio = desiredItemWidth / desiredItemHeight;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Phoenix.rebirth(context);
-          }
-        ),
-        title: Text(
-          '${widget.timeOfDay[0].toUpperCase()}${widget.timeOfDay.substring(1)}',
-          style: Theme.of(context).primaryTextTheme.bodyLarge,
-        ),
-      ),
-      body: FutureBuilder<List<Food>>(
+      // appBar: AppBar(
+      //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      //   leading: IconButton(
+      //     icon: Icon(Icons.arrow_back),
+      //     onPressed: () {
+      //       Phoenix.rebirth(context);
+      //     }
+      //   ),
+      //   title: Text(
+      //     '${widget.timeOfDay[0].toUpperCase()}${widget.timeOfDay.substring(1)}',
+      //     style: Theme.of(context).primaryTextTheme.bodyLarge,
+      //   ),
+      // ),
+      body: FutureBuilder<dynamic>(
         future: _fetchMeals,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -259,46 +329,123 @@ class _FromNotifState extends State<FromNotif> {
             );
           } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
             // Successful state
-            List<Food> meals = snapshot.data!;
-            return ListView.builder(
-              itemCount: meals.length,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: (){_navigateToRecipeScreen(meals[index]);},
-                  child: Column(
-                    children: [
-                      Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: [
-                              Container(
-                                  width: MediaQuery.of(context).size.width * 0.3,
-                                  height: MediaQuery.of(context).size.width * 0.3,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: Image.network(
-                                        meals[index].thumbnail,
-                                        fit: BoxFit.fill,
-                                      ))),
-                              Column(
+            List<Food> meals = snapshot.data![0];
+            List<Food> secondMeals = snapshot.data![1];
+            // int itemCount = ((MediaQuery.of(context).size.height - MediaQuery.of(context).size.height * 0.3 )/ (MediaQuery.of(context).size.height * 0.06)).floor();
+            // print('ITEM COUNT $itemCount');
+            return Column(
+              children: [
+                if(_bannerAd1 != null)
+                  AdBlock(bannerAd: _bannerAd1, isbottom: false,),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Stack(
+                          children:[
+                            Container(
+                            height: MediaQuery.of(context).size.height * 0.4,
+                            width: MediaQuery.of(context).size.width,
+                            child: Image.asset(
+                              "assets/images/sign_in_image.png",
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                            Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Row(
                                 children: [
-                                  Text(meals[index].name ?? ''),
+                                  IconButton(
+                                      icon: Icon(Icons.arrow_back),
+                                      onPressed: () {
+                                        Phoenix.rebirth(context);
+                                      }
+                                  ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text(meals[index].description ?? ''),
+                                    child: Text(
+                                      '${widget.timeOfDay[0].toUpperCase()}${widget.timeOfDay.substring(1)}',
+                                      style: Theme.of(context).primaryTextTheme.bodyLarge,
+                                    ),
                                   ),
                                 ],
-                              )
+                              ),
+                            )
+                          ]
+                        ),
+                        if(_bannerAd2 != null)
+                          AdBlock(bannerAd: _bannerAd2, isbottom: false,),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 18.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width *0.5,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: 3,
+                                    physics: BouncingScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      print('FOOD NAME FROM NOTIF: ${meals[index].name}');
+                  
+                                      return InkWell(
+                                        onTap: (){
+                                          _navigateToRecipeScreen(meals[index]);
+                                          },
+                                        child: CategoryCard(
+                                          food: meals[index],
+                                        )
+                                      );
+                                    },
+                                  //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                  //   crossAxisCount: crossAxisCount,
+                                  //   childAspectRatio: childAspectRatio,
+                                  //   mainAxisSpacing: isTablet ? 5 : 0,
+                                  // ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width *0.5,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: 3,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      print('FOOD NAME FROM NOTIF: ${secondMeals[index].name}');
+                  
+                                      return InkWell(
+                                          onTap: (){
+                                            _navigateToRecipeScreen(meals[index]);
+                                          },
+                                          child: CategoryCard(
+                                            food: secondMeals[index],
+                                          )
+                                      );
+                                    },
+                                    //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    //   crossAxisCount: crossAxisCount,
+                                    //   childAspectRatio: childAspectRatio,
+                                    //   mainAxisSpacing: isTablet ? 5 : 0,
+                                    // ),
+                                  ),
+                                ),
+                              ),
                             ],
-                          )),
-                      Divider(),
-                    ],
+                          ),
+                        ),
+                        if(_bannerAd3 != null)
+                          AdBlock(bannerAd: _bannerAd3, isbottom: true,),
+                      ],
+                    ),
                   ),
-                );
-              },
+                ),
+              ],
             );
           } else {
             // Empty state

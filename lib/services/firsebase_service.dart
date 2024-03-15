@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:ethio_chef/screens/from_scheduled_notif.dart';
 import 'package:ethio_chef/services/scheduled_notification_service.dart';
 import 'package:ethio_chef/services/user_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -11,7 +13,10 @@ import '../main.dart';
 import '../utils/constants.dart';
 import 'authorization_service.dart';
 
-class FirebaseService {
+
+class FirebaseService  {
+
+
   final _firebaseMessaging = FirebaseMessaging.instance;
   final _androidChannel = const AndroidNotificationChannel(
       'high_importance_channel', 'High Importance Notifications',
@@ -19,7 +24,7 @@ class FirebaseService {
       importance: Importance.high);
   final _localNotifications = FlutterLocalNotificationsPlugin();
 
-  void handleMessage(RemoteMessage? message) async {
+  void handleMessage(RemoteMessage message) async {
     print("here 1");
     if (message!.notification == null) return;
     if(message.notification?.title == 'breakfast'){
@@ -76,10 +81,34 @@ class FirebaseService {
       carPlay: true,
       criticalAlert: true,
     );
+
+
     print("here 3");
-    FirebaseMessaging.instance.getInitialMessage().then(handleMessage);
+    FirebaseMessaging.instance.getInitialMessage().then((message){
+      if(message?.notification?.title == 'ኢትዮ ሼፍ') {
+        print('INTIALMESSSSSSSSSSSSSSAAAAAAAAAAGGGGGGGGEEEEEEE');
+        pushNewScreen(navigatorKey.currentContext!, withNavBar: false,
+            screen: FromNotif(timeOfDay:
+            message!.notification!.body!.startsWith('ለቁርስ') ? 'breakfast' :
+            message.notification!.body!.startsWith('ለምሳ') ? 'lunch' :
+            message.notification!.body!.startsWith('ለመክሰስ') ? 'supper' :
+            message.notification!.body!.startsWith('ለእራት') ? 'dinner' : ''
+            ));
+      }
+    });
     print("here 4");
-    FirebaseMessaging.onMessageOpenedApp.listen(handleMessage);
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message){
+      print('ONMESSAGEOPENEDAPPPPPPPPPPPPPPP');
+      if(message.notification?.title == 'ኢትዮ ሼፍ') {
+        pushNewScreen(navigatorKey.currentContext!, withNavBar: false,
+            screen: FromNotif(timeOfDay:
+            message.notification!.body!.startsWith('ለቁርስ') ? 'breakfast' :
+            message.notification!.body!.startsWith('ለምሳ') ? 'lunch' :
+            message.notification!.body!.startsWith('ለመክሰስ') ? 'supper' :
+            message.notification!.body!.startsWith('ለእራት') ? 'dinner' : ''
+            ));
+      }
+    });
     print("here 5");
     FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
     print("here 6");
@@ -88,34 +117,39 @@ class FirebaseService {
       final notification = message.notification;
       print("here 8");
       if (notification == null) return;
-      if(message.notification?.title == 'breakfast'){
+      if(message.notification!.body!.startsWith('ለቁርስ')){
+        print('BREAKFAST F');
         await NotificationScheduled.showNotification(
           title: 'ኢትዮ ሼፍ',
           body: 'ለቁርስ ጠቃሚ ምክር',
-          payload: 'Scheduled Notification :${message.notification?.title}'
+          payload: 'Scheduled Notification :breakfast'
         );
       }
-      else if(message.notification?.title == 'lunch'){
+      else if(message.notification!.body!.startsWith('ለምሳ')){
+        print('LUNCH F');
         await NotificationScheduled.showNotification(
             title: 'ኢትዮ ሼፍ',
             body: 'ለምሳ ጠቃሚ ምክር',
-            payload: 'Scheduled Notification :${message.notification?.title}'
+            payload: 'Scheduled Notification :lunch'
         );
       }
-      else if(message.notification?.title == 'supper'){
+      else if(message.notification!.body!.startsWith('ለመክሰስ')){
+        print('SUPPER F');
         await NotificationScheduled.showNotification(
             title: 'ኢትዮ ሼፍ',
             body: 'ለመክሰስ ጠቃሚ ምክር',
-            payload: 'Scheduled Notification :${message.notification?.title}'
+            payload: 'Scheduled Notification :supper'
         );
       }
-      else if(message.notification?.title == 'dinner'){
+      else if(message.notification!.body!.startsWith('ለእራት')){
+        print('DINNER F');
         await NotificationScheduled.showNotification(
             title: 'ኢትዮ ሼፍ',
             body: 'ለእራት ጠቃሚ ምክር',
-            payload: 'Scheduled Notification :${message.notification?.title}'
+            payload: 'Scheduled Notification :dinner'
         );
       } else{
+        print('DEFAULT ForB');
       await _localNotifications.show(
           notification.hashCode,
           notification.title,
@@ -256,6 +290,7 @@ Future<void> handleBackgroundMessage(RemoteMessage message) async {
   print("Body: ${message.notification?.body}");
   print("Payload: ${message.data}");
   if(message.notification?.title == 'breakfast'){
+    print('BREAKFAST B');
     await NotificationScheduled.showNotification(
         title: 'ኢትዮ ሼፍ',
         body: 'ለቁርስ ጠቃሚ ምክር',
@@ -263,6 +298,7 @@ Future<void> handleBackgroundMessage(RemoteMessage message) async {
     );
   }
   else if(message.notification?.title == 'lunch'){
+    print('LUNCH B');
     await NotificationScheduled.showNotification(
         title: 'ኢትዮ ሼፍ',
         body: 'ለምሳ ጠቃሚ ምክር',
@@ -270,6 +306,7 @@ Future<void> handleBackgroundMessage(RemoteMessage message) async {
     );
   }
   else if(message.notification?.title == 'supper'){
+    print('SUPPER B');
     await NotificationScheduled.showNotification(
         title: 'ኢትዮ ሼፍ',
         body: 'ለመክሰስ ጠቃሚ ምክር',
@@ -277,6 +314,7 @@ Future<void> handleBackgroundMessage(RemoteMessage message) async {
     );
   }
   else if(message.notification?.title == 'dinner'){
+    print('DINNER B');
     await NotificationScheduled.showNotification(
         title: 'ኢትዮ ሼፍ',
         body: 'ለእራት ጠቃሚ ምክር',

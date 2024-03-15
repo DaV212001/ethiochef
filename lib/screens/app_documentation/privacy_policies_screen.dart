@@ -78,7 +78,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
           shrinkWrap: true,
           itemCount: privacyPolicies.length,
           itemBuilder: (context, index) {
-            return Row(
+            return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

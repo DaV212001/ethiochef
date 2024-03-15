@@ -7,9 +7,10 @@ import '../../generated/assets.dart';
 class AuthBtn extends StatelessWidget {
   final String text;
   final Function() onPress;
+  final bool? agreed;
   final bool isLoading;
 
-  AuthBtn({super.key, required this.onPress, required this.text, this.isLoading = false});
+  AuthBtn({super.key, required this.onPress, required this.text, this.isLoading = false, this.agreed});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,7 @@ class AuthBtn extends StatelessWidget {
                               color: theme.colorScheme.secondary)
                       )
                     ),style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(theme.colorScheme.primary),
+                  backgroundColor: agreed!=null? agreed == true? MaterialStatePropertyAll(theme.colorScheme.primary): MaterialStatePropertyAll(Colors.grey):MaterialStatePropertyAll(theme.colorScheme.primary),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(40.0)

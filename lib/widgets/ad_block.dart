@@ -12,7 +12,10 @@ class AdBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double pad = isbottom ? 90.0 : 30.0;
+    double pad = isbottom ? 90.0 : 0.0;
+    if(_bannerAd == null){
+      return SizedBox.shrink();
+    }
     return Padding(
       padding: EdgeInsets.only(bottom: pad),
       child: Align(

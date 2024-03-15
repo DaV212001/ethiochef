@@ -129,16 +129,16 @@ class _SubscriptionDropDownState extends State<SubscriptionDropDown> {
         Text(
           '${Language.getLocaleCode() == 'en'? 'Birr': "ብር"} ${item.price.toString()}',
           style: TextStyle(
-              fontFamily: 'Montserrat',
-              color: theme.colorScheme.secondaryContainer
+              color: theme.colorScheme.secondaryContainer,
+            fontWeight: FontWeight.w400
           ),
         ),
         Text(
             '${Language.getLocaleCode() == 'en'? 'Good until': "እስከ"} ${Language.getLocaleCode() == 'en'?DateFormat('MMMM dd, yyyy').format(expirationDate): '${EtDatetime.fromMillisecondsSinceEpoch(expirationDate.millisecondsSinceEpoch,).monthGeez} ${EtDatetime.fromMillisecondsSinceEpoch(expirationDate.millisecondsSinceEpoch,).day}, ${EtDatetime.fromMillisecondsSinceEpoch(expirationDate.millisecondsSinceEpoch,).year}'}',
             style: TextStyle(
-                fontFamily: 'Montserrat',
                 fontSize: 12,
-                color: theme.colorScheme.secondaryContainer
+                color: theme.colorScheme.secondaryContainer,
+                fontWeight: FontWeight.w400
             )
         )
       ]
@@ -151,21 +151,25 @@ class _SubscriptionDropDownState extends State<SubscriptionDropDown> {
     DateTime expirationDate = now.add(duration);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        Padding(
+          padding: const EdgeInsets.only(right: 16.0),
+          child: Icon(Icons.payment_rounded),
+        ),
         Text(
           '${Language.getLocaleCode() == 'en'? 'Birr': "ብር"} ${item.price.toString()}',
           style: TextStyle(
-              fontFamily: 'Montserrat',
-              color: theme.colorScheme.secondaryContainer
+              color: theme.colorScheme.secondaryContainer,
+              fontWeight: FontWeight.w400
           ),
         ),
         SizedBox(width: 10),
         Text(
             '${Language.getLocaleCode() == 'en'? 'Good until': "እስከ"} ${Language.getLocaleCode() == 'en'?DateFormat('MMMM dd, yyyy').format(expirationDate): '${EtDatetime.fromMillisecondsSinceEpoch(expirationDate.millisecondsSinceEpoch,).monthGeez} ${EtDatetime.fromMillisecondsSinceEpoch(expirationDate.millisecondsSinceEpoch,).day}, ${EtDatetime.fromMillisecondsSinceEpoch(expirationDate.millisecondsSinceEpoch,).year}'}',
           style: TextStyle(
-              fontFamily: 'Montserrat',
-              color: theme.colorScheme.secondaryContainer
+              color: theme.colorScheme.secondaryContainer,
+              fontWeight: FontWeight.w400
           )
         )
       ]

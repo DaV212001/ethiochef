@@ -128,7 +128,15 @@ class _ContestantsState extends State<Contestants> {
                                   setState(() {
                                     Loading = false;
                                   });
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(
+                                          e.toString()== 'You have already voted for this contestant'?
+                                          "already_voted".tr()
+                                              :
+                                          e.toString()
+                                      ),
+                                      ),
+                                  );
                                 }
 
                                 setState(() {

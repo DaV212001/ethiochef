@@ -75,13 +75,14 @@ class NotificationScheduled{
     String? title,
     String? body,
     String? payload,
-})async=>
+})async{
+    print('CALLLLLLEDDDDD NOTIF');
       _notifications.show(
           id,
           title,
           body,
           await notificationDetails(),
-          payload: payload);
+          payload: payload);}
 
   static Future showScheduledNotification(
       {int id = 0,
@@ -157,7 +158,7 @@ class NotificationScheduled{
         scheduledDate,
         const NotificationDetails(
             android: AndroidNotificationDetails(
-                'your channel id', 'your channel name',
+                'channel id', 'channel name',
                 importance: Importance.defaultImportance)),
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,

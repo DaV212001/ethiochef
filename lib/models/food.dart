@@ -178,7 +178,7 @@ class Food {
       page: json['page'],
     );
   }
-  factory Food.fromMealJson(Map<String, dynamic> json, int type) {
+  factory Food.fromMealJson(Map<String, dynamic> json, int type, bool fromNotif) {
     String clearPath(String path) {
       final parts = path.split('/public_html');
       return parts.last;
@@ -200,7 +200,7 @@ class Food {
       id: json['id'],
       subcategoriesId: json['subcategories_id'],
       categoryId: json['category_id'] ?? 0,
-      name: json['name'][Language.getLocaleCode()]?? json['name']["en"],
+      name: fromNotif == false? json['name'][Language.getLocaleCode()]?? json['name']["en"]: json['name']['am'],
       description: json['description'][Language.getLocaleCode()]?? json['name']['en'],
       mealTime: meal,
       preparationTime: json['cooking_time'],

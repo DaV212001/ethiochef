@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -7,6 +6,7 @@ import 'package:ethio_chef/screens/subscription/layout/payment.dart';
 import 'package:ethio_chef/widgets/ad_block.dart';
 import 'package:ethio_chef/widgets/auth/auth_link.dart';
 import 'package:ethio_chef/widgets/auth/phone_input_field.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -28,8 +28,6 @@ class SignIn extends StatefulWidget {
   final bool? isFromNotification;
   const SignIn({super.key, this.isfromDeepLink, this.isFromNotification});
 
-
-
   @override
   State<SignIn> createState() => _SignInState();
 }
@@ -44,7 +42,6 @@ class _SignInState extends State<SignIn> {
   void initState() {
     super.initState();
     loadAd();
-
   }
 
   static String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
@@ -83,104 +80,98 @@ class _SignInState extends State<SignIn> {
       ),
     ).load();
     await BannerAd(
-        adUnitId: _adbannerUnitId,
+        adUnitId: 'ca-app-pub-4750411587709054/2820228086',
         request: const AdRequest(),
         size: AdSize.banner,
-        listener: BannerAdListener(
-            onAdLoaded: (ad) {
-              _bannerAd3 = ad as BannerAd;
-            },
-            onAdFailedToLoad: (ad, err) {
-              print("Error loading ad: $err");
-              ad.dispose();
-            }
-        )
-    ).load();
+        listener: BannerAdListener(onAdLoaded: (ad) {
+          _bannerAd3 = ad as BannerAd;
+        }, onAdFailedToLoad: (ad, err) {
+          print("Error loading ad: $err");
+          ad.dispose();
+        })).load();
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: Column(
-        children: [
-          if (_bannerAd1 != null)
-            AdBlock(bannerAd: _bannerAd1, isbottom: false,),
-
-          Image.asset("assets/images/sign_in_image.png", fit: BoxFit.fill,),
-          if (_bannerAd3 != null)
-            AdBlock(bannerAd: _bannerAd3, isbottom: false,),
-
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30),
-            child: Column(
-              children: [
-                PhoneInputField(controller: phoneController)
-              ]
-            )
-          ),
-
-          AuthBtn(
-            isLoading: isLoading,
-            text: "sign_in_button".tr(),
-            onPress: ()async{
-              print("phoneController.text ${phoneController.text}");
-              if (_formKey.currentState!.validate()) {
-                setState(() {
-                  isLoading = true;
-                });
-                await login(phoneController.text);
-              }
-            },
-          ),
-          AuthLink(
-              text: "dont_have_an_account".tr(),
-              buttonText: "sign_up_button".tr(),
-              onPress: () {
-                pushNewScreen(context,
-                    screen: AuthScreen(
-                      isSignIn: false,
-                    ));
-              }),
-          if (_bannerAd2 != null)
-            AdBlock(bannerAd: _bannerAd2, isbottom: true,),
-
-          if(isNotLoggedin)
-          Center(
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.red,
-                    Colors.redAccent
-                  ]
-                ),
-                borderRadius: BorderRadius.circular(20)
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 28.0),
+        child: Column(
+          children: [
+            if (_bannerAd1 != null)
+              AdBlock(
+                bannerAd: _bannerAd1,
+                isbottom: false,
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(child: Text("login_failed".tr())),
-              ),
+            Image.asset(
+              "assets/images/sign_in_image.png",
+              fit: BoxFit.fill,
             ),
-          )
-        ],
+            if (_bannerAd3 != null)
+              AdBlock(
+                bannerAd: _bannerAd3,
+                isbottom: false,
+              ),
+            Padding(
+                padding: EdgeInsets.symmetric(horizontal: 30),
+                child: Column(
+                    children: [PhoneInputField(controller: phoneController)])),
+            AuthBtn(
+              isLoading: isLoading,
+              text: "sign_in_button".tr(),
+              onPress: () async {
+                print("phoneController.text ${phoneController.text}");
+                if (_formKey.currentState!.validate()) {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  await login(phoneController.text);
+                }
+              },
+            ),
+            AuthLink(
+                text: "dont_have_an_account".tr(),
+                buttonText: "sign_up_button".tr(),
+                onPress: () {
+                  pushNewScreen(context,
+                      screen: AuthScreen(
+                        isSignIn: false,
+                      ));
+                }),
+            if (_bannerAd2 != null)
+              AdBlock(
+                bannerAd: _bannerAd2,
+                isbottom: false,
+              ),
+            if (isNotLoggedin)
+              Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                      gradient:
+                          LinearGradient(colors: [Colors.red, Colors.redAccent]),
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(child: Text("login_failed".tr())),
+                  ),
+                ),
+              )
+          ],
+        ),
       ),
     );
   }
+
   Future<void> login(String phone) async {
     var response;
     final bool isTablet = ScreenUtils.isTablet(context);
     SnackBar success = SnackBar(
         padding: EdgeInsets.symmetric(vertical: 20),
-        content: Text(
-          'login_successful'.tr()
-        ));
+        content: Text('login_successful'.tr()));
     SnackBar failed = SnackBar(
         padding: EdgeInsets.symmetric(vertical: 20),
-        content: Text(
-          "login_failed".tr()
-        ));
+        content: Text("login_failed".tr()));
     try {
       UserService service = UserService();
       response = await service.login(phone);
@@ -202,18 +193,17 @@ class _SignInState extends State<SignIn> {
         print(decodedToken['user']['subscriber']['isFromSMS']);
         print(decodedToken['user']['subscriber']['due_date']);
 
-        if(decodedToken['user']['subscriber']['status'] == 'inactive'){
+        if (decodedToken['user']['subscriber']['status'] == 'inactive') {
           setState(() {
             isLoading = false;
           });
           Map userData = {
-            'first_name':decodedToken['user']['first_name'],
-            'last_name':decodedToken['user']['first_name'],
-            'phone':decodedToken['user']['phone_number'],
+            'first_name': decodedToken['user']['first_name'],
+            'last_name': decodedToken['user']['first_name'],
+            'phone': decodedToken['user']['phone_number'],
           };
           showSubscriptionAlert(userData);
-         }
-        else {
+        } else {
           await SubscriptionStatus().checkStatus();
           await AuthService.setAuthorizationToken(access_token);
           await FirebaseService().checkTokenRegistration();
@@ -224,28 +214,32 @@ class _SignInState extends State<SignIn> {
             isNotLoggedin = false;
           });
 
-          if(widget.isfromDeepLink != null){
-            if(widget.isfromDeepLink == true){
+          if (widget.isfromDeepLink != null) {
+            print('IS DEEPLINK');
+            if (widget.isfromDeepLink == true) {
               Navigator.pop(context);
-            } else{
+            } else {
+              print('IS NORMAL');
               RestartWidget.restartApp(context);
               ScaffoldMessenger.of(context).showSnackBar(success);
             }
-          }else{
-            if(widget.isFromNotification != null){
-              if(widget.isFromNotification == true){
+          } else {
+            if (widget.isFromNotification != null) {
+              if (widget.isFromNotification == true) {
                 print('IS NOTIFFFFFFFFFFFFFFFF');
                 SubscriptionStatus().updateStatus('User is subscribed');
                 Navigator.pop(context);
-              } else{
+              } else {
                 RestartWidget.restartApp(context);
                 ScaffoldMessenger.of(context).showSnackBar(success);
               }
-
+            } else {
+              RestartWidget.restartApp(context);
+              ScaffoldMessenger.of(context).showSnackBar(success);
             }
           }
         }
-      }else {
+      } else {
         // The login failed.
         setState(() {
           isLoading = false;
@@ -253,7 +247,6 @@ class _SignInState extends State<SignIn> {
         });
         // ScaffoldMessenger.of(context).showSnackBar(failed);
       }
-
     } catch (e) {
       print(e);
       setState(() {
@@ -278,8 +271,12 @@ class _SignInState extends State<SignIn> {
       confirmBtnText: 'pay'.tr(),
       onConfirmBtnTap: () {
         print(userData);
-        pushNewScreen(context, withNavBar: false,
-            screen: PaymentCheckout(userData: userData, isInActiveUserSubscription: true,));
+        pushNewScreen(context,
+            withNavBar: false,
+            screen: PaymentCheckout(
+              userData: userData,
+              isInActiveUserSubscription: true,
+            ));
       },
       cancelBtnText: 'cancel'.tr(),
       confirmBtnColor: Colors.red,
@@ -302,7 +299,8 @@ class _SignInState extends State<SignIn> {
     });
   }
 
-  void showSnackBarAndNavigate(BuildContext context, String message, Widget route) {
+  void showSnackBarAndNavigate(
+      BuildContext context, String message, Widget route) {
     setState(() {
       isLoading = false;
     });

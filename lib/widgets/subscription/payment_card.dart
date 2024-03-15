@@ -48,11 +48,15 @@ class _RectangularPaymentCardState extends State<RectangularPaymentCard> {
                     ),
                   ),
                 ),
-                Text(widget.payment_name,
-                    style: TextStyle(
-                    fontSize: isTablet ? 11.sp : 15.sp,
-                    fontWeight: FontWeight.w600,
-                    color: theme.colorScheme.primary),)
+                SizedBox(
+                  height: 50,
+                  child: Text(widget.payment_name,
+                      maxLines: 2,
+                      style: TextStyle(
+                      fontSize: isTablet ? 11.sp : 15.sp,
+                      fontWeight: FontWeight.w600,
+                      color: theme.colorScheme.primary),),
+                )
               ])),
     );
   }

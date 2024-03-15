@@ -22,7 +22,7 @@ class MealService{
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final List<dynamic> foodList = data['data'];
-        return foodList.map((json) => Food.fromMealJson(json,1)).toList();
+        return foodList.map((json) => Food.fromMealJson(json,1, false)).toList();
       } else {
         throw Exception(response.statusCode.toString());
       }
@@ -44,7 +44,7 @@ class MealService{
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final List<dynamic> foodList = data['data'];
-        return foodList.map((json) => Food.fromMealJson(json,2)).toList();
+        return foodList.map((json) => Food.fromMealJson(json,2, false)).toList();
       } else {
         throw Exception(response.statusCode.toString());
       }
@@ -66,7 +66,7 @@ class MealService{
      if (response.statusCode == 200) {
        final data = jsonDecode(response.body);
        final List<dynamic> foodList = data['data'];
-       return foodList.map((json) => Food.fromMealJson(json,3)).toList();
+       return foodList.map((json) => Food.fromMealJson(json,3, false)).toList();
      } else {
        throw Exception(response.statusCode.toString());
      }
@@ -88,7 +88,7 @@ class MealService{
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final List<dynamic> foodList = data['data'];
-        return foodList.map((json) => Food.fromMealJson(json,4)).toList();
+        return foodList.map((json) => Food.fromMealJson(json,4, false)).toList();
       } else {
         throw Exception(response.statusCode.toString());
       }

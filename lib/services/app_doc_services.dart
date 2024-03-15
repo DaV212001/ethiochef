@@ -79,6 +79,7 @@ class AppDocServices {
             .map((termsAndConditionsData) =>
             TermsAndConditions.fromJson(termsAndConditionsData))
             .toList();
+        print('LENGTH OF POLICIES: ${termsAndConditions.length}');
         return termsAndConditions;
       } else {
         throw Exception(response.statusCode.toString());

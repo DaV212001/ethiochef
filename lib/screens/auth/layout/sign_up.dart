@@ -13,6 +13,8 @@ import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../../../widgets/auth/auth_btn.dart';
 import '../../../widgets/subscription/subscription_drop_down.dart';
+import '../../app_documentation/privacy_policies_screen.dart';
+import '../../app_documentation/terms_and_conditions_screen.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -78,7 +80,7 @@ class _SignUpState extends State<SignUp> {
       ),
     ).load();
     await BannerAd(
-        adUnitId: _adbannerUnitId,
+        adUnitId: 'ca-app-pub-4750411587709054/2820228086',
         request: const AdRequest(),
         size: AdSize.banner,
         listener: BannerAdListener(
@@ -93,7 +95,7 @@ class _SignUpState extends State<SignUp> {
     ).load();
   }
 
-
+  bool agreedToTerms = false;
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -133,21 +135,23 @@ class _SignUpState extends State<SignUp> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      "please_select_a_plan".tr(),
-                      style: TextStyle(
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.bold,
-                          color: theme.colorScheme.primary),
-                    ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              border: BorderDirectional(bottom: BorderSide(color: Colors.black, width: 1)),
-                              color: Colors.transparent,
-                          ),
+                      child: Text(
+                        "please_select_a_plan".tr(),
+                        style: TextStyle(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.bold,
+                            color: theme.colorScheme.primary),
+                      ),
+                    ),
+                    Container(
+                        decoration: BoxDecoration(
+                            border: BorderDirectional(bottom: BorderSide(color: Colors.black, width: 1)),
+                            color: Colors.transparent,
+                        ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 8.0),
                         child: SubscriptionDropDown(
                           selectedSubscriptionPlan: selectedSubscriptionPlan,
                           onChange: (value) {
@@ -170,10 +174,41 @@ class _SignUpState extends State<SignUp> {
             ),
 
           ),
+          Padding(
+            padding: const EdgeInsets.only(top: 18.0),
+            child: CheckboxListTile(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(5),
+              ),
+              value: agreedToTerms,
+              onChanged: (value) {
+                setState(() {
+                  agreedToTerms = value!;
+                });
+              },
+              title: Text("agree_with_privacy_policy".tr(),
+                  style: TextStyle(color: Colors.black)),
+              controlAffinity: ListTileControlAffinity.leading, // add this line
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TermsAndConditionsScreen()));
+            },
+            child: Text(
+                "terms_and_conditions".tr(),
+                style: TextStyle(color: Colors.blue)
+            ),
+          ),
           AuthBtn(
             isLoading: isLoading,
+            agreed: agreedToTerms,
             text: "sign_up_button".tr(),
             onPress: () async {
+              if(agreedToTerms){
               if (_formKey.currentState!.validate() && hasSelected == true) {
                 Map userData =
                 {
@@ -188,6 +223,13 @@ class _SignUpState extends State<SignUp> {
                         userData:userData,
                         selectedSubscriptionPlan: selectedSubscriptionPlan!
                     ));
+              }
+            } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Please agree to the terms and conditions'),
+                  )
+                );
               }
             }
           ),

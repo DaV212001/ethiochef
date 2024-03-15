@@ -155,6 +155,7 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
           children: [
             if (_bannerAd != null)
               AdBlock(bannerAd: _bannerAd, isbottom: false,),
+
             ScreenHead(
               hasNotification: true,
               screen: 1,
@@ -182,21 +183,23 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
               radius: 5,
               tabs: tabs,
             ),
-if(_bannerAd2 != null)
-              AdBlock(bannerAd: _bannerAd2, isbottom: false,),
+
              Expanded(
                     child: RefreshWidget(
-                      child: VerticalFoodList(pagingController:
-                      _pagingController, isSearchList: false,),
-                      onRefresh: ()async{
+                      child: VerticalFoodList(
+                        bannerAd2: _bannerAd2??null,
+                        bannerAd3: _bannerAd3??null,
+                        pagingController: _pagingController,
+                        isSearchList: false,
+                      ),
+                      onRefresh: () async {
                         setState(() {
                           _pagingController.refresh();
                         });
                       },
                     ),
                 ),
-if(_bannerAd3 != null)
-              AdBlock(bannerAd: _bannerAd3, isbottom: true,),
+
 
           ],
         ),

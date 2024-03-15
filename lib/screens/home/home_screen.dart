@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import '../../generated/assets.dart';
 import '../../models/promotion.dart';
 import '../../models/category.dart';
 import '../../models/food.dart';
@@ -9,11 +11,14 @@ import '../../services/category_service.dart';
 import '../../services/meal_service.dart';
 import '../../services/promotion_service.dart';
 import '../../services/scheduled_notification_service.dart';
+import '../../utils/screen_utils.dart';
 import '../../utils/update_manager.dart';
 import '../../widgets/ad_block.dart';
 import '../../widgets/error_card.dart';
 import '../../widgets/loading.dart';
 import '../../widgets/pull_to_refresh.dart';
+import '../competition/competitions_screen.dart';
+import '../from_scheduled_notif.dart';
 import '../recipe_status/my_submitted_recipe.dart';
 import 'layout/ads_carousel.dart';
 import 'layout/category_carousel.dart';
@@ -27,8 +32,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 DateTime scheduleTime = DateTime.now();
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin{
 
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   Future? _future;
 
   @override
@@ -53,11 +59,19 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       final superMeal = await mealService.fetchAllSuper();
       final dinner = await mealService.fetchAllDinner();
       final promotionsData = await promotionService.fetchPromotions();
-      return [categoryData, breakFast, lunch, superMeal, dinner,promotionsData];
+      return [
+        categoryData,
+        breakFast,
+        lunch,
+        superMeal,
+        dinner,
+        promotionsData
+      ];
     } catch (error) {
       rethrow;
     }
   }
+
   static String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
   static BannerAd? _bannerAd1;
   static BannerAd? _bannerAd2;
@@ -93,65 +107,79 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         },
       ),
     ).load();
-    await BannerAd(
-        adUnitId: _adbannerUnitId,
-        request: const AdRequest(),
-        size: AdSize.banner,
-        listener: BannerAdListener(
-            onAdLoaded: (ad) {
-              _bannerAd3 = ad as BannerAd;
-            },
-            onAdFailedToLoad: (ad, err) {
-              print("Error loading ad: $err");
-              ad.dispose();
-            }
-        )
-    ).load();
+    // await BannerAd(
+    //     adUnitId: _adbannerUnitId,
+    //     request: const AdRequest(),
+    //     size: AdSize.banner,
+    //     listener: BannerAdListener(
+    //         onAdLoaded: (ad) {
+    //           _bannerAd3 = ad as BannerAd;
+    //         },
+    //         onAdFailedToLoad: (ad, err) {
+    //           print("Error loading ad: $err");
+    //           ad.dispose();
+    //         }
+    //     )
+    // ).load();
   }
+
   bool showAddRecipeCard = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: FutureBuilder(
-            future: _future,
-            builder: (context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Loading();
-              }
-              if (snapshot.hasError) {
-                return Center(
-                    child: ErrorCard(
-                      errorType: snapshot.error.toString(),
-                      refresh: () {
-                        setState(() {
-                          _future = fetchData();
-                        });
-                      },
-                    ));
-              }
-              return buildHomePage(
-                  snapshot.data[0] as List<Category>,
-                  snapshot.data[1] as List<Food>,
-                  snapshot.data[2] as List<Food>,
-                  snapshot.data[3] as List<Food>,
-                  snapshot.data[4] as List<Food>,
-                  snapshot.data[5] as List<Promotion>);
-            }),
-      );
+      body: FutureBuilder(
+          future: _future,
+          builder: (context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Loading();
+            }
+            if (snapshot.hasError) {
+              return Center(
+                  child: ErrorCard(
+                errorType: snapshot.error.toString(),
+                refresh: () {
+                  setState(() {
+                    _future = fetchData();
+                  });
+                },
+              ));
+            }
+            return buildHomePage(
+                snapshot.data[0] as List<Category>,
+                snapshot.data[1] as List<Food>,
+                snapshot.data[2] as List<Food>,
+                snapshot.data[3] as List<Food>,
+                snapshot.data[4] as List<Food>,
+                snapshot.data[5] as List<Promotion>);
+          }),
+    );
   }
 
-  Widget buildHomePage(List<Category> category, List<Food> breakfast,
-      List<Food> lunch,List<Food> superMeal,List<Food> dinner, List<Promotion> promotion
-      ){
+  Widget buildHomePage(
+      List<Category> category,
+      List<Food> breakfast,
+      List<Food> lunch,
+      List<Food> superMeal,
+      List<Food> dinner,
+      List<Promotion> promotion) {
+    final bool isTablet = ScreenUtils.isTablet(context);
     return RefreshWidget(
       child: SafeArea(
-        child: SingleChildScrollView(
-            child: Column(
-              children: [
-
-                if (_bannerAd1 != null)
-                  AdBlock(bannerAd: _bannerAd1, isbottom: false,),
-
+        child: CustomScrollView(
+          slivers: [
+            if (_bannerAd2 != null)
+              SliverAppBar(
+                pinned: true,
+                floating: false,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: AdBlock(
+                    bannerAd: _bannerAd2,
+                    isbottom: false,
+                  ),
+                ),
+              ),
+            SliverList(
+              delegate: SliverChildListDelegate([
                 AdsCarousel(promotion: promotion),
                 SizedBox(
                   height: 5.h,
@@ -163,36 +191,54 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                       SizedBox(
                         height: 15.h,
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0, bottom: 8),
+                        child: supportButton(
+                            Colors.blue,
+                            'https://t.me/ethiochef_support',
+                            Assets.socialTelegram,
+                            isTablet,
+                            text: 'rec_food'.tr()),
+                      ),
+                      // ElevatedButton(onPressed: (){
+                      //   pushNewScreen(context, screen: FromNotif(timeOfDay: 'lunch'));
+                      // }, child: SizedBox()),
                       HomeCategoryTab(
                         breakfast: breakfast,
                         lunch: lunch,
                         superMeal: superMeal,
-                        dinner: dinner,),
+                        dinner: dinner,
+                      ),
+                      if (_bannerAd1 != null)
+                        AdBlock(
+                          bannerAd: _bannerAd1,
+                          isbottom: false,
+                        ),
 
-                      if (_bannerAd2 != null)
-                        AdBlock(bannerAd: _bannerAd2, isbottom: false,),
                       CategoryCarousel(category: category),
-                      if (_bannerAd3 != null)
-                        AdBlock(bannerAd: _bannerAd3, isbottom: false,),
+                      // if (_bannerAd3 != null) AdBlock(bannerAd: _bannerAd3, isbottom: false,),
                       SizedBox(
                         height: 15.h,
                       ),
                       SizedBox(
                         height: 15.h,
-                      )
-                    ]
-                  )
-                )
-              ])
-        )
+                      ),
+                    ],
+                  ),
+                ),
+              ]),
+            ),
+          ],
+        ),
       ),
-        onRefresh: ()async{
-          setState(() {
-            _future = fetchData();
-          });
-        }
+      onRefresh: () async {
+        setState(() {
+          _future = fetchData();
+        });
+      },
     );
   }
+
   void listenNotification() =>
       NotificationScheduled.onNotifications.stream.listen((event) {
         pushNewScreen(
@@ -203,7 +249,6 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         );
       });
 }
-
 
 //
 // class DatePickerTxt extends StatefulWidget {

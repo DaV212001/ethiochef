@@ -2,9 +2,11 @@ import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/widgets/category/food_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../../utils/screen_utils.dart';
+import '../../../widgets/ad_block.dart';
 import '../../../widgets/category/category_card.dart';
 import '../../../widgets/error_card.dart';
 import '../../../widgets/loading.dart';
@@ -13,8 +15,9 @@ import '../../../widgets/pull_to_refresh.dart';
 class VerticalFoodList extends StatefulWidget {
   final PagingController<int, Food> pagingController;
   final bool isSearchList;
-
-  const VerticalFoodList({super.key, required this.pagingController, required this.isSearchList});
+  final BannerAd? bannerAd2;
+  final BannerAd? bannerAd3;
+  const VerticalFoodList({super.key, required this.pagingController, required this.isSearchList, this.bannerAd2, this.bannerAd3});
 
   @override
   State<VerticalFoodList> createState() => _VerticalFoodListState();
@@ -30,47 +33,59 @@ class _VerticalFoodListState extends State<VerticalFoodList> {
 
     final int crossAxisCount = (screenWidth / desiredItemWidth).floor();
     final double childAspectRatio = desiredItemWidth / desiredItemHeight;
-    return PagedGridView<int, Food>(
-        physics: BouncingScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: crossAxisCount,
-          childAspectRatio: childAspectRatio,
-          mainAxisSpacing: isTablet ? 5 : 0,
-        ),
-        pagingController: widget.pagingController,
-        builderDelegate: PagedChildBuilderDelegate<Food>(
-          firstPageProgressIndicatorBuilder: (context) => Center(child: Loading()),
-          newPageProgressIndicatorBuilder: (_) => Center(child: Loading()),
-          noMoreItemsIndicatorBuilder: (context) {
-            return SizedBox.shrink();
-          },
-          noItemsFoundIndicatorBuilder: (_) =>
-              Center(
-                  child: ErrorCard(
-                    errorType: 'no_food_in_this_category',
-                    refresh: (){
-                      setState(() {
-                        widget.pagingController.refresh();
-                      });
-                    },
-                  )),
-          firstPageErrorIndicatorBuilder: (_) => ErrorCard(
-            refresh: () => widget.pagingController.refresh(),
-            errorType: widget.pagingController.error.toString(),
-          ),
-          itemBuilder: (context, food, index) {
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 10.h),
-              child: GestureDetector(
-                  onTap: (){
+    return SingleChildScrollView(
+      child: Column(
 
-                  },
-                  child: CategoryCard(food: food, isSearchList: widget.isSearchList))
-            );
-          },
-        ),
+        children: [
+          if(widget.bannerAd2 != null)
+            AdBlock(bannerAd: widget.bannerAd2, isbottom: false,),
+
+          PagedGridView<int, Food>(
+              physics: NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount,
+                childAspectRatio: childAspectRatio,
+                mainAxisSpacing: isTablet ? 5 : 0,
+              ),
+              pagingController: widget.pagingController,
+              builderDelegate: PagedChildBuilderDelegate<Food>(
+                firstPageProgressIndicatorBuilder: (context) => Center(child: Loading()),
+                newPageProgressIndicatorBuilder: (_) => Center(child: Loading()),
+                noMoreItemsIndicatorBuilder: (context) {
+                  return SizedBox.shrink();
+                },
+                noItemsFoundIndicatorBuilder: (_) =>
+                    Center(
+                        child: ErrorCard(
+                          errorType: 'no_food_in_this_category',
+                          refresh: (){
+                            setState(() {
+                              widget.pagingController.refresh();
+                            });
+                          },
+                        )),
+                firstPageErrorIndicatorBuilder: (_) => ErrorCard(
+                  refresh: () => widget.pagingController.refresh(),
+                  errorType: widget.pagingController.error.toString(),
+                ),
+                itemBuilder: (context, food, index) {
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 10.h),
+                    child: GestureDetector(
+                        onTap: (){
+
+                        },
+                        child: CategoryCard(food: food, isSearchList: widget.isSearchList))
+                  );
+                },
+              ),
+          ),
+          if(widget.bannerAd3 != null)
+            AdBlock(bannerAd: widget.bannerAd3, isbottom: true,),
+        ],
+      ),
     );
   }
 }

@@ -21,6 +21,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:path/path.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -75,8 +76,22 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
 
-  await FirebaseService().initNotification();
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(AndroidNotificationChannel(
+      'channel id',
+      'channel name',
+      importance: Importance.max,
+  ),);
+  if(navigatorKey.currentContext != null){
+    print('CONTEXT NOT NULL');
+  }else{
+    print('CONTEXT NULL');
+  }
+
    tz.initializeTimeZones();
 
   await requestAlarmPermission();
@@ -159,6 +174,11 @@ class _EthioChefState extends State<EthioChef> {
 
   Future<void> _checkFirstTimeUser() async {
     print("check login status");
+    if(navigatorKey.currentContext != null){
+      print('CONTEXT NOT NULL');
+    }else{
+      print('CONTEXT NULL');
+    }
     await FirebaseService().checkTokenRegistration();
 
   }
@@ -186,6 +206,7 @@ class _EthioChefState extends State<EthioChef> {
         return ScreenUtilInit(
           designSize: const Size(412, 892),//Never change this value
           child: MaterialApp(
+            navigatorKey: navigatorKey,
               localizationsDelegates: [
                 GlobalMaterialLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,

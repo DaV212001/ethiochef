@@ -13,6 +13,7 @@
   "name": "{} ስም",
   "create_account": "ይመዝገቡ",
   "signup": "ይመዝገቡ",
+  "rec_food": "ውድ የኢትዮ ሼፍ ቤተሰቦቻችን ፣እንድናስተምርዎ የሚፈልጉትን የምግብ አይነት ይፃፉልን",
   "is_required": "{} ያስፈልጋል",
   "enter_phone_number": "እባክዎን ስልክ ቁጥርዎን ያስገቡ",
   "name_is_required": "የእርስዎ ስም ያስፈልጋል",
@@ -109,7 +110,7 @@
   "competition_status": "የውድድር ሁኔታ",
   "privacy_policy": "የግላዊነት መረጃ",
 
-  "faq": "ተደጋጋሚ የሚተየቁ ጥያቄዎች",
+  "faq": "ተደጋጋሚ የሚጠየቁ ጥያቄዎች",
   "terms_and_conditions": "ዉሎች እና ሁኔታዎች",
   "about": "ስለ ኢትዮ ሼፍ",
   "general": "አጠቃላይ",
@@ -217,11 +218,14 @@
   "extra_skills": "በሙያዎ ተጨማሪ ገንዘብ ያግኙ",
   "do_you_have_skills_title": "ባለሞያ ኖት?",
   "do_you_have_skills_description": "እንግዲያውስ የሚሰሩት ምግቦች በስልኮ በመቅረፅ እና ወደ ኢትዮ ሼፍ በመላክ ተጨማሪ ገቢ ማግኘት ይችላሉ",
-  "buy_your_food": "- የእርስዎን ምግብ ከ 300 እስከ 1000 ብር እንገዛዎታለን",
+  "buy_your_food": "- የእርስዎን የምግብ አሰራር ቪድዮ ከ 300 እስከ 1000 ብር እንገዛዎታለን",
   "profile_update_successful": "ፕሮፋይል መቀየር ተሳክቷል።",
   "profile_update_failed": "ፕሮፋይል መቀየር አልተሳካም።",
   "no_update_available": "አዲስ አፕልኬሽን የለም",
   "no": "በአሁኑ ጊዜ {} አልተገኘም",
-  "please_vote": "ድምጽ ይስቱ",
-  "sms_user_message": "እባክዎ የሚፈልጉትን የክፍያ አማራጭ ይምረጡ።"
+  "please_vote": "ድምፅ ይስጡ",
+  "sms_user_message": "እባክዎ የሚፈልጉትን የክፍያ አማራጭ ይምረጡ።",
+  "get_support": "-ጥያቄ ካሎት በቴሌግራም ያናግሩን",
+  "already_voted": "ለዚህ ተወዳዳሪ ድምፅ ሰጥተዋል",
+  "agree_with_privacy_policy": "በደንቦቹ እና ሁኔታዎች እስማማለሁ።"
 }

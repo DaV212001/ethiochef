@@ -22,7 +22,8 @@ import 'package:quickalert/quickalert.dart';
 class CategoryCard extends StatefulWidget {
   final Food food;
   final bool isSearchList;
-  const CategoryCard({super.key, required this.food,this.isSearchList=false});
+  final String? name;
+  const CategoryCard({super.key, required this.food,this.isSearchList=false, this.name});
 
   @override
   State<CategoryCard> createState() => _CategoryCardState();
@@ -37,6 +38,7 @@ class _CategoryCardState extends State<CategoryCard> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    if(widget.name == null){
     return GestureDetector(
       onTap: () async {
 
@@ -90,7 +92,6 @@ class _CategoryCardState extends State<CategoryCard> {
       },
       child: Card(
         color: theme.cardColor,
-        elevation: 1,
         child: ListView(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -101,7 +102,21 @@ class _CategoryCardState extends State<CategoryCard> {
           ],
         ),
       )
-    );
+    );}
+    else{
+      return Card(
+        color: theme.cardColor,
+        child: ListView(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          children: [
+            buildBody(),
+            SizedBox(height: 2,),
+            buildContent(context)
+          ],
+        ),
+      );
+    }
   }
   Widget buildBody(){
     ThemeData theme = Theme.of(context);
@@ -157,6 +172,7 @@ class _CategoryCardState extends State<CategoryCard> {
   Widget buildContent(context) {
     final bool isTablet = ScreenUtils.isTablet(context);
     ThemeData theme = Theme.of(context);
+    print('FOOD NAME: ${widget.food.name}');
     return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -173,9 +189,9 @@ class _CategoryCardState extends State<CategoryCard> {
           ):
           FittedBox(
             child: Text(
-                widget.food.name.toString(),
+                '${widget.food.name}',
               style: TextStyle(
-                  fontSize: isTablet ? 11.sp : 15.sp,
+                  fontSize: isTablet ? 11.sp : widget.name != null?13.sp:15.sp,
                   fontWeight: FontWeight.w600,
                   color: theme.colorScheme.secondaryContainer),
             ),
