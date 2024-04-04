@@ -45,7 +45,7 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
   bool showBackButton = true;
 
   Future<dynamic> fetchData() async {
-    try {
+    // try {
       final paymentService = PaymentService();
       print("fetchPaymentData");
       final paymentData = await paymentService.fetchAllPayments();
@@ -59,10 +59,10 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
         return [allSubscriptionData, paymentData, userSubscriptionPlan]; 
       }
       return [allSubscriptionData, paymentData];
-    } catch (error) {
-      print('Error: $error');
-      rethrow;
-    }
+    // } catch (error) {
+    //   print('Error: $error');
+    //   rethrow;
+    // }
   }
 
   @override

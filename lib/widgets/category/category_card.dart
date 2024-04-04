@@ -172,7 +172,6 @@ class _CategoryCardState extends State<CategoryCard> {
   Widget buildContent(context) {
     final bool isTablet = ScreenUtils.isTablet(context);
     ThemeData theme = Theme.of(context);
-    print('FOOD NAME: ${widget.food.name}');
     return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,

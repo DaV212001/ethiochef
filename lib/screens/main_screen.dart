@@ -120,6 +120,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return PersistentTabView(
       context,
+      bottomScreenMargin: 70,
       controller: _controller,
       screens: _buildScreens(),
       items: _navBarsItems(),

@@ -25,6 +25,7 @@ class SubscriptionStatus {
     } else {
       UserService service = UserService();
       var response = await service.checkUserSubscription();
+      print('RESPONSE FROM STATUSSSSSSSSSSSSSSSSSSSSSSSSSS: ${response.body}');
       final jsonData = json.decode(response.body);
       if(jsonData['message'] == "Invalid Token, Redirect to login"){
         status = "Another user logged in";

@@ -187,7 +187,6 @@ class _SignInState extends State<SignIn> {
         print(decodedToken);
         print(decodedToken['user']['first_name']);
         print(decodedToken['user']['last_name']);
-        print(decodedToken['user']['last_name']);
         print(decodedToken['user']['subscriber']);
         print(decodedToken['user']['subscriber']['status']);
         print(decodedToken['user']['subscriber']['isFromSMS']);

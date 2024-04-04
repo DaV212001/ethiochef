@@ -11,6 +11,7 @@ import '../../services/category_service.dart';
 import '../../services/meal_service.dart';
 import '../../services/promotion_service.dart';
 import '../../services/scheduled_notification_service.dart';
+import '../../utils/constants.dart';
 import '../../utils/screen_utils.dart';
 import '../../utils/update_manager.dart';
 import '../../widgets/ad_block.dart';
@@ -195,7 +196,7 @@ class _HomeScreenState extends State<HomeScreen>
                         padding: const EdgeInsets.only(top: 8.0, bottom: 8),
                         child: supportButton(
                             Colors.blue,
-                            'https://t.me/ethiochef_support',
+                            Constants.supportLink,
                             Assets.socialTelegram,
                             isTablet,
                             text: 'rec_food'.tr()),

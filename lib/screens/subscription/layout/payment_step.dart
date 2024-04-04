@@ -66,7 +66,8 @@ class _PaymentStepState extends State<PaymentStep> {
       shrinkWrap: true,
       itemBuilder: (BuildContext context, int index) {
         var resp = payments![index];
-        String bankname = payments[index].bank_name == 'CHAPA'?'CBE Birr , tele birr and others':payments[index].bank_name == 'ETSWITCH'? 'Pay on ATM cards':'ABYSINIA';
+        print('PAYMENT NAMES: ${payments[index].bank_name}');
+        String bankname = payments[index].bank_name == 'CHAPA'?'CBE Birr , tele birr and others':payments[index].bank_name == 'ETSWITCH'? 'Pay on ATM cards':payments[index].bank_name == 'TELEBIRR'?'TELEBIRR':'ABYSINIA';
         return RectangularPaymentCard(
             payment_name: bankname,
             image_url: widget.payments![index].image.toString(),

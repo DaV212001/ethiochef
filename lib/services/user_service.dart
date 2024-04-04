@@ -259,8 +259,10 @@ class UserService {
     return jsonData['message'] == 'User subscription deleted successfully';
   }
 
-
   Future<UserProfile?> fetchUserProfile() async {
+
+
+
     var access_token = await AuthService.getAuthorizationToken();
     final userService = UserService();
     final response = await http.get(
@@ -270,7 +272,9 @@ class UserService {
         'Authorization': 'JWT $access_token',
       },
     );
+
     final jsonData = json.decode(response.body);
+
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
       return UserProfile.fromJson(jsonData['data']);

@@ -32,7 +32,7 @@ class _VideoStepState extends State<VideoStep> {
   File? currentVideo = null;
   bool videoInvalid = false;
   bool isLoading = false;
-
+bool checkBoxTicked = false;
   @override
   void initState() {
     currentVideo = widget.video;
@@ -87,6 +87,7 @@ class _VideoStepState extends State<VideoStep> {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
+
               ],
             )
         ):

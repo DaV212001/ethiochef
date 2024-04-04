@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../generated/assets.dart';
+import '../../../utils/constants.dart';
 import '../../../utils/screen_utils.dart';
 import '../../../widgets/main_button.dart';
 
@@ -42,6 +43,8 @@ class _BasicsStepState extends State<BasicsStep> {
   late File? currentImage;
   final _formKey = GlobalKey<FormState>();
   bool imageInvalid = false;
+
+  bool checkBoxTicked = false;
   @override
   void initState() {
     currentImage = widget.image;
@@ -123,7 +126,7 @@ class _BasicsStepState extends State<BasicsStep> {
                       color: theme.colorScheme.secondaryContainer),),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: supportButton(Colors.blue, 'https://t.me/ethiochef_support', Assets.socialTelegram, isTablet),
+                  child: supportButton(Colors.blue, Constants.supportLink, Assets.socialTelegram, isTablet),
                 )
 
               ],
@@ -132,40 +135,124 @@ class _BasicsStepState extends State<BasicsStep> {
           SizedBox(
             height: 10,
           ),
-          Row(
-            children: [
-              Checkbox(
-                activeColor: theme.colorScheme.primary,
-                checkColor: theme.colorScheme.tertiary,
-                  value: hasAgreed,
-                  onChanged: (val){
-                    print(hasAgreed);
-                    setState(() {
-                      hasAgreed = !hasAgreed;
-                    });
-                    print(hasAgreed);
-                    widget.hasUserAgreed(hasAgreed);
-                    print("Not called");
-                  },
-              ),
-              SizedBox(
-                width: 300,
-                child: Container(
-                  width: 300,
-                  child: Text(
-                      'food_submission_agreement'.tr(),
-                    style: TextStyle(
-                        fontSize: isTablet ? 11.sp : 15.sp,
-                        fontWeight: FontWeight.w600,
-                        color: theme.colorScheme.secondaryContainer)
-                  ),
-                ),
-              )
-            ],
+
+          CheckboxListTile(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
+            value: hasAgreed,
+            onChanged: (value) {
+              print(hasAgreed);
+              setState(() {
+                hasAgreed = !hasAgreed;
+              });
+              print(hasAgreed);
+              widget.hasUserAgreed(hasAgreed);
+              print("Not called");
+            },
+            title: Text('food_submission_agreement'.tr(),
+                style: TextStyle(
+                    fontSize: isTablet ? 11.sp : 15.sp,
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.secondaryContainer)),
+            controlAffinity: ListTileControlAffinity.leading, // add this line
+          ),
+          CheckboxListTile(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5),
+            ),
+            value: checkBoxTicked,
+            onChanged: (value) {
+              setState(() {
+                checkBoxTicked = value!;
+              });
+            },
+            title: Text("agree_with_copyright".tr(),
+                style: TextStyle(
+                    fontSize: isTablet ? 11.sp : 15.sp,
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.secondaryContainer)),
+            controlAffinity: ListTileControlAffinity.leading, // add this line
           ),
           StepperControlButtons(
             isFirst: true,
             next: () async {
+
+              if(checkBoxTicked == false){
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (context) {
+                    return Dialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.r),
+                        ),
+                        backgroundColor: Theme
+                            .of(context)
+                            .cardColor,
+                        child: Container(
+                          height: isTablet ? 600.h : 450.h,
+                          width: isTablet ? 275.w : 400.w,
+                          padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+                          margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Icon(
+                                Icons.error,
+                                color: theme.colorScheme.error,
+                                size: 50,
+                              ),
+                              Text(
+                                "food_submission_agreement_title".tr(),
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  fontSize: 20.sp,
+                                  color: theme.colorScheme.primary,
+                                ),
+                              ),
+                              Text(
+                                "agree_with_copyright".tr(),
+                                style: TextStyle(
+                                  color: theme.colorScheme.tertiary,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 15.sp,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  MainButton(
+                                      text: 'food_submission_agreement_title'.tr(),
+                                      onPress: () async {
+                                        setState(() {
+                                          checkBoxTicked = true;
+                                        });
+                                        Navigator.pop(context);
+                                      }),
+                                  SizedBox(height: 10.h),
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        "cancel".tr(),
+                                        style:
+                                        TextStyle(color: theme.colorScheme.primary, fontSize: 14.sp),
+                                      ))
+                                ],
+                              )
+                            ],
+                          ),
+                        )
+                    );
+                  },
+                );
+              }
+
               if(hasAgreed == false){
                 showDialog(
                   context: context,

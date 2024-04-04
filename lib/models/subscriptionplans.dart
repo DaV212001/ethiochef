@@ -29,14 +29,11 @@ class SubscriptionPlans{
     }else{
       plan = json['subscription']['plan'][Language.getLocaleCode()] ?? json['subscription']['plan']['en'];
     }
-    id = json['subscription']['id'];
     if(json.containsKey("user")) {
       user = User.fromJson(json['user']);
     }
     price = json['subscription']['price'];
     duration = json['subscription']['duration']??0;
-    created_at = DateTime.parse(json['subscription']['created_at']);
-    updated_at = DateTime.parse(json['subscription']['updated_at']);
     // promo_code = json.containsKey('promo_code')?json['subscription']['promo_code'] != []? json['subscription']['promo_code'].cast<String>() : []: null;
     print("Subscriptions done");
 }

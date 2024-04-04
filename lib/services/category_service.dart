@@ -15,6 +15,7 @@ class CategoryService {
       final response = await http.get(
           Uri.parse('${Constants.url}/user/category?&limit=1000&lang=${Language.getLocaleCode()}')
       );
+      print('CHECKING CATEGORIES: ${response.body}');
       if (response.statusCode == 200) {
         final List<dynamic> responseData = jsonDecode(response.body)['data'];
         return responseData.map((json) => Category.fromJson(json)).toList();

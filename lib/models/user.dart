@@ -45,8 +45,8 @@ class User{
       }
     return User(
     id: json['id'] as int?,
-    firstName: json['first_name'] as String,
-    lastName: json['last_name'] as String,
+    firstName: json.containsKey('first_name')? json['first_name'] as String : '',
+    lastName: json.containsKey('last_name')? json['last_name'] as String : '',
     email: json['email'] as String?,
     phone: json['phone_number'] as String?,
     profile_picture: profile_image,

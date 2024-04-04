@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/competition.dart';
 import 'package:ethio_chef/screens/subscription/layout/payment.dart';
 import 'package:ethio_chef/services/competition_service.dart';
+import 'package:ethio_chef/utils/constants.dart';
 import 'package:ethio_chef/widgets/ad_block.dart';
 import 'package:ethio_chef/widgets/profile/user_screen_footer.dart';
 import 'package:ethio_chef/widgets/screen_head.dart';
@@ -226,7 +227,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                                   }),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: supportButton(Colors.blue, 'https://t.me/ethiochef_support', Assets.socialTelegram, isTablet),
+                                child: supportButton(Colors.blue, Constants.supportLink, Assets.socialTelegram, isTablet),
                               )
                             ],
                           )
@@ -281,7 +282,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                       ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: supportButton(Colors.blue, 'https://t.me/ethiochef_support', Assets.socialTelegram, isTablet),
+                      child: supportButton(Colors.blue, Constants.supportLink, Assets.socialTelegram, isTablet),
                     ),
                     if(competition[0].competitor!.isNotEmpty)
                       Contestants(
@@ -348,7 +349,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
         final userService = UserService();
         var userData = await userService.fetchUserProfile();
 
-        if (userData!.isFromSMS == false) {
+        if (userData!.isFromSMS == false || userData.subscriptionId != 15) {
           pushNewScreen(context, screen: UploadCompetitionVideo(competitionId: competition!), withNavBar: false);
         } else {
           showSubscriptionAlert();
@@ -453,7 +454,7 @@ Widget supportButton( Color color,  String? link,  String image,  bool isTablet,
             size: 50.sp,
           ),
           SizedBox(
-            width: 330.w,
+            width: 200,
               child: Text(text??"get_support".tr(), softWrap: true, maxLines: 2,))
         ],
       ),

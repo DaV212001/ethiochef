@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/widgets/recipe_status/empty_recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -46,12 +47,7 @@ class NoCompetitionCurrently extends StatelessWidget {
                               fontWeight: FontWeight.w800,
                               color: theme.colorScheme.primary)
                       ),
-                      Text("awards".tr(),
-                          style: TextStyle(
-                              fontSize: isTablet ? 11.sp : 15.sp,
-                              fontWeight: FontWeight.w600,
-                              color: theme.colorScheme.secondaryContainer)
-                      ),
+                     AwardsList(theme: theme)
                     ],
                   ),
                 ),

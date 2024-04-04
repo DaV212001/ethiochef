@@ -80,7 +80,7 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
               shrinkWrap: true,
               itemCount: termsAndConditions.length,
               itemBuilder: (context, index) {
-                return Row(
+                return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

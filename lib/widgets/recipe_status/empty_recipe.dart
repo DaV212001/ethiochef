@@ -29,15 +29,7 @@ class EmptyRecipe extends StatelessWidget {
               size: 100,
               Icons.fastfood_outlined
           ),
-          Text(
-            "awards".tr(),
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: theme.colorScheme.primary,
-              fontWeight: FontWeight.w700,
-              fontSize: 15.sp,
-            ),
-          ),
+          AwardsList(theme: theme),
           Text(
             "submit_a_recipe".tr(),
             style: TextStyle(
@@ -60,6 +52,111 @@ class EmptyRecipe extends StatelessWidget {
               })
         ],
       ),
+    );
+  }
+}
+
+class AwardsList extends StatelessWidget {
+  const AwardsList({
+    super.key,
+    required this.theme,
+  });
+
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          'awards_subtitle'.tr(),
+        ),
+        Row(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: theme.primaryColor,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "1",
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "first_award".tr(),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 15.sp,
+                ),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: theme.primaryColor,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "2",
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "second_award".tr(),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 15.sp,
+                ),
+              ),
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: theme.primaryColor,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "3",
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "third_award".tr(),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 15.sp,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

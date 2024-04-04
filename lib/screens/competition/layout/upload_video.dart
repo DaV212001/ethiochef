@@ -4,6 +4,7 @@ import 'package:cloudinary_flutter/cloudinary_context.dart';
 import 'package:cloudinary_url_gen/cloudinary.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/competition/layout/successfully_uploded.dart';
+import 'package:ethio_chef/widgets/recipe_status/empty_recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
@@ -32,6 +33,8 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
   bool uploaded = false;
   bool isSubscribed = false;
   String videoUrl = '';
+
+  bool checkBoxTicked = false;
   @override
   void initState() {
     CloudinaryContext.cloudinary= Cloudinary.fromCloudName(cloudName: "ttreeadvert");
@@ -143,16 +146,28 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
                             fontWeight: FontWeight.w800,
                             color: theme.colorScheme.primary)
                     ),
-                    Text("awards".tr(),
-                        style: TextStyle(
-                            fontSize: isTablet ? 11.sp : 15.sp,
-                            fontWeight: FontWeight.w600,
-                            color: theme.colorScheme.secondaryContainer)
-                    ),
+                    AwardsList(theme: theme),
                   ],
                 ),
               ),
-              Container(
+              Padding(
+                padding: const EdgeInsets.only(top: 18.0),
+                child: CheckboxListTile(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  value: checkBoxTicked,
+                  onChanged: (value) {
+                    setState(() {
+                      checkBoxTicked = value!;
+                    });
+                  },
+                  title: Text("agree_with_copyright".tr(),
+                      style: TextStyle(color: Colors.black)),
+                  controlAffinity: ListTileControlAffinity.leading, // add this line
+                ),
+              ),
+              if(checkBoxTicked)Container(
                 child: uploading_failed == true ?
                     Column(
                       children: [
