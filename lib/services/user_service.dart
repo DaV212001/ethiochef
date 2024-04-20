@@ -3,6 +3,7 @@ import 'package:ethio_chef/services/subscription_checker.dart';
 import 'package:ethio_chef/utils/constants.dart';
 import 'dart:io';
 import 'package:ethio_chef/models/subscriptionplans.dart';
+import 'package:file/memory.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 
@@ -259,9 +260,19 @@ class UserService {
     return jsonData['message'] == 'User subscription deleted successfully';
   }
 
+  UserProfile testUser = UserProfile(
+    user: User(firstName: 'm', lastName: 'n'),
+    status: 'Active',
+    subscription: SubscriptionPlans(
+      plan: '1',
+      duration: 1,
+      id: 15
+    )
+  );
+
   Future<UserProfile?> fetchUserProfile() async {
 
-
+// return testUser;
 
     var access_token = await AuthService.getAuthorizationToken();
     final userService = UserService();

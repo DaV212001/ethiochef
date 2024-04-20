@@ -110,7 +110,7 @@ class _SignUpState extends State<SignUp> {
 
           Image.asset("assets/images/sign_up_image.png", fit: BoxFit.fill,),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30),
+            padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
                 InputField(

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/language.dart';
 import 'package:ethio_chef/screens/subscription/layout/user_subscription.dart';
 import 'package:ethio_chef/services/subscription_checker.dart';
@@ -143,7 +144,19 @@ class _AllSubscriptionsState extends State<AllSubscriptions> {
                               duration_user: duration_user,
                               userSubscriptionPlans: userSubscriptionPlans,
                             ),
-                            Subscriptions()
+                          Divider(thickness: 1, height: 1,),
+                          SizedBox(height: 5,),
+                          Text(
+                              'extend'.tr(),
+                              style: TextStyle(
+                                  fontSize: 17.sp,
+                                  fontWeight: FontWeight.w800,
+                                  color: theme.colorScheme.secondaryContainer)
+                          ),
+                          SizedBox(height: 5,),
+                          Divider(thickness: 1, height: 1,),
+                          SizedBox(height: 5,),
+                            if(userSubscriptionPlans.isEmpty)Subscriptions()
                         ],
                       ),
                     );

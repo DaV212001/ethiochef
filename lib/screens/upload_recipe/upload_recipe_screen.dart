@@ -324,7 +324,7 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('OK'),
+              child: Text('ok'.tr()),
             ),
           ],
         );

@@ -78,14 +78,14 @@ class _AllSubscriptionStepState extends State<AllSubscriptionStep> {
                 fontWeight: FontWeight.bold,
                 color: theme.colorScheme.secondaryContainer),
           ),
-        Text(
+        if(widget.userSubscriptionPlans!.isEmpty)Text(
           "please_select_a_plan".tr(),
           style: TextStyle(
               fontSize: 15.sp,
               fontWeight: FontWeight.bold,
               color: theme.colorScheme.primary),
         ),
-        GridView.builder(
+        if(widget.userSubscriptionPlans!.isEmpty)GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: crossAxisCount,
               childAspectRatio: childAspectRatio,

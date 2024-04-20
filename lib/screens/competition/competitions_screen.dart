@@ -6,6 +6,7 @@ import 'package:ethio_chef/services/competition_service.dart';
 import 'package:ethio_chef/utils/constants.dart';
 import 'package:ethio_chef/widgets/ad_block.dart';
 import 'package:ethio_chef/widgets/profile/user_screen_footer.dart';
+import 'package:ethio_chef/widgets/recipe_status/empty_recipe.dart';
 import 'package:ethio_chef/widgets/screen_head.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -284,6 +285,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: supportButton(Colors.blue, Constants.supportLink, Assets.socialTelegram, isTablet),
                     ),
+                    AwardsList(theme: theme),
                     if(competition[0].competitor!.isNotEmpty)
                       Contestants(
                         refresh: (){
@@ -454,7 +456,7 @@ Widget supportButton( Color color,  String? link,  String image,  bool isTablet,
             size: 50.sp,
           ),
           SizedBox(
-            width: 200,
+            width: 250,
               child: Text(text??"get_support".tr(), softWrap: true, maxLines: 2,))
         ],
       ),

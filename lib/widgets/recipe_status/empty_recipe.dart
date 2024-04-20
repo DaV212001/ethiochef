@@ -129,6 +129,7 @@ class AwardsList extends StatelessWidget {
           ],
         ),
         Row(
+
           children: [
             Container(
               decoration: BoxDecoration(

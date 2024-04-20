@@ -6,6 +6,7 @@ import 'package:ethio_chef/screens/subscription/layout/payment.dart';
 import 'package:ethio_chef/widgets/ad_block.dart';
 import 'package:ethio_chef/widgets/auth/auth_link.dart';
 import 'package:ethio_chef/widgets/auth/phone_input_field.dart';
+import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -114,7 +115,7 @@ class _SignInState extends State<SignIn> {
                 isbottom: false,
               ),
             Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
                     children: [PhoneInputField(controller: phoneController)])),
             AuthBtn(
@@ -139,24 +140,25 @@ class _SignInState extends State<SignIn> {
                         isSignIn: false,
                       ));
                 }),
-            if (_bannerAd2 != null)
-              AdBlock(
-                bannerAd: _bannerAd2,
-                isbottom: false,
-              ),
             if (isNotLoggedin)
               Center(
                 child: Container(
                   decoration: BoxDecoration(
-                      gradient:
-                          LinearGradient(colors: [Colors.red, Colors.redAccent]),
+                      gradient: LinearGradient(
+                          colors: [Colors.red, Colors.redAccent]),
                       borderRadius: BorderRadius.circular(20)),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Center(child: Text("login_failed".tr())),
                   ),
                 ),
-              )
+              ),
+            if (_bannerAd2 != null)
+              AdBlock(
+                bannerAd: _bannerAd2,
+                isbottom: false,
+              ),
+
           ],
         ),
       ),
@@ -174,7 +176,7 @@ class _SignInState extends State<SignIn> {
         content: Text("login_failed".tr()));
     try {
       UserService service = UserService();
-      response = await service.login(phone);
+      response = await service.login(phone.replaceFirst('+', '').replaceAll(' ', ''));
 
       if (response.statusCode == 200) {
         var access_token = jsonDecode(response.body)['data']['session_token'];
@@ -240,10 +242,48 @@ class _SignInState extends State<SignIn> {
         }
       } else {
         // The login failed.
-        setState(() {
-          isLoading = false;
-          isNotLoggedin = true;
-        });
+        jsonDecode(response.body);
+        if (response.statusCode == 400 &&
+            jsonDecode(response.body)['message'] == "User does not exist") {
+          setState(() {
+            isLoading = false;
+          });
+          showDialog(
+              context: context,
+              builder: (context) {
+                return Center(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(mainAxisSize: MainAxisSize.min, children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('user_does_not_exist'.tr()),
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: MainButton(
+                              text: 'ok'.tr(),
+                              onPress: () {
+                                Navigator.pop(context);
+                                pushNewScreen(context,
+                                    screen: AuthScreen(
+                                      isSignIn: false,
+                                    ));
+                              }))
+                    ]),
+                  ),
+                );
+              });
+        } else {
+          setState(() {
+            isLoading = false;
+            isNotLoggedin = true;
+          });
+        }
         // ScaffoldMessenger.of(context).showSnackBar(failed);
       }
     } catch (e) {

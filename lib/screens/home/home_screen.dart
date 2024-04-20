@@ -60,6 +60,11 @@ class _HomeScreenState extends State<HomeScreen>
       final superMeal = await mealService.fetchAllSuper();
       final dinner = await mealService.fetchAllDinner();
       final promotionsData = await promotionService.fetchPromotions();
+      dinner.removeWhere((element) => element.name == null || element.name == "null");
+      lunch.removeWhere((element) => element.name == null || element.name == "null");
+      superMeal.removeWhere((element) => element.name == null || element.name == "null");
+      breakFast.removeWhere((element) => element.name == null || element.name == "null");
+
       return [
         categoryData,
         breakFast,
@@ -69,6 +74,7 @@ class _HomeScreenState extends State<HomeScreen>
         promotionsData
       ];
     } catch (error) {
+      print('ERROR: $error');
       rethrow;
     }
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class Header extends StatelessWidget {
   final String title;
@@ -24,12 +25,14 @@ class Header extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          FittedBox(
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.6,
             child: Text(
               title,
               style: TextStyle(
                   letterSpacing: 0.5,
                   fontSize: 19,
+                  overflow: TextOverflow.ellipsis,
                   fontWeight: FontWeight.w800,
                   color: theme.colorScheme.primary),
             ),

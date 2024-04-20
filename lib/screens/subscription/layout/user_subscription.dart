@@ -63,7 +63,7 @@ class _UserSubscriptionState extends State<UserSubscription> {
                       type: QuickAlertType.error,
                       showCancelBtn: true,
                       showConfirmBtn: true,
-                      title: "WARNING",
+                      title: "warning".tr(),
                       text: 'delete_subscription_warning'.tr(),
                       titleAlignment: TextAlign.center,
                       textAlignment: TextAlign.center,
@@ -97,18 +97,7 @@ class _UserSubscriptionState extends State<UserSubscription> {
           ),
         ),
         SizedBox(height: 5,),
-        Divider(thickness: 1, height: 1,),
-        SizedBox(height: 5,),
-        Text(
-            'extend'.tr(),
-            style: TextStyle(
-                fontSize: 17.sp,
-                fontWeight: FontWeight.w800,
-                color: theme.colorScheme.secondaryContainer)
-        ),
-        SizedBox(height: 5,),
-        Divider(thickness: 1, height: 1,),
-        SizedBox(height: 5,),
+
 
 
       ],

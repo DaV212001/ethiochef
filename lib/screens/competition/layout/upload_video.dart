@@ -37,7 +37,8 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
   bool checkBoxTicked = false;
   @override
   void initState() {
-    CloudinaryContext.cloudinary= Cloudinary.fromCloudName(cloudName: "ttreeadvert");
+    CloudinaryContext.cloudinary =
+        Cloudinary.fromCloudName(cloudName: "ttreeadvert");
     super.initState();
   }
 
@@ -77,21 +78,21 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
           videoUrl = jsonRes['url'];
         });
         print("videoUrl ${videoUrl}");
-
       });
-
     } catch (error) {
       print("Upload error: $error");
       showTryAgainDialog();
     }
   }
+
   void showTryAgainDialog() {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Text('Failed to upload video'),
-          content: Text('There was an error uploading the video. Please try again.'),
+          content:
+              Text('There was an error uploading the video. Please try again.'),
           actions: [
             TextButton(
               onPressed: () {
@@ -104,195 +105,299 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
       },
     );
   }
-
+bool alreadyUploaded = false;
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final bool isTablet = ScreenUtils.isTablet(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Text("submit_a_competition".tr(),style: TextStyle(
-            color: theme.colorScheme.primary
-        )),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: GestureDetector(
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Icon(
-              Icons.arrow_back,
-              color: theme.colorScheme.primary,
-            )),
-      ),
-      body:  Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Container(
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color: theme.colorScheme.primary,
-                        width: 1
-                    )
-                ),
-                child: Column(
-                  children: [
-                    Text("awards_title".tr(),
-                        style: TextStyle(
-                            fontSize: isTablet ? 13.sp : 17.sp,
-                            fontWeight: FontWeight.w800,
-                            color: theme.colorScheme.primary)
-                    ),
-                    AwardsList(theme: theme),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 18.0),
-                child: CheckboxListTile(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  value: checkBoxTicked,
-                  onChanged: (value) {
-                    setState(() {
-                      checkBoxTicked = value!;
-                    });
-                  },
-                  title: Text("agree_with_copyright".tr(),
-                      style: TextStyle(color: Colors.black)),
-                  controlAffinity: ListTileControlAffinity.leading, // add this line
-                ),
-              ),
-              if(checkBoxTicked)Container(
-                child: uploading_failed == true ?
-                    Column(
-                      children: [
-                        Icon(
-                          color: theme.colorScheme.error,
-                         size: 300,
-                         Icons.error
-                        ),
-                        Text("video_upload_failed".tr(),
-                            style: TextStyle(
-                                fontSize: isTablet ? 13.sp : 17.sp,
-                                fontWeight: FontWeight.w800,
-                                color: theme.colorScheme.primary)
-                        ),
-                        MainButton(
-                          onPress: () async {
-                            setState(() {
-                              uploading = true;
-                              uploading_failed = false;
-                            });
-                            print("Resend Pressed");
-                            print("My Video = ${video}");
-                            print("My Video = ${video?.path}");
-                            await uploadVideo();
-                            CompetitionService service = CompetitionService();
-                            var response = await service.sendCompetitionVideo(videoUrl, widget.competitionId);
-                            if (response.statusCode == 200) {
-                              print(
-                                  "=================================================== POP");
-                              setState(() {
-                                uploading_failed = false;
-                                uploading = false;
-                              });
-                              pushNewScreen(
-                                context,
-                                screen: SuccessfullyUploaded(),
-                                withNavBar: false,
-                                pageTransitionAnimation: PageTransitionAnimation
-                                    .cupertino,
-                              );
-                            }else {
-                              setState(() {
-                                uploading_failed = true;
-                                uploading = false;
-                              });
-                            }
-                          },
-                          width: 200.w,
-                          text: "resend".tr(),
-                        )
-                      ],
-                    )
-                    : Visibility(
+        appBar: AppBar(
+          title: Text("submit_a_competition".tr(),
+              style: TextStyle(color: theme.colorScheme.primary)),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Icon(
+                Icons.arrow_back,
+                color: theme.colorScheme.primary,
+              )),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Container(
+              child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                          color: theme.colorScheme.primary, width: 1)),
                   child: Column(
                     children: [
-                      uploaded == true ?
-                      Text(
-                        "successful".tr(),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: theme.colorScheme.primary,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 15.sp,
-                        ),
-                      ): Text("video_is_uploading".tr(),
+                      Text("awards_title".tr(),
                           style: TextStyle(
                               fontSize: isTablet ? 13.sp : 17.sp,
                               fontWeight: FontWeight.w800,
-                              color: theme.colorScheme.primary)
-                      ),
-                       if(uploading && uploaded == false)
-                       Loading(),
+                              color: theme.colorScheme.primary)),
+                      AwardsList(theme: theme),
                     ],
                   ),
-                  visible: uploading ,
-                  replacement:VideoStep(
-                    isCompetition: true,
-                    video: video,
-                    updateVideo: (video) async {
-
-                      setState(() {
-                        uploading = true;
-                      });
-
-                      print("Pressed");
-                      this.video = video;
-                      print("My Video = ${video}");
-                      print("My Video = ${video?.path}");
-                      await uploadVideo();
-                      CompetitionService service = CompetitionService();
-                      var response = await service.sendCompetitionVideo(videoUrl, widget.competitionId);
-                      setState(() {
-                        video = null;
-                      });
-                      if (response.statusCode == 200) {
-                        setState(() {
-                          uploaded = true;
-                        });
-                        print(
-                            "=================================================== POP");
-                        await pushNewScreen(
-                          context,
-                          screen: SuccessfullyUploaded(),
-                          withNavBar: false,
-                          pageTransitionAnimation: PageTransitionAnimation
-                              .cupertino,
-                        );
-
-                      }else {
-                        setState(() {
-                          uploading_failed = true;
-                          uploading = false;
-                        });
-                      }
-                    },
-                    next: (video){}, back: (){
-                  },
-                  ) ,
                 ),
-              )
-            ],
-          )
-        ),
-      )
-    );
-  }
+                Padding(
+                  padding: const EdgeInsets.only(top: 18.0),
+                  child: CheckboxListTile(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    value: checkBoxTicked,
+                    onChanged: (value) {
+                      setState(() {
+                        checkBoxTicked = value!;
+                      });
+                    },
+                    title: Text("agree_with_copyright".tr(),
+                        style: TextStyle(color: Colors.black)),
+                    controlAffinity:
+                        ListTileControlAffinity.leading, // add this line
+                  ),
+                ),
+                if (checkBoxTicked)
+                  Container(
+                    child: uploading_failed == true
+                        ? Column(
+                            children: [
+                              Icon(
+                                  color: theme.colorScheme.error,
+                                  size: 300,
+                                  Icons.error),
+                              Text("video_upload_failed".tr(),
+                                  style: TextStyle(
+                                      fontSize: isTablet ? 13.sp : 17.sp,
+                                      fontWeight: FontWeight.w800,
+                                      color: theme.colorScheme.primary)),
+                              if(alreadyUploaded) MainButton(
+                                onPress: () async {
+                                  setState(() {
+                                    uploading = true;
+                                    uploading_failed = false;
+                                  });
+                                  print("Resend Pressed");
+                                  print("My Video = ${video}");
+                                  print("My Video = ${video?.path}");
+                                  await uploadVideo();
+                                  CompetitionService service =
+                                      CompetitionService();
+                                  var response =
+                                      await service.sendCompetitionVideo(
+                                          videoUrl, widget.competitionId);
+                                  if (response.statusCode == 200) {
+                                    print(
+                                        "=================================================== POP");
+                                    setState(() {
+                                      uploading_failed = false;
+                                      uploading = false;
+                                    });
+                                    pushNewScreen(
+                                      context,
+                                      screen: SuccessfullyUploaded(),
+                                      withNavBar: false,
+                                      pageTransitionAnimation:
+                                          PageTransitionAnimation.cupertino,
+                                    );
+                                  } else if (jsonDecode(
+                                      response.body)["message"] ==
+                                      "User has already applied to this contest") {
+                                    setState(() {
+                                      alreadyUploaded == true;
+                                      uploading_failed = true;
+                                      uploading = false;
+                                    });
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return Center(
+                                              child: Container(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                    0.8,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                  BorderRadius.circular(20),
+                                                ),
+                                                child: Column(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                        child: Text(
+                                                            'no_more_than_one_video'.tr(),
+                                                          textAlign: TextAlign.center,
+                                                          style: TextStyle(
+                                                            fontSize: 14,
+                                                            color: Colors.black,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                        child: MainButton(
+                                                            text: 'ok'.tr(),
+                                                            onPress: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            }),
+                                                      ),
+                                                    ]),
+                                              ),
+                                            );
+                                        });
+                                  } else {
+                                    setState(() {
+                                      uploading_failed = true;
+                                      uploading = false;
+                                    });
+                                  }
+                                },
+                                width: 200.w,
+                                text: "resend".tr(),
+                              )
+                            ],
+                          )
+                        : Visibility(
+                            child: Column(
+                              children: [
+                                uploaded == true
+                                    ? Text(
+                                        "successful".tr(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: theme.colorScheme.primary,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 15.sp,
+                                        ),
+                                      )
+                                    : Text("video_is_uploading".tr(),
+                                        style: TextStyle(
+                                            fontSize: isTablet ? 13.sp : 17.sp,
+                                            fontWeight: FontWeight.w800,
+                                            color: theme.colorScheme.primary)),
+                                if (uploading && uploaded == false) Loading(),
+                              ],
+                            ),
+                            visible: uploading,
+                            replacement: VideoStep(
+                              isCompetition: true,
+                              video: video,
+                              updateVideo: (video) async {
+                                setState(() {
+                                  uploading = true;
+                                });
 
+                                print("Pressed");
+                                this.video = video;
+                                print("My Video = ${video}");
+                                print("My Video = ${video?.path}");
+                                await uploadVideo();
+                                CompetitionService service =
+                                    CompetitionService();
+                                var response =
+                                    await service.sendCompetitionVideo(
+                                        videoUrl, widget.competitionId);
+                                setState(() {
+                                  video = null;
+                                });
+                                if (response.statusCode == 200) {
+                                  setState(() {
+                                    uploaded = true;
+                                  });
+                                  print(
+                                      "=================================================== POP");
+                                  await pushNewScreen(
+                                    context,
+                                    screen: SuccessfullyUploaded(),
+                                    withNavBar: false,
+                                    pageTransitionAnimation:
+                                        PageTransitionAnimation.cupertino,
+                                  );
+                                } else if (jsonDecode(
+                                        response.body)["message"] ==
+                                    "User has already applied to this contest") {
+                                  setState(() {
+                                    alreadyUploaded == true;
+                                    uploading_failed = true;
+                                    uploading = false;
+                                  });
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Center(
+                                            child: Container(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.8,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                              ),
+                                              child: Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Text(
+                                                          'no_more_than_one_video'.tr(),
+                                                        textAlign: TextAlign.center,
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          color: Colors.black,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: MainButton(
+                                                          text: 'ok'.tr(),
+                                                          onPress: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          }),
+                                                    ),
+                                                  ]),
+                                            ),
+                                          );
+                                      });
+                                } else {
+                                  setState(() {
+                                    uploading_failed = true;
+                                    uploading = false;
+                                  });
+                                }
+                              },
+                              next: (video) {},
+                              back: () {},
+                            ),
+                          ),
+                  )
+              ],
+            ),
+          )),
+        ));
+  }
 }

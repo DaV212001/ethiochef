@@ -46,6 +46,7 @@ class _FoodCarouselState extends State<FoodCarousel> {
       final foodService = FoodService();
       var subCategoryData =
       await foodService.fetchFoodByCategoryId(widget.categoryId);
+      subCategoryData.removeWhere((element) => element.name == null || element.name == "null");
       return subCategoryData;
     } catch (error) {
       rethrow;
