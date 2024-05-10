@@ -1,5 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/widgets/notification_icon.dart';
 import 'package:ethio_chef/widgets/search_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,9 +11,9 @@ class ScreenHead extends StatelessWidget {
 
   const ScreenHead(
       {super.key,
-        required this.hasNotification,
-        required this.screen,
-        required this.searchHint});
+      required this.hasNotification,
+      required this.screen,
+      required this.searchHint});
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +22,10 @@ class ScreenHead extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: BoxDecoration(
-        color:
-        Theme
-            .of(context)
-            .bottomNavigationBarTheme
-            .backgroundColor!,
-          borderRadius:  BorderRadius.only(
-            topLeft:  Radius.circular(isHomeScreen==true ? 20:0),
-            topRight: Radius.circular(isHomeScreen==true ? 20:0),
+          color: Theme.of(context).bottomNavigationBarTheme.backgroundColor!,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(isHomeScreen == true ? 20 : 0),
+            topRight: Radius.circular(isHomeScreen == true ? 20 : 0),
           )),
       child: Row(
         mainAxisAlignment: isHomeScreen
@@ -41,19 +35,16 @@ class ScreenHead extends StatelessWidget {
         children: [
           SearchInputField(
             enabled: true,
-            hint: searchHint, screen: screen,
+            hint: searchHint,
+            screen: screen,
           ),
           SizedBox(
             width: 15.w,
           ),
-          NotificationIcon(
-            hasNotification: hasNotification,
-          ),
-          LanguageSelectorButton(
-            onChange: (){
-
-            }
-          )
+          // NotificationIcon(
+          //   hasNotification: hasNotification,
+          // ),
+          LanguageSelectorButton(onChange: () {})
         ],
       ),
     );

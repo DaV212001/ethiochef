@@ -12,42 +12,52 @@ import '../../../widgets/price_card.dart';
 class AllSubscriptionStep extends StatefulWidget {
   final Function(SubscriptionPlans) returnPrice;
   bool isNormalSubscription;
+  bool? isSMS;
   List<SubscriptionPlans> subscriptionPlans;
   List<SubscriptionPlans>? userSubscriptionPlans;
-  AllSubscriptionStep({super.key,
-    required this.returnPrice,
-    required this.subscriptionPlans,
-    required this.isNormalSubscription,
-    this.userSubscriptionPlans
-  });
+  AllSubscriptionStep(
+      {super.key,
+      required this.returnPrice,
+      required this.subscriptionPlans,
+      required this.isNormalSubscription,
+      this.userSubscriptionPlans,
+      this.isSMS});
 
   @override
   State<AllSubscriptionStep> createState() => _AllSubscriptionStepState();
 }
 
 class _AllSubscriptionStepState extends State<AllSubscriptionStep> {
-   late String duration_user = "";
+  late String duration_user = "";
 
   late String duration;
-  int currentYear = DateTime
-      .now()
-      .year;
-   int currentMonth = DateTime
-       .now()
-       .month;
-   bool isFromBank = false;
+  int currentYear = DateTime.now().year;
+  int currentMonth = DateTime.now().month;
+  bool isFromBank = false;
   @override
   void initState() {
-    checkIsFromSMS();
+    if (widget.isSMS == false) {
+      checkIsFromSMS();
+    }
+
     super.initState();
   }
-  checkIsFromSMS()async{
+
+  DateTime now = DateTime.now();
+  DateTime? expiryDate;
+  checkIsFromSMS() async {
     final userService = UserService();
     var userData = await userService.fetchUserProfile();
-    if (userData!.isFromSMS == false) {
     setState(() {
-      isFromBank = true;
+      expiryDate = userData?.lastPaidDate!
+          .add(Duration(days: userData.subscription!.duration! * 30));
+      print('CHECKING EXPIRATION DATE: ${expiryDate}');
     });
+
+    if (userData!.isFromSMS == false) {
+      setState(() {
+        isFromBank = true;
+      });
     }
   }
 
@@ -65,61 +75,65 @@ class _AllSubscriptionStepState extends State<AllSubscriptionStep> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        if(widget.isNormalSubscription == true && isFromBank == true)
+        if (widget.isNormalSubscription == true && widget.isSMS == false)
           UserSubscription(
-            duration_user: duration_user,
-            userSubscriptionPlans: widget.userSubscriptionPlans!
-          ),
-        if(widget.isNormalSubscription == true && isFromBank == false)
+              duration_user: expiryDate == null
+                  ? ""
+                  : expiryDate!.difference(now).inDays.toString() +
+                      " Days left",
+              userSubscriptionPlans: widget.userSubscriptionPlans!),
+        // if (widget.isNormalSubscription == true && isFromBank == false)
+        //   Text(
+        //     "sms_user_message".tr(),
+        //     style: TextStyle(
+        //         fontSize: 15.sp,
+        //         fontWeight: FontWeight.bold,
+        //         color: theme.colorScheme.secondaryContainer),
+        //   ),
+        if (widget.isSMS == true ||
+            (widget.userSubscriptionPlans != null &&
+                widget.userSubscriptionPlans!.isEmpty))
           Text(
-            "sms_user_message".tr(),
+            "please_select_a_plan".tr(),
             style: TextStyle(
                 fontSize: 15.sp,
                 fontWeight: FontWeight.bold,
-                color: theme.colorScheme.secondaryContainer),
+                color: theme.colorScheme.primary),
           ),
-        if(widget.userSubscriptionPlans!.isEmpty)Text(
-          "please_select_a_plan".tr(),
-          style: TextStyle(
-              fontSize: 15.sp,
-              fontWeight: FontWeight.bold,
-              color: theme.colorScheme.primary),
-        ),
-        if(widget.userSubscriptionPlans!.isEmpty)GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: crossAxisCount,
-              childAspectRatio: childAspectRatio,
-              mainAxisSpacing: isTablet ? 5 : 0,
-            ),
-            physics: BouncingScrollPhysics(),
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            itemCount: widget.subscriptionPlans.length,
-            itemBuilder: (context, index) {
-              duration = widget.subscriptionPlans[index].duration!
-                  .toString() + " Months";
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: PriceCard(
-                  title: Language.getLocaleCode() == 'en'
-                      ? 'Monthly'
-                      : 'ወርሃዊ',
-                  price: widget.subscriptionPlans[index].price
-                      .toString(),
-                  subPriceText: duration,
-                  billedText: widget.subscriptionPlans[index].plan!,
-                  onPress: () async {
-                    print(widget.subscriptionPlans[index]);
-                    widget.returnPrice(
-                        widget.subscriptionPlans[index]);
-                    print("gone");
-                  },
-                  duration: widget.subscriptionPlans[index]
-                      .duration!,
-                ),
-              );
-            }
-        )
+        if ((widget.userSubscriptionPlans != null &&
+                widget.userSubscriptionPlans!.isEmpty) ||
+            widget.isSMS == true)
+          GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount,
+                childAspectRatio: childAspectRatio,
+                mainAxisSpacing: isTablet ? 5 : 0,
+              ),
+              physics: BouncingScrollPhysics(),
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              itemCount: widget.subscriptionPlans.length,
+              itemBuilder: (context, index) {
+                duration =
+                    widget.subscriptionPlans[index].duration!.toString() +
+                        " Months";
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: PriceCard(
+                    title:
+                        Language.getLocaleCode() == 'en' ? 'Monthly' : 'ወርሃዊ',
+                    price: widget.subscriptionPlans[index].price.toString(),
+                    subPriceText: duration,
+                    billedText: widget.subscriptionPlans[index].plan!,
+                    onPress: () async {
+                      print(widget.subscriptionPlans[index]);
+                      widget.returnPrice(widget.subscriptionPlans[index]);
+                      print("gone");
+                    },
+                    duration: widget.subscriptionPlans[index].duration!,
+                  ),
+                );
+              })
       ],
     );
   }

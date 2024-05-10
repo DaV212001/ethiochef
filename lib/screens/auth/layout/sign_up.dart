@@ -2,18 +2,16 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/subscriptionplans.dart';
 import 'package:ethio_chef/screens/auth/layout/payment_methods.dart';
 import 'package:ethio_chef/widgets/ad_block.dart';
-import 'package:ethio_chef/widgets/input_field.dart';
 import 'package:ethio_chef/widgets/auth/phone_input_field.dart';
+import 'package:ethio_chef/widgets/input_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
-
 import '../../../widgets/auth/auth_btn.dart';
 import '../../../widgets/subscription/subscription_drop_down.dart';
-import '../../app_documentation/privacy_policies_screen.dart';
 import '../../app_documentation/terms_and_conditions_screen.dart';
 
 class SignUp extends StatefulWidget {
@@ -35,13 +33,10 @@ class _SignUpState extends State<SignUp> {
   bool hasSelected = false;
   SubscriptionPlans? selectedSubscriptionPlan;
 
-
   @override
   void initState() {
-
     super.initState();
     loadAd();
-
   }
 
   static String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
@@ -83,16 +78,12 @@ class _SignUpState extends State<SignUp> {
         adUnitId: 'ca-app-pub-4750411587709054/2820228086',
         request: const AdRequest(),
         size: AdSize.banner,
-        listener: BannerAdListener(
-            onAdLoaded: (ad) {
-              _bannerAd3 = ad as BannerAd;
-            },
-            onAdFailedToLoad: (ad, err) {
-              print("Error loading ad: $err");
-              ad.dispose();
-            }
-        )
-    ).load();
+        listener: BannerAdListener(onAdLoaded: (ad) {
+          _bannerAd3 = ad as BannerAd;
+        }, onAdFailedToLoad: (ad, err) {
+          print("Error loading ad: $err");
+          ad.dispose();
+        })).load();
   }
 
   bool agreedToTerms = false;
@@ -106,9 +97,14 @@ class _SignUpState extends State<SignUp> {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (_bannerAd1 != null)
-            AdBlock(bannerAd: _bannerAd1, isbottom: false,),
-
-          Image.asset("assets/images/sign_up_image.png", fit: BoxFit.fill,),
+            AdBlock(
+              bannerAd: _bannerAd1,
+              isbottom: false,
+            ),
+          Image.asset(
+            "assets/images/sign_up_image.png",
+            fit: BoxFit.fill,
+          ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Column(
@@ -128,9 +124,19 @@ class _SignUpState extends State<SignUp> {
                   hint: "your_last_name".tr(),
                   type: InputField.NameType,
                 ),
+                InputField(
+                  controller: promoCodeController,
+                  icon: CupertinoIcons.person,
+                  label: 'promo_code'.tr(),
+                  hint: "your_promo_code".tr(),
+                  type: 9,
+                ),
                 PhoneInputField(controller: phoneController),
                 if (_bannerAd2 != null)
-                  AdBlock(bannerAd: _bannerAd2, isbottom: false,),
+                  AdBlock(
+                    bannerAd: _bannerAd2,
+                    isbottom: false,
+                  ),
 
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -146,33 +152,33 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
                     Container(
-                        decoration: BoxDecoration(
-                            border: BorderDirectional(bottom: BorderSide(color: Colors.black, width: 1)),
-                            color: Colors.transparent,
-                        ),
+                      decoration: BoxDecoration(
+                        border: BorderDirectional(
+                            bottom: BorderSide(color: Colors.black, width: 1)),
+                        color: Colors.transparent,
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.only(bottom: 8.0),
                         child: SubscriptionDropDown(
                           selectedSubscriptionPlan: selectedSubscriptionPlan,
                           onChange: (value) {
-                          print(value.price);
-                          print(value.duration);
-                          setState(() {
-                            selectedSubscriptionPlan = value;
-                            hasSelected = true;
-                          });
-                          print("Sign up prints");
-                          print(selectedSubscriptionPlan!.price);
-                          print(selectedSubscriptionPlan!.duration);
-
-                        },),
+                            print(value.price);
+                            print(value.duration);
+                            setState(() {
+                              selectedSubscriptionPlan = value;
+                              hasSelected = true;
+                            });
+                            print("Sign up prints");
+                            print(selectedSubscriptionPlan!.price);
+                            print(selectedSubscriptionPlan!.duration);
+                          },
+                        ),
                       ),
                     )
                   ],
                 )
               ],
             ),
-
           ),
           Padding(
             padding: const EdgeInsets.only(top: 18.0),
@@ -198,47 +204,45 @@ class _SignUpState extends State<SignUp> {
                   MaterialPageRoute(
                       builder: (context) => TermsAndConditionsScreen()));
             },
-            child: Text(
-                "terms_and_conditions".tr(),
-                style: TextStyle(color: Colors.blue)
-            ),
+            child: Text("terms_and_conditions".tr(),
+                style: TextStyle(color: Colors.blue)),
           ),
           AuthBtn(
-            isLoading: isLoading,
-            agreed: agreedToTerms,
-            text: "sign_up_button".tr(),
-            onPress: () async {
-              if(agreedToTerms){
-              if (_formKey.currentState!.validate() && hasSelected == true) {
-                Map userData =
-                {
-                  "phone": "251"+phoneController.text,
-                  "first_name": firstNameController.text,
-                  "last_name": lastNameController.text
-                };
+              isLoading: isLoading,
+              agreed: agreedToTerms,
+              text: "sign_up_button".tr(),
+              onPress: () async {
+                if (agreedToTerms) {
+                  if (_formKey.currentState!.validate() &&
+                      hasSelected == true) {
+                    Map userData = {
+                      "phone": "251" + phoneController.text,
+                      "first_name": firstNameController.text,
+                      "last_name": lastNameController.text,
+                      promoCodeController.text != ""
+                          ? "promo_code"
+                          : promoCodeController.text: null
+                    };
 
-
-                await pushNewScreen(context,
-                    screen:  PaymentMethodScreen(
-                        userData:userData,
-                        selectedSubscriptionPlan: selectedSubscriptionPlan!
-                    ));
-              }
-            } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
+                    await pushNewScreen(context,
+                        screen: PaymentMethodScreen(
+                            userData: userData,
+                            selectedSubscriptionPlan:
+                                selectedSubscriptionPlan!));
+                  }
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text('Please agree to the terms and conditions'),
-                  )
-                );
-              }
-            }
-          ),
+                  ));
+                }
+              }),
           if (_bannerAd3 != null)
-            AdBlock(bannerAd: _bannerAd3, isbottom: true,),
-
+            AdBlock(
+              bannerAd: _bannerAd3,
+              isbottom: true,
+            ),
         ],
       ),
     );
   }
-
 }

@@ -7,7 +7,6 @@ import 'package:ethio_chef/widgets/ad_block.dart';
 import 'package:ethio_chef/widgets/auth/auth_link.dart';
 import 'package:ethio_chef/widgets/auth/phone_input_field.dart';
 import 'package:ethio_chef/widgets/main_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -158,7 +157,6 @@ class _SignInState extends State<SignIn> {
                 bannerAd: _bannerAd2,
                 isbottom: false,
               ),
-
           ],
         ),
       ),
@@ -176,7 +174,8 @@ class _SignInState extends State<SignIn> {
         content: Text("login_failed".tr()));
     try {
       UserService service = UserService();
-      response = await service.login(phone.replaceFirst('+', '').replaceAll(' ', ''));
+      response =
+          await service.login(phone.replaceFirst('+', '').replaceAll(' ', ''));
 
       if (response.statusCode == 200) {
         var access_token = jsonDecode(response.body)['data']['session_token'];
@@ -190,6 +189,48 @@ class _SignInState extends State<SignIn> {
         print(decodedToken['user']['first_name']);
         print(decodedToken['user']['last_name']);
         print(decodedToken['user']['subscriber']);
+        if (decodedToken['user']['subscriber'] == null) {
+          setState(() {
+            isLoading = false;
+          });
+          showDialog(
+              context: context,
+              builder: (context) {
+                return Center(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Column(mainAxisSize: MainAxisSize.min, children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('sub_end'.tr()),
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: MainButton(
+                              text: 'sub_renew'.tr(),
+                              onPress: () {
+                                Navigator.pop(context);
+                                pushNewScreen(
+                                  context,
+                                  screen: PaymentCheckout(
+                                    userFromSignUp: decodedUserData,
+                                    isSMS: true,
+                                    isNormalSubscription: true,
+                                  ),
+                                  withNavBar: false,
+                                  pageTransitionAnimation:
+                                      PageTransitionAnimation.cupertino,
+                                );
+                              }))
+                    ]),
+                  ),
+                );
+              });
+        }
         print(decodedToken['user']['subscriber']['status']);
         print(decodedToken['user']['subscriber']['isFromSMS']);
         print(decodedToken['user']['subscriber']['due_date']);

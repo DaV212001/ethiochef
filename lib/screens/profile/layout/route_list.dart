@@ -10,10 +10,10 @@ import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
-import 'package:restart_app/restart_app.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import '../../../main.dart';
-import '../../../models/subscriptionplans.dart';
 import '../../../services/user_service.dart';
 import '../../../theme/app_theme.dart';
 import '../../../theme/model_theme.dart';
@@ -26,8 +26,6 @@ import '../../app_documentation/faq_screen.dart';
 import '../../app_documentation/privacy_policies_screen.dart';
 import '../../app_documentation/terms_and_conditions_screen.dart';
 import '../../recipe_status/my_submitted_recipe.dart';
-
-import 'package:url_launcher/url_launcher.dart';
 
 class RouteList extends StatefulWidget {
   final Function()? onRefresh;
@@ -44,7 +42,6 @@ class _RouteListState extends State<RouteList> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ModelTheme>(context);
     ThemeData theme = Theme.of(context);
-
 
     final List<Map<String, dynamic>> general = [
       {
@@ -194,9 +191,7 @@ class _RouteListState extends State<RouteList> {
               builder: (context) {
                 return Scaffold(
                   body: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.red
-                    ),
+                    decoration: BoxDecoration(color: Colors.red),
                     child: Center(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -208,13 +203,14 @@ class _RouteListState extends State<RouteList> {
                             child: Container(
                               decoration: BoxDecoration(
                                   color: Colors.white,
-                                borderRadius: BorderRadius.all(Radius.circular(20))
-                              ),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
                               child: Center(
                                 child: Padding(
                                   padding: EdgeInsets.all(8),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
@@ -222,14 +218,16 @@ class _RouteListState extends State<RouteList> {
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Text('delete_subscription_warning'.tr()),
+                                        child: Text(
+                                            'delete_subscription_warning'.tr()),
                                       ),
                                       SizedBox(
                                         height: 30,
                                       ),
                                       Row(
                                         mainAxisSize: MainAxisSize.max,
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
                                         children: [
                                           ElevatedButton(
                                               onPressed: () {
@@ -237,13 +235,15 @@ class _RouteListState extends State<RouteList> {
                                               },
                                               style: ButtonStyle(
                                                   backgroundColor:
-                                                      MaterialStatePropertyAll<Color>(
-                                                          Colors.white)),
+                                                      MaterialStatePropertyAll<
+                                                          Color>(Colors.white)),
                                               child: Padding(
-                                                padding: const EdgeInsets.all(8.0),
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
                                                 child: Text(
                                                   'cancel'.tr(),
-                                                  style: TextStyle(color: Colors.black),
+                                                  style: TextStyle(
+                                                      color: Colors.black),
                                                 ),
                                               )),
                                           DeleteButton()
@@ -407,14 +407,14 @@ class _DeleteButtonState extends State<DeleteButton> {
           if (deleted) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(
-                  'del_succ'.tr(),
-                )));
+              'del_succ'.tr(),
+            )));
             RestartWidget.restartApp(context);
           } else {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(
-                  'del_fail'.tr(),
-                )));
+              'del_fail'.tr(),
+            )));
           }
 
           setState(() {
@@ -422,15 +422,17 @@ class _DeleteButtonState extends State<DeleteButton> {
           });
         },
         style: ButtonStyle(
-            backgroundColor:
-                MaterialStatePropertyAll<Color>(
-                    Colors.red)),
+            backgroundColor: MaterialStatePropertyAll<Color>(Colors.red)),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: deleting? CircularProgressIndicator(color: Colors.white,):Text(
-            'delete'.tr(),
-            style: TextStyle(color: Colors.white),
-          ),
+          child: deleting
+              ? CircularProgressIndicator(
+                  color: Colors.white,
+                )
+              : Text(
+                  'delete'.tr(),
+                  style: TextStyle(color: Colors.white),
+                ),
         ));
   }
 }

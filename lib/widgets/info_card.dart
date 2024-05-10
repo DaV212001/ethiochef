@@ -1,9 +1,6 @@
-
-import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:ethio_chef/widgets/main_button.dart';
 
 import '../utils/screen_utils.dart';
 
@@ -18,18 +15,18 @@ class InfoCard extends StatelessWidget {
   final bool? isLoading;
   final bool hasWidget;
   final Widget? widget;
-  const InfoCard({super.key,
-    required this.onPress,
-    required this.buttonText,
-    required this.closeText,
-    required this.infoTitle,
-    required this.infoBody,
-    this.infoImage,
-    this.widget,
-    this.isLoading = false,
-    this.hasWidget = false,
-    this.closeBtn = false
-  });
+  const InfoCard(
+      {super.key,
+      required this.onPress,
+      required this.buttonText,
+      required this.closeText,
+      required this.infoTitle,
+      required this.infoBody,
+      this.infoImage,
+      this.widget,
+      this.isLoading = false,
+      this.hasWidget = false,
+      this.closeBtn = false});
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +43,14 @@ class InfoCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Image.asset(
-            infoImage==""?"assets/images/logo.png":infoImage!,
+            infoImage == "" || infoImage == null
+                ? "assets/images/logo.png"
+                : infoImage!,
             height: isTablet ? 250.h : 200.h,
           ),
-          if(hasWidget)
+          if (hasWidget)
             Column(
-              children: [
-
-              ],
+              children: [],
             ),
           Text(
             infoTitle,
@@ -75,18 +72,15 @@ class InfoCard extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              MainButton(
-                onPress: onPress,
-                  text: buttonText),
+              MainButton(onPress: onPress, text: buttonText),
               SizedBox(height: 10.h),
-              if(closeBtn)
-              MainButton(
-                width: 200.w,
-                  onPress: () {
-                    Navigator.of(context).pop();
-                  },
-                  text: closeText)
-
+              if (closeBtn)
+                MainButton(
+                    width: 200.w,
+                    onPress: () {
+                      Navigator.of(context).pop();
+                    },
+                    text: closeText)
             ],
           )
         ],
@@ -94,4 +88,3 @@ class InfoCard extends StatelessWidget {
     );
   }
 }
-

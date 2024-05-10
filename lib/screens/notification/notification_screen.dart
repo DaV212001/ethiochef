@@ -18,7 +18,8 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-  Future<List<NotificationData>> _notifications = NotificationService().fetchNotifications();
+  Future<List<NotificationData>> _notifications =
+      NotificationService().fetchNotifications();
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +60,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
           if (snapshot.hasError || snapshot.data == null) {
             return Center(
               child: InfoCard(
-                onPress: () => setState(() => _notifications = NotificationService().fetchNotifications()),
+                onPress: () => setState(() => _notifications =
+                    NotificationService().fetchNotifications()),
                 infoTitle: 'Error',
                 infoBody: 'Getting failed',
-                buttonText: 'Reload', closeText: '',
+                buttonText: 'Reload',
+                closeText: '',
               ),
             );
           }
@@ -72,16 +75,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
           if (notifications.isEmpty) {
             return Center(
               child: InfoCard(
-                onPress: () => setState(() => _notifications = NotificationService().fetchNotifications()),
+                onPress: () => setState(() {
+                  _notifications = NotificationService().fetchNotifications();
+                }),
                 infoTitle: 'No Notification',
                 infoBody: 'There is no Notification',
-                buttonText: 'Reload', closeText: '',
+                buttonText: 'Reload',
+                closeText: '',
               ),
             );
           }
 
-          final readNotifications = notifications.where((n) => n.isRead).toList();
-          final unreadNotifications = notifications.where((n) => !n.isRead).toList();
+          final readNotifications =
+              notifications.where((n) => n.isRead).toList();
+          final unreadNotifications =
+              notifications.where((n) => !n.isRead).toList();
 
           return SafeArea(
             child: DefaultTabController(
@@ -93,11 +101,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     onTap: (index) => setState(() => selectedIndex = index),
                     backgroundColor: theme.colorScheme.primary,
                     unselectedBackgroundColor: Colors.transparent,
-                    unselectedLabelStyle:  TextStyle(
+                    unselectedLabelStyle: TextStyle(
                         fontSize: isTablet ? 11.sp : 15.sp,
                         fontWeight: FontWeight.w500,
                         color: theme.colorScheme.primary),
-                    labelStyle:  TextStyle(
+                    labelStyle: TextStyle(
                         fontSize: isTablet ? 11.sp : 15.sp,
                         fontWeight: FontWeight.w600,
                         color: Colors.white),
@@ -130,7 +138,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   int selectedIndex = 0;
 
-  Widget _buildNotificationList(BuildContext context, List<NotificationData> notifications) {
+  Widget _buildNotificationList(
+      BuildContext context, List<NotificationData> notifications) {
     final bool isTablet = ScreenUtils.isTablet(context);
 
     return ListView.builder(
@@ -140,8 +149,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
       scrollDirection: Axis.vertical,
       itemBuilder: (context, index) => NotificationCard(
         isRead: notifications[index].isRead,
-        reFresh: () => setState(() => _notifications = NotificationService().fetchNotifications()),
-        delete: () => NotificationService().markNotificationAsRead(notifications[index].id),
+        reFresh: () => setState(
+            () => _notifications = NotificationService().fetchNotifications()),
+        delete: () => NotificationService()
+            .markNotificationAsRead(notifications[index].id),
         data: notifications[index],
       ),
     );

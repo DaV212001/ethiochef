@@ -13,6 +13,8 @@
   "user_does_not_exist": "This phone number is not registered, please sign up",
   "name": "{} Name",
   "ok": "Ok",
+  "sub_end": "Your subscription has ended",
+  "sub_renew": "Renew",
   "no_more_than_one_video": "You can only upload one video to this contest",
   "search_country": "Search for Country",
   "rec_food": "Dear Ethio Chef family, write to us the type of food you want us to teach you",

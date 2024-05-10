@@ -36,6 +36,7 @@ class FromNotif extends StatefulWidget {
 
 class _FromNotifState extends State<FromNotif> {
   Future<List<Food>> fetchAllBreakfast() async {
+    List<Food> breakFastList = [];
     try {
       await ErrorUtil.checkConnection();
       final access_token = await AuthService.getAuthorizationToken();
@@ -48,7 +49,9 @@ class _FromNotifState extends State<FromNotif> {
         final List<dynamic> foodList = data['data'];
         print(
             'BREAKFAST FETCHEDEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDDDDDDDDDDD');
-        return foodList.map((json) => Food.fromMealJson(json, 1, false)).toList();
+        breakFastList = foodList.map((json) => Food.fromMealJson(json, 1, false)).toList();
+        breakFastList.removeWhere((element) => element.name == "null" || element.name == null);
+        return breakFastList;
       } else {
         throw Exception(response.statusCode.toString());
       }
@@ -58,6 +61,7 @@ class _FromNotifState extends State<FromNotif> {
   }
 
   Future<List<Food>> fetchAllLunch() async {
+    List<Food> lunchList = [];
     try {
       await ErrorUtil.checkConnection();
       final access_token = await AuthService.getAuthorizationToken();
@@ -73,7 +77,9 @@ print(response.body);
         final List<dynamic> foodList = data['data'];
         print(
             'LUNCH FETCHEDEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDDDDDDDDDDD');
-        return foodList.map((json) => Food.fromMealJson(json, 2, false)).toList();
+        lunchList = foodList.map((json) => Food.fromMealJson(json, 2, false)).toList();
+        lunchList.removeWhere((element) => element.name == "null" || element.name == null);
+        return lunchList;
       } else {
         throw Exception(response.statusCode.toString());
       }
@@ -83,6 +89,7 @@ print(response.body);
   }
 
   Future<List<Food>> fetchAllSuper() async {
+    List<Food> supperList = [];
     try {
       await ErrorUtil.checkConnection();
       final access_token = await AuthService.getAuthorizationToken();
@@ -98,7 +105,9 @@ print(response.body);
         final List<dynamic> foodList = data['data'];
         print(
             'SUPPER FETCHEDEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDDDDDDDDDDD');
-        return foodList.map((json) => Food.fromMealJson(json, 3, false)).toList();
+        supperList = foodList.map((json) => Food.fromMealJson(json, 3, false)).toList();
+        supperList.removeWhere((element) => element.name == "null" || element.name == null);
+        return supperList;
       } else {
         throw Exception(response.statusCode.toString());
       }
@@ -108,6 +117,7 @@ print(response.body);
   }
 
   Future<List<Food>> fetchAllDinner() async {
+    List<Food> dinnerList = [];
     try {
       await ErrorUtil.checkConnection();
       final access_token = await AuthService.getAuthorizationToken();
@@ -123,7 +133,9 @@ print(response.body);
         final List<dynamic> foodList = data['data'];
         print(
             'DINNER FETCHEDEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDDDDDDDDDDD');
-        return foodList.map((json) => Food.fromMealJson(json, 4, false)).toList();
+        dinnerList = foodList.map((json) => Food.fromMealJson(json, 4, false)).toList();
+        dinnerList.removeWhere((element) => element.name == "null" || element.name == null);
+        return dinnerList;
       } else {
         throw Exception(response.statusCode.toString());
       }

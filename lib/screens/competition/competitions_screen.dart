@@ -5,17 +5,15 @@ import 'package:ethio_chef/screens/subscription/layout/payment.dart';
 import 'package:ethio_chef/services/competition_service.dart';
 import 'package:ethio_chef/utils/constants.dart';
 import 'package:ethio_chef/widgets/ad_block.dart';
-import 'package:ethio_chef/widgets/profile/user_screen_footer.dart';
 import 'package:ethio_chef/widgets/recipe_status/empty_recipe.dart';
 import 'package:ethio_chef/widgets/screen_head.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
-import 'package:quickalert/models/quickalert_type.dart';
-import 'package:quickalert/widgets/quickalert_dialog.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import '../../generated/assets.dart';
-import '../../models/footer_data.dart';
 import '../../services/subscription_checker.dart';
 import '../../services/user_service.dart';
 import '../../theme/app_theme.dart';
@@ -32,7 +30,7 @@ import 'layout/competition_header.dart';
 import 'layout/competition_header_image.dart';
 import 'layout/contestants_carousel.dart';
 import 'layout/upload_video.dart';
-import 'package:url_launcher/url_launcher.dart';
+
 class CompetitionsScreen extends StatefulWidget {
   const CompetitionsScreen({super.key});
 
@@ -41,12 +39,10 @@ class CompetitionsScreen extends StatefulWidget {
 }
 
 class _CompetitionsScreenState extends State<CompetitionsScreen> {
-
   Future? _future;
   bool isFromSms = true;
   bool isLoading = true;
   Future<dynamic> fetchCompetition() async {
-
     try {
       final service = CompetitionService();
       final data = await service.fetchCompetitions();
@@ -56,6 +52,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
       rethrow;
     }
   }
+
   Future checkSmsUser() async {
     final userService = UserService();
     var userData = await userService.fetchUserProfile();
@@ -67,13 +64,14 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
         isLoading = false;
         isFromSms = false;
       });
-    }else{
+    } else {
       setState(() {
         isLoading = false;
       });
       // showSubscriptionAlert();
     }
   }
+
   @override
   void initState() {
     checkSmsUser();
@@ -81,6 +79,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
     loadAd();
     super.initState();
   }
+
   static String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
   static BannerAd? _bannerAd1;
   static BannerAd? _bannerAd2;
@@ -116,90 +115,87 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
       ),
     ).load();
   }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final bool isTablet = ScreenUtils.isTablet(context);
     return RefreshWidget(
-        onRefresh:()async{
-          setState(() {
-            _future = fetchCompetition();
-          });
-        },
+      onRefresh: () async {
+        setState(() {
+          _future = fetchCompetition();
+        });
+      },
       child: Stack(
         children: [
           Blur(
             blurColor: theme.colorScheme.primary,
-            blur: isLoading == false && isFromSms==true? 2.5
-                : 0,
-            overlay: isFromSms==true?SizedBox.shrink():
-            Scaffold(
-                body: Stack(
-                    children:[
-                      FutureBuilder(
-                          future: _future,
-                          builder: (context, AsyncSnapshot<dynamic> snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return Loading();
-                            }
-                            if (snapshot.hasError) {
-                              return Center(
-                                  child: ErrorCard(
-                                    errorType: snapshot.error.toString(),
-                                    refresh: () {
-                                      setState(() {
-                                        _future = fetchCompetition();
-                                      });
-                                    },
-                                  ));
-                            }
-                            return buildCompetitionPage(snapshot.data as List<Competition>);
-                          })
-                    ]
-                )
-            ),
+            blur: isLoading == false && isFromSms == true ? 2.5 : 0,
+            overlay: isFromSms == true
+                ? SizedBox.shrink()
+                : Scaffold(
+                    body: Stack(children: [
+                    FutureBuilder(
+                        future: _future,
+                        builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Loading();
+                          }
+                          if (snapshot.hasError) {
+                            return Center(
+                                child: ErrorCard(
+                              errorType: snapshot.error.toString(),
+                              refresh: () {
+                                setState(() {
+                                  _future = fetchCompetition();
+                                });
+                              },
+                            ));
+                          }
+                          return buildCompetitionPage(
+                              snapshot.data as List<Competition>);
+                        })
+                  ])),
             child: Scaffold(
-                body: Stack(
-                    children:[
-                      FutureBuilder(
-                          future: _future,
-                          builder: (context, AsyncSnapshot<dynamic> snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return Loading();
-                            }
-                            if (snapshot.hasError) {
-                              return Center(
-                                  child: ErrorCard(
-                                    errorType: snapshot.error.toString(),
-                                    refresh: () {
-                                      setState(() {
-                                        _future = fetchCompetition();
-                                      });
-                                    },
-                                  ));
-                            }
-                            return buildCompetitionPage(snapshot.data as List<Competition>);
-                          }),
-                    ]
-                )
-            ),
+                body: Stack(children: [
+              FutureBuilder(
+                  future: _future,
+                  builder: (context, AsyncSnapshot<dynamic> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Loading();
+                    }
+                    if (snapshot.hasError) {
+                      return Center(
+                          child: ErrorCard(
+                        errorType: snapshot.error.toString(),
+                        refresh: () {
+                          setState(() {
+                            _future = fetchCompetition();
+                          });
+                        },
+                      ));
+                    }
+                    return buildCompetitionPage(
+                        snapshot.data as List<Competition>);
+                  }),
+            ])),
           ),
-
-          if(isFromSms == true && isLoading==false)
+          if (isFromSms == true && isLoading == false)
             Align(
                 alignment: Alignment.center,
                 child: Dialog(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.r),
                     ),
-                    backgroundColor: Theme
-                        .of(context)
-                        .cardColor,
+                    backgroundColor: Theme.of(context).cardColor,
                     child: Container(
                       height: isTablet ? 600.h : 450.h,
                       width: isTablet ? 275.w : 400.w,
-                      padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
-                      margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+                      margin:
+                          EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -224,47 +220,57 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                               MainButton(
                                   text: 'yes'.tr(),
                                   onPress: () async {
-                                    pushNewScreen(context, withNavBar: false, screen: PaymentCheckout(isNormalSubscription: true));
+                                    pushNewScreen(context,
+                                        withNavBar: false,
+                                        screen: PaymentCheckout(
+                                            isSMS: true,
+                                            isNormalSubscription: true));
                                   }),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: supportButton(Colors.blue, Constants.supportLink, Assets.socialTelegram, isTablet),
+                                child: supportButton(
+                                    Colors.blue,
+                                    Constants.supportLink,
+                                    Assets.socialTelegram,
+                                    isTablet),
                               )
                             ],
                           )
                         ],
                       ),
-                    )
-                )
-            )
+                    )))
         ],
       ),
     );
   }
 
-  Widget buildCompetitionPage(List<Competition> competition){
+  Widget buildCompetitionPage(List<Competition> competition) {
     final ThemeData theme = Theme.of(context);
     final bool isTablet = ScreenUtils.isTablet(context);
 
-    if(competition.isEmpty){
+    if (competition.isEmpty) {
       return NoCompetitionCurrently();
     }
     return Scaffold(
         body: SingleChildScrollView(
           child: SafeArea(
-            child: Column(children: [
-              ScreenHead(
-                hasNotification: true,
-                screen: 1,
-                searchHint: "search".tr(),
+              child: Column(children: [
+            ScreenHead(
+              hasNotification: true,
+              screen: 1,
+              searchHint: "search".tr(),
+            ),
+            if (_bannerAd1 != null)
+              AdBlock(
+                bannerAd: _bannerAd1,
+                isbottom: false,
               ),
-              if (_bannerAd1 != null)
-                AdBlock(bannerAd: _bannerAd1, isbottom: false,),
-              ListView(
-                scrollDirection: Axis.vertical,
-                physics: BouncingScrollPhysics(),
-                shrinkWrap: true,
-                children:[ Column(
+            ListView(
+              scrollDirection: Axis.vertical,
+              physics: BouncingScrollPhysics(),
+              shrinkWrap: true,
+              children: [
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CompetitionHeaderImage(
@@ -283,68 +289,77 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                       ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: supportButton(Colors.blue, Constants.supportLink, Assets.socialTelegram, isTablet),
+                      child: supportButton(Colors.blue, Constants.supportLink,
+                          Assets.socialTelegram, isTablet),
                     ),
                     AwardsList(theme: theme),
-                    if(competition[0].competitor!.isNotEmpty)
+                    if (competition[0].competitor!.isNotEmpty)
                       Contestants(
-                        refresh: (){
-                          setState(() {
-                            _future = fetchCompetition();
-                          });
-                        },
+                          refresh: () {
+                            setState(() {
+                              _future = fetchCompetition();
+                            });
+                          },
                           competition: competition[0],
                           contestant: competition[0].competitor,
-                          contest_id: competition[0].id!
-                      )
+                          contest_id: competition[0].id!)
                   ],
-                )],
-              ),
-              if (_bannerAd2 != null)
-                AdBlock(bannerAd: _bannerAd2, isbottom: false,)
-            ])
-          ),
+                )
+              ],
+            ),
+            if (_bannerAd2 != null)
+              AdBlock(
+                bannerAd: _bannerAd2,
+                isbottom: false,
+              )
+          ])),
         ),
-
         floatingActionButton: Padding(
-          padding: const EdgeInsets.only(bottom: 10.0),
-          child: FloatingActionButton.extended(
-            autofocus: true,
-            elevation: 4,
-            isExtended: true,
-            tooltip: 'upload_video'.tr(),
-            onPressed: () async {
-              setState(() {
-                isLoading = true;
-              });
-              await handleSubscriptionStatus(context, competition[0].id!);
-              setState(() {
-                isLoading = false;
-              });
+            padding: const EdgeInsets.only(bottom: 10.0),
+            child: FloatingActionButton.extended(
+              autofocus: true,
+              elevation: 4,
+              isExtended: true,
+              tooltip: 'upload_video'.tr(),
+              onPressed: () async {
+                setState(() {
+                  isLoading = true;
+                });
+                await handleSubscriptionStatus(context, competition[0].id!);
+                setState(() {
+                  isLoading = false;
+                });
               },
-            icon: const Icon(Icons.play_arrow, color: Colors.white),
-            label: isLoading == true ? CircularProgressIndicator(
-              color: Colors.white,
-            ):Text('upload_video'.tr(),
-              style: TextStyle(
-                  fontSize: isTablet ? 13.sp : 15.sp,
-                  fontWeight: FontWeight.w800,
-                  color: Colors.white),),
-            backgroundColor: theme.colorScheme.primary,
-          )
-        )
-    );
+              icon: const Icon(Icons.play_arrow, color: Colors.white),
+              label: isLoading == true
+                  ? CircularProgressIndicator(
+                      color: Colors.white,
+                    )
+                  : Text(
+                      'upload_video'.tr(),
+                      style: TextStyle(
+                          fontSize: isTablet ? 13.sp : 15.sp,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white),
+                    ),
+              backgroundColor: theme.colorScheme.primary,
+            )));
   }
 
-  Future<void> handleSubscriptionStatus(BuildContext context, int competition) async {
+  Future<void> handleSubscriptionStatus(
+      BuildContext context, int competition) async {
     String? status = SubscriptionStatus().status;
 
     switch (status) {
       case "Not logged in":
-        showSnackBarAndNavigate(context, 'please_subscribe_to_see_ingredients_and_steps'.tr(), AuthScreen(isSignIn: true));
+        showSnackBarAndNavigate(
+            context,
+            'please_subscribe_to_see_ingredients_and_steps'.tr(),
+            AuthScreen(isSignIn: true));
         break;
       case "Another user logged in":
-        showSnackBarAndNavigate(context, 'another_account_login'.tr(), AuthScreen(isSignIn: true));
+        showSnackBarAndNavigate(
+            context, 'another_account_login'.tr(), AuthScreen(isSignIn: true));
         break;
       case "User is subscribed":
         print("User is subscribed");
@@ -352,7 +367,9 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
         var userData = await userService.fetchUserProfile();
 
         if (userData!.isFromSMS == false || userData.subscriptionId != 15) {
-          pushNewScreen(context, screen: UploadCompetitionVideo(competitionId: competition!), withNavBar: false);
+          pushNewScreen(context,
+              screen: UploadCompetitionVideo(competitionId: competition!),
+              withNavBar: false);
         } else {
           showSubscriptionAlert();
         }
@@ -360,7 +377,10 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
       case "User is not subscribed":
         pushNewScreen(
           context,
-          screen: PaymentCheckout(isNormalSubscription: true),
+          screen: PaymentCheckout(
+            isSMS: true,
+            isNormalSubscription: true,
+          ),
           withNavBar: false,
           pageTransitionAnimation: PageTransitionAnimation.cupertino,
         );
@@ -382,9 +402,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.r),
             ),
-            backgroundColor: Theme
-                .of(context)
-                .cardColor,
+            backgroundColor: Theme.of(context).cardColor,
             child: Container(
               height: isTablet ? 600.h : 450.h,
               width: isTablet ? 275.w : 400.w,
@@ -414,19 +432,22 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                       MainButton(
                           text: 'pay'.tr(),
                           onPress: () async {
-                            pushNewScreen(context, withNavBar: false, screen: PaymentCheckout(isNormalSubscription: true));
+                            pushNewScreen(context,
+                                withNavBar: false,
+                                screen: PaymentCheckout(
+                                    isNormalSubscription: true));
                           }),
                     ],
                   )
                 ],
               ),
-            )
-        );
+            ));
       },
     );
   }
 
-  void showSnackBarAndNavigate(BuildContext context, String message, Widget route) {
+  void showSnackBarAndNavigate(
+      BuildContext context, String message, Widget route) {
     setState(() {
       isLoading = false;
     });
@@ -440,8 +461,8 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
   }
 }
 
-
-Widget supportButton( Color color,  String? link,  String image,  bool isTablet, {String? text}) {
+Widget supportButton(Color color, String? link, String image, bool isTablet,
+    {String? text}) {
   if (link == null) return SizedBox.shrink();
   return Ink(
     child: InkWell(
@@ -456,20 +477,25 @@ Widget supportButton( Color color,  String? link,  String image,  bool isTablet,
             size: 50.sp,
           ),
           SizedBox(
-            width: 250,
-              child: Text(text??"get_support".tr(), softWrap: true, maxLines: 2,))
+              width: 250,
+              child: Text(
+                text ?? "get_support".tr(),
+                softWrap: true,
+                maxLines: 2,
+              ))
         ],
       ),
     ),
   );
 }
+
 Future<void> _launchUrl(String url, bool isTablet) async {
   final Uri _url = Uri.parse(url);
   if (!await launchUrl(_url)) {
     SnackBar(
         content: Text(
-          'open_link_failed'.tr(),
-          style: isTablet ? AppTheme.snackBarStyleTablet : AppTheme.snackBarStyle,
-        ));
+      'open_link_failed'.tr(),
+      style: isTablet ? AppTheme.snackBarStyleTablet : AppTheme.snackBarStyle,
+    ));
   }
 }

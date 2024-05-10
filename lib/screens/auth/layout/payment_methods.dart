@@ -18,27 +18,28 @@ import '../../../widgets/error_card.dart';
 import '../../../widgets/loading.dart';
 import '../../../widgets/main_app_bar.dart';
 import '../../../widgets/subscription/payment_card.dart';
-import '../../subscription/layout/payment.dart';
 
 class PaymentMethodScreen extends StatefulWidget {
   final List<PaymentMethods>? payments;
   final SubscriptionPlans selectedSubscriptionPlan;
   final Map userData;
-  PaymentMethodScreen({super.key, this.payments, required this.userData, required this.selectedSubscriptionPlan});
+  PaymentMethodScreen(
+      {super.key,
+      this.payments,
+      required this.userData,
+      required this.selectedSubscriptionPlan});
 
   @override
   State<PaymentMethodScreen> createState() => _PaymentMethodScreenState();
 }
 
 class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
-
   Future? _future;
   @override
   void initState() {
     _future = fetchData();
     super.initState();
     loadAd();
-
   }
 
   static String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
@@ -80,18 +81,13 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
         adUnitId: _adbannerUnitId,
         request: const AdRequest(),
         size: AdSize.banner,
-        listener: BannerAdListener(
-            onAdLoaded: (ad) {
-              _bannerAd3 = ad as BannerAd;
-            },
-            onAdFailedToLoad: (ad, err) {
-              print("Error loading ad: $err");
-              ad.dispose();
-            }
-        )
-    ).load();
+        listener: BannerAdListener(onAdLoaded: (ad) {
+          _bannerAd3 = ad as BannerAd;
+        }, onAdFailedToLoad: (ad, err) {
+          print("Error loading ad: $err");
+          ad.dispose();
+        })).load();
   }
-
 
   Future<dynamic> fetchData() async {
     try {
@@ -103,6 +99,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
       rethrow;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,29 +116,34 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
             if (snapshot.hasError) {
               return Center(
                   child: ErrorCard(
-                    errorType: snapshot.error.toString(),
-                    refresh: () {
-                      setState(() {
-                        _future = fetchData();
-                      });
-                    },
-                  ));
+                errorType: snapshot.error.toString(),
+                refresh: () {
+                  setState(() {
+                    _future = fetchData();
+                  });
+                },
+              ));
             }
             return Column(
               children: [
                 if (_bannerAd1 != null)
-                  AdBlock(bannerAd: _bannerAd1, isbottom: false,),
-
+                  AdBlock(
+                    bannerAd: _bannerAd1,
+                    isbottom: false,
+                  ),
                 buildPaymentMethodScreen(snapshot.data as List<PaymentMethods>),
                 if (_bannerAd3 != null)
-                  AdBlock(bannerAd: _bannerAd3, isbottom: false,),
-
+                  AdBlock(
+                    bannerAd: _bannerAd3,
+                    isbottom: false,
+                  ),
               ],
             );
           }),
     );
   }
-  Widget buildPaymentMethodScreen(List<PaymentMethods>? payments){
+
+  Widget buildPaymentMethodScreen(List<PaymentMethods>? payments) {
     bool isTablet = ScreenUtils.isTablet(context);
     final double desiredItemWidth = isTablet ? 130.w : 150.w;
     final double desiredItemHeight = isTablet ? 120.h : 150.h;
@@ -158,38 +160,45 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
         itemCount: payments!.length,
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
-
+          String bank_name = payments[index].bank_name == "CHAPA"
+              ? "CBE birr, telebirr and others"
+              : payments[index].bank_name == "ABYSINIA"
+                  ? "Pay in USD"
+                  : payments[index].bank_name == "ETHSWITCH"
+                      ? "Pay on ATM cards"
+                      : payments[index].bank_name;
           return Column(
             children: [
               RectangularPaymentCard(
-                payment_name: payments[index].bank_name,
+                payment_name: bank_name,
                 image_url: payments[index].image.toString(),
                 press: () async {
                   final service = PaymentService();
-                  User unWanted = User(
-                      firstName: "",
-                      lastName: ""
-                  );
+                  User unWanted = User(firstName: "", lastName: "");
                   var response = await service.makePayment(
-                      widget.userData, payments[index].id, unWanted, widget.selectedSubscriptionPlan.price!, true
-                  );
+                      widget.userData,
+                      payments[index].id,
+                      unWanted,
+                      widget.selectedSubscriptionPlan.price!,
+                      true);
 
-                  if(response.statusCode==200) {
-                    var checkoutUrl = jsonDecode(response.body)['data']['checkout_url'];
+                  if (response.statusCode == 200) {
+                    var checkoutUrl =
+                        jsonDecode(response.body)['data']['checkout_url'];
                     print(jsonDecode(response.body)['data']['checkout_url']);
                     print(checkoutUrl);
                     await pushNewScreen(context,
-                        screen: PaymentScreen(
-                            url: checkoutUrl)
-                    );
+                        screen: PaymentScreen(url: checkoutUrl));
                     RestartWidget.restartApp(context);
                   }
                 },
               ),
-              if(index == payments.length/2)
+              if (index == payments.length / 2)
                 if (_bannerAd2 != null)
-                  AdBlock(bannerAd: _bannerAd2, isbottom: true,),
-
+                  AdBlock(
+                    bannerAd: _bannerAd2,
+                    isbottom: true,
+                  ),
             ],
           );
         },

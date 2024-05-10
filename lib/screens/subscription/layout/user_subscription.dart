@@ -1,21 +1,19 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ethio_chef/models/subscriptionplans.dart' as h;
+import 'package:ethio_chef/services/user_service.dart' as u;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quickalert/quickalert.dart';
-import 'package:ethio_chef/models/subscriptionplans.dart' as h;
-import 'package:ethio_chef/services/user_service.dart' as u;
 
 import '../../../widgets/subscription/subscription_card.dart';
 
-
 class UserSubscription extends StatefulWidget {
-
   List<h.SubscriptionPlans> userSubscriptionPlans = [];
   String duration_user;
-  UserSubscription({super.key,
-    required this.userSubscriptionPlans,
-    required this.duration_user
-  });
+  UserSubscription(
+      {super.key,
+      required this.userSubscriptionPlans,
+      required this.duration_user});
 
   @override
   State<UserSubscription> createState() => _UserSubscriptionState();
@@ -28,13 +26,11 @@ class _UserSubscriptionState extends State<UserSubscription> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(
-            'your_sub'.tr(),
+        Text('your_sub'.tr(),
             style: TextStyle(
                 fontSize: 17.sp,
                 fontWeight: FontWeight.w800,
-                color: theme.colorScheme.secondaryContainer)
-        ),
+                color: theme.colorScheme.secondaryContainer)),
         SizedBox(
           height: 20.h,
         ),
@@ -46,18 +42,12 @@ class _UserSubscriptionState extends State<UserSubscription> {
               scrollDirection: Axis.vertical,
               physics: BouncingScrollPhysics(),
               itemBuilder: (context, index) {
-                widget.duration_user =
-                widget.userSubscriptionPlans.isNotEmpty ?
-                widget.userSubscriptionPlans[index].duration
-                    .toString() + " Months left" : "0";
                 return SubscriptionCard(
                   buttonName: 'delete'.tr(),
                   plan: widget.userSubscriptionPlans[index].plan!,
-                  price: widget.userSubscriptionPlans[index].price
-                      .toString(),
+                  price: widget.userSubscriptionPlans[index].price.toString(),
                   duration: widget.duration_user,
                   onTap: () async {
-
                     await QuickAlert.show(
                       context: context,
                       type: QuickAlertType.error,
@@ -68,18 +58,16 @@ class _UserSubscriptionState extends State<UserSubscription> {
                       titleAlignment: TextAlign.center,
                       textAlignment: TextAlign.center,
                       confirmBtnText: 'delete'.tr(),
-                      onConfirmBtnTap: (){
+                      onConfirmBtnTap: () {
                         deleteSubscription(index);
                       },
                       cancelBtnText: 'cancel'.tr(),
-                      onCancelBtnTap: (){
+                      onCancelBtnTap: () {
                         Navigator.pop(context);
                       },
                       confirmBtnColor: Colors.red,
                       cancelBtnTextStyle: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold
-                      ),
+                          color: Colors.black, fontWeight: FontWeight.bold),
                       backgroundColor: Colors.white,
                       headerBackgroundColor: Colors.grey,
                       confirmBtnTextStyle: const TextStyle(
@@ -90,31 +78,26 @@ class _UserSubscriptionState extends State<UserSubscription> {
                       titleColor: Colors.red,
                       textColor: Colors.red,
                     );
-
                   },
                 );
-              }
-          ),
+              }),
         ),
-        SizedBox(height: 5,),
-
-
-
+        SizedBox(
+          height: 5,
+        ),
       ],
     );
   }
+
   void deleteSubscription(int index) async {
     print('Delete');
     u.UserService service = u.UserService();
     bool deleted = await service.deleteUserSubscription();
     if (deleted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text(
-                'Deleted successfully',
-              )
-          )
-      );
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+        'Deleted successfully',
+      )));
       setState(() {
         widget.userSubscriptionPlans.removeAt(index);
       });
