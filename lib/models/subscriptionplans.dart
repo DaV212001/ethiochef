@@ -34,6 +34,9 @@ class SubscriptionPlans {
     }
     price = json['subscription']['price'];
     duration = json['subscription']['duration'] ?? 0;
+    lastPaidDate = json.containsKey('last_paid_date')
+        ? DateTime.parse(json['last_paid_date'])
+        : null;
     // promo_code = json.containsKey('promo_code')?json['subscription']['promo_code'] != []? json['subscription']['promo_code'].cast<String>() : []: null;
     print("Subscriptions done");
   }

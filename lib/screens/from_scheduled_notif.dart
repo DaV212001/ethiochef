@@ -4,13 +4,12 @@ import 'dart:math';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/recipe/recipe_screen.dart';
 import 'package:ethio_chef/screens/subscription/layout/payment.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
-import 'package:restart_app/restart_app.dart';
+import 'package:http/http.dart' as http;
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../models/food.dart';
 import '../models/language.dart';
@@ -18,8 +17,6 @@ import '../services/authorization_service.dart';
 import '../services/subscription_checker.dart';
 import '../utils/constants.dart';
 import '../utils/error_util.dart';
-import 'package:http/http.dart' as http;
-
 import '../utils/screen_utils.dart';
 import '../widgets/ad_block.dart';
 import '../widgets/category/category_card.dart';
@@ -41,7 +38,8 @@ class _FromNotifState extends State<FromNotif> {
       await ErrorUtil.checkConnection();
       final access_token = await AuthService.getAuthorizationToken();
       final response = await http.get(
-        Uri.parse('${Constants.url}/user/food/breakfast?&limit=1000&lang=${Language.getLocaleCode()}'),
+        Uri.parse(
+            '${Constants.url}/user/food/breakfast?&limit=1000&lang=${Language.getLocaleCode()}'),
         headers: {'Authorization': 'JWT $access_token'},
       );
       if (response.statusCode == 200) {
@@ -49,8 +47,10 @@ class _FromNotifState extends State<FromNotif> {
         final List<dynamic> foodList = data['data'];
         print(
             'BREAKFAST FETCHEDEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDDDDDDDDDDD');
-        breakFastList = foodList.map((json) => Food.fromMealJson(json, 1, false)).toList();
-        breakFastList.removeWhere((element) => element.name == "null" || element.name == null);
+        breakFastList =
+            foodList.map((json) => Food.fromMealJson(json, 1, false)).toList();
+        breakFastList.removeWhere(
+            (element) => element.name == "null" || element.name == null);
         return breakFastList;
       } else {
         throw Exception(response.statusCode.toString());
@@ -66,19 +66,22 @@ class _FromNotifState extends State<FromNotif> {
       await ErrorUtil.checkConnection();
       final access_token = await AuthService.getAuthorizationToken();
       final response = await http.get(
-        Uri.parse('${Constants.url}/user/food/lunch?&limit=1000&lang=${Language.getLocaleCode()}'),
+        Uri.parse(
+            '${Constants.url}/user/food/lunch?&limit=1000&lang=${Language.getLocaleCode()}'),
         headers: {
           'Authorization': 'JWT $access_token',
         },
       );
-print(response.body);
+      print(response.body);
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final List<dynamic> foodList = data['data'];
         print(
             'LUNCH FETCHEDEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDDDDDDDDDDD');
-        lunchList = foodList.map((json) => Food.fromMealJson(json, 2, false)).toList();
-        lunchList.removeWhere((element) => element.name == "null" || element.name == null);
+        lunchList =
+            foodList.map((json) => Food.fromMealJson(json, 2, false)).toList();
+        lunchList.removeWhere(
+            (element) => element.name == "null" || element.name == null);
         return lunchList;
       } else {
         throw Exception(response.statusCode.toString());
@@ -94,7 +97,8 @@ print(response.body);
       await ErrorUtil.checkConnection();
       final access_token = await AuthService.getAuthorizationToken();
       final response = await http.get(
-        Uri.parse('${Constants.url}/user/food/super?&limit=1000&lang=${Language.getLocaleCode()}'),
+        Uri.parse(
+            '${Constants.url}/user/food/super?&limit=1000&lang=${Language.getLocaleCode()}'),
         headers: {
           'Authorization': 'JWT $access_token',
         },
@@ -105,8 +109,10 @@ print(response.body);
         final List<dynamic> foodList = data['data'];
         print(
             'SUPPER FETCHEDEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDDDDDDDDDDD');
-        supperList = foodList.map((json) => Food.fromMealJson(json, 3, false)).toList();
-        supperList.removeWhere((element) => element.name == "null" || element.name == null);
+        supperList =
+            foodList.map((json) => Food.fromMealJson(json, 3, false)).toList();
+        supperList.removeWhere(
+            (element) => element.name == "null" || element.name == null);
         return supperList;
       } else {
         throw Exception(response.statusCode.toString());
@@ -122,7 +128,8 @@ print(response.body);
       await ErrorUtil.checkConnection();
       final access_token = await AuthService.getAuthorizationToken();
       final response = await http.get(
-        Uri.parse('${Constants.url}/user/food/dinner?&limit=1000&lang=${Language.getLocaleCode()}'),
+        Uri.parse(
+            '${Constants.url}/user/food/dinner?&limit=1000&lang=${Language.getLocaleCode()}'),
         headers: {
           'Authorization': 'JWT $access_token',
         },
@@ -133,8 +140,10 @@ print(response.body);
         final List<dynamic> foodList = data['data'];
         print(
             'DINNER FETCHEDEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEDDDDDDDDDDDDDDDDDDDDDD');
-        dinnerList = foodList.map((json) => Food.fromMealJson(json, 4, false)).toList();
-        dinnerList.removeWhere((element) => element.name == "null" || element.name == null);
+        dinnerList =
+            foodList.map((json) => Food.fromMealJson(json, 4, false)).toList();
+        dinnerList.removeWhere(
+            (element) => element.name == "null" || element.name == null);
         return dinnerList;
       } else {
         throw Exception(response.statusCode.toString());
@@ -186,7 +195,7 @@ print(response.body);
 
   void _navigateToRecipeScreen(Food selectedFood) {
     print('FROM NOTIF NAVIGATION TO RECIPE SCREEN');
-    SubscriptionStatus st= SubscriptionStatus();
+    SubscriptionStatus st = SubscriptionStatus();
     st.checkStatus();
     String? status = st.status;
     print("Status  = = = = = = = =  = $status");
@@ -211,7 +220,7 @@ print(response.body);
         break;
       case "User is subscribed":
         print("User is subscribed");
-        pushNewScreen(
+        PersistentNavBarNavigator.pushNewScreen(
           context,
           withNavBar: false,
           screen: RecipeScreen(food: selectedFood),
@@ -219,9 +228,9 @@ print(response.body);
         break;
       case "User is not subscribed":
         print("User is not subscribed hereeeeeeeeeeeeeeeeeeeeeeee");
-        pushNewScreen(
+        PersistentNavBarNavigator.pushNewScreen(
           context,
-          screen: PaymentCheckout(isNormalSubscription: true),
+          screen: PaymentCheckout(isSMS: true, isNormalSubscription: true),
           withNavBar: false,
           pageTransitionAnimation: PageTransitionAnimation.cupertino,
         );
@@ -230,14 +239,16 @@ print(response.body);
   }
 
   void loginFunction(Food selectedFood) {
-    pushNewScreen(
+    PersistentNavBarNavigator.pushNewScreen(
       context,
       withNavBar: false,
-      screen: AuthScreen(isSignIn: true, isFromNotification: true,),
+      screen: AuthScreen(
+        isSignIn: true,
+        isFromNotification: true,
+      ),
     ).then((value) {
       print('RECHEKKKKKKKKKKKK');
       _navigateToRecipeScreen(selectedFood);
-
     });
   }
 
@@ -247,7 +258,6 @@ print(response.body);
     _fetchMeals = _fetchMealsAtSpecificTime();
     loadAd();
   }
-
 
   static String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
   static BannerAd? _bannerAd1;
@@ -288,16 +298,12 @@ print(response.body);
         adUnitId: 'ca-app-pub-4750411587709054/2820228086',
         request: const AdRequest(),
         size: AdSize.banner,
-        listener: BannerAdListener(
-            onAdLoaded: (ad) {
-              _bannerAd3 = ad as BannerAd;
-            },
-            onAdFailedToLoad: (ad, err) {
-              print("Error loading ad: $err");
-              ad.dispose();
-            }
-        )
-    ).load();
+        listener: BannerAdListener(onAdLoaded: (ad) {
+          _bannerAd3 = ad as BannerAd;
+        }, onAdFailedToLoad: (ad, err) {
+          print("Error loading ad: $err");
+          ad.dispose();
+        })).load();
   }
 
   @override
@@ -347,15 +353,17 @@ print(response.body);
             // print('ITEM COUNT $itemCount');
             return Column(
               children: [
-                if(_bannerAd1 != null)
-                  AdBlock(bannerAd: _bannerAd1, isbottom: false,),
+                if (_bannerAd1 != null)
+                  AdBlock(
+                    bannerAd: _bannerAd1,
+                    isbottom: false,
+                  ),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        Stack(
-                          children:[
-                            Container(
+                        Stack(children: [
+                          Container(
                             height: MediaQuery.of(context).size.height * 0.4,
                             width: MediaQuery.of(context).size.width,
                             child: Image.asset(
@@ -363,37 +371,40 @@ print(response.body);
                               fit: BoxFit.fill,
                             ),
                           ),
-                            Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Row(
-                                children: [
-                                  IconButton(
-                                      icon: Icon(Icons.arrow_back),
-                                      onPressed: () {
-                                        Phoenix.rebirth(context);
-                                      }
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Row(
+                              children: [
+                                IconButton(
+                                    icon: Icon(Icons.arrow_back),
+                                    onPressed: () {
+                                      Phoenix.rebirth(context);
+                                    }),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    '${widget.timeOfDay[0].toUpperCase()}${widget.timeOfDay.substring(1)}',
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .bodyLarge,
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      '${widget.timeOfDay[0].toUpperCase()}${widget.timeOfDay.substring(1)}',
-                                      style: Theme.of(context).primaryTextTheme.bodyLarge,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ]
-                        ),
-                        if(_bannerAd2 != null)
-                          AdBlock(bannerAd: _bannerAd2, isbottom: false,),
+                                ),
+                              ],
+                            ),
+                          )
+                        ]),
+                        if (_bannerAd2 != null)
+                          AdBlock(
+                            bannerAd: _bannerAd2,
+                            isbottom: false,
+                          ),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 18.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               SizedBox(
-                                width: MediaQuery.of(context).size.width *0.5,
+                                width: MediaQuery.of(context).size.width * 0.5,
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: ListView.builder(
@@ -401,27 +412,28 @@ print(response.body);
                                     itemCount: 3,
                                     physics: BouncingScrollPhysics(),
                                     itemBuilder: (context, index) {
-                                      print('FOOD NAME FROM NOTIF: ${meals[index].name}');
-                  
+                                      print(
+                                          'FOOD NAME FROM NOTIF: ${meals[index].name}');
+
                                       return InkWell(
-                                        onTap: (){
-                                          _navigateToRecipeScreen(meals[index]);
+                                          onTap: () {
+                                            _navigateToRecipeScreen(
+                                                meals[index]);
                                           },
-                                        child: CategoryCard(
-                                          food: meals[index],
-                                        )
-                                      );
+                                          child: CategoryCard(
+                                            food: meals[index],
+                                          ));
                                     },
-                                  //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                  //   crossAxisCount: crossAxisCount,
-                                  //   childAspectRatio: childAspectRatio,
-                                  //   mainAxisSpacing: isTablet ? 5 : 0,
-                                  // ),
+                                    //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    //   crossAxisCount: crossAxisCount,
+                                    //   childAspectRatio: childAspectRatio,
+                                    //   mainAxisSpacing: isTablet ? 5 : 0,
+                                    // ),
                                   ),
                                 ),
                               ),
                               SizedBox(
-                                width: MediaQuery.of(context).size.width *0.5,
+                                width: MediaQuery.of(context).size.width * 0.5,
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: ListView.builder(
@@ -429,16 +441,17 @@ print(response.body);
                                     itemCount: 3,
                                     physics: NeverScrollableScrollPhysics(),
                                     itemBuilder: (context, index) {
-                                      print('FOOD NAME FROM NOTIF: ${secondMeals[index].name}');
-                  
+                                      print(
+                                          'FOOD NAME FROM NOTIF: ${secondMeals[index].name}');
+
                                       return InkWell(
-                                          onTap: (){
-                                            _navigateToRecipeScreen(meals[index]);
+                                          onTap: () {
+                                            _navigateToRecipeScreen(
+                                                meals[index]);
                                           },
                                           child: CategoryCard(
                                             food: secondMeals[index],
-                                          )
-                                      );
+                                          ));
                                     },
                                     //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                     //   crossAxisCount: crossAxisCount,
@@ -451,8 +464,11 @@ print(response.body);
                             ],
                           ),
                         ),
-                        if(_bannerAd3 != null)
-                          AdBlock(bannerAd: _bannerAd3, isbottom: true,),
+                        if (_bannerAd3 != null)
+                          AdBlock(
+                            bannerAd: _bannerAd3,
+                            isbottom: true,
+                          ),
                       ],
                     ),
                   ),
@@ -463,7 +479,8 @@ print(response.body);
             // Empty state
             return Center(
               child: ErrorCard(
-                errorType: 'Error fetching meals', // Pass appropriate error type
+                errorType:
+                    'Error fetching meals', // Pass appropriate error type
                 refresh: () {
                   setState(() {
                     _fetchMeals = _fetchMealsAtSpecificTime();

@@ -2,14 +2,12 @@ import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/profile/layout/update_profile_screen.dart';
-import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
-import '../../../../models/user.dart';
 import '../../../../models/user_profile.dart';
 import '../../../../services/user_service.dart';
 import '../../../../theme/app_theme.dart';
@@ -34,15 +32,17 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
 
   @override
   void initState() {
-    print("============================================================================================================================================");
-    if(widget.user.user?.profile_picture !=null) {
+    print(
+        "============================================================================================================================================");
+    if (widget.user.user?.profile_picture != null) {
       print("pic my ${widget.user.user?.profile_picture}");
       profilePicture = widget.user.user?.profile_picture;
-    }else{
+    } else {
       profilePicture = null;
     }
     print("pic my this ${profilePicture}");
-    print("============================================================================================================================================");
+    print(
+        "============================================================================================================================================");
     super.initState();
   }
 
@@ -66,57 +66,55 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
             onClicked: showOptions,
           ),
           SizedBox(width: 10.h),
-         Expanded(
-           child: Column(
-             crossAxisAlignment: CrossAxisAlignment.start,
-             mainAxisAlignment: MainAxisAlignment.center,
-             children: [
-               Text("$formattedName",
-                   style: TextStyle(
-                       fontSize: 20.sp,
-                       fontWeight: FontWeight.w800,
-                       color: theme.colorScheme.secondaryContainer)),
-               if(widget.user.user?.email != null)
-               SizedBox(height: 5.h),
-               if(widget.user.user?.email != null)
-               Text(widget.user.user!.email.toString(),
-                   style:
-                   TextStyle(
-                       fontSize: 15.sp,
-                       fontWeight: FontWeight.w400,
-                       color: theme.colorScheme.onTertiary)),
-             ],
-           ),
-         ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("$formattedName",
+                    style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w800,
+                        color: theme.colorScheme.secondaryContainer)),
+                if (widget.user.user?.email != null) SizedBox(height: 5.h),
+                if (widget.user.user?.email != null)
+                  Text(widget.user.user!.email.toString(),
+                      style: TextStyle(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w400,
+                          color: theme.colorScheme.onTertiary)),
+              ],
+            ),
+          ),
           SizedBox(width: 5.h),
           ElevatedButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll(theme.colorScheme.primary)
-              ),
-              onPressed: (){
+                  backgroundColor:
+                      MaterialStatePropertyAll(theme.colorScheme.primary)),
+              onPressed: () {
                 print(widget.user.user?.phone);
-            String? str = widget.user.user?.phone.toString();
-            String? phone = str?.substring(1);
-            print(phone);
-            pushNewScreen(context,
-                screen: UpdateProfileScreen(
-                  imagePath: profilePicture,
-                  hasEditButton: false,
-                  isFile: isFile,
-                  email: widget.user.user?.email ?? '',
-                  firstName: widget.user.user!.firstName,
-                  lastName: widget.user.user!.lastName,
-                  phone: phone.toString(),
-                  reFresh: (){
-                    print("call this");
-                    widget.reFresh();
-                  }
-                ));
-          }, child: Text("edit".tr(),
-              style: TextStyle(
-              fontSize: 15.sp,
-              fontWeight: FontWeight.w800,
-              color: theme.colorScheme.secondary)))
+                String? str = widget.user.user?.phone.toString();
+                String? phone = str?.substring(1);
+                print(phone);
+                PersistentNavBarNavigator.pushNewScreen(context,
+                    screen: UpdateProfileScreen(
+                        imagePath: profilePicture,
+                        hasEditButton: false,
+                        isFile: isFile,
+                        email: widget.user.user?.email ?? '',
+                        firstName: widget.user.user!.firstName,
+                        lastName: widget.user.user!.lastName,
+                        phone: phone.toString(),
+                        reFresh: () {
+                          print("call this");
+                          widget.reFresh();
+                        }));
+              },
+              child: Text("edit".tr(),
+                  style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w800,
+                      color: theme.colorScheme.secondary)))
         ],
       ),
     );
@@ -155,7 +153,8 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
       builder: (context) => CupertinoActionSheet(
         actions: [
           CupertinoActionSheetAction(
-            child: Text('photo_gallery'.tr(),
+            child: Text(
+              'photo_gallery'.tr(),
               style: TextStyle(fontSize: 20.sp),
             ),
             onPressed: () {
@@ -181,19 +180,20 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
       ),
     );
   }
+
   Future updatePicture() async {
     var response;
     final bool isTablet = ScreenUtils.isTablet(context);
     SnackBar success = SnackBar(
         content: Text(
-          "Profile picture updated successfully",//todo localization
-          style: isTablet ? AppTheme.snackBarStyleTablet : AppTheme.snackBarStyle,
-        ));
+      "Profile picture updated successfully", //todo localization
+      style: isTablet ? AppTheme.snackBarStyleTablet : AppTheme.snackBarStyle,
+    ));
     SnackBar failed = SnackBar(
         content: Text(
-          "Profile picture updated failed",
-          style: isTablet ? AppTheme.snackBarStyleTablet : AppTheme.snackBarStyle,
-        ));
+      "Profile picture updated failed",
+      style: isTablet ? AppTheme.snackBarStyleTablet : AppTheme.snackBarStyle,
+    ));
     try {
       UserService service = UserService();
       response = await service.updateProfile(

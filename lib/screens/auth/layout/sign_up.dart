@@ -8,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../../widgets/auth/auth_btn.dart';
 import '../../../widgets/subscription/subscription_drop_down.dart';
@@ -224,7 +224,7 @@ class _SignUpState extends State<SignUp> {
                           : promoCodeController.text: null
                     };
 
-                    await pushNewScreen(context,
+                    await PersistentNavBarNavigator.pushNewScreen(context,
                         screen: PaymentMethodScreen(
                             userData: userData,
                             selectedSubscriptionPlan:

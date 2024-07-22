@@ -1,8 +1,7 @@
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../models/comment.dart';
 import '../../models/user.dart';
@@ -18,10 +17,10 @@ class CommentCard extends StatelessWidget {
 
   const CommentCard(
       {super.key,
-        required this.comment,
-        required this.refresh,
-        required this.fooId,
-        required this.user});
+      required this.comment,
+      required this.refresh,
+      required this.fooId,
+      required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +44,7 @@ class CommentCard extends StatelessWidget {
           Text(
             "${comment.user.firstName} ${comment.user.lastName}",
             style: TextStyle(
-                fontSize: isTablet ? 8.sp : 13.sp,
-                fontWeight: FontWeight.w300),
+                fontSize: isTablet ? 8.sp : 13.sp, fontWeight: FontWeight.w300),
           ),
           const Divider(),
           Text(
@@ -58,14 +56,10 @@ class CommentCard extends StatelessWidget {
           Visibility(
             visible: comment.user.id == user.id,
             child: Column(
-              children: [
-                const Divider(),
-                buildButtons(context)
-              ],
+              children: [const Divider(), buildButtons(context)],
             ),
             replacement: SizedBox.shrink(),
           ),
-
         ],
       ),
     );
@@ -78,18 +72,15 @@ class CommentCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         InkWell(
-          onTap: (){
-            pushNewScreen(
-                context,
+          onTap: () {
+            PersistentNavBarNavigator.pushNewScreen(context,
                 screen: AddEditComment(
                     isEditing: true,
                     foodId: fooId!,
                     comments: comment,
-                    refresh: (){
+                    refresh: () {
                       refresh();
-                    }
-                )
-            );
+                    }));
           },
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 10.h),
@@ -104,7 +95,7 @@ class CommentCard extends StatelessWidget {
           ),
         ),
         InkWell(
-          onTap: (){
+          onTap: () {
             removeComment(context);
           },
           child: Padding(
@@ -121,13 +112,11 @@ class CommentCard extends StatelessWidget {
       ],
     );
   }
-  void removeComment(BuildContext context) async{
 
-
+  void removeComment(BuildContext context) async {
     CommentService service = CommentService();
     try {
-      var response =
-      await service.deleteComment(comment.id);
+      var response = await service.deleteComment(comment.id);
       if (response.statusCode == 200) {
         refresh();
         ScaffoldMessenger.of(context).showSnackBar(
@@ -145,6 +134,5 @@ class CommentCard extends StatelessWidget {
         SnackBar(content: Text('deleted_comment_failed'.tr())),
       );
     }
-
   }
 }

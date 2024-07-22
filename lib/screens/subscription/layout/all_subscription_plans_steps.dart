@@ -49,9 +49,13 @@ class _AllSubscriptionStepState extends State<AllSubscriptionStep> {
     final userService = UserService();
     var userData = await userService.fetchUserProfile();
     setState(() {
-      expiryDate = userData?.lastPaidDate!
-          .add(Duration(days: userData.subscription!.duration! * 30));
-      print('CHECKING EXPIRATION DATE: ${expiryDate}');
+      if (widget.isNormalSubscription == true && widget.isSMS == false) {
+        expiryDate = userData?.lastPaidDate!.add(Duration(
+            days: userData.subscription!.price == 2
+                ? 1
+                : userData.subscription!.duration! * 30));
+        print('CHECKING EXPIRATION DATE: ${expiryDate}');
+      }
     });
 
     if (userData!.isFromSMS == false) {
@@ -79,8 +83,13 @@ class _AllSubscriptionStepState extends State<AllSubscriptionStep> {
           UserSubscription(
               duration_user: expiryDate == null
                   ? ""
-                  : expiryDate!.difference(now).inDays.toString() +
-                      " Days left",
+                  : expiryDate!.difference(now).inDays == 0
+                      ? "hours_left".tr(args: [
+                          expiryDate!.difference(now).inHours.toString()
+                        ])
+                      : "days_left".tr(args: [
+                          expiryDate!.difference(now).inDays.toString()
+                        ]),
               userSubscriptionPlans: widget.userSubscriptionPlans!),
         // if (widget.isNormalSubscription == true && isFromBank == false)
         //   Text(

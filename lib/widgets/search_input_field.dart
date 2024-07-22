@@ -1,15 +1,10 @@
-import 'dart:convert';
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../screens/auth/auth_screen.dart';
 import '../screens/search/search_screen.dart';
-import '../services/authorization_service.dart';
-import '../services/user_service.dart';
 import '../utils/screen_utils.dart';
 
 class SearchInputField extends StatefulWidget {
@@ -25,7 +20,7 @@ class SearchInputField extends StatefulWidget {
       this.enabled = false,
       this.focusNode,
       required this.hint,
-        required this.screen});
+      required this.screen});
 
   @override
   State<SearchInputField> createState() => _SearchInputFieldState();
@@ -46,20 +41,18 @@ class _SearchInputFieldState extends State<SearchInputField> {
         keyboardType: TextInputType.text,
         textAlignVertical: TextAlignVertical.center,
         onTap: () async {
-            print("Search");
-            pushNewScreen(
-                context,
-                screen: SearchScreen(),
-                pageTransitionAnimation: PageTransitionAnimation.slideUp,
-                withNavBar: false
-            );
-
+          print("Search");
+          PersistentNavBarNavigator.pushNewScreen(context,
+              screen: SearchScreen(),
+              pageTransitionAnimation: PageTransitionAnimation.slideUp,
+              withNavBar: false);
         },
         decoration: InputDecoration(
           hintText: widget.hint,
-          hintStyle: TextStyle(color: theme.colorScheme.secondaryContainer,
-            fontSize: isTablet ? 11.sp : 15.sp,
-            fontWeight: FontWeight.w300),
+          hintStyle: TextStyle(
+              color: theme.colorScheme.secondaryContainer,
+              fontSize: isTablet ? 11.sp : 15.sp,
+              fontWeight: FontWeight.w300),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(5)),
             borderSide: BorderSide(
@@ -67,8 +60,8 @@ class _SearchInputFieldState extends State<SearchInputField> {
               width: 1,
             ),
           ),
-          prefixIcon: Icon(CupertinoIcons.search,
-              color: theme.colorScheme.primary),
+          prefixIcon:
+              Icon(CupertinoIcons.search, color: theme.colorScheme.primary),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(
               color: theme.colorScheme.primary,
@@ -89,8 +82,9 @@ class _SearchInputFieldState extends State<SearchInputField> {
       ),
     );
   }
-  void loginFunction(){
-    pushNewScreen(
+
+  void loginFunction() {
+    PersistentNavBarNavigator.pushNewScreen(
       context,
       withNavBar: false,
       screen: AuthScreen(isSignIn: true),

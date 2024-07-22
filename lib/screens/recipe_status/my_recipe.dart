@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:easy_localization/easy_localization.dart';
-
-import 'package:ethio_chef/screens/recipe_status/layout/recipe_description.dart';import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:ethio_chef/screens/recipe_status/layout/recipe_description.dart';
+import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../../../widgets/profile/recipe_card.dart';
 import '../../models/recipe.dart';
@@ -32,14 +32,12 @@ class _MyRecipesState extends State<MyRecipes> {
       setState(() {
         isLoading = false;
       });
-      if(Recipe.savedRecipes.length == 0){
+      if (Recipe.savedRecipes.length == 0) {
         setState(() {
           isLoading = true;
         });
       }
     });
-
-
   }
 
   @override
@@ -47,14 +45,14 @@ class _MyRecipesState extends State<MyRecipes> {
     getRecipes();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("my_recipes".tr(),style: TextStyle(
-            color: theme.colorScheme.primary
-        )),
+        title: Text("my_recipes".tr(),
+            style: TextStyle(color: theme.colorScheme.primary)),
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: GestureDetector(
@@ -66,18 +64,15 @@ class _MyRecipesState extends State<MyRecipes> {
               color: theme.colorScheme.primary,
             )),
       ),
-      body:  SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           children: [
             Align(
               alignment: Alignment.topRight,
               child: TextButton(
-                child: Text(
-                    'submitted_recipes'.tr()
-                ),
-                onPressed: (){
-
-                  pushNewScreen(
+                child: Text('submitted_recipes'.tr()),
+                onPressed: () {
+                  PersistentNavBarNavigator.pushNewScreen(
                     context,
                     screen: SubmittedRecipe(),
                     withNavBar: false,
@@ -86,54 +81,50 @@ class _MyRecipesState extends State<MyRecipes> {
                 },
               ),
             ),
-            Recipe.savedRecipes.length == 0?Center(
-              child: Column(
-                children: [
-                  Text("submit_a_recipe".tr())
-                ],
-              ),
-            ):isLoading ==true?
-            Center(
-                child: CircularProgressIndicator()
-            ):
-            ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: Recipe.savedRecipes.length,
-              itemBuilder: (BuildContext context, int index) {
-                var resp = Recipe.savedRecipes[index];
-                return GestureDetector(
-                  onTap: (){
-                    print("tap");
-                    pushNewScreen(
-                      context,
-                      screen: RecipeDescription(myRecipe: resp),
-                      withNavBar: false,
-                      pageTransitionAnimation: PageTransitionAnimation.cupertino,
-                    );
-                  },
-                  child:
-                  RecipeCard(
-                    recipe: resp,
-                    name: resp.name.toString(),
-                    imageUrl: resp.image,
-                  ),
-                );
-              },)
+            Recipe.savedRecipes.length == 0
+                ? Center(
+                    child: Column(
+                      children: [Text("submit_a_recipe".tr())],
+                    ),
+                  )
+                : isLoading == true
+                    ? Center(child: CircularProgressIndicator())
+                    : ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: Recipe.savedRecipes.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          var resp = Recipe.savedRecipes[index];
+                          return GestureDetector(
+                            onTap: () {
+                              print("tap");
+                              PersistentNavBarNavigator.pushNewScreen(
+                                context,
+                                screen: RecipeDescription(myRecipe: resp),
+                                withNavBar: false,
+                                pageTransitionAnimation:
+                                    PageTransitionAnimation.cupertino,
+                              );
+                            },
+                            child: RecipeCard(
+                              recipe: resp,
+                              name: resp.name.toString(),
+                              imageUrl: resp.image,
+                            ),
+                          );
+                        },
+                      )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor:  theme.colorScheme.primary,
-          onPressed: () {
-            pushNewScreen(context,
-                screen: UploadRecipeScreen(), withNavBar: false);
-          },
-        child: Icon(
-          Icons.add,
-          color:Colors.white
-        ),
+        backgroundColor: theme.colorScheme.primary,
+        onPressed: () {
+          PersistentNavBarNavigator.pushNewScreen(context,
+              screen: UploadRecipeScreen(), withNavBar: false);
+        },
+        child: Icon(Icons.add, color: Colors.white),
       ),
     );
   }

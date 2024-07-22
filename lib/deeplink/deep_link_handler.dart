@@ -4,7 +4,6 @@ import 'package:uni_links/uni_links.dart';
 
 import '../screens/auth/auth_screen.dart';
 import '../services/authorization_service.dart';
-import '../widgets/loading.dart';
 import 'deep_link_navigator.dart';
 
 class DeepLinkHandler extends StatefulWidget {
@@ -16,7 +15,8 @@ class DeepLinkHandler extends StatefulWidget {
   _DeepLinkHandlerState createState() => _DeepLinkHandlerState();
 }
 
-class _DeepLinkHandlerState extends State<DeepLinkHandler> with WidgetsBindingObserver {
+class _DeepLinkHandlerState extends State<DeepLinkHandler>
+    with WidgetsBindingObserver {
   Uri? _initialUri;
   Uri? _latestUri;
   bool _navigated = false;
@@ -56,12 +56,38 @@ class _DeepLinkHandlerState extends State<DeepLinkHandler> with WidgetsBindingOb
       return;
     }
 
+    // try {
+    //   if (uri.queryParameters.containsKey('tid')) {
+    //     String? _transactionId = uri.queryParameters['tid'];
+    //     if (_transactionId != null) {
+    //       GetStorage storage = GetStorage();
+    //       storage.write('tid', _transactionId);
+    //       return;
+    //     }
+    //   }
+    //   if (uri.queryParameters.containsKey('o')) {
+    //     String? _transactionId = uri.queryParameters['o'];
+    //     if (_transactionId != null) {
+    //       GetStorage storage = GetStorage();
+    //       storage.write('o', _transactionId);
+    //       return;
+    //     }
+    //   }
+    // } on Exception catch (e) {
+    //   print(e);
+    // }
+
     // Check if the user is logged in
     AuthService.getAuthorizationToken().then((token) {
       if (token == "none") {
         // User is not logged in, navigate to AuthScreen
-        Navigator.push(context, MaterialPageRoute(builder: (context) => AuthScreen(isSignIn: true, isfromDeepLink: true,)))
-            .then((value) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AuthScreen(
+                      isSignIn: true,
+                      isfromDeepLink: true,
+                    ))).then((value) {
           // Check login status again after returning from AuthScreen
           AuthService.getAuthorizationToken().then((newToken) {
             if (newToken != "none") {
@@ -94,7 +120,10 @@ class _DeepLinkHandlerState extends State<DeepLinkHandler> with WidgetsBindingOb
       setState(() {
         _navigated = true;
       });
-      Navigator.push(context, MaterialPageRoute(builder: (context) => DeepLinkNavigation(foodID: foodID)));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => DeepLinkNavigation(foodID: foodID)));
     }
   }
 

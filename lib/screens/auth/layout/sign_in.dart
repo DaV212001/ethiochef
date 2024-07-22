@@ -10,7 +10,7 @@ import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
@@ -134,7 +134,7 @@ class _SignInState extends State<SignIn> {
                 text: "dont_have_an_account".tr(),
                 buttonText: "sign_up_button".tr(),
                 onPress: () {
-                  pushNewScreen(context,
+                  PersistentNavBarNavigator.pushNewScreen(context,
                       screen: AuthScreen(
                         isSignIn: false,
                       ));
@@ -214,12 +214,12 @@ class _SignInState extends State<SignIn> {
                               text: 'sub_renew'.tr(),
                               onPress: () {
                                 Navigator.pop(context);
-                                pushNewScreen(
+                                PersistentNavBarNavigator.pushNewScreen(
                                   context,
                                   screen: PaymentCheckout(
                                     userFromSignUp: decodedUserData,
                                     isSMS: true,
-                                    isNormalSubscription: true,
+                                    isNormalSubscription: false,
                                   ),
                                   withNavBar: false,
                                   pageTransitionAnimation:
@@ -310,7 +310,7 @@ class _SignInState extends State<SignIn> {
                               text: 'ok'.tr(),
                               onPress: () {
                                 Navigator.pop(context);
-                                pushNewScreen(context,
+                                PersistentNavBarNavigator.pushNewScreen(context,
                                     screen: AuthScreen(
                                       isSignIn: false,
                                     ));
@@ -351,7 +351,7 @@ class _SignInState extends State<SignIn> {
       confirmBtnText: 'pay'.tr(),
       onConfirmBtnTap: () {
         print(userData);
-        pushNewScreen(context,
+        PersistentNavBarNavigator.pushNewScreen(context,
             withNavBar: false,
             screen: PaymentCheckout(
               userData: userData,
@@ -390,6 +390,7 @@ class _SignInState extends State<SignIn> {
         content: Text(message),
       ),
     );
-    pushNewScreen(context, withNavBar: false, screen: route);
+    PersistentNavBarNavigator.pushNewScreen(context,
+        withNavBar: false, screen: route);
   }
 }

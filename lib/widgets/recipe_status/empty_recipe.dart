@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/upload_recipe/upload_recipe_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../utils/screen_utils.dart';
 import '../main_button.dart';
@@ -27,8 +27,7 @@ class EmptyRecipe extends StatelessWidget {
           Icon(
               color: theme.colorScheme.primary,
               size: 100,
-              Icons.fastfood_outlined
-          ),
+              Icons.fastfood_outlined),
           AwardsList(theme: theme),
           Text(
             "submit_a_recipe".tr(),
@@ -43,7 +42,7 @@ class EmptyRecipe extends StatelessWidget {
               width: 200.w,
               text: 'submit_a_recipe'.tr(),
               onPress: () async {
-                pushNewScreen(
+                PersistentNavBarNavigator.pushNewScreen(
                   context,
                   screen: UploadRecipeScreen(),
                   withNavBar: false,
@@ -101,7 +100,6 @@ class AwardsList extends StatelessWidget {
         ),
         Row(
           children: [
-
             Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -129,7 +127,6 @@ class AwardsList extends StatelessWidget {
           ],
         ),
         Row(
-
           children: [
             Container(
               decoration: BoxDecoration(

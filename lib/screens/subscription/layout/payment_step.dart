@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/payment_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../../../utils/screen_utils.dart';
 import '../../../widgets/subscription/payment_card.dart';
@@ -49,7 +48,8 @@ class _PaymentStepState extends State<PaymentStep> {
       ],
     );
   }
-  Widget buildPaymentScreen(List<PaymentMethods>? payments){
+
+  Widget buildPaymentScreen(List<PaymentMethods>? payments) {
     bool isTablet = ScreenUtils.isTablet(context);
     final double desiredItemWidth = isTablet ? 130.w : 150.w;
     final double desiredItemHeight = isTablet ? 120.h : 150.h;
@@ -67,16 +67,22 @@ class _PaymentStepState extends State<PaymentStep> {
       itemBuilder: (BuildContext context, int index) {
         var resp = payments![index];
         print('PAYMENT NAMES: ${payments[index].bank_name}');
-        String bankname = payments[index].bank_name == 'CHAPA'?'CBE Birr , tele birr and others':payments[index].bank_name == 'ETSWITCH'? 'Pay on ATM cards':payments[index].bank_name == 'TELEBIRR'?'TELEBIRR':'Pay with USD';
+        String bankname = payments[index].bank_name == 'CHAPA'
+            ? 'CBE Birr , tele birr and others'
+            : payments[index].bank_name == 'ETSWITCH'
+                ? 'Pay on ATM cards'
+                : payments[index].bank_name == 'TELEBIRR'
+                    ? 'TELEBIRR'
+                    : 'Pay with USD';
         return RectangularPaymentCard(
-            payment_name: bankname,
-            image_url: widget.payments![index].image.toString(),
-            press: () {
-              print(widget.payments![index]);
-              widget.returnSelectedPayment(widget.payments![index]);
-              print("gone payment");
-            },
-          );
+          payment_name: bankname,
+          image_url: widget.payments![index].image.toString(),
+          press: () {
+            print(widget.payments![index]);
+            widget.returnSelectedPayment(widget.payments![index]);
+            print("gone payment");
+          },
+        );
       },
     );
   }

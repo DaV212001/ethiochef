@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/upload_recipe/layout/basics_step.dart';
 import 'package:ethio_chef/screens/upload_recipe/layout/ingredients_step.dart';
@@ -10,9 +12,8 @@ import 'package:ethio_chef/widgets/ad_block.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../models/recipe.dart';
 import '../../services/recipe_service.dart';
@@ -56,6 +57,7 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
     loadAd();
     super.initState();
   }
+
   static String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
   static BannerAd? _bannerAd1;
 
@@ -109,7 +111,10 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
     final ThemeData theme = Theme.of(context);
     return [
       if (_bannerAd1 != null)
-        AdBlock(bannerAd: _bannerAd1, isbottom: false,),
+        AdBlock(
+          bannerAd: _bannerAd1,
+          isbottom: false,
+        ),
       StepsHeader(activeStep: activeStep),
       Visibility(
         visible: activeStep == 0,
@@ -128,7 +133,7 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
             this.image = image;
           },
           next: incrementStep,
-          hasUserAgreed: (agreed){
+          hasUserAgreed: (agreed) {
             setState(() {
               agreed = true;
             });
@@ -166,44 +171,50 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
         visible: activeStep == 3,
         child: Center(
           child: Container(
-            child: isLoading == true ? Column(
-              children: [
-                Text(
-                  "uploading_title".tr(),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: theme.colorScheme.primary,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 15.sp,
+            child: isLoading == true
+                ? Column(
+                    children: [
+                      Text(
+                        "uploading_title".tr(),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: theme.colorScheme.primary,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15.sp,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Loading(),
+                    ],
+                  )
+                : VideoStep(
+                    isCompetition: false,
+                    video: video,
+                    updateVideo: (video) {
+                      setState(() {
+                        this.video = video;
+                      });
+                    },
+                    next: (video) async {
+                      setState(() {
+                        videoPath = video!.path;
+                      });
+                      setState(() {
+                        isLoading = true;
+                      });
+                      print(
+                          "=======================================================================================================");
+                      print(video!.path);
+                      print(videoPath);
+                      print(
+                          "=======================================================================================================");
+                      print("Checking user $isSubscribed");
+                      await uploadVideo();
+                    },
+                    back: decrementStep,
                   ),
-                ),
-                SizedBox(height: 20,),
-                Loading(),
-              ],
-            ):VideoStep(
-              isCompetition: false,
-              video: video,
-              updateVideo: (video) {
-                setState(() {
-                  this.video = video;
-                });
-              },
-              next: (video) async {
-                setState(() {
-                  videoPath = video!.path;
-                });
-                setState(() {
-                  isLoading = true;
-                });
-                print("=======================================================================================================");
-                print(video!.path);
-                print(videoPath);
-                print("=======================================================================================================");
-                print("Checking user $isSubscribed");
-                await uploadVideo();
-              },
-              back: decrementStep,
-            ),
           ),
         ),
       )
@@ -211,17 +222,17 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
   }
 
   Future<void> incrementStep() async {
-    if(activeStep != 0){
+    if (activeStep != 0) {
       print("increment 3");
       setState(() {
         activeStep++;
       });
     }
-    if(activeStep == 0){
+    if (activeStep == 0) {
       print("increment 1");
       await checkSubscription();
     }
-    if(activeStep == 0 && isSubscribed){
+    if (activeStep == 0 && isSubscribed) {
       print("increment 2");
       setState(() {
         activeStep++;
@@ -237,9 +248,11 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
 
   Future<void> createFood(String url) async {
     try {
-      print("=======================================================================================");
+      print(
+          "=======================================================================================");
       print(videoPath);
-      print("=======================================================================================");
+      print(
+          "=======================================================================================");
       print("Create ingredient map");
       // Create ingredient map
       for (int i = 0; i < itemControllers.length; i++) {
@@ -259,9 +272,11 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
       }
       // Create step instructions
       print("Create step instructions");
-      print("=======================================================================================");
+      print(
+          "=======================================================================================");
       print(step);
-      print("=======================================================================================");
+      print(
+          "=======================================================================================");
       // Combine ingredients map
       print("Create ingredients map");
       ingredients.forEach((map) {
@@ -270,39 +285,37 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
 
       // Create new recipe object
       print("1");
-        Recipe newRecipe = Recipe(
-            name: nameController.text,
-            description: descriptionController.text,
-            prepTime: prepTimeController.text,
-            servingSize: servingSizeController.text,
-            steps: step,
-            image: image,
-            video: video,
-            ingredient: ingredients,
-            ingredientToCreate: ingredientToCreate,
-            stepToCreate: stepToCreate,
-            videoUrl: url
+      Recipe newRecipe = Recipe(
+          name: nameController.text,
+          description: descriptionController.text,
+          prepTime: prepTimeController.text,
+          servingSize: servingSizeController.text,
+          steps: step,
+          image: image,
+          video: video,
+          ingredient: ingredients,
+          ingredientToCreate: ingredientToCreate,
+          stepToCreate: stepToCreate,
+          videoUrl: url);
+      print("2");
+      RecipeService service = RecipeService();
+      var response = await service.createFood(newRecipe);
+
+      if (response.statusCode == 200) {
+        await NotificationScheduled.showNotification(
+          id: 1,
+          payload: 'food.uploaded',
+          body: "submitted_successfully".tr(),
+          title: "successful".tr(),
         );
-        print("2");
-        RecipeService service = RecipeService();
-        var response = await service.createFood(newRecipe);
-
-        if (response.statusCode == 200) {
-
-          await NotificationScheduled.showNotification(
-            id: 1,
-            payload: 'food.uploaded',
-            body: "submitted_successfully".tr(),
-            title: "successful".tr(),
-          );
-          reset();
-          pushNewScreen(
-            context,
-            screen: SuccessfullyAdded(),
-            withNavBar: true,
-            pageTransitionAnimation: PageTransitionAnimation.cupertino,
-          );
-      }else{
+        reset();
+        PersistentNavBarNavigator.pushNewScreen(
+          context,
+          screen: SuccessfullyAdded(),
+          withNavBar: true,
+          pageTransitionAnimation: PageTransitionAnimation.cupertino,
+        );
+      } else {
         showRetryDialog();
       }
     } catch (error) {
@@ -354,29 +367,27 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
 
   Future<void> checkSubscription() async {
     String? status = SubscriptionStatus().status;
-    switch(status){
+    switch (status) {
       case null:
-
-        pushNewScreen(
+        PersistentNavBarNavigator.pushNewScreen(
           context,
           withNavBar: false,
           screen: AuthScreen(isSignIn: true),
         );
         break;
       case "Not logged in":
-        SnackBar logIn =SnackBar(
+        SnackBar logIn = SnackBar(
             padding: EdgeInsets.symmetric(vertical: 20),
-            content: Text(
-                'please_subscribe_to_see_ingredients_and_steps'.tr()
-            ));
-        pushNewScreen(
+            content:
+                Text('please_subscribe_to_see_ingredients_and_steps'.tr()));
+        PersistentNavBarNavigator.pushNewScreen(
           context,
           withNavBar: false,
           screen: AuthScreen(isSignIn: true),
         );
         break;
       case "Another user logged in":
-        pushNewScreen(
+        PersistentNavBarNavigator.pushNewScreen(
           context,
           withNavBar: false,
           screen: AuthScreen(isSignIn: true),
@@ -388,15 +399,16 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
         });
         break;
       case "User is not subscribed":
-        pushNewScreen(
+        PersistentNavBarNavigator.pushNewScreen(
           context,
-          screen: PaymentCheckout(isNormalSubscription: true),
+          screen: PaymentCheckout(isSMS: true, isNormalSubscription: true),
           withNavBar: false,
           pageTransitionAnimation: PageTransitionAnimation.cupertino,
         );
         break;
     }
   }
+
   Future<void> uploadVideo() async {
     print("Uploading 1");
     var request = http.MultipartRequest(
@@ -415,7 +427,8 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
     try {
       print("Uploading 6");
       var response = await request.send();
-      var responseJson = await http.Response.fromStream(response).then((value) async {
+      var responseJson =
+          await http.Response.fromStream(response).then((value) async {
         var jsonRes = jsonDecode(value.body);
         print("Uploading 7");
         print("jsonRes $jsonRes");
@@ -429,11 +442,11 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
         print("jsonRes $jsonRes");
         print("videoUrl $videoUrl");
 
-      if(response.statusCode == 200){
-        await createFood(jsonRes['url']);
-      }else{
-        showRetryDialog();
-      }
+        if (response.statusCode == 200) {
+          await createFood(jsonRes['url']);
+        } else {
+          showRetryDialog();
+        }
       });
     } catch (error) {
       print(error);

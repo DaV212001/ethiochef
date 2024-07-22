@@ -8,7 +8,7 @@ import 'package:ethio_chef/widgets/ad_block.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../../main.dart';
 import '../../../models/user.dart';
@@ -46,7 +46,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
   static BannerAd? _bannerAd1;
   static BannerAd? _bannerAd2;
   static BannerAd? _bannerAd3;
-
+  bool paymentInProgress = false;
   void loadAd() async {
     print("Loading Ads");
     await BannerAd(
@@ -132,6 +132,11 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                     isbottom: false,
                   ),
                 buildPaymentMethodScreen(snapshot.data as List<PaymentMethods>),
+                if (paymentInProgress)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CircularProgressIndicator(),
+                  ),
                 if (_bannerAd3 != null)
                   AdBlock(
                     bannerAd: _bannerAd3,
@@ -160,6 +165,9 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
         itemCount: payments!.length,
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {
+          print(payments.length + 1);
+          print(paymentInProgress);
+
           String bank_name = payments[index].bank_name == "CHAPA"
               ? "CBE birr, telebirr and others"
               : payments[index].bank_name == "ABYSINIA"
@@ -167,6 +175,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                   : payments[index].bank_name == "ETHSWITCH"
                       ? "Pay on ATM cards"
                       : payments[index].bank_name;
+
           return Column(
             children: [
               RectangularPaymentCard(
@@ -175,6 +184,9 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                 press: () async {
                   final service = PaymentService();
                   User unWanted = User(firstName: "", lastName: "");
+                  setState(() {
+                    paymentInProgress = true;
+                  });
                   var response = await service.makePayment(
                       widget.userData,
                       payments[index].id,
@@ -183,13 +195,31 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                       true);
 
                   if (response.statusCode == 200) {
-                    var checkoutUrl =
-                        jsonDecode(response.body)['data']['checkout_url'];
-                    print(jsonDecode(response.body)['data']['checkout_url']);
-                    print(checkoutUrl);
-                    await pushNewScreen(context,
-                        screen: PaymentScreen(url: checkoutUrl));
-                    RestartWidget.restartApp(context);
+                    if (payments[index].id != 6) {
+                      var checkoutUrl =
+                          jsonDecode(response.body)['data']['checkout_url'];
+                      print(jsonDecode(response.body)['data']['checkout_url']);
+                      print(checkoutUrl);
+                      setState(() {
+                        paymentInProgress == false;
+                      });
+                      await PersistentNavBarNavigator.pushNewScreen(context,
+                          screen: PaymentScreen(url: checkoutUrl));
+                      RestartWidget.restartApp(context);
+                    } else {
+                      Future.delayed(Duration(seconds: 60), () {
+                        print('TIME TO STOP LOADING');
+                        setState(() {
+                          paymentInProgress = false;
+                        });
+                      });
+                    }
+                  } else {
+                    setState(() {
+                      paymentInProgress = false;
+                    });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        (SnackBar(content: Text('telebirr_error'.tr()))));
                   }
                 },
               ),

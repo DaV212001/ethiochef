@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cloudinary_flutter/cloudinary_context.dart';
 import 'package:cloudinary_url_gen/cloudinary.dart';
@@ -7,15 +8,14 @@ import 'package:ethio_chef/screens/competition/layout/successfully_uploded.dart'
 import 'package:ethio_chef/widgets/recipe_status/empty_recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
-import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../../services/competition_service.dart';
 import '../../../utils/screen_utils.dart';
 import '../../../widgets/loading.dart';
 import '../../../widgets/main_button.dart';
 import '../../upload_recipe/layout/video_step.dart';
-import 'package:http/http.dart' as http;
 
 class UploadCompetitionVideo extends StatefulWidget {
   final int competitionId;
@@ -105,7 +105,8 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
       },
     );
   }
-bool alreadyUploaded = false;
+
+  bool alreadyUploaded = false;
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -179,68 +180,74 @@ bool alreadyUploaded = false;
                                       fontSize: isTablet ? 13.sp : 17.sp,
                                       fontWeight: FontWeight.w800,
                                       color: theme.colorScheme.primary)),
-                              if(alreadyUploaded) MainButton(
-                                onPress: () async {
-                                  setState(() {
-                                    uploading = true;
-                                    uploading_failed = false;
-                                  });
-                                  print("Resend Pressed");
-                                  print("My Video = ${video}");
-                                  print("My Video = ${video?.path}");
-                                  await uploadVideo();
-                                  CompetitionService service =
-                                      CompetitionService();
-                                  var response =
-                                      await service.sendCompetitionVideo(
-                                          videoUrl, widget.competitionId);
-                                  if (response.statusCode == 200) {
-                                    print(
-                                        "=================================================== POP");
+                              if (alreadyUploaded)
+                                MainButton(
+                                  onPress: () async {
                                     setState(() {
+                                      uploading = true;
                                       uploading_failed = false;
-                                      uploading = false;
                                     });
-                                    pushNewScreen(
-                                      context,
-                                      screen: SuccessfullyUploaded(),
-                                      withNavBar: false,
-                                      pageTransitionAnimation:
-                                          PageTransitionAnimation.cupertino,
-                                    );
-                                  } else if (jsonDecode(
-                                      response.body)["message"] ==
-                                      "User has already applied to this contest") {
-                                    setState(() {
-                                      alreadyUploaded == true;
-                                      uploading_failed = true;
-                                      uploading = false;
-                                    });
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return Center(
+                                    print("Resend Pressed");
+                                    print("My Video = ${video}");
+                                    print("My Video = ${video?.path}");
+                                    await uploadVideo();
+                                    CompetitionService service =
+                                        CompetitionService();
+                                    var response =
+                                        await service.sendCompetitionVideo(
+                                            videoUrl, widget.competitionId);
+                                    if (response.statusCode == 200) {
+                                      print(
+                                          "=================================================== POP");
+                                      setState(() {
+                                        uploading_failed = false;
+                                        uploading = false;
+                                      });
+                                      PersistentNavBarNavigator.pushNewScreen(
+                                        context,
+                                        screen: SuccessfullyUploaded(),
+                                        withNavBar: false,
+                                        pageTransitionAnimation:
+                                            PageTransitionAnimation.cupertino,
+                                      );
+                                    } else if (jsonDecode(
+                                            response.body)["message"] ==
+                                        "User has already applied to this contest") {
+                                      setState(() {
+                                        alreadyUploaded == true;
+                                        uploading_failed = true;
+                                        uploading = false;
+                                      });
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return Center(
                                               child: Container(
                                                 width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
+                                                        .size
+                                                        .width *
                                                     0.8,
                                                 decoration: BoxDecoration(
                                                   color: Colors.white,
                                                   borderRadius:
-                                                  BorderRadius.circular(20),
+                                                      BorderRadius.circular(20),
                                                 ),
                                                 child: Column(
-                                                    mainAxisSize: MainAxisSize.min,
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
                                                     children: [
                                                       Padding(
                                                         padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
+                                                            const EdgeInsets
+                                                                .all(8.0),
                                                         child: Text(
-                                                            'no_more_than_one_video'.tr(),
-                                                          textAlign: TextAlign.center,
+                                                          'no_more_than_one_video'
+                                                              .tr(),
+                                                          textAlign:
+                                                              TextAlign.center,
                                                           style: TextStyle(
                                                             fontSize: 14,
                                                             color: Colors.black,
@@ -249,8 +256,8 @@ bool alreadyUploaded = false;
                                                       ),
                                                       Padding(
                                                         padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
+                                                            const EdgeInsets
+                                                                .all(8.0),
                                                         child: MainButton(
                                                             text: 'ok'.tr(),
                                                             onPress: () {
@@ -261,17 +268,17 @@ bool alreadyUploaded = false;
                                                     ]),
                                               ),
                                             );
-                                        });
-                                  } else {
-                                    setState(() {
-                                      uploading_failed = true;
-                                      uploading = false;
-                                    });
-                                  }
-                                },
-                                width: 200.w,
-                                text: "resend".tr(),
-                              )
+                                          });
+                                    } else {
+                                      setState(() {
+                                        uploading_failed = true;
+                                        uploading = false;
+                                      });
+                                    }
+                                  },
+                                  width: 200.w,
+                                  text: "resend".tr(),
+                                )
                             ],
                           )
                         : Visibility(
@@ -323,7 +330,7 @@ bool alreadyUploaded = false;
                                   });
                                   print(
                                       "=================================================== POP");
-                                  await pushNewScreen(
+                                  await PersistentNavBarNavigator.pushNewScreen(
                                     context,
                                     screen: SuccessfullyUploaded(),
                                     withNavBar: false,
@@ -342,46 +349,48 @@ bool alreadyUploaded = false;
                                       context: context,
                                       builder: (context) {
                                         return Center(
-                                            child: Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.8,
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                              ),
-                                              child: Column(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Text(
-                                                          'no_more_than_one_video'.tr(),
-                                                        textAlign: TextAlign.center,
-                                                        style: TextStyle(
-                                                          fontSize: 14,
-                                                          color: Colors.black,
-                                                        ),
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.8,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                            child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Text(
+                                                      'no_more_than_one_video'
+                                                          .tr(),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.black,
                                                       ),
                                                     ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: MainButton(
-                                                          text: 'ok'.tr(),
-                                                          onPress: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          }),
-                                                    ),
-                                                  ]),
-                                            ),
-                                          );
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: MainButton(
+                                                        text: 'ok'.tr(),
+                                                        onPress: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        }),
+                                                  ),
+                                                ]),
+                                          ),
+                                        );
                                       });
                                 } else {
                                   setState(() {

@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
-import 'dart:io';
 
 import '../../models/competition.dart';
 import '../../theme/model_theme.dart';
 import '../../utils/screen_utils.dart';
 import '../main_button.dart';
+
 class MyCompCard extends StatelessWidget {
   Competition comp;
-  MyCompCard({super.key,
-    required this.comp
-  });
+  MyCompCard({super.key, required this.comp});
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +31,11 @@ class MyCompCard extends StatelessWidget {
                   children: [
                     Expanded(
                         child: Text(
-                          comp.name.toString(),
-                          style: TextStyle(
-                              fontSize: isTablet ? 12.sp : 14.sp,
-                              fontWeight: FontWeight.bold),
-                        )),
+                      comp.name.toString(),
+                      style: TextStyle(
+                          fontSize: isTablet ? 12.sp : 14.sp,
+                          fontWeight: FontWeight.bold),
+                    )),
                     Center(
                       child: Container(
                           decoration: BoxDecoration(
@@ -55,17 +52,16 @@ class MyCompCard extends StatelessWidget {
                   ]),
             ),
           ),
-
           MainButton(
             text: 'Delete',
             onPress: () async {
               Competition.deleteCompetition(comp);
-              Competition.savedCompetitions = await Competition.loadCompetitionsFromSharedPrefs();
+              Competition.savedCompetitions =
+                  await Competition.loadCompetitionsFromSharedPrefs();
             },
           ),
         ],
       ),
     );
   }
-
 }

@@ -55,7 +55,7 @@ android {
         applicationId "com.peacetechnology.ethiochef"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 23
         targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -85,4 +85,5 @@ dependencies {
     implementation("androidx.multidex:multidex:2.0.1")
     implementation platform('com.google.firebase:firebase-bom:32.7.1')
     implementation 'com.google.android.gms:play-services-ads:22.6.0'
+    implementation 'com.offer18:android-sdk:1.0.9'
 }

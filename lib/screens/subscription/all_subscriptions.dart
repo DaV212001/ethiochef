@@ -1,12 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/language.dart';
+import 'package:ethio_chef/models/subscriptionplans.dart' as h;
 import 'package:ethio_chef/screens/subscription/layout/user_subscription.dart';
 import 'package:ethio_chef/services/subscription_checker.dart';
-import 'package:flutter/material.dart';
-import 'package:ethio_chef/models/subscriptionplans.dart' as h;
 import 'package:ethio_chef/services/user_service.dart' as u;
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+
 import '../../models/user.dart';
 import '../../models/verification.dart';
 import '../../services/payment_service.dart';
@@ -15,11 +16,7 @@ import '../../utils/screen_utils.dart';
 import '../../widgets/loading.dart';
 import '../../widgets/price_card.dart';
 import '../auth/layout/payment_screen.dart';
-
 import 'layout/subscription_header.dart';
-
-
-
 
 class AllSubscriptions extends StatefulWidget {
   final String first_name;
@@ -28,13 +25,14 @@ class AllSubscriptions extends StatefulWidget {
   final bool isSignUp;
   final bool? isStepper;
   final Function(int) returnPrice;
-  const AllSubscriptions({super.key,
-    required this.returnPrice,
-    required this.isSignUp,
-    required this.first_name,
-    required this.last_name,
-    required this.phone,
-    this.isStepper = false});
+  const AllSubscriptions(
+      {super.key,
+      required this.returnPrice,
+      required this.isSignUp,
+      required this.first_name,
+      required this.last_name,
+      required this.phone,
+      this.isStepper = false});
 
   @override
   State<AllSubscriptions> createState() => _AllSubscriptionsState();
@@ -51,12 +49,8 @@ class _AllSubscriptionsState extends State<AllSubscriptions> {
   String last_name = "";
   String phone = "";
   late String duration;
-  int currentYear = DateTime
-      .now()
-      .year;
-  int currentMonth = DateTime
-      .now()
-      .month;
+  int currentYear = DateTime.now().year;
+  int currentMonth = DateTime.now().month;
   Future<void>? _subscriptionPlansFuture;
 
   @override
@@ -110,7 +104,6 @@ class _AllSubscriptionsState extends State<AllSubscriptions> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
@@ -136,43 +129,49 @@ class _AllSubscriptionsState extends State<AllSubscriptions> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SubscriptionHeader(
-                            isStepper: widget.isStepper!
-                          ),
-                          if(userSubscriptionPlans.isNotEmpty)
+                          SubscriptionHeader(isStepper: widget.isStepper!),
+                          if (userSubscriptionPlans.isNotEmpty)
                             UserSubscription(
                               duration_user: duration_user,
                               userSubscriptionPlans: userSubscriptionPlans,
                             ),
-                          Divider(thickness: 1, height: 1,),
-                          SizedBox(height: 5,),
-                          Text(
-                              'extend'.tr(),
+                          Divider(
+                            thickness: 1,
+                            height: 1,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text('extend'.tr(),
                               style: TextStyle(
                                   fontSize: 17.sp,
                                   fontWeight: FontWeight.w800,
-                                  color: theme.colorScheme.secondaryContainer)
+                                  color: theme.colorScheme.secondaryContainer)),
+                          SizedBox(
+                            height: 5,
                           ),
-                          SizedBox(height: 5,),
-                          Divider(thickness: 1, height: 1,),
-                          SizedBox(height: 5,),
-                            if(userSubscriptionPlans.isEmpty)Subscriptions()
+                          Divider(
+                            thickness: 1,
+                            height: 1,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          if (userSubscriptionPlans.isEmpty) Subscriptions()
                         ],
                       ),
                     );
-                  }
-                  else {
+                  } else {
                     return Center(
                       child: Loading(),
                     );
                   }
-                }
-            )
-        ),
+                })),
       ),
     );
   }
-  Widget Subscriptions(){
+
+  Widget Subscriptions() {
     final bool isTablet = ScreenUtils.isTablet(context);
     final double desiredItemWidth = isTablet ? 130.w : 140.w;
     final double desiredItemHeight = isTablet ? 220.h : 130.h;
@@ -194,46 +193,33 @@ class _AllSubscriptionsState extends State<AllSubscriptions> {
             scrollDirection: Axis.vertical,
             itemCount: subscriptionPlans.length,
             itemBuilder: (context, index) {
-              duration = subscriptionPlans[index].duration!
-                  .toString() + " Months";
+              duration =
+                  subscriptionPlans[index].duration!.toString() + " Months";
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: PriceCard(
-                  title: Language.getLocaleCode() == 'en'
-                      ? 'Monthly'
-                      : 'ወርሃዊ',
-                  price: subscriptionPlans[index].price
-                      .toString(),
+                  title: Language.getLocaleCode() == 'en' ? 'Monthly' : 'ወርሃዊ',
+                  price: subscriptionPlans[index].price.toString(),
                   subPriceText: duration,
                   billedText: subscriptionPlans[index].plan!,
                   onPress: () async {
-                    Verification verification =
-                    await PaymentService()
-                        .getChapaCheckoutLink(
-                        subscriptionPlans[index].price!, '',
-                        first_name, last_name + "_" + phone,
-                        phone);
+                    Verification verification = await PaymentService()
+                        .getChapaCheckoutLink(subscriptionPlans[index].price!,
+                            '', first_name, last_name + "_" + phone, phone);
                     print(
-                        "verification.checkoutUrl ${verification
-                            .checkoutUrl}");
+                        "verification.checkoutUrl ${verification.checkoutUrl}");
                     print("PaymentService");
-                    await pushNewScreen(context,
-                        screen: PaymentScreen(
-                            url: verification.checkoutUrl!)
-                    );
+                    await PersistentNavBarNavigator.pushNewScreen(context,
+                        screen: PaymentScreen(url: verification.checkoutUrl!));
                     await SubscriptionStatus().checkStatus();
-                    print("amount ${subscriptionPlans[index]
-                        .price}");
-                    widget.returnPrice(
-                        subscriptionPlans[index].price!);
+                    print("amount ${subscriptionPlans[index].price}");
+                    widget.returnPrice(subscriptionPlans[index].price!);
                     Navigator.of(context).pop();
                   },
-                  duration: subscriptionPlans[index]
-                      .duration!,
+                  duration: subscriptionPlans[index].duration!,
                 ),
               );
-            }
-        )
+            })
       ],
     );
   }

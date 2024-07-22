@@ -9,7 +9,7 @@ import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:overflow_text_animated/overflow_text_animated.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../screens/auth/auth_screen.dart';
 import '../../screens/subscription/all_subscriptions.dart';
@@ -32,6 +32,7 @@ class _SearchCardState extends State<SearchCard> {
   void initState() {
     super.initState();
   }
+
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Container(
@@ -57,9 +58,7 @@ class _SearchCardState extends State<SearchCard> {
               SizedBox(
                 width: 10.w,
               ),
-              SizedBox(
-                  height: 170.h,
-                  child: info(theme)),
+              SizedBox(height: 170.h, child: info(theme)),
             ],
           ),
           MainButton(
@@ -74,55 +73,53 @@ class _SearchCardState extends State<SearchCard> {
               });
 
               var token = await AuthService.getAuthorizationToken();
-              if(token!=null){
+              if (token != null) {
                 UserService service = UserService();
                 var response = await service.checkUserSubscription();
                 final jsonData = json.decode(response.body);
                 print("user jsonData $jsonData");
-                if(jsonData['message'] == "Invalid Token, Redirect to login"){
+                if (jsonData['message'] == "Invalid Token, Redirect to login") {
                   setState(() {
                     isLoading = false;
                   });
-                  SnackBar logIn =SnackBar(
+                  SnackBar logIn = SnackBar(
                       padding: EdgeInsets.symmetric(vertical: 20),
-                      content: Text(
-                          'another_account_login'.tr()
-                      ));
+                      content: Text('another_account_login'.tr()));
                   ScaffoldMessenger.of(context).showSnackBar(logIn);
                   loginFunction();
                 }
-                if(response.statusCode == 200) {
-                  if(jsonData['message'] == "User is subscribed"){
-                    pushNewScreen(
+                if (response.statusCode == 200) {
+                  if (jsonData['message'] == "User is subscribed") {
+                    PersistentNavBarNavigator.pushNewScreen(
                       context,
                       withNavBar: false,
                       screen: RecipeScreen(food: widget.food),
                     );
-
-                  }else{
-                    pushNewScreen(
+                  } else {
+                    PersistentNavBarNavigator.pushNewScreen(
                       context,
                       withNavBar: false,
-                      screen: AllSubscriptions(returnPrice: (int ) {  },
+                      screen: AllSubscriptions(
+                        returnPrice: (int) {},
                         first_name: "",
                         last_name: "",
-                        isSignUp:
-                        false,phone: "",),
+                        isSignUp: false,
+                        phone: "",
+                      ),
                     );
                   }
                 }
                 setState(() {
                   isLoading = false;
                 });
-              }else{
+              } else {
                 setState(() {
                   isLoading = false;
                 });
-                SnackBar logIn =SnackBar(
+                SnackBar logIn = SnackBar(
                     padding: EdgeInsets.symmetric(vertical: 20),
                     content: Text(
-                        'Please subscribe to see ingredients and steps'.tr()
-                    ));
+                        'Please subscribe to see ingredients and steps'.tr()));
                 ScaffoldMessenger.of(context).showSnackBar(logIn);
                 loginFunction();
               }
@@ -214,8 +211,8 @@ class _SearchCardState extends State<SearchCard> {
     );
   }
 
-  void loginFunction(){
-    pushNewScreen(
+  void loginFunction() {
+    PersistentNavBarNavigator.pushNewScreen(
       context,
       withNavBar: false,
       screen: AuthScreen(isSignIn: true),

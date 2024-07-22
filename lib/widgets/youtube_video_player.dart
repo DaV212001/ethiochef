@@ -1,5 +1,4 @@
 import 'package:ethio_chef/generated/assets.dart';
-import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:pod_player/pod_player.dart';
 
@@ -28,26 +27,25 @@ class _YoutubeVideoPlayerState extends State<YoutubeVideoPlayer> {
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Container(
         child: PodVideoPlayer(
-          podProgressBarConfig: PodProgressBarConfig(
-              playingBarColor: theme.colorScheme.primary,
-              circleHandlerColor: theme.colorScheme.primary,
-              bufferedBarColor: theme.colorScheme.primary),
-          controller: controller,
-          backgroundColor: theme.colorScheme.tertiary,
-          videoThumbnail: const DecorationImage(
-            image: AssetImage(Assets.imagesLogo),
-          ),
-        )
-    );
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
+      podProgressBarConfig: PodProgressBarConfig(
+          playingBarColor: theme.colorScheme.primary,
+          circleHandlerColor: theme.colorScheme.primary,
+          bufferedBarColor: theme.colorScheme.primary),
+      controller: controller,
+      backgroundColor: theme.colorScheme.tertiary,
+      videoThumbnail: const DecorationImage(
+        image: AssetImage(Assets.imagesLogo),
+      ),
+    ));
   }
 }

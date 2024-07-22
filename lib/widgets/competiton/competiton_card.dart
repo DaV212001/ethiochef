@@ -5,8 +5,7 @@ import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:ethio_chef/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
-import 'package:provider/provider.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../models/recipe_show_checker.dart';
 import '../../screens/auth/auth_screen.dart';
@@ -17,14 +16,14 @@ import '../../utils/screen_utils.dart';
 class CompetitionsCard extends StatefulWidget {
   final Competition competition;
 
-  const CompetitionsCard({Key? key, required this.competition}) : super(key: key);
+  const CompetitionsCard({Key? key, required this.competition})
+      : super(key: key);
 
   @override
   _CompetitionsCardState createState() => _CompetitionsCardState();
 }
 
 class _CompetitionsCardState extends State<CompetitionsCard> {
-
   bool _isLoading = false;
   int _likes = 0;
 
@@ -33,7 +32,7 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
 
     final status = await Check.checkToShow();
 
-    switch(status){
+    switch (status) {
       case 'Not logged in':
         setState(() => _isLoading = false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -54,24 +53,27 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
 
       case 'User is subscribed':
         try {
-          final response = await CompetitionService().likeCompetition(widget.competition.id!);
+          final response = await CompetitionService()
+              .likeCompetition(widget.competition.id!);
 
           if (response?.statusCode == 200) {
             setState(() {
               _isLoading = false;
               _likes++;
             });
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Competition liked!')));
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text('Competition liked!')));
           }
-        } catch(e){
+        } catch (e) {
           setState(() => _isLoading = false);
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(e.toString())));
         }
         break;
 
       case 'User is not subscribed':
         setState(() => _isLoading = false);
-        pushNewScreen(
+        PersistentNavBarNavigator.pushNewScreen(
           context,
           withNavBar: false,
           screen: AllSubscriptions(
@@ -86,8 +88,8 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
     }
   }
 
-  void _login(){
-    pushNewScreen(
+  void _login() {
+    PersistentNavBarNavigator.pushNewScreen(
       context,
       withNavBar: false,
       screen: AuthScreen(isSignIn: true),
@@ -100,11 +102,8 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
     ThemeData theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
-        pushNewScreen(
-          context,
-          withNavBar: false,
-          screen: CompetitionsScreen()
-        );
+        PersistentNavBarNavigator.pushNewScreen(context,
+            withNavBar: false, screen: CompetitionsScreen());
       },
       child: Container(
         decoration: BoxDecoration(
@@ -158,7 +157,8 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'days_left'.tr(args: [widget.competition.daysLeft.toString()]),
+                        'days_left'
+                            .tr(args: [widget.competition.daysLeft.toString()]),
                         style: TextStyle(
                           fontSize: isTablet ? 10.sp : 14.sp,
                           fontWeight: FontWeight.w500,
@@ -175,17 +175,19 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
                               child: Container(
                                   width: 30,
                                   height: 30,
-                                  decoration: BoxDecoration(color: Colors.orange, shape: BoxShape.circle),
+                                  decoration: BoxDecoration(
+                                      color: Colors.orange,
+                                      shape: BoxShape.circle),
                                   child: _isLoading
                                       ? const CircularProgressIndicator()
                                       : const Icon(
-                                    Icons.thumb_up_sharp,
-                                    color: Colors.white,
-                                  )
-                              ),
+                                          Icons.thumb_up_sharp,
+                                          color: Colors.white,
+                                        )),
                             ),
                           ),
-                          Text('$_likes likes',
+                          Text(
+                            '$_likes likes',
                             style: TextStyle(
                               fontSize: isTablet ? 9.sp : 13.sp,
                               fontWeight: FontWeight.w300,

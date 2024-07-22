@@ -1,22 +1,17 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/competition.dart';
-import 'package:ethio_chef/screens/competition/layout/upload_video.dart';
 import 'package:ethio_chef/widgets/competiton/competiton_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
 import '../../../utils/screen_utils.dart';
-import '../../../widgets/main_button.dart';
 
 class VerticalCompetitionList extends StatefulWidget {
   final List<Competition> competition;
-final BannerAd? bannerAd;
-  const VerticalCompetitionList({super.key, required this.competition,
-    this.bannerAd
-  });
+  final BannerAd? bannerAd;
+  const VerticalCompetitionList(
+      {super.key, required this.competition, this.bannerAd});
 
   @override
   State<VerticalCompetitionList> createState() =>
@@ -28,7 +23,7 @@ class _VerticalCompetitionListState extends State<VerticalCompetitionList> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final bool isTablet = ScreenUtils.isTablet(context);
-    if(widget.competition.isEmpty){
+    if (widget.competition.isEmpty) {
       return Container(
         height: isTablet ? 600.h : 450.h,
         width: isTablet ? 275.w : 400.w,
@@ -41,25 +36,20 @@ class _VerticalCompetitionListState extends State<VerticalCompetitionList> {
             Container(
               padding: EdgeInsets.all(12),
               decoration: BoxDecoration(
-                  border: Border.all(
-                      color: theme.colorScheme.primary,
-                      width: 1
-                  )
-              ),
+                  border:
+                      Border.all(color: theme.colorScheme.primary, width: 1)),
               child: Column(
                 children: [
                   Text("awards_title".tr(),
                       style: TextStyle(
                           fontSize: isTablet ? 13.sp : 17.sp,
                           fontWeight: FontWeight.w800,
-                          color: theme.colorScheme.primary)
-                  ),
+                          color: theme.colorScheme.primary)),
                   Text("awards".tr(),
                       style: TextStyle(
                           fontSize: isTablet ? 11.sp : 15.sp,
                           fontWeight: FontWeight.w600,
-                          color: theme.colorScheme.secondaryContainer)
-                  ),
+                          color: theme.colorScheme.secondaryContainer)),
                 ],
               ),
             ),
@@ -72,7 +62,8 @@ class _VerticalCompetitionListState extends State<VerticalCompetitionList> {
       itemCount: widget.competition.length,
       physics: BouncingScrollPhysics(),
       scrollDirection: Axis.vertical,
-      itemBuilder: (context, index) => CompetitionsCard( competition: widget.competition[index],
+      itemBuilder: (context, index) => CompetitionsCard(
+        competition: widget.competition[index],
       ),
     );
   }

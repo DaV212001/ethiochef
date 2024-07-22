@@ -1,14 +1,8 @@
-import 'dart:async';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
-import '../../../../widgets/profile/recipe_card.dart';
 import '../../../utils/screen_utils.dart';
-import '../../../widgets/main_button.dart';
-import '../../recipe_status/my_recipe.dart';
 
 class Uploading extends StatefulWidget {
   const Uploading({super.key});
@@ -18,21 +12,19 @@ class Uploading extends StatefulWidget {
 }
 
 class _UploadingState extends State<Uploading> {
-
-
   @override
   void initState() {
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final bool isTablet = ScreenUtils.isTablet(context);
     return Scaffold(
         appBar: AppBar(
-          title: Text("uploading_title".tr(),style: TextStyle(
-              color: theme.colorScheme.primary
-          )),
+          title: Text("uploading_title".tr(),
+              style: TextStyle(color: theme.colorScheme.primary)),
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: GestureDetector(
@@ -44,37 +36,34 @@ class _UploadingState extends State<Uploading> {
                 color: theme.colorScheme.primary,
               )),
         ),
-        body:  SingleChildScrollView(
+        body: SingleChildScrollView(
             child: Center(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
-                      child: Text(
-                        "uploading_title".tr(),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: theme.colorScheme.primary,
-                            fontSize: isTablet ? 18.sp : 20.sp,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
-                      child: Text(
-                        "uploading_body".tr(),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: theme.unselectedWidgetColor,
-                            fontSize:isTablet ? 12.sp :  15.sp,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
-                )
-            )
-        )
-    );
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+              child: Text(
+                "uploading_title".tr(),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: theme.colorScheme.primary,
+                    fontSize: isTablet ? 18.sp : 20.sp,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+              child: Text(
+                "uploading_body".tr(),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: theme.unselectedWidgetColor,
+                    fontSize: isTablet ? 12.sp : 15.sp,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ))));
   }
 }

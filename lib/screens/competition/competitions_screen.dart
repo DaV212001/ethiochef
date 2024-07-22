@@ -10,7 +10,7 @@ import 'package:ethio_chef/widgets/screen_head.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../generated/assets.dart';
@@ -220,7 +220,8 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                               MainButton(
                                   text: 'yes'.tr(),
                                   onPress: () async {
-                                    pushNewScreen(context,
+                                    PersistentNavBarNavigator.pushNewScreen(
+                                        context,
                                         withNavBar: false,
                                         screen: PaymentCheckout(
                                             isSMS: true,
@@ -367,7 +368,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
         var userData = await userService.fetchUserProfile();
 
         if (userData!.isFromSMS == false || userData.subscriptionId != 15) {
-          pushNewScreen(context,
+          PersistentNavBarNavigator.pushNewScreen(context,
               screen: UploadCompetitionVideo(competitionId: competition!),
               withNavBar: false);
         } else {
@@ -375,7 +376,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
         }
         break;
       case "User is not subscribed":
-        pushNewScreen(
+        PersistentNavBarNavigator.pushNewScreen(
           context,
           screen: PaymentCheckout(
             isSMS: true,
@@ -432,10 +433,10 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                       MainButton(
                           text: 'pay'.tr(),
                           onPress: () async {
-                            pushNewScreen(context,
+                            PersistentNavBarNavigator.pushNewScreen(context,
                                 withNavBar: false,
                                 screen: PaymentCheckout(
-                                    isNormalSubscription: true));
+                                    isSMS: true, isNormalSubscription: true));
                           }),
                     ],
                   )
@@ -457,7 +458,8 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
         content: Text(message),
       ),
     );
-    pushNewScreen(context, withNavBar: false, screen: route);
+    PersistentNavBarNavigator.pushNewScreen(context,
+        withNavBar: false, screen: route);
   }
 }
 

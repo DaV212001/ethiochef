@@ -3,9 +3,7 @@ import 'package:ethio_chef/screens/upload_recipe/upload_recipe_screen.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
-
-import '../../../generated/assets.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class AddRecipeCard extends StatelessWidget {
   final Function() onRemove;
@@ -27,9 +25,9 @@ class AddRecipeCard extends StatelessWidget {
               decoration: BoxDecoration(
                 color: theme.colorScheme.primary,
                 border: Border.all(color: theme.colorScheme.primary, width: 1),
-                  // image: DecorationImage(
-                  //     image: AssetImage(Assets.imagesAuthBtnBackground)
-                  // )
+                // image: DecorationImage(
+                //     image: AssetImage(Assets.imagesAuthBtnBackground)
+                // )
               ),
             ),
           ),
@@ -65,22 +63,21 @@ class AddRecipeCard extends StatelessWidget {
                   ),
                   SizedBox(height: 10.h),
                   Text("add_your_own_recipe_body".tr(),
-                      style: theme.textTheme.labelSmall?.copyWith(
-                          color: theme.colorScheme.surface)),
+                      style: theme.textTheme.labelSmall
+                          ?.copyWith(color: theme.colorScheme.surface)),
                   SizedBox(height: 15.h),
                   SizedBox(
-                    width: double.infinity/2,
+                    width: double.infinity / 2,
                     height: 45.h,
                     child: OutlinedButton(
                         onPressed: () {
-                          pushNewScreen(context,
+                          PersistentNavBarNavigator.pushNewScreen(context,
                               screen: UploadRecipeScreen(), withNavBar: false);
                         },
                         style: ButtonStyle(
                           side: MaterialStateProperty.all<BorderSide>(
                             BorderSide(
-                                color: theme.colorScheme.surface,
-                                width: 1.w),
+                                color: theme.colorScheme.surface, width: 1.w),
                           ),
                         ),
                         child: Row(

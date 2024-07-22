@@ -1,33 +1,28 @@
-import 'dart:convert';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/deeplink/deep_link_handler.dart';
 import 'package:ethio_chef/models/language.dart';
 import 'package:ethio_chef/screens/auth/auth_screen.dart';
-import 'package:ethio_chef/screens/from_scheduled_notif.dart';
 import 'package:ethio_chef/screens/main_screen.dart';
-import 'package:ethio_chef/services/authorization_service.dart';
 import 'package:ethio_chef/services/firsebase_service.dart';
 import 'package:ethio_chef/services/scheduled_notification_service.dart';
-import 'package:ethio_chef/services/user_service.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:ethio_chef/theme/model_theme.dart';
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
-import 'package:flutter/foundation.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:path/path.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
+
+import 'firebase_options.dart';
 
 Future<void> requestAlarmPermission() async {
   var status = await Permission.scheduleExactAlarm.status;
@@ -55,21 +50,26 @@ Future<void> _setupPeriodicNotifications() async {
   // }
 }
 
-
-Future<void> tester()async {
-  print('=============================================================================TESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSTTTTTTTTTTTTTTTTTTTTTTTTT================================================876897============================');
+Future<void> tester() async {
+  print(
+      '=============================================================================TESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSTTTTTTTTTTTTTTTTTTTTTTTTT================================================876897============================');
   await NotificationScheduled.scheduleNotifications();
-  print('=============================================================================COMPLETTTTTTTTTTTTTTTTTTTTTTTTETTTTTTTTTTTTTTTTTTTTTTTTTTTTETTTTTTTTTTTTTTTTTTTTTTTT================================================876897============================');
+  print(
+      '=============================================================================COMPLETTTTTTTTTTTTTTTTTTTTTTTTETTTTTTTTTTTTTTTTTTTTTTTTTTTTETTTTTTTTTTTTTTTTTTTTTTTT================================================876897============================');
 }
+
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 void main() async {
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: AppTheme.primaryColor
-  ));
+  SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(statusBarColor: AppTheme.primaryColor));
   WidgetsFlutterBinding.ensureInitialized();
-  print("==========================MobileAds.instance.initialize()====================================");
+  // Offer18Plugin.initSDK('na.o18.click', '459', 'ethiochef-tid');
+  // Offer18Plugin.getReferrerInstallUrl();
+  print(
+      "==========================MobileAds.instance.initialize()====================================");
   MobileAds.instance.initialize();
-  print("=========================MobileAds.instance.initialize()=====================================");
+  print(
+      "=========================MobileAds.instance.initialize()=====================================");
   await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 15));
   await AndroidAlarmManager.initialize();
   await EasyLocalization.ensureInitialized();
@@ -77,49 +77,49 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+      FlutterLocalNotificationsPlugin();
 
   await flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(AndroidNotificationChannel(
-      'channel id',
-      'channel name',
-      importance: Importance.max,
-  ),);
-  if(navigatorKey.currentContext != null){
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(
+        AndroidNotificationChannel(
+          'channel id',
+          'channel name',
+          importance: Importance.max,
+        ),
+      );
+  if (navigatorKey.currentContext != null) {
     print('CONTEXT NOT NULL');
-  }else{
+  } else {
     print('CONTEXT NULL');
   }
 
-   tz.initializeTimeZones();
+  tz.initializeTimeZones();
 
   await requestAlarmPermission();
   await _setupPeriodicNotifications();
 
-  runApp(
-    Phoenix(
-         child:
-         //DevicePreview(
-        //     enabled: !kReleaseMode,
-        //     builder: (context) =>
-                EasyLocalization(
-                supportedLocales: const [
-                  // needed to use these locales because om,ti  where not supported
-                  Locale('en', 'AU'),
-                  Locale('am'),
-                  Locale('en', 'GB'),
-                  Locale('en'),
-                ],
-                path: 'assets/locale',
-                startLocale: Locale('en'),
-                fallbackLocale: const Locale('en'),
-                child: RestartWidget(child: EthioChef()))
-  // ),
-      )
-  );
+  runApp(Phoenix(
+      child:
+          //DevicePreview(
+          //     enabled: !kReleaseMode,
+          //     builder: (context) =>
+          EasyLocalization(
+              supportedLocales: const [
+        // needed to use these locales because om,ti  where not supported
+        Locale('en', 'AU'),
+        Locale('am'),
+        Locale('en', 'GB'),
+        Locale('en'),
+      ],
+              path: 'assets/locale',
+              startLocale: Locale('en'),
+              fallbackLocale: const Locale('en'),
+              child: RestartWidget(child: EthioChef()))
+      // ),
+      ));
 }
-
 
 class RestartWidget extends StatefulWidget {
   RestartWidget({required this.child});
@@ -152,14 +152,12 @@ class _RestartWidgetState extends State<RestartWidget> {
   }
 }
 
-
 class EthioChef extends StatefulWidget {
   const EthioChef({super.key});
 
   @override
   State<EthioChef> createState() => _EthioChefState();
 }
-
 
 class _EthioChefState extends State<EthioChef> {
   bool isFirstTimeUser = true;
@@ -169,44 +167,39 @@ class _EthioChefState extends State<EthioChef> {
   void initState() {
     super.initState();
     _checkFirstTimeUser();
-
   }
 
   Future<void> _checkFirstTimeUser() async {
     print("check login status");
-    if(navigatorKey.currentContext != null){
+    if (navigatorKey.currentContext != null) {
       print('CONTEXT NOT NULL');
-    }else{
+    } else {
       print('CONTEXT NULL');
     }
     await FirebaseService().checkTokenRegistration();
-
   }
-
 
   @override
   Widget build(BuildContext context) {
     Language.selectedLanguage = Language.getSelectedLanguage(context);
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => ModelTheme())
-      ],
+      providers: [ChangeNotifierProvider(create: (_) => ModelTheme())],
       child: Consumer<ModelTheme>(
           builder: (context, ModelTheme themeNotifier, child) {
         // themeNotifier.isDark = false; // using to check dark theme
-            Widget homeScreen;
-            // print("First Time User status $isFirstTimeUser");
-            if(isLoggedIn == false){
-              print("To Auth Screen");
-              homeScreen = AuthScreen();
-            }else {
-              print("To Main Screen");
-              homeScreen = MainScreen();
-            }
+        Widget homeScreen;
+        // print("First Time User status $isFirstTimeUser");
+        if (isLoggedIn == false) {
+          print("To Auth Screen");
+          homeScreen = AuthScreen();
+        } else {
+          print("To Main Screen");
+          homeScreen = MainScreen();
+        }
         return ScreenUtilInit(
-          designSize: const Size(412, 892),//Never change this value
-          child: MaterialApp(
-            navigatorKey: navigatorKey,
+          designSize: const Size(412, 892), //Never change this value
+          child: GetMaterialApp(
+              navigatorKey: navigatorKey,
               localizationsDelegates: [
                 GlobalMaterialLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
@@ -215,7 +208,8 @@ class _EthioChefState extends State<EthioChef> {
               ],
               supportedLocales: context.supportedLocales,
               locale: context.locale,
-              themeMode: themeNotifier.isDark ? ThemeMode.dark : ThemeMode.light,
+              themeMode:
+                  themeNotifier.isDark ? ThemeMode.dark : ThemeMode.light,
               theme: AppTheme.lightTheme,
               darkTheme: AppTheme.darkTheme,
               initialRoute: '/',

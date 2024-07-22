@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/constants.dart';
@@ -30,35 +29,30 @@ class Food {
   final int? prevPage;
   final int? page;
   final List<Food>? related_recipe;
-  Food({
-    this.id,
-    required this.subcategoriesId,
-    required this.categoryId,
-    required this.name,
-    this.Name,
-    required this.description,
-    required this.mealTime,
-    this.related_recipe,
-    this.stepsList,
-    this.ingredients,
-    this.servings,
-    this.preparationTime,
-    this.posterImage,
-    required this.thumbnail,
-    this.video,
-    this.likes,
-    this.comments,
-    this.createdAt,
-    this.updatedAt,
-    this.nextPage,
-    this.prevPage,
-    this.page,
-    this.isLiked
-  });
-
-
-
-
+  Food(
+      {this.id,
+      required this.subcategoriesId,
+      required this.categoryId,
+      required this.name,
+      this.Name,
+      required this.description,
+      required this.mealTime,
+      this.related_recipe,
+      this.stepsList,
+      this.ingredients,
+      this.servings,
+      this.preparationTime,
+      this.posterImage,
+      required this.thumbnail,
+      this.video,
+      this.likes,
+      this.comments,
+      this.createdAt,
+      this.updatedAt,
+      this.nextPage,
+      this.prevPage,
+      this.page,
+      this.isLiked});
 
   factory Food.fromSingleFoodJson(Map<String, dynamic> json) {
     print("==============================================================");
@@ -70,38 +64,43 @@ class Food {
       final parts = path.split('/public_html');
       return parts.last;
     }
+
     String image = json['image'];
+
     String i = clearPath(image);
     int meal = 0;
 
-    if(json['meal_time']['breakfast']==true){
+    if (json['meal_time']['breakfast'] == true) {
       meal = 1;
-    }else if(json['meal_time']['lunch']==true){
+    } else if (json['meal_time']['lunch'] == true) {
       meal = 2;
-    }else if(json['meal_time']['super']==true){
+    } else if (json['meal_time']['super'] == true) {
       meal = 3;
-    }else{
+    } else {
       meal = 4;
     }
     String thumbnail = Constants.ImageAPI + i;
-    print('CHECKING VIDEO FROM API: ${json['video']}');
+    // print('CHECKING VIDEO FROM API: ${json['steps']['en']["0"]}');
+    print('parsing food');
     return Food(
       id: json['id'],
       subcategoriesId: json['subcategories_id'],
       categoryId: json['category_id'] ?? 0,
-      name: json['name'][Language.getLocaleCode()]?? json['name']["en"],
-      description: json['description'][Language.getLocaleCode()]?? json['description']["en"],
+      name: json['name'][Language.getLocaleCode()] ?? json['name']["en"],
+      description: json['description'][Language.getLocaleCode()] ??
+          json['description']["en"],
       mealTime: meal,
       related_recipe: (json['similar_recipies'] as List)
           .map((product) => Food.fromRelatedRecipe(product))
           .toList(),
       preparationTime: json['cooking_time'],
-      video: json['video']??null,
+      video: json['video'] ?? null,
       servings: json['serving'],
-      stepsList: json['steps'][Language.getLocaleCode()]?? json['name']["en"],
-      ingredients: json['ingredients'][Language.getLocaleCode()] ?? json['name']["en"],
+      stepsList: json['steps'][Language.getLocaleCode()] ?? null,
+      ingredients: json['ingredients'][Language.getLocaleCode()] ?? null,
       thumbnail: thumbnail,
-      likes: List<Likes>.from(json['likes']?.map((dynamic like) => Likes.fromFood(like)) ?? []),
+      likes: List<Likes>.from(
+          json['likes']?.map((dynamic like) => Likes.fromFood(like)) ?? []),
       comments: json['comments'],
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
@@ -115,27 +114,29 @@ class Food {
       final parts = path.split('/public_html');
       return parts.last;
     }
+
     String image = json['image'];
     String i = clearPath(image);
     String thumbnail = Constants.ImageAPI + i;
     int meal = 0;
 
-    if(json['meal_time']['breakfast']==true){
+    if (json['meal_time']['breakfast'] == true) {
       meal = 1;
-    }else if(json['meal_time']['lunch']==true){
+    } else if (json['meal_time']['lunch'] == true) {
       meal = 2;
-    }else if(json['meal_time']['super']==true){
+    } else if (json['meal_time']['super'] == true) {
       meal = 3;
-    }else{
+    } else {
       meal = 4;
     }
-    print("FOOOOOOOOOOOOOOOOOOOOOOD hrererererere");
     return Food(
       id: json['id'],
       subcategoriesId: json['subcategories_id'],
       categoryId: json['category_id'] ?? 0,
-      name: json['name'][Language.getLocaleCode()]?? json['name']["en"],
-      description: json['description'][Language.getLocaleCode()]?? json['description']['en']??'',
+      name: json['name'][Language.getLocaleCode()] ?? json['name']["en"],
+      description: json['description'][Language.getLocaleCode()] ??
+          json['description']['en'] ??
+          '',
       mealTime: meal,
       thumbnail: thumbnail,
     );
@@ -145,31 +146,35 @@ class Food {
       final parts = path.split('/public_html');
       return parts.last;
     }
+
     String image = json['image'];
     String i = clearPath(image);
     String thumbnail = Constants.ImageAPI + i;
     int meal = 0;
 
-    if(json['meal_time']['breakfast']==true){
+    if (json['meal_time']['breakfast'] == true) {
       meal = 1;
-    }else if(json['meal_time']['lunch']==true){
+    } else if (json['meal_time']['lunch'] == true) {
       meal = 2;
-    }else if(json['meal_time']['super']==true){
+    } else if (json['meal_time']['super'] == true) {
       meal = 3;
-    }else{
+    } else {
       meal = 4;
     }
     return Food(
       id: json['id'],
       subcategoriesId: json['subcategories_id'],
       categoryId: json['category_id'] ?? 0,
-      name: json['name'][Language.getLocaleCode()]?? json['name']["en"],
-      description: json['description'][Language.getLocaleCode()]?? json['description']['en']??'',
+      name: json['name'][Language.getLocaleCode()] ?? json['name']["en"],
+      description: json['description'][Language.getLocaleCode()] ??
+          json['description']['en'] ??
+          '',
       mealTime: meal,
       preparationTime: json['cooking_time'],
       servings: json['serving'],
       thumbnail: thumbnail,
-      likes: List<Likes>.from(json['likes']?.map((dynamic like) => Likes.fromFood(like)) ?? []),
+      likes: List<Likes>.from(
+          json['likes']?.map((dynamic like) => Likes.fromFood(like)) ?? []),
       comments: json['comments'],
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
@@ -178,35 +183,41 @@ class Food {
       page: json['page'],
     );
   }
-  factory Food.fromMealJson(Map<String, dynamic> json, int type, bool fromNotif) {
+  factory Food.fromMealJson(
+      Map<String, dynamic> json, int type, bool fromNotif) {
     String clearPath(String path) {
       final parts = path.split('/public_html');
       return parts.last;
     }
+
     String image = json['image'];
     String i = clearPath(image);
     String thumbnail = Constants.ImageAPI + i;
     int meal = 0;
-    if(type==1){
+    if (type == 1) {
       meal = 1;
-    }else if(type==2){
+    } else if (type == 2) {
       meal = 2;
-    }else if(type==3){
+    } else if (type == 3) {
       meal = 3;
-    }else{
+    } else {
       meal = 4;
     }
     return Food(
       id: json['id'],
       subcategoriesId: json['subcategories_id'],
       categoryId: json['category_id'] ?? 0,
-      name: fromNotif == false? json['name'][Language.getLocaleCode()]?? json['name']["en"]: json['name']['am'],
-      description: json['description'][Language.getLocaleCode()]?? json['name']['en'],
+      name: fromNotif == false
+          ? json['name'][Language.getLocaleCode()] ?? json['name']["en"]
+          : json['name']['am'],
+      description:
+          json['description'][Language.getLocaleCode()] ?? json['name']['en'],
       mealTime: meal,
       preparationTime: json['cooking_time'],
       servings: json['serving'],
       thumbnail: thumbnail,
-      likes: List<Likes>.from(json['likes']?.map((dynamic like) => Likes.fromFood(like)) ?? []),
+      likes: List<Likes>.from(
+          json['likes']?.map((dynamic like) => Likes.fromFood(like)) ?? []),
       comments: json['comments'],
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
@@ -220,17 +231,18 @@ class Food {
       final parts = path.split('/public_html');
       return parts.last;
     }
+
     String image = json['image'];
     String i = clearPath(image);
     String thumbnail = Constants.ImageAPI + i;
     int meal = 0;
-    if(json['breakfast']==true){
+    if (json['breakfast'] == true) {
       meal = 1;
-    }else if(json['lunch']==true){
+    } else if (json['lunch'] == true) {
       meal = 2;
-    }else if(json['super']==true){
+    } else if (json['super'] == true) {
       meal = 3;
-    }else{
+    } else {
       meal = 4;
     }
     Map<String, dynamic> name = {
@@ -238,112 +250,106 @@ class Food {
     };
     String Name = '';
     String description = '';
-    if(Language.getLocaleCode() == 'en'){
+    if (Language.getLocaleCode() == 'en') {
       Name = json['name_en'];
       description = json['description_en'];
-    }
-    else if(Language.getLocaleCode() == 'am'){
+    } else if (Language.getLocaleCode() == 'am') {
       Name = json['name_am'];
       description = json['description_am'];
-    }
-    else if(Language.getLocaleCode() == 'tr'){
+    } else if (Language.getLocaleCode() == 'tr') {
       Name = json['name_tr'];
       description = json['description_tr'];
-    }else{
+    } else {
       Name = json['name_or'];
       description = json['description_or'];
     }
     return Food(
-      id: json['id'],
-      subcategoriesId: json['sub_category_id'],
-      categoryId: json['category_id'] ?? 0,
+        id: json['id'],
+        subcategoriesId: json['sub_category_id'],
+        categoryId: json['category_id'] ?? 0,
         name: Name,
         Name: Name,
-      description: description,
-      mealTime: meal,
-      thumbnail: thumbnail
-    );
+        description: description,
+        mealTime: meal,
+        thumbnail: thumbnail);
   }
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'subcategoriesId': subcategoriesId,
-    'categoryId': categoryId,
-    'name': jsonEncode(name),
-    'Name': Name,
-    'description': description,
-    'mealTime': mealTime,
-    // 'related_recipe': related_recipe?.map((recipe) => recipe.toJson()).toList(), // or jsonEncode(related_recipe)
-    'stepsList': jsonEncode(stepsList),
-    'ingredients': jsonEncode(ingredients),
-    'servings': servings,
-    'preparationTime': preparationTime,
-    'posterImage': posterImage,
-    'image': thumbnail,
-    'video': video,
-    // 'likes': likes?.map((like) => jsonEncode(likes)).toList(), // or jsonEncode(likes)
-    'comments': jsonEncode(comments),
-    // 'createdAt': createdAt,
-    // 'updatedAt': updatedAt,
-    'nextPage': nextPage,
-    'prevPage': prevPage,
-    'page': page,
-    'isLiked': isLiked
-  };
-  factory Food.fromSavedJson(Map<String, dynamic> json){
+        'id': id,
+        'subcategoriesId': subcategoriesId,
+        'categoryId': categoryId,
+        'name': jsonEncode(name),
+        'Name': Name,
+        'description': description,
+        'mealTime': mealTime,
+        // 'related_recipe': related_recipe?.map((recipe) => recipe.toJson()).toList(), // or jsonEncode(related_recipe)
+        'stepsList': jsonEncode(stepsList),
+        'ingredients': jsonEncode(ingredients),
+        'servings': servings,
+        'preparationTime': preparationTime,
+        'posterImage': posterImage,
+        'image': thumbnail,
+        'video': video,
+        // 'likes': likes?.map((like) => jsonEncode(likes)).toList(), // or jsonEncode(likes)
+        'comments': jsonEncode(comments),
+        // 'createdAt': createdAt,
+        // 'updatedAt': updatedAt,
+        'nextPage': nextPage,
+        'prevPage': prevPage,
+        'page': page,
+        'isLiked': isLiked
+      };
+  factory Food.fromSavedJson(Map<String, dynamic> json) {
     return Food(
         subcategoriesId: json['subcategoriesId'],
         id: json['id'],
         categoryId: json['categoryId'],
-      name: jsonDecode(json['name']),
-      description: json['description'],
-      mealTime: json['mealTime'],
-      thumbnail: json['image'],
-      servings: json['servings'],
-      stepsList: jsonDecode(json['stepsList']),
-      ingredients: jsonDecode(json['ingredients']),
-      preparationTime: json['preparationTime'],
-      posterImage: json['posterImage'],
-      video: json['video'],
-      comments: jsonDecode(json['comments']),
-      createdAt: json['createdAt'],
-      updatedAt: json['updatedAt'],
-      nextPage: json['nextPage'],
-      prevPage: json['prevPage'],
-      page: json['page'],
-      isLiked: json['isLiked']
-    );
+        name: jsonDecode(json['name']),
+        description: json['description'],
+        mealTime: json['mealTime'],
+        thumbnail: json['image'],
+        servings: json['servings'],
+        stepsList: jsonDecode(json['stepsList']),
+        ingredients: jsonDecode(json['ingredients']),
+        preparationTime: json['preparationTime'],
+        posterImage: json['posterImage'],
+        video: json['video'],
+        comments: jsonDecode(json['comments']),
+        createdAt: json['createdAt'],
+        updatedAt: json['updatedAt'],
+        nextPage: json['nextPage'],
+        prevPage: json['prevPage'],
+        page: json['page'],
+        isLiked: json['isLiked']);
   }
 
-
-
   static List<Food> savedRecipes = [];
-
 
   static void addRecipe(Food food) {
     savedRecipes.add(food);
     saveRecipesToSharedPrefs();
   }
 
-
   static List<Food> getSavedRecipes() {
     return savedRecipes;
   }
+
   static void deleteRecipe(Food food) {
     print("deleteRecipe");
     savedRecipes.remove(food);
     saveRecipesToSharedPrefs();
   }
+
   static void saveRecipesToSharedPrefs() async {
     final sharedPreferences = await SharedPreferences.getInstance();
-    final jsonString = json.encode(Food.savedRecipes.map((food) => food.toJson()).toList());
+    final jsonString =
+        json.encode(Food.savedRecipes.map((food) => food.toJson()).toList());
     await sharedPreferences.setString('bookmarkRecipes', jsonString);
   }
 
   static bool isSameFood(Food food1, Food food2) {
     return food1.id == food2.id;
   }
-
 
   static Future<List<Food>> loadRecipesFromSharedPrefs() async {
     final sharedPreferences = await SharedPreferences.getInstance();
@@ -353,7 +359,7 @@ class Food {
   }
 }
 
-class Likes{
+class Likes {
   int id;
   int user_id;
   int food_id;
@@ -370,10 +376,8 @@ class Likes{
     );
   }
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'user_id': user_id,
-    'food_id': food_id,
-  };
-
-  }
-
+        'id': id,
+        'user_id': user_id,
+        'food_id': food_id,
+      };
+}

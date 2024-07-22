@@ -1,12 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+
 import '../../generated/assets.dart';
-import '../../models/promotion.dart';
 import '../../models/category.dart';
 import '../../models/food.dart';
+import '../../models/promotion.dart';
 import '../../services/category_service.dart';
 import '../../services/meal_service.dart';
 import '../../services/promotion_service.dart';
@@ -19,7 +20,6 @@ import '../../widgets/error_card.dart';
 import '../../widgets/loading.dart';
 import '../../widgets/pull_to_refresh.dart';
 import '../competition/competitions_screen.dart';
-import '../from_scheduled_notif.dart';
 import '../recipe_status/my_submitted_recipe.dart';
 import 'layout/ads_carousel.dart';
 import 'layout/category_carousel.dart';
@@ -60,10 +60,14 @@ class _HomeScreenState extends State<HomeScreen>
       final superMeal = await mealService.fetchAllSuper();
       final dinner = await mealService.fetchAllDinner();
       final promotionsData = await promotionService.fetchPromotions();
-      dinner.removeWhere((element) => element.name == null || element.name == "null");
-      lunch.removeWhere((element) => element.name == null || element.name == "null");
-      superMeal.removeWhere((element) => element.name == null || element.name == "null");
-      breakFast.removeWhere((element) => element.name == null || element.name == "null");
+      dinner.removeWhere(
+          (element) => element.name == null || element.name == "null");
+      lunch.removeWhere(
+          (element) => element.name == null || element.name == "null");
+      superMeal.removeWhere(
+          (element) => element.name == null || element.name == "null");
+      breakFast.removeWhere(
+          (element) => element.name == null || element.name == "null");
 
       return [
         categoryData,
@@ -200,11 +204,8 @@ class _HomeScreenState extends State<HomeScreen>
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0, bottom: 8),
-                        child: supportButton(
-                            Colors.blue,
-                            Constants.supportLink,
-                            Assets.socialTelegram,
-                            isTablet,
+                        child: supportButton(Colors.blue, Constants.supportLink,
+                            Assets.socialTelegram, isTablet,
                             text: 'rec_food'.tr()),
                       ),
                       // ElevatedButton(onPressed: (){
@@ -248,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   void listenNotification() =>
       NotificationScheduled.onNotifications.stream.listen((event) {
-        pushNewScreen(
+        PersistentNavBarNavigator.pushNewScreen(
           context,
           screen: SubmittedRecipe(),
           withNavBar: false,

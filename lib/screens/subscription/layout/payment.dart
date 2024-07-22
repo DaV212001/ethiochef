@@ -5,7 +5,7 @@ import 'package:ethio_chef/models/payment_methods.dart';
 import 'package:ethio_chef/screens/subscription/layout/payment_step.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../../main.dart';
 import '../../../models/subscriptionplans.dart';
@@ -32,7 +32,7 @@ class PaymentCheckout extends StatefulWidget {
       this.isSMS,
       this.userData,
       this.selectedSubscriptionPlan,
-      this.isInActiveUserSubscription = false,
+      this.isInActiveUserSubscription,
       this.isNormalSubscription = false,
       this.userFromSignUp});
 
@@ -59,7 +59,7 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
     final allSubscriptionData =
         await subscriptionData.fetchAllSubscriptionPlans();
     final userService = UserService();
-    if (widget.isNormalSubscription == true && widget.userFromSignUp == null) {
+    if (widget.isNormalSubscription == true) {
       print("fetchUserSubscriptions");
       final userSubscriptionPlan = await userService.fetchUserSubscriptions();
       return [allSubscriptionData, paymentData, userSubscriptionPlan];
@@ -77,45 +77,45 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
     _future = fetchData();
   }
 
+  bool paymentInProgress = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: MainAppBar(
-          title: widget.isNormalSubscription == true
-              ? 'payment'.tr()
-              : 'your_sub'.tr(),
+          title: widget.isNormalSubscription == true && widget.isSMS == false
+              ? 'your_sub'.tr()
+              : 'payment'.tr(),
           hasMainIcons: false,
         ),
         body: SafeArea(
             child: FutureBuilder(
-          future: _future,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Loading();
-            }
-            if (snapshot.hasError) {
-              return Center(
-                  child: ErrorCard(
-                errorType: snapshot.error.toString(),
-                refresh: () {
-                  setState(() {
-                    _future = fetchData();
-                  });
-                },
-              ));
-            }
-            if (widget.isNormalSubscription == true &&
-                widget.userFromSignUp == null) {
-              return buildSubscriptionScreen(
-                  snapshot.data[0] as List<SubscriptionPlans>,
-                  snapshot.data[1] as List<PaymentMethods>,
-                  snapshot.data[2] as List<SubscriptionPlans>);
-            }
-            return buildIsInActiveUserSubscription(
-                snapshot.data[0] as List<SubscriptionPlans>,
-                snapshot.data[1] as List<PaymentMethods>);
-          },
-        )));
+                future: _future,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Loading();
+                  }
+                  if (snapshot.hasError) {
+                    return Center(
+                        child: ErrorCard(
+                      errorType: snapshot.error.toString(),
+                      refresh: () {
+                        setState(() {
+                          _future = fetchData();
+                        });
+                      },
+                    ));
+                  }
+                  if (widget.isNormalSubscription == true) {
+                    return buildSubscriptionScreen(
+                        snapshot.data[0] as List<SubscriptionPlans>,
+                        snapshot.data[1] as List<PaymentMethods>,
+                        snapshot.data[2] as List<SubscriptionPlans>);
+                  }
+
+                  return buildIsInActiveUserSubscription(
+                      snapshot.data[0] as List<SubscriptionPlans>,
+                      snapshot.data[1] as List<PaymentMethods>);
+                })));
   }
 
   Widget buildIsInActiveUserSubscription(
@@ -130,7 +130,7 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
                 visible: activeStep == 0,
                 child: AllSubscriptionStep(
                     subscriptionPlans: subscriptionPlans,
-                    isSMS: widget.userFromSignUp != null,
+                    isSMS: true,
                     returnPrice: (subscriptionPrice) {
                       setState(() {
                         subscriptionPlan = subscriptionPrice;
@@ -166,6 +166,7 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
                         makePayment();
                       }
                     })),
+            if (paymentInProgress) CircularProgressIndicator(),
             if (activeStep != 0)
               MainButton(
                   width: double.infinity,
@@ -222,6 +223,7 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
                 },
               ),
             ),
+            if (paymentInProgress) CircularProgressIndicator(),
           ],
         ),
       ),
@@ -250,27 +252,74 @@ class _PaymentCheckoutState extends State<PaymentCheckout> {
   makePayment() async {
     final service = PaymentService();
     late var response;
+
+    setState(() {
+      paymentInProgress = true;
+    });
+
     if (widget.isNormalSubscription == true) {
       Map unWanted = {}; //used to avoid the null values
       response = await service.makePayment(unWanted, paymentMethod!.id,
           user ?? widget.userFromSignUp!, subscriptionPlan!.price!, false);
+      print('NORMAL SUB RESPONSE RETURNED');
     } else {
-      print("isInActiveUser Signing up");
-      print(subscriptionPlan!.price);
-      print(subscriptionPlan!.duration);
-      User unWanted = User(firstName: "", lastName: "");
-      response = await service.makePayment(widget.userData!, paymentMethod!.id,
-          unWanted, subscriptionPlan!.price!, true);
+      if (widget.userFromSignUp != null) {
+        Map unWanted = {}; //used to avoid the null values
+        response = await service.makePayment(unWanted, paymentMethod!.id,
+            user ?? widget.userFromSignUp!, subscriptionPlan!.price!, false);
+        print('SIGNUP SUB RESPONSE RETURNED');
+      } else {
+        print("isInActiveUser Signing up");
+        print(subscriptionPlan!.price);
+        print(subscriptionPlan!.duration);
+        User unWanted = User(firstName: "", lastName: "");
+        response = await service.makePayment(widget.userData!,
+            paymentMethod!.id, unWanted, subscriptionPlan!.price!, true);
+        print('INACTIVE SUB RESPONSE RETURNED');
+      }
     }
+
     print('response: ${response.body}');
     if (response.statusCode == 200) {
+      if (paymentMethod!.id == 6) {
+        //Check if telebirr was selected
+        var responseCode = jsonDecode(response.body)['result']['ResponseCode'];
+        if (responseCode == "0" || responseCode == 0) {
+          Future.delayed(Duration(seconds: 60), () {
+            setState(() {
+              paymentInProgress = false;
+            });
+          });
+        } else {
+          setState(() {
+            paymentInProgress = false;
+          });
+          setState(() {
+            awaitResponse = false;
+          });
+          ScaffoldMessenger.of(context)
+              .showSnackBar((SnackBar(content: Text('telebirr_error'.tr()))));
+        }
+        return;
+      } else {
+        setState(() {
+          paymentInProgress = false;
+        });
+        ScaffoldMessenger.of(context)
+            .showSnackBar((SnackBar(content: Text('telebirr_error'.tr()))));
+      }
+
       var checkoutUrl = jsonDecode(response.body)['data']['checkout_url'];
       print(jsonDecode(response.body)['data']['checkout_url']);
       print(checkoutUrl);
-      await pushNewScreen(context, screen: PaymentScreen(url: checkoutUrl));
+      await PersistentNavBarNavigator.pushNewScreen(context,
+          screen: PaymentScreen(url: checkoutUrl));
       RestartWidget.restartApp(context);
     }
 
+    setState(() {
+      paymentInProgress = false;
+    });
     setState(() {
       awaitResponse = false;
     });

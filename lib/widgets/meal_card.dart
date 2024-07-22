@@ -1,14 +1,11 @@
-import 'dart:convert';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/food.dart';
 import 'package:ethio_chef/screens/recipe/recipe_screen.dart';
 import 'package:ethio_chef/theme/app_theme.dart';
 import 'package:ethio_chef/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
-import '../models/language.dart';
 import '../models/recipe_show_checker.dart';
 import '../screens/auth/auth_screen.dart';
 import '../screens/subscription/all_subscriptions.dart';
@@ -24,47 +21,40 @@ class MealCard extends StatefulWidget {
 }
 
 class _MealCardState extends State<MealCard> {
-
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return GestureDetector(
       onTap: () async {
-
         print("Meal Card");
 
-        SnackBar checking =SnackBar(
+        SnackBar checking = SnackBar(
             padding: EdgeInsets.symmetric(vertical: 10),
             showCloseIcon: true,
-            content: Text(
-                'checking_subscription_please_wait'.tr()
-            ));
+            content: Text('checking_subscription_please_wait'.tr()));
         ScaffoldMessenger.of(context).showSnackBar(checking);
         String status = await Check.checkToShow();
-        switch(status){
+        switch (status) {
           case "Not logged in":
             print("Not logged in");
-            SnackBar logIn =SnackBar(
+            SnackBar logIn = SnackBar(
                 padding: EdgeInsets.symmetric(vertical: 20),
-                content: Text(
-                    'please_subscribe_to_see_ingredients_and_steps'.tr()
-                ));
+                content:
+                    Text('please_subscribe_to_see_ingredients_and_steps'.tr()));
             loginFunction();
             // ScaffoldMessenger.of(context).showSnackBar(logIn);
             break;
           case "Another user logged in":
             print("Another user logged in");
-            SnackBar logIn =SnackBar(
+            SnackBar logIn = SnackBar(
                 padding: EdgeInsets.symmetric(vertical: 20),
-                content: Text(
-                    'another_account_login'.tr()
-                ));
+                content: Text('another_account_login'.tr()));
             ScaffoldMessenger.of(context).showSnackBar(logIn);
             loginFunction();
             break;
           case "User is subscribed":
-        print("User is subscribed");
-            pushNewScreen(
+            print("User is subscribed");
+            PersistentNavBarNavigator.pushNewScreen(
               context,
               withNavBar: false,
               screen: RecipeScreen(food: widget.food),
@@ -72,18 +62,19 @@ class _MealCardState extends State<MealCard> {
             break;
           case "User is not subscribed":
             print("User is not subscribed");
-            pushNewScreen(
+            PersistentNavBarNavigator.pushNewScreen(
               context,
               withNavBar: false,
-              screen: AllSubscriptions(returnPrice: (int ) {  },
+              screen: AllSubscriptions(
+                returnPrice: (int) {},
                 first_name: "",
                 last_name: "",
-                isSignUp:
-                false,phone: "",),
+                isSignUp: false,
+                phone: "",
+              ),
             );
             break;
         }
-
       },
       child: Card(
         color: Colors.transparent,
@@ -113,10 +104,9 @@ class _MealCardState extends State<MealCard> {
               child: Text(
                 widget.food.name.toString(),
                 style: TextStyle(
-                  color: theme.colorScheme.tertiary,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 13
-                ),
+                    color: theme.colorScheme.tertiary,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13),
                 textAlign: TextAlign.start,
               ),
             ),
@@ -125,8 +115,9 @@ class _MealCardState extends State<MealCard> {
       ),
     );
   }
-  void loginFunction(){
-    pushNewScreen(
+
+  void loginFunction() {
+    PersistentNavBarNavigator.pushNewScreen(
       context,
       withNavBar: false,
       screen: AuthScreen(isSignIn: true),

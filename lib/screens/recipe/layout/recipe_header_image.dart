@@ -4,7 +4,7 @@ import 'package:ethio_chef/widgets/cached_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../../models/comment.dart';
 import '../../../models/food.dart';
@@ -21,16 +21,17 @@ class RecipeHeaderImage extends StatefulWidget {
   final User user;
   final List<Likes> likes;
   final Food? food;
-  const RecipeHeaderImage(
-      {super.key,
-        required this.image,
-        required this.onLike,
-        this.comments,
-        required this.refresh,
-        required this.foodId,
-        required this.user,
-        required this.likes, this.food,
-      });
+  const RecipeHeaderImage({
+    super.key,
+    required this.image,
+    required this.onLike,
+    this.comments,
+    required this.refresh,
+    required this.foodId,
+    required this.user,
+    required this.likes,
+    this.food,
+  });
 
   @override
   State<RecipeHeaderImage> createState() => _RecipeHeaderImageState();
@@ -40,8 +41,8 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
   late bool isLiked = false;
   @override
   void initState() {
-    for(int i=0;i<widget.food!.likes!.length;i++){
-      if(widget.user.id == widget.food?.likes![i].user_id){
+    for (int i = 0; i < widget.food!.likes!.length; i++) {
+      if (widget.user.id == widget.food?.likes![i].user_id) {
         setState(() {
           isLiked = true;
         });
@@ -51,23 +52,21 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
     super.initState();
   }
 
-
   bool isSaved = false;
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     ThemeData theme = Theme.of(context);
-    isSaved = Food.savedRecipes.any((food) => Food.isSameFood(food, widget.food!));
+    isSaved =
+        Food.savedRecipes.any((food) => Food.isSameFood(food, widget.food!));
     return Column(
       children: [
         Stack(children: [
-          if (widget.food?.video != null&& widget.food!.video!.isNotEmpty && widget.food?.video != "")
+          if (widget.food?.video != null &&
+              widget.food!.video!.isNotEmpty &&
+              widget.food?.video != "")
             SizedBox(
               width: width,
               height: height * 0.3,
@@ -75,35 +74,29 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
                 link: widget.food!.video.toString(),
               ),
             ),
-
           if (widget.food?.video == null || widget.food?.video == "")
-          SizedBox(
-            width: width,
-            height: height * 0.4,
-            child: CachedImage(url: widget.image, fit: BoxFit.fill),
-          ),
+            SizedBox(
+              width: width,
+              height: height * 0.4,
+              child: CachedImage(url: widget.image, fit: BoxFit.fill),
+            ),
           Positioned(
-            top: 5,
-            right: 10,
-            left: 10,
-            child: SafeArea(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: circularBackground(
-                        child: Icon(
-                          Icons.arrow_back,
-                          color: theme.colorScheme.primary
-                        ),
-                      )),
-                ]
-              )
-            )
-          )
+              top: 5,
+              right: 10,
+              left: 10,
+              child: SafeArea(
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: circularBackground(
+                          child: Icon(Icons.arrow_back,
+                              color: theme.colorScheme.primary),
+                        )),
+                  ])))
         ]),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -114,14 +107,11 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      pushNewScreen(
-                          context,
+                      PersistentNavBarNavigator.pushNewScreen(context,
                           screen: AddEditComment(
                               isEditing: false,
                               foodId: widget.foodId,
-                              refresh: widget.refresh
-                          )
-                      );
+                              refresh: widget.refresh));
                     },
                     child: circularBackground(
                       child: Icon(
@@ -140,24 +130,28 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
               onTap: () async {
                 print(Food.savedRecipes.toString());
                 // Use the custom function to check if the widget.food is in the savedRecipes list
-                if (Food.savedRecipes.any((food) => Food.isSameFood(food, widget.food!))) {
+                if (Food.savedRecipes
+                    .any((food) => Food.isSameFood(food, widget.food!))) {
                   Food.deleteRecipe(widget.food!);
                   Food.savedRecipes = await Food.loadRecipesFromSharedPrefs();
-                  setState(() {
-
-                  });
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('delete'.tr())));
+                  setState(() {});
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text('delete'.tr())));
                 } else {
                   Food.addRecipe(widget.food!);
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('saved'.tr())));
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text('saved'.tr())));
                 }
                 setState(() {
                   isSaved = !isSaved;
                 });
                 print('secondcheck: ${Food.savedRecipes.toString()}');
               },
-              child: circularBackground(child: Icon(
-                  isSaved?CupertinoIcons.bookmark_fill:CupertinoIcons.bookmark,
+              child: circularBackground(
+                  child: Icon(
+                isSaved
+                    ? CupertinoIcons.bookmark_fill
+                    : CupertinoIcons.bookmark,
                 color: theme.colorScheme.primary,
               )),
             ),
@@ -165,11 +159,11 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
               width: 5.h,
             ),
             GestureDetector(
-              onTap: () async{
+              onTap: () async {
                 print("isLiked pressed widget.isLiked = ${isLiked}");
-                if(isLiked == false) {
+                if (isLiked == false) {
                   await likeFood();
-                }else{
+                } else {
                   print("unlike");
                   await unLikeFood();
                 }
@@ -198,38 +192,38 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
       child: child,
     );
   }
+
   Future<bool> likeFood() async {
-      FoodService service = FoodService();
-      try {
-        print("likeFood");
-        var response =
-        await service.likeFood(widget.foodId);
-        if (response.statusCode == 200) {
-          widget.refresh();
-          return true;
-        } else {
-          throw Exception();
-        }
-      } catch (e) {
-        print(e);
+    FoodService service = FoodService();
+    try {
+      print("likeFood");
+      var response = await service.likeFood(widget.foodId);
+      if (response.statusCode == 200) {
+        widget.refresh();
+        return true;
+      } else {
+        throw Exception();
       }
-      return false;
-  }
-  Future<bool> unLikeFood() async {
-      print("widget.foodId ${widget.foodId}");
-      FoodService service = FoodService();
-      try {
-        var response =
-        await service.unLikeFood(widget.foodId);
-        if (response == true) {
-          widget.refresh();
-          return true;
-        } else {
-          throw Exception();
-        }
-      } catch (e) {
-        print(e);
-      }
-      return false;
+    } catch (e) {
+      print(e);
     }
+    return false;
+  }
+
+  Future<bool> unLikeFood() async {
+    print("widget.foodId ${widget.foodId}");
+    FoodService service = FoodService();
+    try {
+      var response = await service.unLikeFood(widget.foodId);
+      if (response == true) {
+        widget.refresh();
+        return true;
+      } else {
+        throw Exception();
+      }
+    } catch (e) {
+      print(e);
+    }
+    return false;
+  }
 }
