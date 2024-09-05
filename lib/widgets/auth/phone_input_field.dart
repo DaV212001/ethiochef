@@ -7,9 +7,15 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 class PhoneInputField extends StatefulWidget {
   final TextEditingController controller;
   final double height;
+  final bool? validate;
+  final GlobalKey<FormState>? formKey;
 
   const PhoneInputField(
-      {super.key, required this.controller, this.height = 85});
+      {super.key,
+      required this.controller,
+      this.height = 85,
+      this.validate,
+      this.formKey});
 
   @override
   State<PhoneInputField> createState() => _PhoneInputFieldState();
@@ -18,32 +24,45 @@ class PhoneInputField extends StatefulWidget {
 class _PhoneInputFieldState extends State<PhoneInputField> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: widget.height,
-        child: IntlPhoneField(
+    return FormField<String>(
+      // key: widget.formKey,
+      builder: (validationState) {
+        return IntlPhoneField(
+          // key: widget.formKey,
           controller: widget.controller,
           decoration: InputDecoration(
             prefixIcon: Icon(CupertinoIcons.phone),
             labelText: "phone_number".tr(),
+            errorText:
+                validationState.hasError ? validationState.errorText : null,
             // border: OutlineInputBorder(),
           ),
           initialCountryCode: 'ET',
+          // onSubmitted: (value) {
+          //   validationState.didChange(value);
+          // },
           onChanged: (phone) {
-            print(phone.completeNumber);
+            validationState.didChange(phone.number);
           },
           pickerDialogStyle: PickerDialogStyle(
               searchFieldInputDecoration: InputDecoration(
             labelText: "search_country".tr(),
           )),
           invalidNumberMessage: "invalid_phone_number".tr(),
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (value) {
-            if (value?.number != null || value!.number.isEmpty) {
-              return "phone_number_required".tr();
-            }
-            return null;
-          },
-        ));
+          // disableLengthCheck: true,
+          // autovalidateMode: AutovalidateMode.always,
+        );
+      },
+      // autovalidateMode: AutovalidateMode.always,
+      validator: (value) {
+        print('Validation cc: ${value == null}');
+        if (value == null || value.isEmpty) {
+          print('Validation cc: ${(value == null || value.isEmpty)}');
+          return "phone_number_required".tr();
+        }
+        return null;
+      },
+    );
   }
 }
 // InternationalPhoneNumberInput(

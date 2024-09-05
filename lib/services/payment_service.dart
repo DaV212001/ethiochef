@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:ethio_chef/services/authorization_service.dart';
 import 'package:ethio_chef/services/user_service.dart';
@@ -11,6 +12,7 @@ import '../models/payment_methods.dart';
 import '../models/user.dart';
 import '../models/verification.dart';
 import '../utils/constants.dart';
+import 'offer_18_plugin.dart';
 
 class PaymentService {
   Future<http.Response> unsubscribeTelebirr() async {
@@ -145,9 +147,13 @@ class PaymentService {
       final jsonData = json.decode(response.body);
       final List<dynamic> paymentData = jsonData['data'];
       print("paymentData $paymentData");
-      return paymentData
+
+      var paymentMethodList = paymentData
           .map((comment) => PaymentMethods.fromJson(comment))
           .toList();
+      var chapaPaymentOnly = paymentMethodList.removeWhere(
+          (paymentMethod) => paymentMethod.bank_name == 'TELEBIRR');
+      return paymentMethodList;
     } else {
       throw Exception('Failed to fetch payment methods');
     }
@@ -291,21 +297,8 @@ class PaymentService {
       print(response.body);
       print(response.statusCode);
     }
-    Map<String, String> args = {
-      "o": "21213899", // 0000000 (Offer ID)
-      "tid": "{REFERRER_TID}", // x-xxxx-xxxxxx-xxxxxx (Click ID)
-      "event": "registeration", // install
-      "adv_sub1": "",
-      "adv_sub2": "",
-      "adv_sub3": "",
-      "adv_sub4": "",
-      "adv_sub5": "",
-      "coupon": "",
-      "sale": "",
-      "payout": ""
-    };
-    print(args);
-    // await Offer18Plugin.trackConversion(args);
+    await Offer18Plugin.trackConversion(Offer18EventArguments.REGISTRATION);
+    await AppMetrica.reportEvent('Registration');
     return response;
   }
 }

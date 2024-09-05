@@ -8,34 +8,38 @@ class Language {
   Language(this.name, this.code);
 
   static List<Language> languages = [
-        Language('አማርኛ', const Locale('am')),
-        Language('Afan Oromoo', const Locale('en', 'GB')),
-        // Language('ትግርኛ', const Locale('en', 'AU')),
-        Language('English', const Locale('en'))
-      ];
+    Language('አማርኛ', const Locale('am')),
+    Language('Afan Oromoo', const Locale('en', 'GB')),
+    Language('ትግርኛ', const Locale('en', 'AU')),
+    Language('English', const Locale('en')),
+    Language('Soomaali', const Locale('es')),
+  ];
 
   static Language selectedLanguage = Language('English', const Locale('en'));
 
   static Language getSelectedLanguage(BuildContext context) {
     final Locale currentLocale = context.locale;
-    final Language lang  = languages.firstWhere((language) => language.code == currentLocale,
+    final Language lang = languages.firstWhere(
+        (language) => language.code == currentLocale,
         orElse: () => languages.first);
     return lang;
   }
 
-  static String getLocaleCode(){
-    if(selectedLanguage == languages[0]){
+  static String getLocaleCode() {
+    if (selectedLanguage == languages[0]) {
       return "am";
-    } else if (selectedLanguage == languages[1]){
+    } else if (selectedLanguage == languages[1]) {
       return "or";
-    }else {
+    } else if (selectedLanguage == languages[2]) {
+      return "ti";
+    } else if (selectedLanguage == languages[3]) {
       return "en";
+    } else {
+      return 'so';
     }
 
     // else if (selectedLanguage == languages[2]){
     //   return "tr";
     // }
   }
-
-  
 }

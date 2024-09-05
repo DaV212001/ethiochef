@@ -79,7 +79,7 @@ class FirebaseService {
     );
 
     print("here 3");
-    FirebaseMessaging.instance.getInitialMessage().then((message) {
+    FirebaseMessaging.instance.getInitialMessage().then((message) async {
       if (message?.notification?.title == 'ኢትዮ ሼፍ') {
         print('INTIALMESSSSSSSSSSSSSSAAAAAAAAAAGGGGGGGGEEEEEEE');
         PersistentNavBarNavigator.pushNewScreen(navigatorKey.currentContext!,
@@ -99,11 +99,12 @@ class FirebaseService {
           message!.notification!.body!.contains('You have successfully')) {
         print(
             'HERRRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEEEEEE TELEBIRRRRRRRRRRRRRRRRRRR');
+        // await Offer18Plugin.trackConversion(Offer18EventArguments.REGISTRATION);
         RestartWidget.restartApp(context);
       }
     });
     print("here 4");
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
       print('ONMESSAGEOPENEDAPPPPPPPPPPPPPPP');
       if (message.notification?.title == 'ኢትዮ ሼፍ') {
         PersistentNavBarNavigator.pushNewScreen(navigatorKey.currentContext!,
@@ -121,6 +122,7 @@ class FirebaseService {
       }
       if (message.notification?.title == 'Telebirr payment status' &&
           message.notification!.body!.contains('You have successfully')) {
+        // await Offer18Plugin.trackConversion(Offer18EventArguments.REGISTRATION);
         print(
             'HERRRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEEEEEE TELEBIRRRRRRRRRRRRRRRRRRR');
         // RestartWidget.restartApp(context);
@@ -167,6 +169,7 @@ class FirebaseService {
             title: message.notification?.title,
             body: message.notification!.body,
             payload: 'Notification :${message.notification?.title}');
+        // await Offer18Plugin.trackConversion(Offer18EventArguments.REGISTRATION);
         RestartWidget.restartApp(context);
       } else {
         print('DEFAULT ForB');
@@ -314,6 +317,7 @@ Future<void> handleBackgroundMessage(RemoteMessage message) async {
       message.notification!.body!.contains('You have successfully')) {
     print(
         'HERRRRRRRRRRRRRRRRRRREEEEEEEEEEEEEEEEEEEEEEE TELEBIRRRRRRRRRRRRRRRRRRR');
+    // await Offer18Plugin.trackConversion(Offer18EventArguments.REGISTRATION);
     RestartWidget.restartApp(navigatorKey.currentContext!);
   }
   if (message.notification?.title == 'breakfast') {

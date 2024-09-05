@@ -1,14 +1,17 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart' as e;
 import 'package:ethio_chef/widgets/screen_head.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../../models/promotion.dart';
-import '../../../theme/app_theme.dart';
 import '../../../utils/screen_utils.dart';
 import '../../../widgets/cached_image.dart';
-import '../../../widgets/home/ad_carousel_component.dart';
+
+class AdsControl extends GetxController {
+  RxInt currentIndex = 0.obs;
+}
 
 class AdsCarousel extends StatefulWidget {
   final List<Promotion> promotion;
@@ -27,7 +30,7 @@ class _AdsCarouselState extends State<AdsCarousel> {
   }
 
   // List<PhotosModel> images = [];
-
+  AdsControl adsControl = Get.put(AdsControl());
   List imageList = [
     {"id": 1, "image_path": 'assets/images/photo_1.jpg'},
     {"id": 2, "image_path": 'assets/images/photo_2.jpg'},
@@ -100,9 +103,7 @@ class _AdsCarouselState extends State<AdsCarousel> {
                   aspectRatio: 2,
                   viewportFraction: 1,
                   onPageChanged: (index, reason) {
-                    setState(() {
-                      currentIndex = index;
-                    });
+                    adsControl.currentIndex.value = index;
                   },
                 ),
               ),
@@ -121,18 +122,22 @@ class _AdsCarouselState extends State<AdsCarousel> {
                           return GestureDetector(
                             onTap: () =>
                                 carouselController.animateToPage(entry.key),
-                            child: Container(
-                              width: currentIndex == entry.key ? 17 : 7,
-                              height: 7.0,
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: 3.0,
-                              ),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: currentIndex == entry.key
-                                      ? theme.colorScheme.surface
-                                      : theme.colorScheme.primaryContainer),
-                            ),
+                            child: Obx(() => Container(
+                                  width:
+                                      adsControl.currentIndex.value == entry.key
+                                          ? 17
+                                          : 7,
+                                  height: 7.0,
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 3.0,
+                                  ),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: adsControl.currentIndex.value ==
+                                              entry.key
+                                          ? theme.colorScheme.surface
+                                          : theme.colorScheme.primaryContainer),
+                                )),
                           );
                         }).toList(),
                       )
@@ -144,7 +149,7 @@ class _AdsCarouselState extends State<AdsCarousel> {
         ScreenHead(
           hasNotification: true,
           screen: 0,
-          searchHint: "search".tr(),
+          searchHint: e.tr("search"),
         )
       ]),
     );

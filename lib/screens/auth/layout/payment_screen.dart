@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
+import '../../../main.dart';
 import '../../../widgets/main_app_bar.dart';
 
 class PaymentScreen extends StatefulWidget {
@@ -19,43 +20,39 @@ class _PaymentScreenState extends State<PaymentScreen> {
   bool error = false;
   String errorText = "";
   bool loadedAferError = false;
-
+  bool isInitialLoadComplete = false; // Flag to prevent multiple executions
   WebUri? previousUrl;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: MainAppBar(
-          title: "",
-          hasMainIcons: false,
-        ),
-        body: Stack(children: [
+      appBar: MainAppBar(
+        title: "",
+        hasMainIcons: false,
+      ),
+      body: Stack(
+        children: [
           InAppWebView(
             initialUrlRequest: URLRequest(
               url: WebUri.uri(
                 Uri.parse(widget.url),
               ),
             ),
-            onLoadStop: (controller, url) {
-              if (widget.url.contains('chapa')) {
-                print(
-                    'CHAPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-                // Handle URL changes here
-                print('===================================LOAD START: $url');
-                if (previousUrl != null &&
-                    !previousUrl!.path.contains('${url?.path}')) {
-                  print(
-                      '===================================REDIRECT: $url from $previousUrl=================================');
-                  // Execute Flutter code upon redirection to the original checkout page
-                  if (url == WebUri.uri(Uri.parse(widget.url))) {
-                    print(
-                        '================================Redirected to Homeeeeeeeeeeeeeeeeeeeeeeeeeeeee: ${widget.url} ======= ${url?.path}');
-                    Navigator.pop(context);
-                  }
-                }
-                // Update the previous URL
+            onLoadStop: (controller, url) async {
+              if (!isInitialLoadComplete) {
                 setState(() {
-                  previousUrl = url;
+                  isInitialLoadComplete = true;
                 });
+                print(
+                    'CHAPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA, previous: $previousUrl');
+                print(
+                    '===================================LOAD START: ${url} weburi: ${WebUri('https://www.ethiochef.com/')}');
+                if (url == WebUri('https://www.ethiochef.com/')) {
+                  print('ETHIO CHEF REDIRECTION DETECTED');
+                  // await Offer18Plugin.trackConversion(
+                  //     Offer18EventArguments.REGISTRATION);
+                  RestartWidget.restartApp(context);
+                }
               }
             },
             onProgressChanged:
@@ -99,14 +96,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
               return NavigationActionPolicy.ALLOW;
             },
-            // onReceivedHttpError: (InAppWebViewController controller, WebResourceRequest request, WebResourceResponse err) {
-            //   setState(() {
-            //     isLoading = false;
-            //     error = true;
-            //   });
-            //   errorText = err.reasonPhrase!;
-            //
-            // },
             onReceivedServerTrustAuthRequest:
                 (InAppWebViewController controller,
                     URLAuthenticationChallenge challenge) async {
@@ -114,13 +103,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
               sslCertificateError = challenge.protectionSpace.sslError;
               return ServerTrustAuthResponse(
                   action: ServerTrustAuthResponseAction.PROCEED);
-              // if(sslCertificateError != null){
-              //     setState(() {
-              //       isLoading = false;
-              //       error = true;
-              //     });
-              //     errorText = sslCertificateError.message!;
-              // }
             },
           ),
           if (isLoading)
@@ -134,6 +116,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 child: Text(errorText),
               ),
             )
-        ]));
+        ],
+      ),
+    );
   }
 }

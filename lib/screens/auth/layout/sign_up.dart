@@ -131,7 +131,7 @@ class _SignUpState extends State<SignUp> {
                   hint: "your_promo_code".tr(),
                   type: 9,
                 ),
-                PhoneInputField(controller: phoneController),
+                PhoneInputField(formKey: _formKey, controller: phoneController),
                 if (_bannerAd2 != null)
                   AdBlock(
                     bannerAd: _bannerAd2,

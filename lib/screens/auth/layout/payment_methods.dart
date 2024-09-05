@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart' as e;
 import 'package:ethio_chef/models/payment_methods.dart';
 import 'package:ethio_chef/models/subscriptionplans.dart';
 import 'package:ethio_chef/screens/auth/layout/payment_screen.dart';
 import 'package:ethio_chef/widgets/ad_block.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../../main.dart';
 import '../../../models/user.dart';
@@ -104,7 +104,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MainAppBar(
-        title: 'please_select_payment_method'.tr(),
+        title: e.tr('please_select_payment_method'),
         hasMainIcons: false,
       ),
       body: FutureBuilder(
@@ -131,7 +131,8 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                     bannerAd: _bannerAd1,
                     isbottom: false,
                   ),
-                buildPaymentMethodScreen(snapshot.data as List<PaymentMethods>),
+                buildPaymentMethodScreen(
+                    snapshot.data as List<PaymentMethods>, context),
                 if (paymentInProgress)
                   Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -148,91 +149,94 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
     );
   }
 
-  Widget buildPaymentMethodScreen(List<PaymentMethods>? payments) {
+  Widget buildPaymentMethodScreen(
+      List<PaymentMethods>? payments, BuildContext context) {
     bool isTablet = ScreenUtils.isTablet(context);
     final double desiredItemWidth = isTablet ? 130.w : 150.w;
     final double desiredItemHeight = isTablet ? 120.h : 150.h;
     final double screenWidth = ScreenUtils.width(context);
     final int crossAxisCount = (screenWidth / desiredItemWidth).floor();
     final double childAspectRatio = desiredItemWidth / desiredItemHeight;
-    return Expanded(
-      child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: crossAxisCount,
-          childAspectRatio: childAspectRatio,
-          mainAxisSpacing: isTablet ? 5 : 0,
-        ),
-        itemCount: payments!.length,
-        shrinkWrap: true,
-        itemBuilder: (BuildContext context, int index) {
-          print(payments.length + 1);
-          print(paymentInProgress);
+    return Column(
+      children: [
+        GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
+            childAspectRatio: childAspectRatio,
+            mainAxisSpacing: isTablet ? 5 : 0,
+          ),
+          itemCount: payments!.length,
+          shrinkWrap: true,
+          itemBuilder: (context, int index) {
+            print(payments.length + 1);
+            print(paymentInProgress);
 
-          String bank_name = payments[index].bank_name == "CHAPA"
-              ? "CBE birr, telebirr and others"
-              : payments[index].bank_name == "ABYSINIA"
-                  ? "Pay in USD"
-                  : payments[index].bank_name == "ETHSWITCH"
-                      ? "Pay on ATM cards"
-                      : payments[index].bank_name;
+            String bank_name = payments[index].bank_name == "CHAPA"
+                ? "CBE birr, telebirr and others"
+                : payments[index].bank_name == "ABYSINIA"
+                    ? "Pay in USD"
+                    : payments[index].bank_name == "ETHSWITCH"
+                        ? "Pay on ATM cards"
+                        : payments[index].bank_name;
 
-          return Column(
-            children: [
-              RectangularPaymentCard(
-                payment_name: bank_name,
-                image_url: payments[index].image.toString(),
-                press: () async {
-                  final service = PaymentService();
-                  User unWanted = User(firstName: "", lastName: "");
-                  setState(() {
-                    paymentInProgress = true;
-                  });
-                  var response = await service.makePayment(
-                      widget.userData,
-                      payments[index].id,
-                      unWanted,
-                      widget.selectedSubscriptionPlan.price!,
-                      true);
-
-                  if (response.statusCode == 200) {
-                    if (payments[index].id != 6) {
-                      var checkoutUrl =
-                          jsonDecode(response.body)['data']['checkout_url'];
-                      print(jsonDecode(response.body)['data']['checkout_url']);
-                      print(checkoutUrl);
-                      setState(() {
-                        paymentInProgress == false;
-                      });
-                      await PersistentNavBarNavigator.pushNewScreen(context,
-                          screen: PaymentScreen(url: checkoutUrl));
-                      RestartWidget.restartApp(context);
-                    } else {
-                      Future.delayed(Duration(seconds: 60), () {
-                        print('TIME TO STOP LOADING');
-                        setState(() {
-                          paymentInProgress = false;
-                        });
-                      });
-                    }
-                  } else {
+            return Column(
+              children: [
+                RectangularPaymentCard(
+                  payment_name: bank_name,
+                  image_url: payments[index].image.toString(),
+                  press: () async {
+                    final service = PaymentService();
+                    User unWanted = User(firstName: "", lastName: "");
                     setState(() {
-                      paymentInProgress = false;
+                      paymentInProgress = true;
                     });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        (SnackBar(content: Text('telebirr_error'.tr()))));
-                  }
-                },
-              ),
-              if (index == payments.length / 2)
-                if (_bannerAd2 != null)
-                  AdBlock(
-                    bannerAd: _bannerAd2,
-                    isbottom: true,
-                  ),
-            ],
-          );
-        },
-      ),
+                    var response = await service.makePayment(
+                        widget.userData,
+                        payments[index].id,
+                        unWanted,
+                        widget.selectedSubscriptionPlan.price!,
+                        true);
+
+                    if (response.statusCode == 200) {
+                      if (payments[index].id != 6) {
+                        var checkoutUrl =
+                            jsonDecode(response.body)['data']['checkout_url'];
+                        print(
+                            jsonDecode(response.body)['data']['checkout_url']);
+                        print(checkoutUrl);
+                        setState(() {
+                          paymentInProgress == false;
+                        });
+                        await Get.to(() => PaymentScreen(url: checkoutUrl));
+                        RestartWidget.restartApp(context);
+                      } else {
+                        Future.delayed(Duration(seconds: 60), () {
+                          print('TIME TO STOP LOADING');
+                          setState(() {
+                            paymentInProgress = false;
+                          });
+                        });
+                      }
+                    } else {
+                      setState(() {
+                        paymentInProgress = false;
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          (SnackBar(content: Text(e.tr('telebirr_error')))));
+                    }
+                  },
+                ),
+                // if (index == payments.length / 2)
+              ],
+            );
+          },
+        ),
+        if (_bannerAd2 != null)
+          AdBlock(
+            bannerAd: _bannerAd2,
+            isbottom: true,
+          ),
+      ],
     );
   }
 }

@@ -1,4 +1,6 @@
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:android_play_install_referrer/android_play_install_referrer.dart';
+import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/deeplink/deep_link_handler.dart';
 import 'package:ethio_chef/models/language.dart';
@@ -20,6 +22,7 @@ import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 
 import 'firebase_options.dart';
@@ -63,13 +66,20 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(statusBarColor: AppTheme.primaryColor));
   WidgetsFlutterBinding.ensureInitialized();
-  // Offer18Plugin.initSDK('na.o18.click', '459', 'ethiochef-tid');
-  // Offer18Plugin.getReferrerInstallUrl();
+
   print(
       "==========================MobileAds.instance.initialize()====================================");
   MobileAds.instance.initialize();
   print(
       "=========================MobileAds.instance.initialize()=====================================");
+  ReferrerDetails referrerDetails =
+      await AndroidPlayInstallReferrer.installReferrer;
+  print('INSTALL REFERRER URL FETCHED: ${referrerDetails.installReferrer}');
+  AppMetrica.activate(
+      AppMetricaConfig("38bec3c7-b6e6-45f1-aba3-274f1d8d4110", logs: true));
+  AppMetrica.reportReferralUrl(referrerDetails.installReferrer ??
+      'Unknown Referrer: Google Play Services is not installed/enabled in user\'s device');
+
   await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 15));
   await AndroidAlarmManager.initialize();
   await EasyLocalization.ensureInitialized();
@@ -108,10 +118,11 @@ void main() async {
           EasyLocalization(
               supportedLocales: const [
         // needed to use these locales because om,ti  where not supported
-        Locale('en', 'AU'),
-        Locale('am'),
-        Locale('en', 'GB'),
-        Locale('en'),
+        Locale('en', 'AU'), //tigrigna
+        Locale('am'), //amharic
+        Locale('en', 'GB'), //oromiffa
+        Locale('es'), //somali
+        Locale('en'), //english
       ],
               path: 'assets/locale',
               startLocale: Locale('en'),
@@ -170,6 +181,15 @@ class _EthioChefState extends State<EthioChef> {
   }
 
   Future<void> _checkFirstTimeUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? isF = prefs.getBool('isF') ?? true;
+    if (isF) {
+      print('FIRST TIME USER');
+      // await Offer18Plugin.trackConversion(Offer18EventArguments.INSTALL);
+      // await AppMetrica.reportEvent('Install');
+      prefs.setBool('isF', false);
+    }
+
     print("check login status");
     if (navigatorKey.currentContext != null) {
       print('CONTEXT NOT NULL');

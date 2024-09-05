@@ -10,6 +10,10 @@ import 'authorization_service.dart';
 
 class FoodService {
   Future<List<Food>> fetchAllFood() async {
+    if (Language.getLocaleCode() == "ti" || Language.getLocaleCode() == "so") {
+      throw Exception("coming_soon");
+    }
+
     try {
       await ErrorUtil.checkConnection();
       final response = await http.get(Uri.parse(
@@ -29,6 +33,9 @@ class FoodService {
   }
 
   Future<List<Food>> fetchFoodBySubCategoryId(int subCategoryId) async {
+    if (Language.getLocaleCode() == "ti" || Language.getLocaleCode() == "so") {
+      throw Exception("coming_soon");
+    }
     try {
       await ErrorUtil.checkConnection();
       final response = await http.get(Uri.parse(
@@ -50,6 +57,9 @@ class FoodService {
 
   Future<List<Food>> fetchFoodByCategoryIdPaginated(
       int categoryId, int pageKey) async {
+    if (Language.getLocaleCode() == "ti" || Language.getLocaleCode() == "so") {
+      throw Exception("coming_soon");
+    }
     try {
       await ErrorUtil.checkConnection();
       final response = await http.get(Uri.parse(
@@ -60,7 +70,10 @@ class FoodService {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final List<dynamic> foodList = data['data'];
-        return foodList.map((json) => Food.fromJson(json)).toList();
+        var foodReturned = foodList.map((json) => Food.fromJson(json)).toList();
+        foodReturned.removeWhere(
+            (element) => element.name == null || element.name == "null");
+        return foodReturned;
       } else {
         throw Exception(response.statusCode.toString());
       }
@@ -70,6 +83,9 @@ class FoodService {
   }
 
   Future<List<Food>> fetchFoodByCategoryId(int categoryId) async {
+    if (Language.getLocaleCode() == "ti" || Language.getLocaleCode() == "so") {
+      throw Exception("coming_soon");
+    }
     try {
       await ErrorUtil.checkConnection();
       final response = await http.get(Uri.parse(
@@ -87,6 +103,9 @@ class FoodService {
   }
 
   Future<Food> fetchFoodById(int foodId) async {
+    if (Language.getLocaleCode() == "ti" || Language.getLocaleCode() == "so") {
+      throw Exception("coming_soon");
+    }
     try {
       await ErrorUtil.checkConnection();
       final accessToken = await AuthService.getAuthorizationToken();
@@ -119,6 +138,9 @@ class FoodService {
   }
 
   Future<List<Food>> fetchFoodBySearch(String query, int pageKey) async {
+    if (Language.getLocaleCode() == "ti" || Language.getLocaleCode() == "so") {
+      throw Exception("coming_soon");
+    }
     try {
       await ErrorUtil.checkConnection();
       final accessToken = await AuthService.getAuthorizationToken();

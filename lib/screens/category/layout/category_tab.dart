@@ -11,10 +11,8 @@ import '../../../models/category.dart';
 import '../../../models/food.dart';
 import '../../../services/food_service.dart';
 import '../../../utils/screen_utils.dart';
-import '../../../widgets/category/category_button.dart';
 import '../../../widgets/pull_to_refresh.dart';
 import '../../../widgets/screen_head.dart';
-import 'package:ethio_chef/models/language.dart';
 
 class CategoryCustomTab extends StatefulWidget {
   final List<Category> category;
@@ -27,13 +25,14 @@ class CategoryCustomTab extends StatefulWidget {
 class _CategoryCustomTabState extends State<CategoryCustomTab> {
   late Future<List<Food>> foods;
   final PagingController<int, Food> _pagingController =
-  PagingController(firstPageKey: 1);
+      PagingController(firstPageKey: 1);
   int selectedIndex = 0;
 
   Future<dynamic> fetchData(int id, int pageKey) async {
     try {
       final foodService = FoodService();
-      final foodData = await foodService.fetchFoodByCategoryIdPaginated(id, pageKey);
+      final foodData =
+          await foodService.fetchFoodByCategoryIdPaginated(id, pageKey);
       return foodData;
     } catch (error) {
       rethrow;
@@ -56,6 +55,7 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
     _loadAd();
     super.initState();
   }
+
   String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
   BannerAd? _bannerAd;
   BannerAd? _bannerAd2;
@@ -94,7 +94,6 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
         onAdLoaded: (ad) {
           setState(() {
             _bannerAd2 = ad as BannerAd;
-
           });
         },
         // Called when an ad request failed.
@@ -119,7 +118,6 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
         onAdLoaded: (ad) {
           setState(() {
             _bannerAd3 = ad as BannerAd;
-
           });
         },
         // Called when an ad request failed.
@@ -136,16 +134,14 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
     ).load();
   }
 
-
   @override
   Widget build(BuildContext context) {
     final bool isTablet = ScreenUtils.isTablet(context);
     final ThemeData theme = Theme.of(context);
     List<Tab> tabs = widget.category
-        .map((e) =>
-        Tab(
-          text: e.name!.toString(),
-        ))
+        .map((e) => Tab(
+              text: e.name!.toString(),
+            ))
         .toList();
     return SafeArea(
       child: DefaultTabController(
@@ -154,8 +150,10 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
           mainAxisSize: MainAxisSize.max,
           children: [
             if (_bannerAd != null)
-              AdBlock(bannerAd: _bannerAd, isbottom: false,),
-
+              AdBlock(
+                bannerAd: _bannerAd,
+                isbottom: false,
+              ),
             ScreenHead(
               hasNotification: true,
               screen: 1,
@@ -171,11 +169,11 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
               },
               backgroundColor: theme.colorScheme.primary,
               unselectedBackgroundColor: Colors.transparent,
-              unselectedLabelStyle:  TextStyle(
+              unselectedLabelStyle: TextStyle(
                   fontSize: isTablet ? 11.sp : 15.sp,
                   fontWeight: FontWeight.w500,
                   color: theme.colorScheme.primary),
-              labelStyle:  TextStyle(
+              labelStyle: TextStyle(
                   fontSize: isTablet ? 11.sp : 15.sp,
                   fontWeight: FontWeight.w600,
                   color: Colors.white),
@@ -183,34 +181,33 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
               radius: 5,
               tabs: tabs,
             ),
-
-             Expanded(
-                    child: RefreshWidget(
-                      child: VerticalFoodList(
-                        bannerAd2: _bannerAd2??null,
-                        bannerAd3: _bannerAd3??null,
-                        pagingController: _pagingController,
-                        isSearchList: false,
-                      ),
-                      onRefresh: () async {
-                        setState(() {
-                          _pagingController.refresh();
-                        });
-                      },
-                    ),
+            Expanded(
+              child: RefreshWidget(
+                child: VerticalFoodList(
+                  bannerAd2: _bannerAd2 ?? null,
+                  bannerAd3: _bannerAd3 ?? null,
+                  pagingController: _pagingController,
+                  isSearchList: false,
                 ),
-
-
+                onRefresh: () async {
+                  setState(() {
+                    _pagingController.refresh();
+                  });
+                },
+              ),
+            ),
           ],
         ),
       ),
     );
   }
+
   @override
   void dispose() {
     _pagingController.dispose();
     super.dispose();
   }
+
   List<Widget> getTabs() {
     return List.filled(
       widget.category.length,

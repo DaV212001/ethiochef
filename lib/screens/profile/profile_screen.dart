@@ -14,7 +14,6 @@ import '../../models/footer_data.dart';
 import '../../models/user.dart';
 import '../../models/user_profile.dart';
 import '../../services/authorization_service.dart';
-import '../../services/payment_service.dart';
 import '../../services/user_service.dart';
 import '../../utils/screen_utils.dart';
 import '../../widgets/error_card.dart';
@@ -105,13 +104,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       PersistentNavBarNavigator.pushNewScreen(context,
           screen: AuthScreen(), withNavBar: false);
     }
-    var mandate = await PaymentService().getMandateData();
-    if (mandate != 'empty') {
-      print('MANDATE: $mandate');
-      setState(() {
-        telebirr = true;
-      });
-    }
+    // var mandate = await PaymentService().getMandateData();
+    // if (mandate != 'empty') {
+    //   print('MANDATE: $mandate');
+    //   setState(() {
+    //     telebirr = true;
+    //   });
+    // }
     try {
       final userService = UserService();
       var userData = await userService.fetchUserProfile();

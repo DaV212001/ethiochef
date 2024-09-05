@@ -17,6 +17,7 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../services/authorization_service.dart';
 import '../services/firsebase_service.dart';
+import '../services/offer_18_plugin.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -41,6 +42,8 @@ class _MainScreenState extends State<MainScreen> {
       print('CONTEXT NULL');
     }
 
+    Offer18Plugin.initSDK('na.o18.click', '459', 'ethiochef_tid');
+    Offer18Plugin.getReferrerInstallUrl();
     _controller = PersistentTabController();
   }
 

@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/services/user_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,16 +24,16 @@ class UpdateProfileScreen extends StatefulWidget {
   final String email;
   final String phone;
   final Function() reFresh;
-  const UpdateProfileScreen({super.key,
-    required this.firstName,
-    required this.lastName,
-    required this.email,
-    required this.phone,
-    required this.hasEditButton,
-    required this.imagePath,
-    required this.isFile,
-    required this.reFresh
-  });
+  const UpdateProfileScreen(
+      {super.key,
+      required this.firstName,
+      required this.lastName,
+      required this.email,
+      required this.phone,
+      required this.hasEditButton,
+      required this.imagePath,
+      required this.isFile,
+      required this.reFresh});
 
   @override
   State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
@@ -55,7 +56,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     firstNameController.text = widget.firstName ?? '';
     lastNameController.text = widget.lastName ?? '';
     emailController.text = widget.email ?? '';
-    if(widget.phone != '') {
+    if (widget.phone != '') {
       String formattedNumber = widget.phone.substring(2);
       phoneNumberController.text = formattedNumber;
     }
@@ -86,7 +87,8 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   imagePath: profilePicture,
                   hasEditButton: isFile || profilePicture != null,
                   isFile: isFile,
-                  onClicked: showOptions, isUpdateScreen: true,
+                  onClicked: showOptions,
+                  isUpdateScreen: true,
                 ),
                 SizedBox(height: 15.h),
                 // Row(
@@ -116,61 +118,66 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   hint: "your_email".tr(),
                   type: InputField.EmailType,
                 ),
-                PhoneInputField(controller: phoneNumberController),
+                PhoneInputField(
+                    formKey: formKey, controller: phoneNumberController),
                 SizedBox(height: 20.h),
                 MainButton(
                     isLoading: isLoading,
-                    text: "edit".tr(), onPress: () async {
-                  setState(() {
-                    isLoading = true;
-                  });
-                  UserService userService = UserService();
-                  print("Updating");
-                  print(profilePicture);
-                  var response;
-                  if (profilePicture is File){
-                    response = await userService.updateProfile(
-                        firstNameController.text,
-                        lastNameController.text,
-                        emailController.text,
-                        phoneNumberController.text,
-                        profilePicture);
-                  }
-                  if(profilePicture is String){
-                    response = await userService.updateWithStringProfile(
-                        firstNameController.text,
-                        lastNameController.text,
-                        emailController.text,
-                        phoneNumberController.text,
-                        profilePicture);
-                  }
+                    text: "edit".tr(),
+                    onPress: () async {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      UserService userService = UserService();
+                      print("Updating");
+                      print(profilePicture);
+                      var response;
+                      if (profilePicture is File) {
+                        response = await userService.updateProfile(
+                            firstNameController.text,
+                            lastNameController.text,
+                            emailController.text,
+                            phoneNumberController.text,
+                            profilePicture);
+                      }
+                      if (profilePicture is String) {
+                        response = await userService.updateWithStringProfile(
+                            firstNameController.text,
+                            lastNameController.text,
+                            emailController.text,
+                            phoneNumberController.text,
+                            profilePicture);
+                      }
 
-                  if(response.statusCode == 200){
-                    SnackBar success = SnackBar(
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                        content: Text(
-                          "profile_update_successful".tr(),
-                        ));
-                    await ScaffoldMessenger.of(context).showSnackBar(success);
-                    widget.reFresh();
-                    Navigator.pop(context);
-                  }else{
-                    SnackBar failed = SnackBar(
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                        content: Text(
-                          "profile_update_failed".tr(),
-                        ));
-                    await ScaffoldMessenger.of(context).showSnackBar(failed);
-                  }
-                  setState(() {
-                    isLoading = false;
-                  });
-                }),
+                      if (response.statusCode == 200) {
+                        SnackBar success = SnackBar(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            content: Text(
+                              "profile_update_successful".tr(),
+                            ));
+                        await ScaffoldMessenger.of(context)
+                            .showSnackBar(success);
+                        widget.reFresh();
+                        Navigator.pop(context);
+                      } else {
+                        SnackBar failed = SnackBar(
+                            padding: EdgeInsets.symmetric(vertical: 20),
+                            content: Text(
+                              "profile_update_failed".tr(),
+                            ));
+                        await ScaffoldMessenger.of(context)
+                            .showSnackBar(failed);
+                      }
+                      setState(() {
+                        isLoading = false;
+                      });
+                    }),
               ],
             ),
           ),
         ));
   }
+
   Future getImageFromGallery() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
@@ -212,7 +219,9 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
             },
           ),
           CupertinoActionSheetAction(
-            child: Text('camera'.tr(),),
+            child: Text(
+              'camera'.tr(),
+            ),
             onPressed: () {
               // close the options modal
               Navigator.of(context).pop();
@@ -224,8 +233,4 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
       ),
     );
   }
-
-
-
-
 }

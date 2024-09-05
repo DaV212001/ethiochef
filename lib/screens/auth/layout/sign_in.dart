@@ -115,14 +115,19 @@ class _SignInState extends State<SignIn> {
               ),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
-                    children: [PhoneInputField(controller: phoneController)])),
+                child: Column(children: [
+                  PhoneInputField(
+                      formKey: _formKey,
+                      controller: phoneController,
+                      validate: true)
+                ])),
             AuthBtn(
               isLoading: isLoading,
               text: "sign_in_button".tr(),
               onPress: () async {
                 print("phoneController.text ${phoneController.text}");
                 if (_formKey.currentState!.validate()) {
+                  print(_formKey.currentState!.validate());
                   setState(() {
                     isLoading = true;
                   });
