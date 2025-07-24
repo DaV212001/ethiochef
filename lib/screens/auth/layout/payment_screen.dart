@@ -21,7 +21,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   String errorText = "";
   bool loadedAferError = false;
   bool isInitialLoadComplete = false; // Flag to prevent multiple executions
-  WebUri? previousUrl;
+  Uri? previousUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +34,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         children: [
           InAppWebView(
             initialUrlRequest: URLRequest(
-              url: WebUri.uri(
-                Uri.parse(widget.url),
-              ),
+              url: WebUri(widget.url),
             ),
             onLoadStop: (controller, url) async {
               if (!isInitialLoadComplete) {
@@ -46,8 +44,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 print(
                     'CHAPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA, previous: $previousUrl');
                 print(
-                    '===================================LOAD START: ${url} weburi: ${WebUri('https://www.ethiochef.com/')}');
-                if (url == WebUri('https://www.ethiochef.com/')) {
+                    '===================================LOAD START: ${url} weburi: ${Uri.parse('https://www.ethiochef.com/')}');
+                if (url == Uri.parse('https://www.ethiochef.com/')) {
                   print('ETHIO CHEF REDIRECTION DETECTED');
                   // await Offer18Plugin.trackConversion(
                   //     Offer18EventArguments.REGISTRATION);
@@ -64,22 +62,22 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 });
               }
             },
-            onReceivedError: (InAppWebViewController controller,
-                WebResourceRequest request, WebResourceError err) {
-              if (!loadedAferError) {
-                print("ERRORRRRRRRRRRRRRRRR");
-                controller.loadUrl(
-                  urlRequest: URLRequest(
-                    url: WebUri.uri(
-                      Uri.parse(widget.url),
-                    ),
-                  ),
-                );
-                setState(() {
-                  loadedAferError = true;
-                });
-              }
-            },
+            // onReceivedError: (InAppWebViewController controller,
+            //     WebResourceRequest request, WebResourceError err) {
+            //   if (!loadedAferError) {
+            //     print("ERRORRRRRRRRRRRRRRRR");
+            //     controller.loadUrl(
+            //       urlRequest: URLRequest(
+            //         url: WebUri.uri(
+            //           Uri.parse(widget.url),
+            //         ),
+            //       ),
+            //     );
+            //     setState(() {
+            //       loadedAferError = true;
+            //     });
+            //   }
+            // },
             shouldOverrideUrlLoading: (controller, navigationAction) async {
               // Log or analyze the URL being loaded
               String currentUrl = navigationAction.request.url.toString();

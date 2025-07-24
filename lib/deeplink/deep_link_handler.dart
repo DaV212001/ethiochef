@@ -1,6 +1,6 @@
+import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:uni_links/uni_links.dart';
 
 import '../screens/auth/auth_screen.dart';
 import '../services/authorization_service.dart';
@@ -43,7 +43,8 @@ class _DeepLinkHandlerState extends State<DeepLinkHandler>
 
   Future<Uri?> getInitialUriFromPlugin() async {
     try {
-      final uri = await getInitialUri();
+      final appLinks = AppLinks(); // AppLinks is singleton
+      final uri = await appLinks.getInitialLink();
       return uri;
     } on PlatformException catch (err) {
       print('Failed to get initial uri: $err');

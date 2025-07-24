@@ -9,13 +9,12 @@ import 'package:ethio_chef/widgets/auth/phone_input_field.dart';
 import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:logger/logger.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../../main.dart';
-import '../../../models/user.dart';
 import '../../../services/authorization_service.dart';
 import '../../../services/firsebase_service.dart';
 import '../../../services/subscription_checker.dart';
@@ -35,6 +34,7 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController phoneController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   bool isLoading = false;
   bool isNotLoggedin = false;
 
@@ -121,6 +121,19 @@ class _SignInState extends State<SignIn> {
                       controller: phoneController,
                       validate: true)
                 ])),
+            // Padding(
+            //     padding: const EdgeInsets.only(
+            //         left: 10, right: 10, top: 5, bottom: 10),
+            //     child: Column(children: [
+            //       InputField(
+            //         controller: passwordController,
+            //         hint: 'password'.tr(),
+            //         onChanged: (value) {
+            //           passwordController.text = value;
+            //         },
+            //         isObscure: true,
+            //       )
+            //     ])),
             AuthBtn(
               isLoading: isLoading,
               text: "sign_in_button".tr(),
@@ -179,113 +192,114 @@ class _SignInState extends State<SignIn> {
         content: Text("login_failed".tr()));
     try {
       UserService service = UserService();
-      response =
-          await service.login(phone.replaceFirst('+', '').replaceAll(' ', ''));
+      response = await service.login(
+          phone.replaceFirst('+', '').replaceAll(' ', ''), '');
+      Logger().d(response.body);
 
       if (response.statusCode == 200) {
-        var access_token = jsonDecode(response.body)['data']['session_token'];
-        var refresh_token = jsonDecode(response.body)['data']['refresh_token'];
+        var access_token = jsonDecode(response.body)['data']['token'];
+        var refresh_token = jsonDecode(response.body)['data']['token'];
 
-        print("logining in");
-        Map<String, dynamic> decodedToken = JwtDecoder.decode(access_token!);
-        final decodedUserData = User.fromJson(decodedToken['user']);
-        print(decodedUserData);
-        print(decodedToken);
-        print(decodedToken['user']['first_name']);
-        print(decodedToken['user']['last_name']);
-        print(decodedToken['user']['subscriber']);
-        if (decodedToken['user']['subscriber'] == null) {
-          setState(() {
-            isLoading = false;
-          });
-          showDialog(
-              context: context,
-              builder: (context) {
-                return Center(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Column(mainAxisSize: MainAxisSize.min, children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('sub_end'.tr()),
-                      ),
-                      Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: MainButton(
-                              text: 'sub_renew'.tr(),
-                              onPress: () {
-                                Navigator.pop(context);
-                                PersistentNavBarNavigator.pushNewScreen(
-                                  context,
-                                  screen: PaymentCheckout(
-                                    userFromSignUp: decodedUserData,
-                                    isSMS: true,
-                                    isNormalSubscription: false,
-                                  ),
-                                  withNavBar: false,
-                                  pageTransitionAnimation:
-                                      PageTransitionAnimation.cupertino,
-                                );
-                              }))
-                    ]),
-                  ),
-                );
-              });
-        }
-        print(decodedToken['user']['subscriber']['status']);
-        print(decodedToken['user']['subscriber']['isFromSMS']);
-        print(decodedToken['user']['subscriber']['due_date']);
+        print(access_token);
+        // Map<String, dynamic> decodedToken = JwtDecoder.decode(access_token!);
+        // final decodedUserData = User.fromJson(decodedToken['user']);
+        // print(decodedUserData);
+        // print(decodedToken);
+        // print(decodedToken['user']['first_name']);
+        // print(decodedToken['user']['last_name']);
+        // print(decodedToken['user']['subscriber']);
+        // if (decodedToken['user']['subscriber'] == null) {
+        // setState(() {
+        //   isLoading = false;
+        // });
+        // showDialog(
+        //     context: context,
+        //     builder: (context) {
+        //       return Center(
+        //         child: Container(
+        //           width: MediaQuery.of(context).size.width * 0.8,
+        //           decoration: BoxDecoration(
+        //             color: Colors.white,
+        //             borderRadius: BorderRadius.circular(20),
+        //           ),
+        //           child: Column(mainAxisSize: MainAxisSize.min, children: [
+        //             Padding(
+        //               padding: const EdgeInsets.all(8.0),
+        //               child: Text('sub_end'.tr()),
+        //             ),
+        //             Padding(
+        //                 padding: const EdgeInsets.all(8.0),
+        //                 child: MainButton(
+        //                     text: 'sub_renew'.tr(),
+        //                     onPress: () {
+        //                       Navigator.pop(context);
+        //                       PersistentNavBarNavigator.pushNewScreen(
+        //                         context,
+        //                         screen: PaymentCheckout(
+        //                           userFromSignUp: decodedUserData,
+        //                           isSMS: true,
+        //                           isNormalSubscription: false,
+        //                         ),
+        //                         withNavBar: false,
+        //                         pageTransitionAnimation:
+        //                             PageTransitionAnimation.cupertino,
+        //                       );
+        //                     }))
+        //           ]),
+        //         ),
+        //       );
+        //     });
+        // }
+        // print(decodedToken['user']['subscriber']['status']);
+        // print(decodedToken['user']['subscriber']['isFromSMS']);
+        // print(decodedToken['user']['subscriber']['due_date']);
 
-        if (decodedToken['user']['subscriber']['status'] == 'inactive') {
-          setState(() {
-            isLoading = false;
-          });
-          Map userData = {
-            'first_name': decodedToken['user']['first_name'],
-            'last_name': decodedToken['user']['first_name'],
-            'phone': decodedToken['user']['phone_number'],
-          };
-          showSubscriptionAlert(userData);
+        // if (decodedToken['user']['subscriber']['status'] == 'inactive') {
+        // setState(() {
+        //   isLoading = false;
+        // });
+        // Map userData = {
+        //   'first_name': decodedToken['user']['first_name'],
+        //   'last_name': decodedToken['user']['first_name'],
+        //   'phone': decodedToken['user']['phone_number'],
+        // };
+        // showSubscriptionAlert(userData);
+        // } else {
+        await SubscriptionStatus().checkStatus();
+        await AuthService.setAuthorizationToken(access_token);
+        await FirebaseService().checkTokenRegistration();
+        await AuthService.setRefreshToken(refresh_token);
+
+        setState(() {
+          isLoading = false;
+          isNotLoggedin = false;
+        });
+
+        if (widget.isfromDeepLink != null) {
+          print('IS DEEPLINK');
+          if (widget.isfromDeepLink == true) {
+            Navigator.pop(context);
+          } else {
+            print('IS NORMAL');
+            RestartWidget.restartApp(context);
+            ScaffoldMessenger.of(context).showSnackBar(success);
+          }
         } else {
-          await SubscriptionStatus().checkStatus();
-          await AuthService.setAuthorizationToken(access_token);
-          await FirebaseService().checkTokenRegistration();
-          await AuthService.setRefreshToken(refresh_token);
-
-          setState(() {
-            isLoading = false;
-            isNotLoggedin = false;
-          });
-
-          if (widget.isfromDeepLink != null) {
-            print('IS DEEPLINK');
-            if (widget.isfromDeepLink == true) {
+          if (widget.isFromNotification != null) {
+            if (widget.isFromNotification == true) {
+              print('IS NOTIFFFFFFFFFFFFFFFF');
+              SubscriptionStatus().updateStatus('User is subscribed');
               Navigator.pop(context);
             } else {
-              print('IS NORMAL');
               RestartWidget.restartApp(context);
               ScaffoldMessenger.of(context).showSnackBar(success);
             }
           } else {
-            if (widget.isFromNotification != null) {
-              if (widget.isFromNotification == true) {
-                print('IS NOTIFFFFFFFFFFFFFFFF');
-                SubscriptionStatus().updateStatus('User is subscribed');
-                Navigator.pop(context);
-              } else {
-                RestartWidget.restartApp(context);
-                ScaffoldMessenger.of(context).showSnackBar(success);
-              }
-            } else {
-              RestartWidget.restartApp(context);
-              ScaffoldMessenger.of(context).showSnackBar(success);
-            }
+            RestartWidget.restartApp(context);
+            ScaffoldMessenger.of(context).showSnackBar(success);
           }
         }
+        // }
       } else {
         // The login failed.
         jsonDecode(response.body);
@@ -329,6 +343,15 @@ class _SignInState extends State<SignIn> {
             isLoading = false;
             isNotLoggedin = true;
           });
+        }
+        if (jsonDecode(response.body).containsKey('error')) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              jsonDecode(response.body)['error'].toString(),
+              style: TextStyle(color: Colors.white),
+            ),
+            backgroundColor: Colors.orange,
+          ));
         }
         // ScaffoldMessenger.of(context).showSnackBar(failed);
       }

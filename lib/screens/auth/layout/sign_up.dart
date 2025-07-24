@@ -124,13 +124,13 @@ class _SignUpState extends State<SignUp> {
                   hint: "your_last_name".tr(),
                   type: InputField.NameType,
                 ),
-                InputField(
-                  controller: promoCodeController,
-                  icon: CupertinoIcons.person,
-                  label: 'promo_code'.tr(),
-                  hint: "your_promo_code".tr(),
-                  type: 9,
-                ),
+                // InputField(
+                //   controller: promoCodeController,
+                //   icon: CupertinoIcons.person,
+                //   label: 'promo_code'.tr(),
+                //   hint: "your_promo_code".tr(),
+                //   type: 9,
+                // ),
                 PhoneInputField(formKey: _formKey, controller: phoneController),
                 if (_bannerAd2 != null)
                   AdBlock(

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:ethio_chef/models/food.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
 import '../models/language.dart';
 import '../utils/constants.dart';
@@ -102,21 +103,96 @@ class FoodService {
     }
   }
 
+  Map<String, dynamic> transformSteps(List<dynamic> stepList) {
+    // Initialize the result object with empty maps for each language
+    Map<String, Map<String, String>> steps = {
+      'am': {},
+      'en': {},
+      'or': {},
+      'tg': {},
+      'so': {},
+    };
+
+    // Loop through each step in the list
+    for (var i = 0; i < stepList.length; i++) {
+      final step = stepList[i];
+
+      // Add the step to each language map using the index as the key
+      steps['am']![i.toString()] = step['step_am'];
+      steps['en']![i.toString()] = step['step_en'];
+      steps['or']![i.toString()] = step['step_or'];
+      steps['tg']![i.toString()] = step['step_tg'];
+      steps['so']![i.toString()] = step['step_so'];
+    }
+
+    // Return the final object
+    return {'steps': steps};
+  }
+
+  Map<String, dynamic> transformIngredients(List<dynamic> stepList) {
+    // Initialize the result object with empty maps for each language
+    Map<String, Map<String, String>> steps = {
+      'am': {},
+      'en': {},
+      'or': {},
+      'tg': {},
+      'so': {},
+    };
+
+    // Loop through each step in the list
+    for (var i = 0; i < stepList.length; i++) {
+      final step = stepList[i];
+
+      // Add the step to each language map using the index as the key
+      steps['am']![i.toString()] = step['ingredient_am'];
+      steps['en']![i.toString()] = step['ingredient_en'];
+      steps['or']![i.toString()] = step['ingredient_or'];
+      steps['tg']![i.toString()] = step['ingredient_tg'];
+      steps['so']![i.toString()] = step['ingredient_so'];
+    }
+
+    // Return the final object
+    return {'ingredients': steps};
+  }
+
   Future<Food> fetchFoodById(int foodId) async {
     if (Language.getLocaleCode() == "ti" || Language.getLocaleCode() == "so") {
       throw Exception("coming_soon");
     }
+
     try {
       await ErrorUtil.checkConnection();
       final accessToken = await AuthService.getAuthorizationToken();
       print("access_token $accessToken");
       final response = await http.get(
         Uri.parse(
-            '${Constants.url}/user/food/$foodId?&limit=1000&lang=${Language.getLocaleCode()}'),
+            'https://adminv2.ethiochef.com/api/food/$foodId?&limit=1000&lang=${Language.getLocaleCode()}'),
         headers: {
           'Authorization': 'JWT $accessToken',
         },
       );
+      Logger().i(jsonDecode(response.body));
+      var steps;
+      var ingredients;
+      try {
+        steps = await http.get(
+          Uri.parse('https://adminv2.ethiochef.com/api/steps/${foodId}'),
+          headers: {
+            'Authorization': 'JWT $accessToken',
+          },
+        );
+        Logger().i(steps.body);
+        ingredients = await http.get(
+          Uri.parse('https://adminv2.ethiochef.com/api/ingrediant/${foodId}'),
+          headers: {
+            'Authorization': 'JWT $accessToken',
+          },
+        );
+        Logger().i(jsonDecode(ingredients.body)['data']);
+      } on Exception catch (error, stack) {
+        Logger().t(error, stackTrace: stack);
+        rethrow;
+      }
 
       print("Response body ${Language.getLocaleCode()}");
       print(response.body);
@@ -124,15 +200,21 @@ class FoodService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        final foodData = data['data'];
+        final foodData = data['data'][0];
+        final stepsData = jsonDecode(steps.body);
+        final ingredientsData = jsonDecode(ingredients.body);
         print('CHECKING checkpointVIDEO FROM API: ${foodData['video']}');
-        Food food = Food.fromSingleFoodJson(foodData);
+        Food food = Food.fromSingleFoodJson(
+            foodData,
+            transformSteps(stepsData['data'])['steps'],
+            transformIngredients(ingredientsData['data'])['ingredients']);
         return food;
       } else {
         print('EXCEPTION FOUND HEREEEEEEEEEEE');
         throw Exception(response.statusCode.toString());
       }
-    } catch (error) {
+    } catch (error, stack) {
+      Logger().t(error, stackTrace: stack);
       rethrow;
     }
   }

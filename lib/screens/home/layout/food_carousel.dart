@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,7 +23,6 @@ class FoodCarousel extends StatefulWidget {
 
 class _FoodCarouselState extends State<FoodCarousel> {
   Future? _future;
-  final CarouselController carouselController = CarouselController();
   int currentIndex = 0;
   @override
   void initState() {

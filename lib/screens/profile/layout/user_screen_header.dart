@@ -8,14 +8,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
-import '../../../../models/user_profile.dart';
 import '../../../../services/user_service.dart';
 import '../../../../theme/app_theme.dart';
 import '../../../../utils/screen_utils.dart';
 import '../../../../widgets/profile/profile_widget.dart';
+import '../../../models/user.dart';
 
 class UserScreenHeader extends StatefulWidget {
-  final UserProfile user;
+  final User user;
   final Function() reFresh;
   UserScreenHeader({super.key, required this.user, required this.reFresh});
 
@@ -34,9 +34,9 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
   void initState() {
     print(
         "============================================================================================================================================");
-    if (widget.user.user?.profile_picture != null) {
-      print("pic my ${widget.user.user?.profile_picture}");
-      profilePicture = widget.user.user?.profile_picture;
+    if (widget.user?.profile_picture != null) {
+      print("pic my ${widget.user?.profile_picture}");
+      profilePicture = widget.user?.profile_picture;
     } else {
       profilePicture = null;
     }
@@ -49,8 +49,8 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    String? firstName = widget.user.user?.firstName;
-    String? lastName = widget.user.user?.lastName;
+    String? firstName = widget.user?.firstName;
+    String? lastName = widget.user?.lastName;
     String formattedName = "${firstName} ${lastName}";
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -60,7 +60,7 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
         children: [
           ProfileWidget(
             isUpdateScreen: false,
-            imagePath: widget.user.user?.profile_picture,
+            imagePath: widget.user?.profile_picture,
             hasEditButton: false,
             isFile: isFile,
             onClicked: showOptions,
@@ -76,9 +76,9 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w800,
                         color: theme.colorScheme.secondaryContainer)),
-                if (widget.user.user?.email != null) SizedBox(height: 5.h),
-                if (widget.user.user?.email != null)
-                  Text(widget.user.user!.email.toString(),
+                if (widget.user?.email != null) SizedBox(height: 5.h),
+                if (widget.user?.email != null)
+                  Text(widget.user!.email.toString(),
                       style: TextStyle(
                           fontSize: 15.sp,
                           fontWeight: FontWeight.w400,
@@ -92,8 +92,8 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
                   backgroundColor:
                       MaterialStatePropertyAll(theme.colorScheme.primary)),
               onPressed: () {
-                print(widget.user.user?.phone);
-                String? str = widget.user.user?.phone.toString();
+                print(widget.user?.phone);
+                String? str = widget.user?.phone.toString();
                 String? phone = str?.substring(1);
                 print(phone);
                 PersistentNavBarNavigator.pushNewScreen(context,
@@ -101,9 +101,9 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
                         imagePath: profilePicture,
                         hasEditButton: false,
                         isFile: isFile,
-                        email: widget.user.user?.email ?? '',
-                        firstName: widget.user.user!.firstName,
-                        lastName: widget.user.user!.lastName,
+                        email: widget.user?.email ?? '',
+                        firstName: widget.user!.firstName,
+                        lastName: widget.user!.lastName,
                         phone: phone.toString(),
                         reFresh: () {
                           print("call this");
@@ -197,10 +197,10 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
     try {
       UserService service = UserService();
       response = await service.updateProfile(
-          widget.user.user!.firstName,
-          widget.user.user!.lastName,
-          widget.user.user!.email.toString(),
-          widget.user.user!.phone.toString(),
+          widget.user!.firstName,
+          widget.user!.lastName,
+          widget.user!.email.toString(),
+          widget.user!.phone.toString(),
           profilePicture);
       print("==========response1 ==== ${response.statusCode}");
       if (response.statusCode == 200) {

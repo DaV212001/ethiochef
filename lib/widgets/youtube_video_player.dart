@@ -1,6 +1,5 @@
-import 'package:ethio_chef/generated/assets.dart';
 import 'package:flutter/material.dart';
-import 'package:pod_player/pod_player.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class YoutubeVideoPlayer extends StatefulWidget {
   final String link;
@@ -12,40 +11,67 @@ class YoutubeVideoPlayer extends StatefulWidget {
 }
 
 class _YoutubeVideoPlayerState extends State<YoutubeVideoPlayer> {
-  late final PodPlayerController controller;
+  late YoutubePlayerController _controller;
+  bool _isPlayerReady = false;
 
   @override
   void initState() {
-    controller = PodPlayerController(
-      playVideoFrom: PlayVideoFrom.youtube(
-        widget.link,
+    final videoId = YoutubePlayer.convertUrlToId(widget.link);
+    _controller = YoutubePlayerController(
+      initialVideoId: videoId ?? '',
+      flags: const YoutubePlayerFlags(
+        autoPlay: true,
+        mute: false,
+        loop: false,
+        enableCaption: true,
+        forceHD: true,
       ),
-      podPlayerConfig: const PodPlayerConfig(
-          autoPlay: false, isLooping: false, videoQualityPriority: [720, 360]),
-    )..initialise();
+    )..addListener(_playerListener);
+    _controller.load(videoId ?? '');
     super.initState();
+  }
+
+  void _playerListener() {
+    if (_isPlayerReady || !_controller.value.isReady) return;
+    setState(() {
+      _isPlayerReady = true;
+    });
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    _controller.removeListener(_playerListener);
+    _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return Container(
-        child: PodVideoPlayer(
-      podProgressBarConfig: PodProgressBarConfig(
-          playingBarColor: theme.colorScheme.primary,
-          circleHandlerColor: theme.colorScheme.primary,
-          bufferedBarColor: theme.colorScheme.primary),
-      controller: controller,
-      backgroundColor: theme.colorScheme.tertiary,
-      videoThumbnail: const DecorationImage(
-        image: AssetImage(Assets.imagesLogo),
+
+    return YoutubePlayer(
+      controller: _controller,
+      showVideoProgressIndicator: true,
+      progressIndicatorColor: theme.colorScheme.primary,
+      progressColors: ProgressBarColors(
+        playedColor: theme.colorScheme.primary,
+        handleColor: theme.colorScheme.primary,
+        bufferedColor: theme.colorScheme.primary.withOpacity(0.3),
       ),
-    ));
+      // topActions: <Widget>[
+      //   const SizedBox(width: 8.0),
+      //   Expanded(
+      //     child: Text(
+      //       _controller.metadata.title,
+      //       style: TextStyle(
+      //         color: theme.colorScheme.onPrimary,
+      //         fontWeight: FontWeight.w500,
+      //       ),
+      //       overflow: TextOverflow.ellipsis,
+      //       maxLines: 1,
+      //     ),
+      //   ),
+      // ],
+    );
   }
 }

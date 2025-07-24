@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:logger/logger.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/models/quickalert_type.dart';
@@ -483,23 +484,31 @@ class _DeleteButtonState extends State<DeleteButton> {
             deleting = true;
           });
           UserService service = UserService();
-          bool deleted = await service.deleteUserSubscription();
-          if (deleted) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(
-              e.tr('del_succ'),
-            )));
-            RestartWidget.restartApp(context);
-          } else {
+          try {
+            bool deleted = await service.deleteUserSubscription();
+            if (deleted) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(
+                e.tr('del_succ'),
+              )));
+              RestartWidget.restartApp(context);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(
+                e.tr('del_fail'),
+              )));
+            }
+          } catch (err, s) {
+            Logger().t(err, stackTrace: s);
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(
               e.tr('del_fail'),
             )));
+          } finally {
+            setState(() {
+              deleting = false;
+            });
           }
-
-          setState(() {
-            deleting = false;
-          });
         },
         style: ButtonStyle(
             backgroundColor: MaterialStatePropertyAll<Color>(Colors.red)),

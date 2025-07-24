@@ -1,5 +1,6 @@
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:android_play_install_referrer/android_play_install_referrer.dart';
+import 'package:app_links/app_links.dart';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/deeplink/deep_link_handler.dart';
@@ -67,11 +68,6 @@ void main() async {
       SystemUiOverlayStyle(statusBarColor: AppTheme.primaryColor));
   WidgetsFlutterBinding.ensureInitialized();
 
-  print(
-      "==========================MobileAds.instance.initialize()====================================");
-  MobileAds.instance.initialize();
-  print(
-      "=========================MobileAds.instance.initialize()=====================================");
   ReferrerDetails referrerDetails =
       await AndroidPlayInstallReferrer.installReferrer;
   print('INSTALL REFERRER URL FETCHED: ${referrerDetails.installReferrer}');
@@ -79,7 +75,11 @@ void main() async {
       AppMetricaConfig("38bec3c7-b6e6-45f1-aba3-274f1d8d4110", logs: true));
   AppMetrica.reportReferralUrl(referrerDetails.installReferrer ??
       'Unknown Referrer: Google Play Services is not installed/enabled in user\'s device');
-
+  print(
+      "==========================MobileAds.instance.initialize()====================================");
+  await MobileAds.instance.initialize();
+  print(
+      "=========================MobileAds.instance.initialize()=====================================");
   await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 15));
   await AndroidAlarmManager.initialize();
   await EasyLocalization.ensureInitialized();
@@ -88,7 +88,7 @@ void main() async {
   );
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
-
+  final appLinks = AppLinks(); // AppLinks is singleton
   await flutterLocalNotificationsPlugin
       .resolvePlatformSpecificImplementation<
           AndroidFlutterLocalNotificationsPlugin>()

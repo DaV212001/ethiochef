@@ -56,3 +56,34 @@ class SubscriptionPlans {
     print("Subscriptions done");
   }
 }
+
+dynamic transformSubscriptionResponse(Map<String, dynamic> response) {
+  final List data = response['data'];
+  return data.map((item) {
+    return {
+      "id": item['subscription_id'],
+      "plan": {
+        "en": item['plan_en'],
+        "am": item['plan_am'],
+        "or": item['plan_or'],
+        "tr": item['plan_tr'],
+      },
+      "price": int.tryParse(item['price'] ?? '0'),
+      "duration": int.tryParse(item['duration'] ?? '0'),
+      "created_at": item['created_at'] ?? DateTime.now().toIso8601String(),
+      "updated_at": item['updated_at'] ?? DateTime.now().toIso8601String(),
+      "last_paid_date": item['last_paid_date'],
+      "user": {
+        "id": item['id'],
+        "first_name": item['first_name'] ?? '',
+        "last_name": item['last_name'] ?? '',
+        "email": item['email'],
+        "phone_number": null,
+        "profile_picture": item['avatar'],
+        "email_verified_at": item['email_verified_at'],
+        "created_at": item['created_at'],
+        "updated_at": item['updated_at'],
+      }
+    };
+  }).toList();
+}

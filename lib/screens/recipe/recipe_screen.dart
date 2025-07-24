@@ -37,19 +37,20 @@ class _RecipeScreenState extends State<RecipeScreen> {
   }
 
   Future<dynamic> fetchData() async {
-    try {
-      print('fetchData');
-      final foodService = FoodService();
-      var foodData = await foodService.fetchFoodById(widget.food.id!);
-      print('fetchDataBYID');
-      final commentService = CommentService();
-      var commentData = await commentService.fetchComments(widget.food.id!);
-      final userService = UserService();
-      var userData = await userService.fetchLoggedInUser();
-      return [foodData, commentData, userData];
-    } on Exception catch (error) {
-      print('ERROR CAUGHT: $error');
-    }
+    // try {
+    print('fetchData');
+    final foodService = FoodService();
+    var foodData = await foodService.fetchFoodById(widget.food.id!);
+    print('fetchDataBYID');
+    final commentService = CommentService();
+    var commentData = await commentService.fetchComments(widget.food.id!);
+    final userService = UserService();
+    var userData = await userService.fetchLoggedInUser();
+    return [foodData, commentData, userData];
+    // } on Exception catch (error, s) {
+    //   Logger().t(error, stackTrace: s);
+    //   print('ERROR CAUGHT: $error');
+    // }
   }
 
   static String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
@@ -116,6 +117,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
                   }
                   if (snapshot.hasError) {
                     print(snapshot.error);
+                    print(snapshot.stackTrace);
                     return Center(
                         child: ErrorCard(
                       errorType: snapshot.error.toString(),
@@ -154,7 +156,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
             child: RecipeHeaderImage(
               food: food,
               likes: food.likes!,
-              user: user,
+              user: User(firstName: 'Guest', lastName: 'User'),
               image: food.thumbnail,
               onLike: () {},
               refresh: () {

@@ -87,9 +87,10 @@ class NotificationScheduled {
           tz.local,
         ),
         await notificationDetails(),
-        androidAllowWhileIdle: true,
+        // androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime);
+            UILocalNotificationDateInterpretation.absoluteTime,
+        androidScheduleMode: AndroidScheduleMode.exact);
   }
 
   static tz.TZDateTime _scheduleDaily(Timer time) {
@@ -143,12 +144,13 @@ class NotificationScheduled {
         const NotificationDetails(
             android: AndroidNotificationDetails('channel id', 'channel name',
                 importance: Importance.defaultImportance)),
-        androidAllowWhileIdle: true,
+        // androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
         payload:
             'Scheduled Notification :${notificationTimes.indexOf(time) == 0 ? 'breakfast' : notificationTimes.indexOf(time) == 1 ? 'lunch' : notificationTimes.indexOf(time) == 2 ? 'supper' : 'dinner'}', // Unique payload for each notification
         matchDateTimeComponents: DateTimeComponents.time,
+        androidScheduleMode: AndroidScheduleMode.exact,
       );
     }
   }

@@ -4,7 +4,8 @@ import 'dart:io';
 import 'package:ethio_chef/models/subscriptionplans.dart';
 import 'package:ethio_chef/utils/constants.dart';
 import 'package:http/http.dart' as http;
-import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:logger/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user.dart';
 import '../models/user_profile.dart';
@@ -31,23 +32,30 @@ class UserService {
     bool status = await AuthService.isUserLoggedIn();
     if (status == true) {
       final access_token = await AuthService.getAuthorizationToken();
-
-      Map<String, dynamic> decodedToken = JwtDecoder.decode(access_token!);
-      final user = User.fromJson(decodedToken['user']);
+      final userData = await SharedPreferences.getInstance();
+      String? userString = userData.getString('user_data');
+      Logger().d(jsonDecode(userString!));
+      Map<String, dynamic> userDataJson = jsonDecode(jsonDecode(userString!));
+      Logger().d(userDataJson);
+      // Map<String, dynamic> decodedToken = JwtDecoder.decode(access_token!);
+      final user = User.fromJson(userDataJson['data']);
       return user;
     }
     return null;
   }
 
-  Future<http.Response> login(String phone) async {
+  Future<http.Response> login(String phone, String password) async {
     String phone_number = "251" + phone;
-    print({"phone_number": phone_number});
+    print({"phone_number": phone_number, "password": password});
     final response = await http.post(
-        Uri.parse("https://apiv2.ethiochef.com/user/login"),
-        body: {"phone_number": phone_number});
+        Uri.parse("https://adminv2.ethiochef.com/api/login_mobile"),
+        body: {
+          "phone_number": phone_number,
+        });
     print(response.body);
     print(response.statusCode);
-
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString('user_data', jsonEncode(response.body));
     return response;
   }
 
@@ -215,7 +223,7 @@ class UserService {
     var access_token = await AuthService.getAuthorizationToken();
     User user = await fetchLoggedInUser();
     final response = await http.get(
-        Uri.parse("${Constants.url}/user/subscription/${user.id}"),
+        Uri.parse("https://adminv2.ethiochef.com/api/subscription/${user.id}"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'JWT ${access_token}',
@@ -225,7 +233,7 @@ class UserService {
 
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
-      var subscriptionPlansData = jsonData['data'];
+      var subscriptionPlansData = transformSubscriptionResponse(jsonData);
       if (subscriptionPlansData is List) {
         subscriptionPlans = subscriptionPlansData
             .map((subscriptionPlansData) =>
@@ -244,18 +252,20 @@ class UserService {
   Future<bool> deleteUserSubscription() async {
     var access_token = await AuthService.getAuthorizationToken();
     User user = await fetchLoggedInUser();
+    Logger().d(user.id);
     final response = await http.get(
-        Uri.parse("${Constants.url}/user/subscription/${user.id}"),
+        Uri.parse("https://adminv2.ethiochef.com/api/subscription/${user.id}"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'JWT ${access_token}'
         });
+    Logger().d(response.body);
     var jsonData1;
     if (response.statusCode == 200) {
       jsonData1 = json.decode(response.body);
     }
     final Uri url = Uri.parse(
-        "${Constants.url}/user/subscription/delete/${jsonData1['data']["id"]}");
+        "${Constants.url}/user/subscription/delete/${jsonData1['data'][0]["subscription_id"]}");
 
     final response1 = await http.delete(
       url,
@@ -264,6 +274,7 @@ class UserService {
         'Authorization': 'JWT ${access_token}',
       },
     );
+    Logger().d(response1.body);
     final jsonData = json.decode(response1.body);
     return jsonData['message'] == 'User subscription deleted successfully';
   }

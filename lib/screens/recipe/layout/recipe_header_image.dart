@@ -4,13 +4,11 @@ import 'package:ethio_chef/widgets/cached_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../../models/comment.dart';
 import '../../../models/food.dart';
 import '../../../models/user.dart';
 import '../../../widgets/youtube_video_player.dart';
-import '../../comment/add_edit_comment.dart';
 
 class RecipeHeaderImage extends StatefulWidget {
   final String image;
@@ -41,14 +39,14 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
   late bool isLiked = false;
   @override
   void initState() {
-    for (int i = 0; i < widget.food!.likes!.length; i++) {
-      if (widget.user.id == widget.food?.likes![i].user_id) {
-        setState(() {
-          isLiked = true;
-        });
-        break;
-      }
-    }
+    // for (int i = 0; i < widget.food!.likes!.length; i++) {
+    //   if (widget.user.id == widget.food?.likes![i].user_id) {
+    //     setState(() {
+    //       isLiked = true;
+    //     });
+    //     break;
+    //   }
+    // }
     super.initState();
   }
 
@@ -99,30 +97,30 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
                   ])))
         ]),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      PersistentNavBarNavigator.pushNewScreen(context,
-                          screen: AddEditComment(
-                              isEditing: false,
-                              foodId: widget.foodId,
-                              refresh: widget.refresh));
-                    },
-                    child: circularBackground(
-                      child: Icon(
-                        CupertinoIcons.text_bubble,
-                        color: theme.colorScheme.primary,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
+            // Expanded(
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.end,
+            //     children: [
+            //       GestureDetector(
+            //         onTap: () {
+            //           PersistentNavBarNavigator.pushNewScreen(context,
+            //               screen: AddEditComment(
+            //                   isEditing: false,
+            //                   foodId: widget.foodId,
+            //                   refresh: widget.refresh));
+            //         },
+            //         child: circularBackground(
+            //           child: Icon(
+            //             CupertinoIcons.text_bubble,
+            //             color: theme.colorScheme.primary,
+            //           ),
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // ),
             SizedBox(
               width: 5.h,
             ),
@@ -158,25 +156,25 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
             SizedBox(
               width: 5.h,
             ),
-            GestureDetector(
-              onTap: () async {
-                print("isLiked pressed widget.isLiked = ${isLiked}");
-                if (isLiked == false) {
-                  await likeFood();
-                } else {
-                  print("unlike");
-                  await unLikeFood();
-                }
-              },
-              child: circularBackground(
-                child: Icon(
-                  isLiked
-                      ? CupertinoIcons.hand_thumbsup_fill
-                      : CupertinoIcons.hand_thumbsup,
-                  color: theme.colorScheme.primary,
-                ),
-              ),
-            ),
+            // GestureDetector(
+            //   onTap: () async {
+            //     print("isLiked pressed widget.isLiked = ${isLiked}");
+            //     if (isLiked == false) {
+            //       await likeFood();
+            //     } else {
+            //       print("unlike");
+            //       await unLikeFood();
+            //     }
+            //   },
+            //   child: circularBackground(
+            //     child: Icon(
+            //       isLiked
+            //           ? CupertinoIcons.hand_thumbsup_fill
+            //           : CupertinoIcons.hand_thumbsup,
+            //       color: theme.colorScheme.primary,
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ],

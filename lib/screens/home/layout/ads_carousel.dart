@@ -1,4 +1,4 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart' as cs;
 import 'package:easy_localization/easy_localization.dart' as e;
 import 'package:ethio_chef/widgets/screen_head.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +37,8 @@ class _AdsCarouselState extends State<AdsCarousel> {
     {"id": 3, "image_path": 'assets/images/photo_3.jpg'}
   ];
 
-  final CarouselController carouselController = CarouselController();
+  final cs.CarouselSliderController carouselController =
+      cs.CarouselSliderController();
   int currentIndex = 0;
 
   @override
@@ -56,7 +57,7 @@ class _AdsCarouselState extends State<AdsCarousel> {
                 height: isTablet ? 250.h : 200.h,
               ),
             if (widget.promotion.isNotEmpty)
-              CarouselSlider(
+              cs.CarouselSlider(
                 items: widget.promotion.map((promotion) {
                   return Builder(
                     builder: (BuildContext context) {
@@ -97,7 +98,7 @@ class _AdsCarouselState extends State<AdsCarousel> {
                   );
                 }).toList(),
                 carouselController: carouselController,
-                options: CarouselOptions(
+                options: cs.CarouselOptions(
                   scrollPhysics: const BouncingScrollPhysics(),
                   autoPlay: true,
                   aspectRatio: 2,

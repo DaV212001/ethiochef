@@ -10,13 +10,23 @@ class CachedImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FastCachedImage(
-      //works with webp
       url: url,
       fit: fit,
       fadeInDuration: const Duration(milliseconds: 250),
       errorBuilder: (context, exception, stacktrace) {
-        return Center(
-          child: Image.asset('assets/images/logo.png'),
+        // Retry with a prepended URL if the original one fails
+        final retryUrl = 'https://www.ethiochef.com$url';
+
+        return FastCachedImage(
+          url: retryUrl,
+          fit: fit,
+          fadeInDuration: const Duration(milliseconds: 250),
+          errorBuilder: (context, exception, stacktrace) {
+            // Fallback if the retried URL also fails
+            return Center(
+              child: Image.asset('assets/images/logo.png'),
+            );
+          },
         );
       },
       loadingBuilder: (context, progress) {

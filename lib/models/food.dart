@@ -54,7 +54,8 @@ class Food {
       this.page,
       this.isLiked});
 
-  factory Food.fromSingleFoodJson(Map<String, dynamic> json) {
+  factory Food.fromSingleFoodJson(Map<String, dynamic> json,
+      Map<String, dynamic> stepsList, Map<String, dynamic> ingredients) {
     print("==============================================================");
     print("==============================================================");
     print("Likes = ${json['likes']}");
@@ -65,16 +66,16 @@ class Food {
       return parts.last;
     }
 
-    String image = json['image'];
+    String image = json['poster_image'];
 
     String i = clearPath(image);
     int meal = 0;
 
-    if (json['meal_time']['breakfast'] == true) {
+    if (json['breakfast'] == 1) {
       meal = 1;
-    } else if (json['meal_time']['lunch'] == true) {
+    } else if (json['lunch'] == 1) {
       meal = 2;
-    } else if (json['meal_time']['super'] == true) {
+    } else if (json['super'] == 1) {
       meal = 3;
     } else {
       meal = 4;
@@ -84,26 +85,45 @@ class Food {
     print('parsing food');
     return Food(
       id: json['id'],
-      subcategoriesId: json['subcategories_id'],
+      subcategoriesId: json['subcategories_id'] ?? 0,
       categoryId: json['category_id'] ?? 0,
-      name: json['name'][Language.getLocaleCode()] ?? json['name']["en"],
-      description: json['description'][Language.getLocaleCode()] ??
+      name: json['name_${Language.getLocaleCode()}'] ?? json['name']["en"],
+      description: json['description_${Language.getLocaleCode()}'] ??
           json['description']["en"],
       mealTime: meal,
-      related_recipe: (json['similar_recipies'] as List)
-          .map((product) => Food.fromRelatedRecipe(product))
-          .toList(),
-      preparationTime: json['cooking_time'],
-      video: json['video'] ?? null,
-      servings: json['serving'],
-      stepsList: json['steps'][Language.getLocaleCode()] ?? null,
-      ingredients: json['ingredients'][Language.getLocaleCode()] ?? null,
+      related_recipe: json.containsKey('similar_recipies') &&
+              json['similar_recipies'] != null
+          ? (json['similar_recipies'] as List)
+              .map((product) => Food.fromRelatedRecipe(product))
+              .toList()
+          : [],
+      preparationTime: json['cooking_time'] is String
+          ? int.parse(json['cooking_time'])
+          : json['cooking_time'],
+      video: json['video'] != null
+          ? (json['video'] as String).replaceAll('\\', '/')
+          : null,
+      servings: json['serving'] is String? int.parse(json['serving']) : json['serving'],
+      stepsList: stepsList == []
+          ? json['steps'][Language.getLocaleCode()] ?? null
+          : stepsList[Language.getLocaleCode()],
+      ingredients: ingredients == []
+          ? json['ingredients'][Language.getLocaleCode()] ?? null
+          : ingredients[Language.getLocaleCode()],
       thumbnail: thumbnail,
-      likes: List<Likes>.from(
-          json['likes']?.map((dynamic like) => Likes.fromFood(like)) ?? []),
-      comments: json['comments'],
-      createdAt: DateTime.parse(json['created_at']),
-      updatedAt: DateTime.parse(json['updated_at']),
+      likes: json.containsKey('likes') && json['likes'] != null
+          ? List<Likes>.from(
+              json['likes']?.map((dynamic like) => Likes.fromFood(like)) ?? [])
+          : [],
+      comments: json.containsKey('comments') && json['comments'] != null
+          ? json['comments']
+          : [],
+      createdAt: json.containsKey('created_at') && json['created_at'] != null
+          ? DateTime.parse(json['created_at'])
+          : DateTime.now(),
+      updatedAt: json.containsKey('updated_at') && json['updated_at'] != null
+          ? DateTime.parse(json['updated_at'])
+          : DateTime.now(),
       nextPage: json['next_page'] ?? 0,
       prevPage: json['prev_page'] ?? 0,
       page: json['page'],

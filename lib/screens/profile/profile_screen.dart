@@ -1,18 +1,17 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/auth/auth_screen.dart';
-import 'package:ethio_chef/screens/subscription/layout/payment.dart';
 import 'package:ethio_chef/services/footer_service.dart';
 import 'package:ethio_chef/widgets/ad_block.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:logger/logger.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/footer_data.dart';
 import '../../models/user.dart';
-import '../../models/user_profile.dart';
 import '../../services/authorization_service.dart';
 import '../../services/user_service.dart';
 import '../../utils/screen_utils.dart';
@@ -40,6 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void initState() {
+    Logger().i('Getting logged in user');
     _future = fetchData();
     loadAd();
     super.initState();
@@ -113,14 +113,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // }
     try {
       final userService = UserService();
-      var userData = await userService.fetchUserProfile();
-      if (userData?.message == "User is not subscribed") {
-        setState(() {
-          isLoading = false;
-          print("userData ${userData?.message}");
-          user = userData?.user ?? User(lastName: '', firstName: '');
-        });
-      }
+      Logger().i('Getting logged in user');
+      var userData = await userService.fetchLoggedInUser();
+      Logger().i('Got logged in user');
+      // if (userData?.message == "User is not subscribed") {
+      //   setState(() {
+      //     isLoading = false;
+      //     print("userData ${userData?.message}");
+      //     user = userData?.user ?? User(lastName: '', firstName: '');
+      //   });
+      // }
       print("userData1 $userData");
       FooterService foot = FooterService();
       var footerData = await foot.getFooterData();
@@ -236,7 +238,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ]),
                       );
                     }
-                    return buildUserScreen(snapshot.data[0] as UserProfile,
+                    return buildUserScreen(snapshot.data[0] as User,
                         snapshot.data[1] as FooterData);
                   })),
         ),
@@ -248,7 +250,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
-  Widget buildUserScreen(UserProfile user, FooterData data) {
+  Widget buildUserScreen(User user, FooterData data) {
     final bool isTablet = ScreenUtils.isTablet(context);
     ThemeData theme = Theme.of(context);
     return RefreshWidget(
@@ -278,35 +280,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         _future = fetchData();
                       });
                     }),
-                if (user.message == "User is not subscribed")
-                  GestureDetector(
-                    onTap: () {
-                      PersistentNavBarNavigator.pushNewScreen(
-                        context,
-                        screen: PaymentCheckout(
-                            isSMS: true, isNormalSubscription: true),
-                        withNavBar: false,
-                        pageTransitionAnimation:
-                            PageTransitionAnimation.cupertino,
-                      );
-                    },
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10),
-                      width: double.infinity,
-                      color: Colors.red,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 5),
-                        child: Text(
-                          'please_subscribe_now'.tr(),
-                          style: TextStyle(
-                              fontSize: isTablet ? 11.sp : 15.sp,
-                              fontWeight: FontWeight.w600,
-                              color: theme.colorScheme.secondary),
-                        ),
-                      ),
-                    ),
-                  ),
+                // if (user.message == "User is not subscribed")
+                //   GestureDetector(
+                //     onTap: () {
+                //       PersistentNavBarNavigator.pushNewScreen(
+                //         context,
+                //         screen: PaymentCheckout(
+                //             isSMS: true, isNormalSubscription: true),
+                //         withNavBar: false,
+                //         pageTransitionAnimation:
+                //             PageTransitionAnimation.cupertino,
+                //       );
+                //     },
+                //     child: Container(
+                //       margin: EdgeInsets.symmetric(horizontal: 10),
+                //       width: double.infinity,
+                //       color: Colors.red,
+                //       child: Padding(
+                //         padding: const EdgeInsets.symmetric(
+                //             horizontal: 20.0, vertical: 5),
+                //         child: Text(
+                //           'please_subscribe_now'.tr(),
+                //           style: TextStyle(
+                //               fontSize: isTablet ? 11.sp : 15.sp,
+                //               fontWeight: FontWeight.w600,
+                //               color: theme.colorScheme.secondary),
+                //         ),
+                //       ),
+                //     ),
+                //   ),
                 RouteList(
                   banner: _bannerAd3,
                   telebirr: telebirr,
@@ -334,7 +336,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           isLoading = true;
                         });
                         UserService service = UserService();
-                        await service.logOut(user.user!.id!);
+                        await service.logOut(user!.id!);
                         await AuthService.logout();
                         SharedPreferences shared =
                             await SharedPreferences.getInstance();

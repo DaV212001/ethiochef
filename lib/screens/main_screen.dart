@@ -7,7 +7,6 @@ import 'package:ethio_chef/screens/competition/competitions_screen.dart';
 import 'package:ethio_chef/screens/home/home_screen.dart';
 import 'package:ethio_chef/screens/profile/profile_screen.dart';
 import 'package:ethio_chef/screens/upload_recipe/upload_recipe_screen.dart';
-import 'package:ethio_chef/services/subscription_checker.dart';
 import 'package:ethio_chef/widgets/loading.dart';
 import 'package:ethio_chef/widgets/pull_to_refresh.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
@@ -52,7 +51,7 @@ class _MainScreenState extends State<MainScreen> {
     setState(() {
       isLoading = true;
     });
-    await SubscriptionStatus().checkStatus();
+    // await SubscriptionStatus().checkStatus();
     print("check login status");
     var token = await AuthService.getAuthorizationToken();
     if (token == "none") {
