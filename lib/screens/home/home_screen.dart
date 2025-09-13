@@ -156,23 +156,23 @@ class _HomeScreenState extends State<HomeScreen>
               ));
             }
             return buildHomePage(
-                snapshot.data[0] as List<Category>,
-                snapshot.data[1] as List<Food>,
-                snapshot.data[2] as List<Food>,
-                snapshot.data[3] as List<Food>,
-                snapshot.data[4] as List<Food>,
-                snapshot.data[5] as List<Promotion>);
+                category: snapshot.data[0] as List<Category>,
+                breakfast: snapshot.data[1] as List<Food>,
+                lunch: snapshot.data[2] as List<Food>,
+                superMeal: snapshot.data[3] as List<Food>,
+                dinner: snapshot.data[4] as List<Food>,
+                promotion: snapshot.data[5] as List<Promotion>);
           }),
     );
   }
 
   Widget buildHomePage(
-      List<Category> category,
-      List<Food> breakfast,
-      List<Food> lunch,
-      List<Food> superMeal,
-      List<Food> dinner,
-      List<Promotion> promotion) {
+      {required List<Category> category,
+      required List<Food> breakfast,
+      required List<Food> lunch,
+      required List<Food> superMeal,
+      required List<Food> dinner,
+      required List<Promotion> promotion}) {
     final bool isTablet = ScreenUtils.isTablet(context);
     return RefreshWidget(
       child: SafeArea(

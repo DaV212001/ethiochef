@@ -483,7 +483,7 @@ Widget supportButton(Color color, String? link, String image, bool isTablet,
               child: Text(
                 text ?? "get_support".tr(),
                 softWrap: true,
-                maxLines: 2,
+                maxLines: 3,
               ))
         ],
       ),

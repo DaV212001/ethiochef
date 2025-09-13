@@ -296,7 +296,7 @@ class UserService {
         'Authorization': 'JWT $access_token',
       },
     );
-
+    Logger().d(response.body);
     final jsonData = json.decode(response.body);
 
     if (response.statusCode == 200) {

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
 import '../models/food.dart';
 import '../models/language.dart';
@@ -21,8 +22,10 @@ class MealService {
             '${Constants.url}/user/food/breakfast?&limit=1000&lang=${Language.getLocaleCode()}'),
         headers: {'Authorization': 'JWT $access_token'},
       );
+
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
+        Logger().f(data);
         final List<dynamic> foodList = data['data'];
         return foodList
             .map((json) => Food.fromMealJson(json, 1, false))
