@@ -1,6 +1,4 @@
 import 'package:ethio_chef/models/food.dart';
-import 'package:ethio_chef/services/authorization_service.dart';
-import 'package:ethio_chef/services/subscription_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -35,9 +33,12 @@ class _CategoryCardState extends State<CategoryCard> {
   @override
   void initState() {
     super.initState();
-    imageUrl = widget.food.thumbnail.startsWith('https://www.ethiochef.com')
-        ? widget.food.thumbnail
-        : 'https://www.ethiochef.com${widget.food.thumbnail}'; // Initialize with the original URL
+    imageUrl =
+            // widget.food.thumbnail.startsWith('https://www.ethiochef.com')
+            //     ?
+            widget.food.thumbnail
+        // : 'https://www.ethiochef.com${widget.food.thumbnail}'
+        ; // Initialize with the original URL
   }
 
   @override
@@ -46,26 +47,26 @@ class _CategoryCardState extends State<CategoryCard> {
     if (widget.name == null) {
       return GestureDetector(
           onTap: () async {
-            setState(() {
-              isLoading = true;
-            });
-            String? status = SubscriptionStatus().status;
-            setState(() {
-              isLoading = false;
-            });
-            if (await AuthService.getAuthorizationToken() == 'none') {
-              PersistentNavBarNavigator.pushNewScreen(
-                context,
-                withNavBar: false,
-                screen: AuthScreen(isSignIn: true),
-              );
-            } else {
-              PersistentNavBarNavigator.pushNewScreen(
-                context,
-                withNavBar: false,
-                screen: RecipeScreen(food: widget.food),
-              );
-            }
+            // setState(() {
+            //   isLoading = true;
+            // });
+            // String? status = SubscriptionStatus().status;
+            // setState(() {
+            //   isLoading = false;
+            // });
+            // if (await AuthService.getAuthorizationToken() == 'none') {
+            //   PersistentNavBarNavigator.pushNewScreen(
+            //     context,
+            //     withNavBar: false,
+            //     screen: AuthScreen(isSignIn: true),
+            //   );
+            // } else {
+            PersistentNavBarNavigator.pushNewScreen(
+              context,
+              withNavBar: false,
+              screen: RecipeScreen(food: widget.food),
+            );
+            // }
             // print("Status  = = = = = = = =  = $status");
             // switch (status) {
             //   case "Not logged in":

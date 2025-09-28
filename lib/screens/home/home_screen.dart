@@ -1,10 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
-import '../../generated/assets.dart';
 import '../../models/category.dart';
 import '../../models/food.dart';
 import '../../models/promotion.dart';
@@ -12,18 +10,15 @@ import '../../services/category_service.dart';
 import '../../services/meal_service.dart';
 import '../../services/promotion_service.dart';
 import '../../services/scheduled_notification_service.dart';
-import '../../utils/constants.dart';
 import '../../utils/screen_utils.dart';
 import '../../utils/update_manager.dart';
 import '../../widgets/ad_block.dart';
 import '../../widgets/error_card.dart';
 import '../../widgets/loading.dart';
 import '../../widgets/pull_to_refresh.dart';
-import '../competition/competitions_screen.dart';
 import '../recipe_status/my_submitted_recipe.dart';
 import 'layout/ads_carousel.dart';
 import 'layout/category_carousel.dart';
-import 'layout/meal_tab.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -202,21 +197,21 @@ class _HomeScreenState extends State<HomeScreen>
                       SizedBox(
                         height: 15.h,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8.0, bottom: 8),
-                        child: supportButton(Colors.blue, Constants.supportLink,
-                            Assets.socialTelegram, isTablet,
-                            text: 'rec_food'.tr()),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(top: 8.0, bottom: 8),
+                      //   child: supportButton(Colors.blue, Constants.supportLink,
+                      //       Assets.socialTelegram, isTablet,
+                      //       text: 'rec_food'.tr()),
+                      // ),
                       // ElevatedButton(onPressed: (){
                       //   pushNewScreen(context, screen: FromNotif(timeOfDay: 'lunch'));
                       // }, child: SizedBox()),
-                      HomeCategoryTab(
-                        breakfast: breakfast,
-                        lunch: lunch,
-                        superMeal: superMeal,
-                        dinner: dinner,
-                      ),
+                      // HomeCategoryTab(
+                      //   breakfast: breakfast,
+                      //   lunch: lunch,
+                      //   superMeal: superMeal,
+                      //   dinner: dinner,
+                      // ),
                       if (_bannerAd1 != null)
                         AdBlock(
                           bannerAd: _bannerAd1,

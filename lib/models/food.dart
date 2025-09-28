@@ -13,8 +13,8 @@ class Food {
   final String? Name;
   final String? description;
   final int? mealTime;
-  final Map<String, dynamic>? stepsList;
-  final Map<String, dynamic>? ingredients;
+  final Map<String, Map<String, dynamic>>? stepsList;
+  final Map<String, Map<String, dynamic>>? ingredients;
   final int? servings;
   final int? preparationTime;
   final String? posterImage;
@@ -103,7 +103,9 @@ class Food {
       video: json['video'] != null
           ? (json['video'] as String).replaceAll('\\', '/')
           : null,
-      servings: json['serving'] is String? int.parse(json['serving']) : json['serving'],
+      servings: json['serving'] is String
+          ? int.parse(json['serving'])
+          : json['serving'],
       stepsList: stepsList == []
           ? json['steps'][Language.getLocaleCode()] ?? null
           : stepsList[Language.getLocaleCode()],

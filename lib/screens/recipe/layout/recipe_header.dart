@@ -3,7 +3,6 @@ import 'package:ethio_chef/models/food.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../models/language.dart';
 import '../../../utils/screen_utils.dart';
 
 class RecipeHeader extends StatelessWidget {
@@ -115,7 +114,7 @@ class RecipeHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "dish_description".tr(),
+              "Lesson Description".tr(),
               style: TextStyle(
                   fontSize: isTablet ? 15.sp : 20.sp,
                   fontWeight: FontWeight.w800,

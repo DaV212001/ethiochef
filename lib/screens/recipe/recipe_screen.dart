@@ -13,8 +13,6 @@ import '../../services/food_service.dart';
 import '../../widgets/error_card.dart';
 import '../../widgets/loading.dart';
 import '../../widgets/pull_to_refresh.dart';
-import '../../widgets/recipe/share_button.dart';
-import '../comment/food_comments.dart';
 import 'layout/recipe_related.dart';
 import 'layout/recipe_tabs.dart';
 
@@ -131,7 +129,9 @@ class _RecipeScreenState extends State<RecipeScreen> {
                   return buildRecipeScreen(
                       snapshot.data[0] as Food,
                       snapshot.data[1] as List<Comments>,
-                      snapshot.data[2] as User);
+                      snapshot.data[2] != null
+                          ? snapshot.data[2] as User
+                          : null);
                 })),
         onRefresh: () async {
           setState(() {
@@ -140,7 +140,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
         });
   }
 
-  Widget buildRecipeScreen(Food food, List<Comments> comment, User user) {
+  Widget buildRecipeScreen(Food food, List<Comments> comment, User? user) {
     ThemeData theme = Theme.of(context);
     return SafeArea(
       child: SingleChildScrollView(
@@ -155,7 +155,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
           SafeArea(
             child: RecipeHeaderImage(
               food: food,
-              likes: food.likes!,
+              likes: food.likes ?? [],
               user: User(firstName: 'Guest', lastName: 'User'),
               image: food.thumbnail,
               onLike: () {},
@@ -184,18 +184,19 @@ class _RecipeScreenState extends State<RecipeScreen> {
                     bannerAd: _bannerAd2,
                     isbottom: false,
                   ),
-                CommentScreen(
-                  foodId: food.id!,
-                  comments: comment,
-                  refresh: () {
-                    print("Should call this guy");
-                    setState(() {
-                      _future = fetchData();
-                    });
-                  },
-                  user: user,
-                ),
-                if (!food.related_recipe!.isEmpty)
+                // CommentScreen(
+                //   foodId: food.id!,
+                //   comments: comment,
+                //   refresh: () {
+                //     print("Should call this guy");
+                //     setState(() {
+                //       _future = fetchData();
+                //     });
+                //   },
+                //   user: user,
+                // ),
+                if (food.related_recipe != null &&
+                    !food.related_recipe!.isEmpty)
                   RecipeRelated(food: food.related_recipe),
                 if (_bannerAd3 != null)
                   AdBlock(
@@ -205,7 +206,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
               ],
             ),
           ),
-          ShareButton(food: food),
+          // ShareButton(food: food),
         ],
       )),
     );

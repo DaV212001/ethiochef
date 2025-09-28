@@ -1,13 +1,10 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/food.dart';
-import 'package:ethio_chef/screens/recipe/layout/recipe_ingredients.dart';
-import 'package:ethio_chef/screens/recipe/layout/recipe_steps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../utils/screen_utils.dart';
-
 
 class RecipeScreenTab extends StatefulWidget {
   final Food food;
@@ -37,91 +34,107 @@ class _RecipeScreenTabState extends State<RecipeScreenTab> {
             },
             backgroundColor: theme.colorScheme.primary,
             unselectedBackgroundColor: Colors.transparent,
-            unselectedLabelStyle:  TextStyle(
+            unselectedLabelStyle: TextStyle(
                 fontSize: isTablet ? 11.sp : 15.sp,
                 fontWeight: FontWeight.w500,
                 color: theme.colorScheme.primary),
-            labelStyle:  TextStyle(
+            labelStyle: TextStyle(
                 fontSize: isTablet ? 11.sp : 15.sp,
                 fontWeight: FontWeight.w600,
                 color: Colors.white),
             contentPadding: EdgeInsets.symmetric(horizontal: 10),
             radius: 5,
-            tabs: [
-              Tab(
-                  text: "ingredients".tr()
-              ),
-              Tab(
-                  text: "steps".tr()
-              )
-            ],
+            tabs: [Tab(text: "Books".tr()), Tab(text: "Tests".tr())],
           ),
-
-          Container(
-            height: 300,
-            child: selectedIndex == 0 ? ListView.builder(
-              shrinkWrap: true,
-              itemCount: 1,
-              physics: BouncingScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              itemBuilder: (context, index) {
-                index++;
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: widget.food.ingredients!.entries.map((ingredient) {
-                    return Flex(
-                      direction: Axis.vertical,
+          selectedIndex == 0
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: 1,
+                  physics: BouncingScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (context, index) {
+                    index++;
+                    return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${index++}. ${ingredient.value}",
-                          softWrap: true,
-                          overflow: TextOverflow.visible,
-                          style: TextStyle(
-                              fontSize: isTablet ? 15.sp : 19.sp,
-                              fontWeight: FontWeight.w600,
-                              color: theme.colorScheme.secondaryContainer),
-                        ),
-                        SizedBox(height: 10)
-                      ],
+                      children: widget.food.ingredients!['en']!.entries
+                          .map((ingredient) {
+                        return Card(
+                          color: Theme.of(context).cardColor,
+                          // padding: const EdgeInsets.all(8.0),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                                // direction: Axis.horizontal,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(Icons.book),
+                                  const SizedBox(width: 8.0),
+                                  Expanded(
+                                    child: Text(
+                                      "${ingredient.value}",
+                                      softWrap: true,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: isTablet ? 15.sp : 19.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: theme
+                                              .colorScheme.secondaryContainer),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10)
+                                ]),
+                          ),
+                        );
+                      }).toList(),
                     );
-                  }).toList(),
-                );
-              },): ListView.builder(
-              shrinkWrap: true,
-              itemCount: 1,
-              physics: BouncingScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              itemBuilder: (context, index) {
-                index++;
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: widget.food.stepsList!.entries.map((step) {
-                    return Flex(
-                      direction: Axis.vertical,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const SizedBox(width: 8.0),
-                        Text(
-                          "${index++}. ${step.value}",
-                          softWrap: true,
-                          overflow: TextOverflow.visible,
-                          style: TextStyle(
-                              fontSize: isTablet ? 15.sp : 19.sp,
-                              fontWeight: FontWeight.w600,
-                              color: theme.colorScheme.secondaryContainer),
-                        ),
-                        SizedBox(height: 10)
-                      ]
-                    );
-                  }).toList()
-                );
-              })
-          )
+                  },
+                )
+              : ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: 1,
+                  physics: BouncingScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (context, index) {
+                    index++;
+                    return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children:
+                            widget.food.stepsList!['en']!.entries.map((step) {
+                          return Card(
+                            color: Theme.of(context).cardColor,
+                            // padding: const EdgeInsets.all(8.0),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                  // direction: Axis.horizontal,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Icon(Icons.list_alt_outlined),
+                                    const SizedBox(width: 8.0),
+                                    Expanded(
+                                      child: Text(
+                                        "${step.value}",
+                                        softWrap: true,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            fontSize: isTablet ? 15.sp : 19.sp,
+                                            fontWeight: FontWeight.w600,
+                                            color: theme.colorScheme
+                                                .secondaryContainer),
+                                      ),
+                                    ),
+                                    SizedBox(height: 10)
+                                  ]),
+                            ),
+                          );
+                        }).toList());
+                  })
         ],
       ),
     );

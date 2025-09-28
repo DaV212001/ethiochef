@@ -1,5 +1,4 @@
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'package:android_play_install_referrer/android_play_install_referrer.dart';
+// import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:app_links/app_links.dart';
 import 'package:appmetrica_plugin/appmetrica_plugin.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -22,6 +21,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:play_install_referrer/play_install_referrer.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -68,8 +68,7 @@ void main() async {
       SystemUiOverlayStyle(statusBarColor: AppTheme.primaryColor));
   WidgetsFlutterBinding.ensureInitialized();
 
-  ReferrerDetails referrerDetails =
-      await AndroidPlayInstallReferrer.installReferrer;
+  ReferrerDetails referrerDetails = await PlayInstallReferrer.installReferrer;
   print('INSTALL REFERRER URL FETCHED: ${referrerDetails.installReferrer}');
   AppMetrica.activate(
       AppMetricaConfig("38bec3c7-b6e6-45f1-aba3-274f1d8d4110", logs: true));
@@ -81,7 +80,7 @@ void main() async {
   print(
       "=========================MobileAds.instance.initialize()=====================================");
   await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 15));
-  await AndroidAlarmManager.initialize();
+  // await AndroidAlarmManager.initialize();
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
