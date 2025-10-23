@@ -1,5 +1,5 @@
-import 'package:android_play_install_referrer/android_play_install_referrer.dart';
 import 'package:flutter/services.dart';
+import 'package:play_install_referrer/play_install_referrer.dart';
 
 class Offer18Plugin {
   static const MethodChannel _channel = MethodChannel('offer18_plugin');
@@ -16,7 +16,7 @@ class Offer18Plugin {
   static Future<void> trackConversion(Map<String, String> args) async {
     if (args['tid'] == "{REFERRER_TID}") {
       ReferrerDetails referrerDetails =
-          await AndroidPlayInstallReferrer.installReferrer;
+          await PlayInstallReferrer.installReferrer;
       print('INSTALL REFERRER URL FETCHED: ${referrerDetails.installReferrer}');
       if (referrerDetails.installReferrer != null) {
         args['tid'] = referrerDetails.installReferrer!.split('=')[1];

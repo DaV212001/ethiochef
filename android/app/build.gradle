@@ -40,8 +40,8 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     namespace = "com.peacetechnology.ethiochef"
-    compileSdkVersion 35
-    ndkVersion = "26.1.10909125"
+    compileSdkVersion 36
+    ndkVersion = "29.0.13846066"
 
     compileOptions {
         coreLibraryDesugaringEnabled true
