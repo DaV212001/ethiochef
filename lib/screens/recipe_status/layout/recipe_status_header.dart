@@ -1,14 +1,11 @@
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RecipeStatusHeaderImage extends StatelessWidget {
   final File? image;
-  const RecipeStatusHeaderImage(
-      {super.key,
-        required this.image
-      });
+  const RecipeStatusHeaderImage({super.key, required this.image});
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -19,15 +16,14 @@ class RecipeStatusHeaderImage extends StatelessWidget {
         width: width,
         height: height * 0.4,
         child: ClipRRect(
-          child: image! !=null?Image.file(
-              image!,
-              fit: BoxFit.fill
-          ):Image.asset(
-            'assets/images/logo.png',
-            fit: BoxFit.fill,
-            height: 100.h,
-            width: 100.w,
-          ),
+          child: image! != null
+              ? Image.file(image!, fit: BoxFit.fill)
+              : Image.asset(
+                  'assets/images/logo.jpg',
+                  fit: BoxFit.fill,
+                  height: 100.h,
+                  width: 100.w,
+                ),
         ),
       ),
       Positioned(
@@ -46,7 +42,8 @@ class RecipeStatusHeaderImage extends StatelessWidget {
                     child: Icon(
                       Icons.arrow_back,
                       color: theme.colorScheme.onSecondary,
-                    ), context: context,
+                    ),
+                    context: context,
                   ))
             ],
           ),
@@ -55,7 +52,8 @@ class RecipeStatusHeaderImage extends StatelessWidget {
     ]);
   }
 
-  Widget circularBackground({required Widget child, required BuildContext context}) {
+  Widget circularBackground(
+      {required Widget child, required BuildContext context}) {
     return Container(
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(

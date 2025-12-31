@@ -114,7 +114,7 @@ class RecipeHeader extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Lesson Description".tr(),
+              "Description".tr(),
               style: TextStyle(
                   fontSize: isTablet ? 15.sp : 20.sp,
                   fontWeight: FontWeight.w800,

@@ -336,7 +336,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           isLoading = true;
                         });
                         UserService service = UserService();
-                        await service.logOut(user!.id!);
+                        // await service.logOut(user!.id!);
                         await AuthService.logout();
                         SharedPreferences shared =
                             await SharedPreferences.getInstance();

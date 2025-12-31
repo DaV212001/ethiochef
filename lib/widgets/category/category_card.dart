@@ -64,7 +64,7 @@ class _CategoryCardState extends State<CategoryCard> {
             PersistentNavBarNavigator.pushNewScreen(
               context,
               withNavBar: false,
-              screen: RecipeScreen(food: widget.food),
+              screen: RecipeScreen(chapter: widget.food),
             );
             // }
             // print("Status  = = = = = = = =  = $status");
@@ -156,6 +156,7 @@ class _CategoryCardState extends State<CategoryCard> {
 
   Widget buildCoverImage() {
     ThemeData theme = Theme.of(context);
+    // Logger().d(imageUrl);
     return Container(
         color: theme.cardColor,
         height: coverHeight,
@@ -167,7 +168,7 @@ class _CategoryCardState extends State<CategoryCard> {
             fit: BoxFit.fill,
             errorBuilder: (context, error, stackTrace) {
               return Image.asset(
-                'assets/images/logo.png', // A fallback image in case both URLs fail
+                'assets/images/logo.jpg', // A fallback image in case both URLs fail
                 fit: BoxFit.fill,
               );
             },
@@ -182,7 +183,7 @@ class _CategoryCardState extends State<CategoryCard> {
         child: CircleAvatar(
           backgroundColor: Colors.white,
           child: Image.asset(
-            'assets/images/logo.png',
+            'assets/images/logo.jpg',
             height: 80,
             fit: BoxFit.fill,
           ),

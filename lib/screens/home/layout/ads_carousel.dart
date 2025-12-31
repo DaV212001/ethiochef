@@ -53,7 +53,7 @@ class _AdsCarouselState extends State<AdsCarousel> {
           children: [
             if (widget.promotion.isEmpty)
               Image.asset(
-                "assets/images/logo.png",
+                "assets/images/logo.jpg",
                 height: isTablet ? 250.h : 200.h,
               ),
             if (widget.promotion.isNotEmpty)

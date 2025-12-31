@@ -18,9 +18,10 @@ class FoodService {
 
     try {
       // Return all lessons instead of API call
-      print("LOADING ALL LESSONS: ${PlaceHolderData.getAllLessons().length} lessons");
+      print(
+          "LOADING ALL LESSONS: ${PlaceHolderData.getAllLessons().length} lessons");
       return PlaceHolderData.getAllLessons();
-      
+
       // Original API call code (commented out):
       // await ErrorUtil.checkConnection();
       // final response = await http.get(Uri.parse(
@@ -69,9 +70,10 @@ class FoodService {
     }
     try {
       // Return lessons for specific subject instead of API call
-      print("LOADING LESSONS FOR SUBJECT $categoryId: ${PlaceHolderData.getLessonsForSubject(categoryId).length} lessons");
+      print(
+          "LOADING LESSONS FOR SUBJECT $categoryId: ${PlaceHolderData.getLessonsForSubject(categoryId).length} lessons");
       return PlaceHolderData.getLessonsForSubject(categoryId);
-      
+
       // Original API call code (commented out):
       // await ErrorUtil.checkConnection();
       // final response = await http.get(Uri.parse(
@@ -95,26 +97,29 @@ class FoodService {
   }
 
   Future<List<Food>> fetchFoodByCategoryId(int categoryId) async {
+    Logger().i(categoryId);
     if (Language.getLocaleCode() == "ti" || Language.getLocaleCode() == "so") {
       throw Exception("coming_soon");
     }
     try {
       // Return lessons for specific subject instead of API call
-      print("LOADING LESSONS FOR SUBJECT $categoryId: ${PlaceHolderData.getLessonsForSubject(categoryId).length} lessons");
-      return PlaceHolderData.getLessonsForSubject(categoryId);
-      
+      // print("LOADING LESSONS FOR SUBJECT $categoryId: ${PlaceHolderData.getLessonsForSubject(categoryId).length} lessons");
+      // return PlaceHolderData.getLessonsForSubject(categoryId);
+
       // Original API call code (commented out):
-      // await ErrorUtil.checkConnection();
-      // final response = await http.get(Uri.parse(
-      //     '${Constants.url}/user/food/category/$categoryId/?limit=1000&lang=${Language.getLocaleCode()}'));
-      // if (response.statusCode == 200) {
-      //   final data = jsonDecode(response.body);
-      //   final List<dynamic> foodList = data['data'];
-      //   return foodList.map((json) => Food.fromJson(json)).toList();
-      // } else {
-      //   throw Exception(response.statusCode.toString());
-      // }
-    } catch (error) {
+      await ErrorUtil.checkConnection();
+      final response = await http.get(Uri.parse(
+          'https://api.asteghi.com/api/chapter-for-specific-subject/$categoryId'));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        Logger().d(data);
+        final List<dynamic> foodList = data['data'];
+        return foodList.map((json) => Food.fromJson(json)).toList();
+      } else {
+        throw Exception(response.statusCode.toString());
+      }
+    } catch (error, stack) {
+      Logger().t(error, stackTrace: stack);
       rethrow;
     }
   }
@@ -171,25 +176,25 @@ class FoodService {
     return {'ingredients': steps};
   }
 
-  Future<Food> fetchFoodById(int foodId) async {
+  Future<Food> fetchFoodById(Food foodDataObject) async {
     if (Language.getLocaleCode() == "ti" || Language.getLocaleCode() == "so") {
       throw Exception("coming_soon");
     }
 
     try {
       // Return specific lesson by ID instead of API call
-      print("LOADING LESSON BY ID: $foodId");
-      List<Food> allLessons = PlaceHolderData.getAllLessons();
-      Food? lesson = allLessons.firstWhere(
-        (lesson) => lesson.id == foodId,
-        orElse: () => throw Exception("Lesson not found"),
-      );
-      return lesson;
-      
+      // print("LOADING LESSON BY ID: $foodId");
+      // List<Food> allLessons = PlaceHolderData.getAllLessons();
+      // Food? lesson = allLessons.firstWhere(
+      //   (lesson) => lesson.id == foodId,
+      //   orElse: () => throw Exception("Lesson not found"),
+      // );
+      // return lesson;
+
       // Original API call code (commented out):
-      // await ErrorUtil.checkConnection();
-      // final accessToken = await AuthService.getAuthorizationToken();
-      // print("access_token $accessToken");
+      await ErrorUtil.checkConnection();
+      final accessToken = await AuthService.getAuthorizationToken();
+      print("access_token $accessToken");
       // final response = await http.get(
       //   Uri.parse(
       //       'https://adminv2.ethiochef.com/api/food/$foodId?&limit=1000&lang=${Language.getLocaleCode()}'),
@@ -198,43 +203,44 @@ class FoodService {
       //   },
       // );
       // Logger().i(jsonDecode(response.body));
-      // var steps;
-      // var ingredients;
-      // try {
-      //   steps = await http.get(
-      //     Uri.parse('https://adminv2.ethiochef.com/api/steps/${foodId}'),
-      //     headers: {
-      //       'Authorization': 'JWT $accessToken',
-      //     },
-      //   );
-      //   Logger().i(steps.body);
-      //   ingredients = await http.get(
-      //     Uri.parse('https://adminv2.ethiochef.com/api/ingrediant/${foodId}'),
-      //     headers: {
-      //       'Authorization': 'JWT $accessToken',
-      //     },
-      //   );
-      //   Logger().i(jsonDecode(ingredients.body)['data']);
-      // } on Exception catch (error, stack) {
-      //   Logger().t(error, stackTrace: stack);
-      //   rethrow;
-      // }
+      var steps;
+      var ingredients;
+      try {
+        steps = {
+          "1":
+              "Understand what variables are and how they represent unknown values",
+          "2": "Learn to write algebraic expressions from word problems",
+          "3": "Practice solving simple linear equations",
+          "4": "Apply algebraic concepts to real-world problems"
+        };
+        Logger().i(steps);
+        ingredients = await http.get(
+          Uri.parse(
+              'https://api.asteghi.com/api/lesson-for-specific-subject/${foodDataObject.categoryId}'),
+          headers: {
+            'Authorization': 'JWT $accessToken',
+          },
+        );
+        Logger().i(jsonDecode(ingredients.body));
+      } on Exception catch (error, stack) {
+        Logger().t(error, stackTrace: stack);
+        rethrow;
+      }
 
-      // print("Response body ${Language.getLocaleCode()}");
+      print("Response body ${Language.getLocaleCode()}");
       // print(response.body);
       // print(response.statusCode);
 
       // if (response.statusCode == 200) {
       //   final data = jsonDecode(response.body);
       //   final foodData = data['data'][0];
-      //   final stepsData = jsonDecode(steps.body);
-      //   final ingredientsData = jsonDecode(ingredients.body);
-      //   print('CHECKING checkpointVIDEO FROM API: ${foodData['video']}');
-      //   Food food = Food.fromSingleFoodJson(
-      //       foodData,
-      //       transformSteps(stepsData['data'])['steps'],
-      //       transformIngredients(ingredientsData['data'])['ingredients']);
-      //   return food;
+      final stepsData = steps;
+      final ingredientsData = jsonDecode(ingredients.body);
+      // print('CHECKING checkpointVIDEO FROM API: ${foodData['video']}');
+      Food food = foodDataObject;
+      food.ingredients = jsonDecode(ingredients.body);
+      food.stepsList = steps;
+      return food;
       // } else {
       //   print('EXCEPTION FOUND HEREEEEEEEEEEE');
       //   throw Exception(response.statusCode.toString());

@@ -1,16 +1,13 @@
 import 'dart:convert';
 import 'dart:io' show Platform;
-import 'package:ethio_chef/utils/constants.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:quickalert/quickalert.dart';
-
 import 'package:url_launcher/url_launcher.dart';
 
-import '../models/update_manager_model.dart';
 import '../widgets/update_card.dart';
 
 class UpdateManager {
@@ -24,20 +21,21 @@ class UpdateManager {
     try {
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
       print('version: ' + packageInfo.version);
-      final response = await http.get(
-          Uri.parse('${Constants.url}/user/app-version/latest'));
+      final response =
+          await http.get(Uri.parse('https://api.asteghi.com/api/app_version'));
       print(response.body);
       print(response.statusCode);
       if (response.statusCode != 200) {
         throw Exception(response.statusCode.toString());
       }
-      final jsonData = json.decode(response.body)["data"][0];
+      final jsonData = json.decode(response.body)["data"];
       print(jsonData);
 
       final updateInfoJson = {
         'latest_version_android': jsonData["latest_version_android"],
         'minimum_version_android': jsonData["minimum_version_android"],
-        "update_link_android": "https://play.google.com/store/apps/details?id=com.peacetechnology.ethiochef",
+        "update_link_android":
+            "https://play.google.com/store/apps/details?id=com.peacetechnology.ethiochef",
         'latest_version_ios': jsonData["latest_version_ios"],
         'minimum_version_ios': jsonData["minimum_version_ios"],
         "update_link_ios": ""
@@ -55,9 +53,9 @@ class UpdateManager {
       }
       String installedVersion = packageInfo.version;
       String latestVersion =
-      updateInfoJson['latest_version_$platform'].toString();
+          updateInfoJson['latest_version_$platform'].toString();
       String minimumVersion =
-      updateInfoJson['minimum_version_$platform'].toString();
+          updateInfoJson['minimum_version_$platform'].toString();
       print("installedVersion $installedVersion");
       print("latestVersion $latestVersion");
       print("minimumVersion $minimumVersion");
@@ -73,9 +71,11 @@ class UpdateManager {
     }
     return statusNoUpdate;
   }
-  String updateUrl(){
+
+  String updateUrl() {
     return url;
   }
+
   void showUpdateDialog(BuildContext context) async {
     if (popUpShowed) {
       return;
@@ -99,24 +99,18 @@ class UpdateManager {
             return !requiredUpdate;
           },
           child: Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.r),
-            ),
-            backgroundColor: Theme
-                .of(context)
-                .cardColor,
-            child: UpdateCard(
-                isRequired: requiredUpdate,
-                uri: Uri.parse(url)
-            )
-          ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.r),
+              ),
+              backgroundColor: Theme.of(context).cardColor,
+              child:
+                  UpdateCard(isRequired: requiredUpdate, uri: Uri.parse(url))),
         );
       },
     );
   }
 
   bool isVersionNewer(String currentVersion, String newVersion) {
-
     final List<int> current = currentVersion.split('.').map(int.parse).toList();
     final List<int> newer = newVersion.split('.').map(int.parse).toList();
 
@@ -130,8 +124,10 @@ class UpdateManager {
     }
     return current.length < newer.length;
   }
+
   Future<void> _launchUrl() async {
-    String url = "https://play.google.com/store/apps/details?id=com.peacetechnology.ethiochef";
+    String url =
+        "https://play.google.com/store/apps/details?id=com.peacetechnology.ethiochef";
     if (!await launchUrl(Uri.parse(url))) {
       throw Exception('Could not launch $url');
     }

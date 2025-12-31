@@ -17,8 +17,8 @@ import 'layout/recipe_related.dart';
 import 'layout/recipe_tabs.dart';
 
 class RecipeScreen extends StatefulWidget {
-  final Food food;
-  const RecipeScreen({super.key, required this.food});
+  final Food chapter;
+  const RecipeScreen({super.key, required this.chapter});
 
   @override
   State<RecipeScreen> createState() => _RecipeScreenState();
@@ -38,10 +38,10 @@ class _RecipeScreenState extends State<RecipeScreen> {
     // try {
     print('fetchData');
     final foodService = FoodService();
-    var foodData = await foodService.fetchFoodById(widget.food.id!);
+    var foodData = await foodService.fetchFoodById(widget.chapter);
     print('fetchDataBYID');
     final commentService = CommentService();
-    var commentData = await commentService.fetchComments(widget.food.id!);
+    var commentData = await commentService.fetchComments(widget.chapter.id!);
     final userService = UserService();
     var userData = await userService.fetchLoggedInUser();
     return [foodData, commentData, userData];

@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/screen_utils.dart';
-import '../cached_image.dart';
 
 class ProfileWidget extends StatelessWidget {
   final dynamic imagePath;
@@ -13,11 +11,11 @@ class ProfileWidget extends StatelessWidget {
   final bool isUpdateScreen;
   const ProfileWidget(
       {Key? key,
-        required this.imagePath,
-        required this.onClicked,
-        required this.isFile,
-        required this.hasEditButton,
-        required this.isUpdateScreen})
+      required this.imagePath,
+      required this.onClicked,
+      required this.isFile,
+      required this.hasEditButton,
+      required this.isUpdateScreen})
       : super(key: key);
 
   @override
@@ -56,35 +54,45 @@ class ProfileWidget extends StatelessWidget {
       child: Material(
         color: color,
         child: Ink(
-          width: isUpdateScreen?128.w :68.w,
-          height: isUpdateScreen? isTablet ? 145.h : 128.h:isTablet ? 75.h : 68.h,
-          child:  InkWell(
+          width: isUpdateScreen ? 128.w : 68.w,
+          height: isUpdateScreen
+              ? isTablet
+                  ? 145.h
+                  : 128.h
+              : isTablet
+                  ? 75.h
+                  : 68.h,
+          child: InkWell(
               child: isFile
                   ? Image.file(
-                imagePath,
-                fit: BoxFit.cover,
-              )
+                      imagePath,
+                      fit: BoxFit.cover,
+                    )
                   : imagePath != null
-                  ? Image.network(imagePath, fit: BoxFit.fill,)
-                  : Image.asset("assets/images/logo.png",width: 50.sp, height: 50.sp)),
+                      ? Image.network(
+                          imagePath,
+                          fit: BoxFit.fill,
+                        )
+                      : Image.asset("assets/images/logo.jpg",
+                          width: 50.sp, height: 50.sp)),
         ),
       ),
     );
   }
 
   Widget buildEditIcon(Color color) => buildCircle(
-    color: Colors.white30,
-    all: 3.r,
-    child: buildCircle(
-      color: color,
-      all: 8.r,
-      child: Icon(
-        Icons.edit,
-        color: Colors.black,
-        size: 20.sp,
-      ),
-    ),
-  );
+        color: Colors.white30,
+        all: 3.r,
+        child: buildCircle(
+          color: color,
+          all: 8.r,
+          child: Icon(
+            Icons.edit,
+            color: Colors.black,
+            size: 20.sp,
+          ),
+        ),
+      );
 
   Widget buildCircle({
     required Widget child,

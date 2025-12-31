@@ -1,18 +1,14 @@
 import 'language.dart';
 
-class PrivacyPolicy{
+class PrivacyPolicy {
   final String title;
   final String body;
 
-  PrivacyPolicy({
-    required this.title,
-    required this.body
-  });
+  PrivacyPolicy({required this.title, required this.body});
 
   factory PrivacyPolicy.fromJson(Map<String, dynamic> json) {
     return PrivacyPolicy(
-        title: json['title'][Language.getLocaleCode()] ?? json['title']['en'],
-        body: json['body'][Language.getLocaleCode()] ?? json['body']['en']
-    );
+        title: json['title_${Language.getLocaleCode()}'] ?? json['title_en'],
+        body: json['body_${Language.getLocaleCode()}'] ?? json['body_en']);
   }
 }

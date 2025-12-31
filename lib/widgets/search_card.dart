@@ -93,7 +93,7 @@ class _SearchCardState extends State<SearchCard> {
                     PersistentNavBarNavigator.pushNewScreen(
                       context,
                       withNavBar: false,
-                      screen: RecipeScreen(food: widget.food),
+                      screen: RecipeScreen(chapter: widget.food),
                     );
                   } else {
                     PersistentNavBarNavigator.pushNewScreen(

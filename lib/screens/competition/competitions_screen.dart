@@ -1,4 +1,3 @@
-import 'package:blur/blur.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/models/competition.dart';
 import 'package:ethio_chef/screens/subscription/layout/payment.dart';
@@ -19,10 +18,7 @@ import '../../services/user_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/screen_utils.dart';
 import '../../widgets/competiton/no_competition.dart';
-import '../../widgets/error_card.dart';
-import '../../widgets/loading.dart';
 import '../../widgets/main_button.dart';
-import '../../widgets/pull_to_refresh.dart';
 import '../../widgets/svg_icon.dart';
 import '../../widgets/youtube_video_player.dart';
 import '../auth/auth_screen.dart';
@@ -120,129 +116,134 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final bool isTablet = ScreenUtils.isTablet(context);
-    return RefreshWidget(
-      onRefresh: () async {
-        setState(() {
-          _future = fetchCompetition();
-        });
-      },
-      child: Stack(
-        children: [
-          Blur(
-            blurColor: theme.colorScheme.primary,
-            blur: isLoading == false && isFromSms == true ? 2.5 : 0,
-            overlay: isFromSms == true
-                ? SizedBox.shrink()
-                : Scaffold(
-                    body: Stack(children: [
-                    FutureBuilder(
-                        future: _future,
-                        builder: (context, AsyncSnapshot<dynamic> snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Loading();
-                          }
-                          if (snapshot.hasError) {
-                            return Center(
-                                child: ErrorCard(
-                              errorType: snapshot.error.toString(),
-                              refresh: () {
-                                setState(() {
-                                  _future = fetchCompetition();
-                                });
-                              },
-                            ));
-                          }
-                          return buildCompetitionPage(
-                              snapshot.data as List<Competition>);
-                        })
-                  ])),
-            child: Scaffold(
-                body: Stack(children: [
-              FutureBuilder(
-                  future: _future,
-                  builder: (context, AsyncSnapshot<dynamic> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Loading();
-                    }
-                    if (snapshot.hasError) {
-                      return Center(
-                          child: ErrorCard(
-                        errorType: snapshot.error.toString(),
-                        refresh: () {
-                          setState(() {
-                            _future = fetchCompetition();
-                          });
-                        },
-                      ));
-                    }
-                    return buildCompetitionPage(
-                        snapshot.data as List<Competition>);
-                  }),
-            ])),
-          ),
-          if (isFromSms == true && isLoading == false)
-            Align(
-                alignment: Alignment.center,
-                child: Dialog(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.r),
-                    ),
-                    backgroundColor: Theme.of(context).cardColor,
-                    child: Container(
-                      height: isTablet ? 600.h : 450.h,
-                      width: isTablet ? 275.w : 400.w,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
-                      margin:
-                          EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Icon(
-                            Icons.error,
-                            color: theme.colorScheme.error,
-                            size: 50,
-                          ),
-                          Text(
-                            "sms_payment_error".tr(),
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontSize: 20.sp,
-                              color: theme.colorScheme.primary,
-                            ),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              MainButton(
-                                  text: 'yes'.tr(),
-                                  onPress: () async {
-                                    PersistentNavBarNavigator.pushNewScreen(
-                                        context,
-                                        withNavBar: false,
-                                        screen: PaymentCheckout(
-                                            isSMS: true,
-                                            isNormalSubscription: true));
-                                  }),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: supportButton(
-                                    Colors.blue,
-                                    Constants.supportLink,
-                                    Assets.socialTelegram,
-                                    isTablet),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    )))
-        ],
-      ),
-    );
+    return Center(
+      child: Text('Tutors Screen'),
+    )
+        // return RefreshWidget(
+        //   onRefresh: () async {
+        //     setState(() {
+        //       _future = fetchCompetition();
+        //     });
+        //   },
+        //   child:
+        //   Stack(
+        //     children: [
+        //       Blur(
+        //         blurColor: theme.colorScheme.primary,
+        //         blur: isLoading == false && isFromSms == true ? 2.5 : 0,
+        //         overlay: isFromSms == true
+        //             ? SizedBox.shrink()
+        //             : Scaffold(
+        //                 body: Stack(children: [
+        //                 FutureBuilder(
+        //                     future: _future,
+        //                     builder: (context, AsyncSnapshot<dynamic> snapshot) {
+        //                       if (snapshot.connectionState ==
+        //                           ConnectionState.waiting) {
+        //                         return Loading();
+        //                       }
+        //                       if (snapshot.hasError) {
+        //                         return Center(
+        //                             child: ErrorCard(
+        //                           errorType: snapshot.error.toString(),
+        //                           refresh: () {
+        //                             setState(() {
+        //                               _future = fetchCompetition();
+        //                             });
+        //                           },
+        //                         ));
+        //                       }
+        //                       return buildCompetitionPage(
+        //                           snapshot.data as List<Competition>);
+        //                     })
+        //               ])),
+        //         child: Scaffold(
+        //             body: Stack(children: [
+        //           FutureBuilder(
+        //               future: _future,
+        //               builder: (context, AsyncSnapshot<dynamic> snapshot) {
+        //                 if (snapshot.connectionState == ConnectionState.waiting) {
+        //                   return Loading();
+        //                 }
+        //                 if (snapshot.hasError) {
+        //                   return Center(
+        //                       child: ErrorCard(
+        //                     errorType: snapshot.error.toString(),
+        //                     refresh: () {
+        //                       setState(() {
+        //                         _future = fetchCompetition();
+        //                       });
+        //                     },
+        //                   ));
+        //                 }
+        //                 return buildCompetitionPage(
+        //                     snapshot.data as List<Competition>);
+        //               }),
+        //         ])),
+        //       ),
+        //       if (isFromSms == true && isLoading == false)
+        //         Align(
+        //             alignment: Alignment.center,
+        //             child: Dialog(
+        //                 shape: RoundedRectangleBorder(
+        //                   borderRadius: BorderRadius.circular(20.r),
+        //                 ),
+        //                 backgroundColor: Theme.of(context).cardColor,
+        //                 child: Container(
+        //                   height: isTablet ? 600.h : 450.h,
+        //                   width: isTablet ? 275.w : 400.w,
+        //                   padding:
+        //                       EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+        //                   margin:
+        //                       EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
+        //                   child: Column(
+        //                     mainAxisSize: MainAxisSize.max,
+        //                     crossAxisAlignment: CrossAxisAlignment.center,
+        //                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //                     children: [
+        //                       Icon(
+        //                         Icons.error,
+        //                         color: theme.colorScheme.error,
+        //                         size: 50,
+        //                       ),
+        //                       Text(
+        //                         "sms_payment_error".tr(),
+        //                         textAlign: TextAlign.start,
+        //                         style: TextStyle(
+        //                           fontSize: 20.sp,
+        //                           color: theme.colorScheme.primary,
+        //                         ),
+        //                       ),
+        //                       Column(
+        //                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //                         children: [
+        //                           MainButton(
+        //                               text: 'yes'.tr(),
+        //                               onPress: () async {
+        //                                 PersistentNavBarNavigator.pushNewScreen(
+        //                                     context,
+        //                                     withNavBar: false,
+        //                                     screen: PaymentCheckout(
+        //                                         isSMS: true,
+        //                                         isNormalSubscription: true));
+        //                               }),
+        //                           Padding(
+        //                             padding: const EdgeInsets.all(8.0),
+        //                             child: supportButton(
+        //                                 Colors.blue,
+        //                                 Constants.supportLink,
+        //                                 Assets.socialTelegram,
+        //                                 isTablet),
+        //                           )
+        //                         ],
+        //                       )
+        //                     ],
+        //                   ),
+        //                 )))
+        //     ],
+        //   ),
+        // )
+        ;
   }
 
   Widget buildCompetitionPage(List<Competition> competition) {

@@ -44,7 +44,7 @@ class InfoCard extends StatelessWidget {
         children: [
           Image.asset(
             infoImage == "" || infoImage == null
-                ? "assets/images/logo.png"
+                ? "assets/images/logo.jpg"
                 : infoImage!,
             height: isTablet ? 250.h : 200.h,
           ),

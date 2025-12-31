@@ -1,83 +1,59 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart' as e;
 import 'package:flutter/material.dart';
-import '../../models/faqs.dart';
-import '../../services/app_doc_services.dart';
-import '../../widgets/info_card.dart';
+import 'package:get/get.dart';
+
+import '../../../controllers/faq_controller.dart';
 import '../../widgets/main_app_bar.dart';
+import '../../widgets/main_button.dart';
 
-class FaqScreen extends StatefulWidget {
-  const FaqScreen({Key? key}) : super(key: key);
-
-  @override
-  _FaqScreenState createState() => _FaqScreenState();
-}
-
-class _FaqScreenState extends State<FaqScreen> {
-  List<FAQ> faqs = [];
-  bool isLoading = true;
-  @override
-  void initState() {
-    super.initState();
-    fetchFaqs();
-  }
-
-  Future<void> fetchFaqs() async {
-    faqs = await AppDocServices().fetchFaqs();
-    setState(() {
-      isLoading = false;
-    });
-  }
+class FaqScreen extends StatelessWidget {
+  final FaqController faqController = Get.put(FaqController());
 
   @override
   Widget build(BuildContext context) {
-    if(isLoading)
     return Scaffold(
       appBar: MainAppBar(
-        title: "faq".tr(),
+        title: e.tr("faq"),
         hasMainIcons: false,
       ),
-      body: Center(child: CircularProgressIndicator()),
-    );
-    if(faqs.length== 0)
-      return Scaffold(
-        appBar: MainAppBar(
-          title: "faq".tr(),
-          hasMainIcons: false,
-        ),
-        body: Center(
-            child: InfoCard(
-                onPress: () {
-                  fetchFaqs();
-                },
-                infoTitle: "faq".tr(),
-                infoBody: "no".tr(args: ["faq".tr()]),
-                closeText: "",
-                buttonText: "refresh".tr(),
-                infoImage: "",
-                closeBtn: false))
-      );
-    return Scaffold(
-      appBar: MainAppBar(
-        title: "faq".tr(),
-        hasMainIcons: false,
-      ),
-      body: ListView.builder(
-        physics: BouncingScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemCount: faqs.length,
-        itemBuilder: (context, index) {
-          return ExpansionTile(
-            title: Text(faqs[index].question!),
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(faqs[index].answer!),
-              )
-            ],
+      body: Obx(() {
+        if (faqController.isLoading.value) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        if (faqController.faqs.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(e.tr("no") + " " + e.tr("faq")),
+                MainButton(
+                    text: e.tr('refresh'),
+                    onPress: () => faqController.fetchFaqs())
+              ],
+            ),
           );
-        },
-      ),
+        }
+
+        return ListView.builder(
+          physics: BouncingScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: faqController.faqs.length,
+          itemBuilder: (context, index) {
+            return ExpansionTile(
+              title: Text(faqController.faqs[index].question ?? ''),
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(faqController.faqs[index].answer ?? ''),
+                ),
+              ],
+            );
+          },
+        );
+      }),
     );
   }
 }

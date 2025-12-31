@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
 import '../utils/constants.dart';
 
 class Promotion {
@@ -15,18 +12,17 @@ class Promotion {
   });
 
   factory Promotion.fromJson(Map<String, dynamic> json) {
-
     String clearPath(String path) {
       final parts = path.split('/public_html');
       return parts.last;
     }
-    String image = json['image']??"";
+
+    String image = ((json['image'] ?? "") as String).replaceAll('\\', '');
     String i = clearPath(image);
     String thumbnail = Constants.ImageAPI + i;
     return Promotion(
-      id: json.containsKey('id')? json['id']: 0,
-      name: "Promotion"??"",
-      image: thumbnail??""
-    );
+        id: json.containsKey('id') ? json['id'] : 0,
+        name: "Promotion" ?? "",
+        image: image ?? "");
   }
 }

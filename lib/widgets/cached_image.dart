@@ -24,7 +24,7 @@ class CachedImage extends StatelessWidget {
           errorBuilder: (context, exception, stacktrace) {
             // Fallback if the retried URL also fails
             return Center(
-              child: Image.asset('assets/images/logo.png'),
+              child: Image.asset('assets/images/logo.jpg'),
             );
           },
         );

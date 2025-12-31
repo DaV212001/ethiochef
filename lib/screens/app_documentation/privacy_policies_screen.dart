@@ -19,7 +19,6 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
   List<PrivacyPolicy> privacyPolicies = [];
   bool isLoading = true;
 
-
   @override
   void initState() {
     super.initState();
@@ -36,21 +35,21 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    if(isLoading) {
+    if (isLoading) {
       return Scaffold(
-        appBar: MainAppBar(
-          title: "privacy_policy".tr(),
-          hasMainIcons: false,
-        ),
+        // appBar: MainAppBar(
+        //   title: "privacy_policy".tr(),
+        //   hasMainIcons: false,
+        // ),
         body: Center(child: CircularProgressIndicator()),
       );
     }
-    if(privacyPolicies.length == 0) {
+    if (privacyPolicies.length == 0) {
       return Scaffold(
-        appBar: MainAppBar(
-          title: "privacy_policy".tr(),
-          hasMainIcons: false,
-        ),
+        // appBar: MainAppBar(
+        //   title: "privacy_policy".tr(),
+        //   hasMainIcons: false,
+        // ),
         body: Center(
             child: InfoCard(
                 onPress: () {
@@ -67,46 +66,48 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
     final bool isTablet = ScreenUtils.isTablet(context);
     return Scaffold(
         appBar: MainAppBar(
-        title: "privacy_policy".tr(),
-    hasMainIcons: false,
-    ),
-    body: Padding(
-      padding: const EdgeInsets.only(top: 10, left: 12,right: 12),
-      child: ListView.builder(
-          physics: BouncingScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: privacyPolicies.length,
-          itemBuilder: (context, index) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "${privacyPolicies[index].title}. ",
-                  softWrap: true,
-                  overflow: TextOverflow.visible,
-                  style: TextStyle(
-                      fontSize: isTablet ? 15.sp : 19.sp,
-                      fontWeight: FontWeight.w600,
-                      color: theme.colorScheme.primary),
-                ),
-                SizedBox(width: 5,)
-                ,SizedBox(
-                  width: 350.sp,
-                  child: Text(
-                    "${privacyPolicies[index].body}",
-                    softWrap: true,
-                    overflow: TextOverflow.visible,
-                    style: TextStyle(
-                        fontSize: isTablet ? 15.sp : 19.sp,
-                        fontWeight: FontWeight.w600,
-                        color: theme.colorScheme.secondaryContainer),
-                  ),
-                )
-              ],);
-          }),
-    )
-    );
+          title: "privacy_policy".tr(),
+          hasMainIcons: false,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.only(top: 10, left: 12, right: 12),
+          child: ListView.builder(
+              physics: BouncingScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: privacyPolicies.length,
+              itemBuilder: (context, index) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${privacyPolicies[index].title}. ",
+                      softWrap: true,
+                      overflow: TextOverflow.visible,
+                      style: TextStyle(
+                          fontSize: isTablet ? 15.sp : 19.sp,
+                          fontWeight: FontWeight.w600,
+                          color: theme.colorScheme.primary),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    SizedBox(
+                      width: 350.sp,
+                      child: Text(
+                        "${privacyPolicies[index].body}",
+                        softWrap: true,
+                        overflow: TextOverflow.visible,
+                        style: TextStyle(
+                            fontSize: isTablet ? 15.sp : 19.sp,
+                            fontWeight: FontWeight.w600,
+                            color: theme.colorScheme.secondaryContainer),
+                      ),
+                    )
+                  ],
+                );
+              }),
+        ));
   }
 }

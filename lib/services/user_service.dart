@@ -48,10 +48,8 @@ class UserService {
     String phone_number = "251" + phone;
     print({"phone_number": phone_number, "password": password});
     final response = await http.post(
-        Uri.parse("https://adminv2.ethiochef.com/api/login_mobile"),
-        body: {
-          "phone_number": phone_number,
-        });
+        Uri.parse("https://api.asteghi.com/api/login"),
+        body: {"phone": phone_number, 'password': password});
     print(response.body);
     print(response.statusCode);
     SharedPreferences preferences = await SharedPreferences.getInstance();

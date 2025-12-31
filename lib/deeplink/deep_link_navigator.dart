@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../models/food.dart';
 import '../screens/recipe/recipe_screen.dart';
-import '../services/food_service.dart';
 import '../widgets/error_card.dart';
 import '../widgets/loading.dart';
-
 
 class DeepLinkNavigation extends StatefulWidget {
   final int foodID;
@@ -27,13 +25,13 @@ class _DeepLinkNavigationState extends State<DeepLinkNavigation> {
   }
 
   Future<void> fetchData() async {
-    try {
-      print('fetchData');
-      final foodService = FoodService();
-      food = await foodService.fetchFoodById(widget.foodID);
-    } catch (error) {
-      rethrow;
-    }
+    // try {
+    //   print('fetchData');
+    //   final foodService = FoodService();
+    //   food = await foodService.fetchFoodById(widget.foodID);
+    // } catch (error) {
+    //   rethrow;
+    // }
   }
 
   @override
@@ -42,33 +40,31 @@ class _DeepLinkNavigationState extends State<DeepLinkNavigation> {
       body: FutureBuilder(
           future: _future,
           builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Loading();
-        }
-        else if(snapshot.hasError){
-          return Center(
-            child: ErrorCard(
-                errorType: snapshot.error.toString(),
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Loading();
+            } else if (snapshot.hasError) {
+              return Center(
+                child: ErrorCard(
+                    errorType: snapshot.error.toString(),
+                    refresh: () {
+                      setState(() {
+                        _future = fetchData();
+                      });
+                    }),
+              );
+            }
+            if (food == null) {
+              return ErrorCard(
+                errorType: 'Cant fetch food',
                 refresh: () {
                   setState(() {
                     _future = fetchData();
                   });
-                }
-            ),
-          );
-        }
-        if(food == null){
-
-          return ErrorCard(errorType: 'Cant fetch food',
-          refresh: (){
-            setState(() {
-              _future = fetchData();
-            });
-          },
-          );
-        }
-        return RecipeScreen(food: food!);
-      }),
+                },
+              );
+            }
+            return RecipeScreen(chapter: food!);
+          }),
     );
   }
 }

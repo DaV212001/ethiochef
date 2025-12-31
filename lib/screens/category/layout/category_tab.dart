@@ -31,8 +31,7 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
   Future<dynamic> fetchData(int id, int pageKey) async {
     try {
       final foodService = FoodService();
-      final foodData =
-          await foodService.fetchFoodByCategoryIdPaginated(id, pageKey);
+      final foodData = await foodService.fetchFoodByCategoryId(id);
       return foodData;
     } catch (error) {
       rethrow;

@@ -82,9 +82,9 @@ void main() async {
   await FastCachedImageConfig.init(clearCacheAfter: const Duration(days: 15));
   // await AndroidAlarmManager.initialize();
   await EasyLocalization.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   final appLinks = AppLinks(); // AppLinks is singleton

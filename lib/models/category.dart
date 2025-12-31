@@ -1,7 +1,3 @@
-
-import 'package:ethio_chef/utils/constants.dart';
-import 'package:ethio_chef/models/language.dart';
-
 class Category {
   final int id;
   final String name;
@@ -30,18 +26,20 @@ class Category {
       final parts = path.split('/public_html');
       return parts.last;
     }
-    String image = json['image'];
-    String i = clearPath(image);
-    String thumbnail = Constants.ImageAPI + i;
+
+    // String image = json['image'];
+    // String i = clearPath(image);
+    // String thumbnail = Constants.ImageAPI + i;
     return Category(
         id: json['id'],
-        name: json['name'][Language.getLocaleCode()]?? json['name']['en'],
-        description: json['description'][Language.getLocaleCode()]?? json['description']['en'],
-        image: thumbnail,
+        name: json['name'],
+        // [Language.getLocaleCode()]?? json['name']['en'],
+        description: json['description'],
+        // [Language.getLocaleCode()]?? json['description']['en'],
+        image: 'image',
         createdAt: DateTime.parse(json['created_at']),
         updatedAt: DateTime.parse(json['updated_at']),
-        page: json['page']
-    );
+        page: json.containsKey('page') ? json['page'] : 0);
   }
 
   Map<String, dynamic> toJson() {
@@ -57,6 +55,4 @@ class Category {
       'page': page,
     };
   }
-
 }
-

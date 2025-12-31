@@ -223,7 +223,7 @@ class _FromNotifState extends State<FromNotif> {
         PersistentNavBarNavigator.pushNewScreen(
           context,
           withNavBar: false,
-          screen: RecipeScreen(food: selectedFood),
+          screen: RecipeScreen(chapter: selectedFood),
         );
         break;
       case "User is not subscribed":

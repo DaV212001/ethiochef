@@ -144,7 +144,7 @@ class _SubmittedRecipeCardState extends State<SubmittedRecipeCard> {
       child: CircleAvatar(
         backgroundColor: Colors.white,
         child: Image.asset(
-          'assets/images/logo.png',
+          'assets/images/logo.jpg',
           height: 80,
           fit: BoxFit.fill,
         ),

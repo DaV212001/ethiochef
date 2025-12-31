@@ -1,4 +1,4 @@
-package com.peacetechnology.ethiochef
+package com.asteghi.app
 
 import io.flutter.embedding.android.FlutterActivity
 

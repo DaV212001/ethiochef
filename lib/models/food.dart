@@ -5,6 +5,42 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../utils/constants.dart';
 import 'language.dart';
 
+class Lessons {
+  int? id;
+  int? chapterId;
+  int? subjectId;
+  int? gradeId;
+  String? name;
+  String? description;
+  String? image;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  Lessons({
+    this.id,
+    this.chapterId,
+    this.subjectId,
+    this.gradeId,
+    this.name,
+    this.description,
+    this.image,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory Lessons.fromJson(Map<String, dynamic> json) => Lessons(
+        id: json["id"],
+        chapterId: json['chapter_id'],
+        subjectId: json['subject_id'],
+        gradeId: json['grade_id'],
+        name: json['name'],
+        description: json['description'],
+        image: json['image'],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+      );
+}
+
 class Food {
   final int? id;
   final int subcategoriesId;
@@ -13,8 +49,8 @@ class Food {
   final String? Name;
   final String? description;
   final int? mealTime;
-  final Map<String, Map<String, dynamic>>? stepsList;
-  final Map<String, Map<String, dynamic>>? ingredients;
+  Map<String, dynamic>? stepsList;
+  Map<String, dynamic>? ingredients;
   final int? servings;
   final int? preparationTime;
   final String? posterImage;
@@ -169,35 +205,44 @@ class Food {
       return parts.last;
     }
 
-    String image = json['image'];
+    String image = json['attachement'];
     String i = clearPath(image);
     String thumbnail = Constants.ImageAPI + i;
     int meal = 0;
 
-    if (json['meal_time']['breakfast'] == true) {
-      meal = 1;
-    } else if (json['meal_time']['lunch'] == true) {
-      meal = 2;
-    } else if (json['meal_time']['super'] == true) {
-      meal = 3;
-    } else {
-      meal = 4;
-    }
+    // if (json['meal_time']['breakfast'] == true) {
+    //   meal = 1;
+    // } else if (json['meal_time']['lunch'] == true) {
+    //   meal = 2;
+    // } else if (json['meal_time']['super'] == true) {
+    //   meal = 3;
+    // } else {
+    //   meal = 4;
+    // }
     return Food(
       id: json['id'],
-      subcategoriesId: json['subcategories_id'],
-      categoryId: json['category_id'] ?? 0,
-      name: json['name'][Language.getLocaleCode()] ?? json['name']["en"],
-      description: json['description'][Language.getLocaleCode()] ??
-          json['description']['en'] ??
+      subcategoriesId: json['grade_id'],
+      categoryId: json['subject_id'] ?? 0,
+      name: json['name'],
+      // [Language.getLocaleCode()] ?? json['name']["en"],
+      description: json['description']
+          // [Language.getLocaleCode()]
+          ??
+          json['description']
+          // ['en']
+          ??
           '',
       mealTime: meal,
       preparationTime: json['cooking_time'],
       servings: json['serving'],
-      thumbnail: thumbnail,
-      likes: List<Likes>.from(
-          json['likes']?.map((dynamic like) => Likes.fromFood(like)) ?? []),
-      comments: json['comments'],
+      thumbnail: image,
+      likes: []
+      // List<Likes>.from(
+      //     json['likes']?.map((dynamic like) => Likes.fromFood(like)) ?? [])
+      ,
+      comments: []
+      // json['comments']
+      ,
       createdAt: DateTime.parse(json['created_at']),
       updatedAt: DateTime.parse(json['updated_at']),
       nextPage: json['next_page'] ?? 0,

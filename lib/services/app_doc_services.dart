@@ -1,14 +1,15 @@
 import 'dart:convert';
 
-import 'package:ethio_chef/models/privacy_policies.dart';
-import 'package:ethio_chef/models/terms_and_conditions.dart';
-
-import '../utils/constants.dart';
-import '../models/faqs.dart';
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
+import '../models/about_us.dart';
+import '../models/faq_ethio_clone.dart';
+import '../models/footer_data.dart';
+import '../models/privacy_policies.dart';
+import '../models/terms_and_conditions.dart';
+import '../utils/constants.dart';
 import '../utils/error_util.dart';
-
 
 class AppDocServices {
   Future<List<FAQ>> fetchFaqs() async {
@@ -16,17 +17,13 @@ class AppDocServices {
       await ErrorUtil.checkConnection();
       List<FAQ> faqs = [];
       final response = await http.get(
-        Uri.parse("${Constants.url}/user/faq"),
+        Uri.parse("https://api.asteghi.com/api/faq"),
       );
-      print(response.body);
+      Logger().d(response.body);
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
-        print("FAQ's Retrieved ${jsonData['data']}");
         var faqsData = jsonData['data'] as List;
-        faqs = faqsData
-            .map((faqsData) =>
-            FAQ.fromJson(faqsData))
-            .toList();
+        faqs = faqsData.map((faqsData) => FAQ.fromJson(faqsData)).toList();
         return faqs;
       } else {
         throw Exception(response.statusCode.toString());
@@ -34,24 +31,22 @@ class AppDocServices {
     } catch (error) {
       rethrow;
     }
-
   }
 
-  Future<List<PrivacyPolicy>> fetchPrivacyPolicies () async {
+  Future<List<PrivacyPolicy>> fetchPrivacyPolicies() async {
     try {
       await ErrorUtil.checkConnection();
       List<PrivacyPolicy> privacyPolicies = [];
       final response = await http.get(
-        Uri.parse("${Constants.url}/user/privacy"),
+        Uri.parse("https://api.asteghi.com/api/privacy"),
       );
-      print(response.body);
+      Logger().d(response.body);
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
-        print("Privacy Policies Retrieved ${jsonData['data']}");
         var privacyPoliciesData = jsonData['data'] as List;
         privacyPolicies = privacyPoliciesData
             .map((privacyPoliciesData) =>
-            PrivacyPolicy.fromJson(privacyPoliciesData))
+                PrivacyPolicy.fromJson(privacyPoliciesData))
             .toList();
         return privacyPolicies;
       } else {
@@ -60,34 +55,74 @@ class AppDocServices {
     } catch (error) {
       rethrow;
     }
-
   }
 
-  Future<List<TermsAndConditions>> fetchTermsAndConditions () async {
-    try{
+  Future<List<TermsAndConditions>> fetchTermsAndConditions() async {
+    try {
       await ErrorUtil.checkConnection();
       List<TermsAndConditions> termsAndConditions = [];
       final response = await http.get(
-        Uri.parse("${Constants.url}/user/terms"),
+        Uri.parse("https://api.asteghi.com/api/term"),
       );
-      print(response.body);
+      Logger().d(response.body);
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
-        print("Terms And Conditions Retrieved ${jsonData['data']}");
         var termsAndConditionsData = jsonData['data'] as List;
         termsAndConditions = termsAndConditionsData
             .map((termsAndConditionsData) =>
-            TermsAndConditions.fromJson(termsAndConditionsData))
+                TermsAndConditions.fromJson(termsAndConditionsData))
             .toList();
-        print('LENGTH OF POLICIES: ${termsAndConditions.length}');
         return termsAndConditions;
       } else {
         throw Exception(response.statusCode.toString());
       }
-    }catch (error) {
+    } catch (error) {
       rethrow;
     }
   }
 
+  Future<List<AboutUs>> fetchAboutUs() async {
+    // try {
+    await ErrorUtil.checkConnection();
+    List<AboutUs> aboutUs = [];
+    final response = await http.get(
+      Uri.parse("https://api.asteghi.com/api/about-us"),
+    );
+    Logger().d(response.body);
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      var aboutUsData = jsonData['data'] as List;
+      aboutUs = aboutUsData
+          .map((aboutUsData) => AboutUs.fromJson(aboutUsData))
+          .toList();
+      return aboutUs;
+    } else {
+      throw Exception(response.statusCode.toString());
+    }
+    // } catch (error) {
+    //   rethrow;
+    // }
+  }
 
+  Future<FooterData> getFooterData() async {
+    try {
+      await ErrorUtil.checkConnection();
+      final response = await http.get(
+        Uri.parse("${Constants.url}/footer"),
+        headers: {
+          "Content-type": "application/json",
+        },
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        dynamic jsonData = json.decode(response.body);
+        final FooterData footerData = FooterData.fromJson(jsonData["data"]);
+        return footerData;
+      } else {
+        throw Exception(response.statusCode.toString());
+      }
+    } catch (error) {
+      rethrow;
+    }
+  }
 }

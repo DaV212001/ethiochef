@@ -83,28 +83,31 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        foregroundColor: theme.colorScheme.primary,
-        elevation: 0,
-        title: Text(
-          "extra_skills".tr(),
-          style: TextStyle(
-            fontSize: 19.sp,
-            fontWeight: FontWeight.w600,
-            color: theme.colorScheme.primary,
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Column(
-            children: steps(),
-          ),
-        ),
-      ),
-    );
+        // appBar: AppBar(
+        //   backgroundColor: Colors.transparent,
+        //   foregroundColor: theme.colorScheme.primary,
+        //   elevation: 0,
+        //   title: Text(
+        //     "extra_skills".tr(),
+        //     style: TextStyle(
+        //       fontSize: 19.sp,
+        //       fontWeight: FontWeight.w600,
+        //       color: theme.colorScheme.primary,
+        //     ),
+        //   ),
+        // ),
+        body: Center(
+      child: Text('Add Tutor Screen'),
+    )
+        // SingleChildScrollView(
+        //   child: Padding(
+        //     padding: const EdgeInsets.symmetric(horizontal: 15),
+        //     child: Column(
+        //       children: steps(),
+        //     ),
+        //   ),
+        // ),
+        );
   }
 
   List<Widget> steps() {

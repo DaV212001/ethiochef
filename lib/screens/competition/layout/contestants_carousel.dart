@@ -81,7 +81,7 @@ class _ContestantsState extends State<Contestants> {
                                           widget.contestant![index].image!,
                                           fit: BoxFit.fill,
                                         )
-                                      : Image.asset("assets/images/logo.png",
+                                      : Image.asset("assets/images/logo.jpg",
                                           width: 50.sp, height: 50.sp)),
                             ),
                             Text(

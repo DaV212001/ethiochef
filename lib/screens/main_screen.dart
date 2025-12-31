@@ -3,10 +3,10 @@ import 'package:ethio_chef/generated/assets.dart';
 import 'package:ethio_chef/main.dart';
 import 'package:ethio_chef/screens/auth/auth_screen.dart';
 import 'package:ethio_chef/screens/category/categories_screen.dart';
-import 'package:ethio_chef/screens/competition/competitions_screen.dart';
 import 'package:ethio_chef/screens/home/home_screen.dart';
 import 'package:ethio_chef/screens/profile/profile_screen.dart';
-import 'package:ethio_chef/screens/upload_recipe/upload_recipe_screen.dart';
+import 'package:ethio_chef/screens/tutor_list_screen.dart';
+import 'package:ethio_chef/screens/upload_recipe/astegni_form_screen.dart';
 import 'package:ethio_chef/widgets/loading.dart';
 import 'package:ethio_chef/widgets/pull_to_refresh.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
@@ -15,7 +15,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../services/authorization_service.dart';
-import '../services/firsebase_service.dart';
 import '../services/offer_18_plugin.dart';
 
 class MainScreen extends StatefulWidget {
@@ -47,7 +46,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Future<void> _checkFirstTimeUser() async {
-    await FirebaseService().initNotification(context);
+    // await FirebaseService().initNotification(context);
     setState(() {
       isLoading = true;
     });
@@ -77,25 +76,26 @@ class _MainScreenState extends State<MainScreen> {
     return [
       HomeScreen(),
       CategoriesScreen(),
-      UploadRecipeScreen(),
-      isLoading == true
-          ? RefreshWidget(
-              onRefresh: () async {
-                _checkFirstTimeUser();
-              },
-              child: Center(
-                child: Scaffold(
-                  body: Center(
-                    child: Column(
-                      children: [Center(child: Loading())],
-                    ),
-                  ),
-                ),
-              ),
-            )
-          : isLoggedIn
-              ? CompetitionsScreen()
-              : AuthScreen(isSignIn: true),
+      AstegniFormScreen(),
+      // isLoading == true
+      //     ? RefreshWidget(
+      //         onRefresh: () async {
+      //           _checkFirstTimeUser();
+      //         },
+      //         child: Center(
+      //           child: Scaffold(
+      //             body: Center(
+      //               child: Column(
+      //                 children: [Center(child: Loading())],
+      //               ),
+      //             ),
+      //           ),
+      //         ),
+      //       )
+      //     : isLoggedIn
+      //         ?
+      TutorListScreen(),
+      // : AuthScreen(isSignIn: true),
       isLoading == true
           ? RefreshWidget(
               onRefresh: () async {
@@ -177,7 +177,7 @@ class _MainScreenState extends State<MainScreen> {
           image: Assets.iconsCategory,
           color: inactiveColor,
         ),
-        title: ("categories".tr()),
+        title: ("Subjects".tr()),
         activeColorPrimary: activeColor,
         inactiveColorPrimary: inactiveColor,
       ),
@@ -199,15 +199,15 @@ class _MainScreenState extends State<MainScreen> {
         routeAndNavigatorSettings:
             RouteAndNavigatorSettings(initialRoute: '/competition'),
         icon: SvgIcon(
-          image: Assets.iconsMedal,
+          image: Assets.iconsPeople,
           color: activeColor,
         ),
         inactiveIcon: SvgIcon(
           size: 30,
-          image: Assets.iconsMedal,
+          image: Assets.iconsPeople,
           color: inactiveColor,
         ),
-        title: ("competitions".tr()),
+        title: ("Tutors".tr()),
         activeColorPrimary: activeColor,
         inactiveColorPrimary: inactiveColor,
       ),

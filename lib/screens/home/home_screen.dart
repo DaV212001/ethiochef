@@ -12,7 +12,6 @@ import '../../services/promotion_service.dart';
 import '../../services/scheduled_notification_service.dart';
 import '../../utils/screen_utils.dart';
 import '../../utils/update_manager.dart';
-import '../../widgets/ad_block.dart';
 import '../../widgets/error_card.dart';
 import '../../widgets/loading.dart';
 import '../../widgets/pull_to_refresh.dart';
@@ -43,13 +42,13 @@ class _HomeScreenState extends State<HomeScreen>
   Future<dynamic> fetchData() async {
     try {
       UpdateManager um = UpdateManager();
-      um.showUpdateDialog(context);
-      NotificationScheduled.init(context: context);
-      listenNotification();
+      // um.showUpdateDialog(context);
+      // NotificationScheduled.init(context: context);
+      // listenNotification();
       final categoryService = CategoryService();
       final mealService = MealService();
       final promotionService = PromotionService();
-      final categoryData = await categoryService.fetchCategories();
+      final categoryData = await categoryService.fetchCategoriesByGrade();
       final breakFast = await mealService.fetchAllBreakfast();
       final lunch = await mealService.fetchAllLunch();
       final superMeal = await mealService.fetchAllSuper();
@@ -173,17 +172,17 @@ class _HomeScreenState extends State<HomeScreen>
       child: SafeArea(
         child: CustomScrollView(
           slivers: [
-            if (_bannerAd2 != null)
-              SliverAppBar(
-                pinned: true,
-                floating: false,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: AdBlock(
-                    bannerAd: _bannerAd2,
-                    isbottom: false,
-                  ),
-                ),
-              ),
+            // if (_bannerAd2 != null)
+            //   SliverAppBar(
+            //     pinned: true,
+            //     floating: false,
+            //     // flexibleSpace: FlexibleSpaceBar(
+            //     //   background: AdBlock(
+            //     //     bannerAd: _bannerAd2,
+            //     //     isbottom: false,
+            //     //   ),
+            //     // ),
+            //   ),
             SliverList(
               delegate: SliverChildListDelegate([
                 AdsCarousel(promotion: promotion),
@@ -212,13 +211,13 @@ class _HomeScreenState extends State<HomeScreen>
                       //   superMeal: superMeal,
                       //   dinner: dinner,
                       // ),
-                      if (_bannerAd1 != null)
-                        AdBlock(
-                          bannerAd: _bannerAd1,
-                          isbottom: false,
-                        ),
+                      // if (_bannerAd1 != null)
+                      //   AdBlock(
+                      //     bannerAd: _bannerAd1,
+                      //     isbottom: false,
+                      //   ),
 
-                      CategoryCarousel(category: category),
+                      CategoryCarousel(categories: category),
                       // if (_bannerAd3 != null) AdBlock(bannerAd: _bannerAd3, isbottom: false,),
                       SizedBox(
                         height: 15.h,

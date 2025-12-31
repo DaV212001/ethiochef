@@ -4,6 +4,16 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import '../models/error_data.dart';
 import '../models/language.dart';
 
+enum ApiCallStatus {
+  loading,
+  success,
+  error,
+  empty,
+  holding,
+  cache,
+  refresh,
+}
+
 class ErrorUtil {
   static ErrorData comingSoon = ErrorData(
     title: "coming_soon".tr(),

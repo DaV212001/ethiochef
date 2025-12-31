@@ -3,32 +3,47 @@ class Assets {
   Assets._();
 
   static const String errorsBadRequest = 'assets/images/errors/bad_request.svg';
-  static const String errorsBeingCooked = 'assets/images/errors/being_cooked.svg';
+  static const String errorsBeingCooked =
+      'assets/images/errors/being_cooked.svg';
   static const String errorsEmptyFood = 'assets/images/errors/empty_food.svg';
   static const String errorsEmptyList = 'assets/images/errors/empty_list.svg';
-  static const String errorsEmptyNotification = 'assets/images/errors/empty_notification.svg';
-  static const String errorsEmptySearchQuery = 'assets/images/errors/empty_search_query.svg';
+  static const String errorsEmptyNotification =
+      'assets/images/errors/empty_notification.svg';
+  static const String errorsEmptySearchQuery =
+      'assets/images/errors/empty_search_query.svg';
   static const String errorsForbidden = 'assets/images/errors/forbidden.svg';
-  static const String errorsGatewayTimeout = 'assets/images/errors/gateway_timeout.svg';
-  static const String errorsInternalServer = 'assets/images/errors/internal_server.svg';
+  static const String errorsGatewayTimeout =
+      'assets/images/errors/gateway_timeout.svg';
+  static const String errorsInternalServer =
+      'assets/images/errors/internal_server.svg';
   static const String errorsLetsCook = 'assets/images/errors/lets_cook.svg';
-  static const String errorsMyRecipeBook = 'assets/images/errors/my_recipe_book.svg';
-  static const String errorsNoConnection = 'assets/images/errors/no_connection.svg';
+  static const String errorsMyRecipeBook =
+      'assets/images/errors/my_recipe_book.svg';
+  static const String errorsNoConnection =
+      'assets/images/errors/no_connection.svg';
   static const String errorsNotFound = 'assets/images/errors/not_found.svg';
-  static const String errorsRecipeWoman = 'assets/images/errors/recipe_woman.svg';
-  static const String errorsServiceUnavailable = 'assets/images/errors/service_unavailable.svg';
-  static const String errorsTooManyRequests = 'assets/images/errors/too_many_requests.svg';
-  static const String errorsUnauthorized = 'assets/images/errors/unauthorized.svg';
+  static const String errorsRecipeWoman =
+      'assets/images/errors/recipe_woman.svg';
+  static const String errorsServiceUnavailable =
+      'assets/images/errors/service_unavailable.svg';
+  static const String errorsTooManyRequests =
+      'assets/images/errors/too_many_requests.svg';
+  static const String errorsUnauthorized =
+      'assets/images/errors/unauthorized.svg';
   static const String errorsUnknown = 'assets/images/errors/unknown.svg';
   static const String fontsManropeBold = 'assets/fonts/Manrope-Bold.ttf';
-  static const String fontsManropeExtraBold = 'assets/fonts/Manrope-ExtraBold.ttf';
-  static const String fontsManropeExtraLight = 'assets/fonts/Manrope-ExtraLight.ttf';
+  static const String fontsManropeExtraBold =
+      'assets/fonts/Manrope-ExtraBold.ttf';
+  static const String fontsManropeExtraLight =
+      'assets/fonts/Manrope-ExtraLight.ttf';
   static const String fontsManropeLight = 'assets/fonts/Manrope-Light.ttf';
   static const String fontsManropeMedium = 'assets/fonts/Manrope-Medium.ttf';
   static const String fontsManropeRegular = 'assets/fonts/Manrope-Regular.ttf';
-  static const String fontsManropeSemiBold = 'assets/fonts/Manrope-SemiBold.ttf';
+  static const String fontsManropeSemiBold =
+      'assets/fonts/Manrope-SemiBold.ttf';
   static const String iconsCategory = 'assets/images/icons/category.svg';
-  static const String iconsCategoryOutlined = 'assets/images/icons/category_outlined.svg';
+  static const String iconsCategoryOutlined =
+      'assets/images/icons/category_outlined.svg';
   static const String iconsCooking = 'assets/images/icons/cooking.svg';
   static const String iconsCookingTime = 'assets/images/icons/cooking_time.svg';
   static const String iconsFoodMenu = 'assets/images/icons/food_menu.svg';
@@ -38,7 +53,8 @@ class Assets {
   static const String iconsMealTime = 'assets/images/icons/meal_time.svg';
   static const String iconsMedal = 'assets/images/icons/medal.svg';
   static const String iconsMinus = 'assets/images/icons/minus.svg';
-  static const String iconsNotification = 'assets/images/icons/notification.svg';
+  static const String iconsNotification =
+      'assets/images/icons/notification.svg';
   static const String iconsPeople = 'assets/images/icons/people.svg';
   static const String iconsPlus = 'assets/images/icons/plus.svg';
   static const String iconsProfile = 'assets/images/icons/profile.svg';
@@ -46,15 +62,19 @@ class Assets {
   static const String imagesAdsOne = 'assets/images/ads_one.jpg';
   static const String imagesAdsThree = 'assets/images/ads_three.jpg';
   static const String imagesAdsTwo = 'assets/images/ads_two.jpg';
-  static const String imagesAuthBtnBackground = 'assets/images/auth_btn_background.png';
+  static const String imagesAuthBtnBackground =
+      'assets/images/auth_btn_background.png';
   static const String imagesChapa = 'assets/images/chapa.png';
   static const String imagesEthiopianFlag = 'assets/images/ethiopian_flag.svg';
-  static const String imagesLogo = 'assets/images/logo.png';
+  static const String imagesLogo = 'assets/images/logo.jpg';
   static const String imagesSignInImage = 'assets/images/sign_in_image.png';
   static const String imagesSignUpImage = 'assets/images/sign_up_image.png';
-  static const String imagesSplashScreenOne = 'assets/images/splash_screen_one.jpg';
-  static const String imagesSplashScreenThree = 'assets/images/splash_screen_three.jpg';
-  static const String imagesSplashScreenTwo = 'assets/images/splash_screen_two.jpg';
+  static const String imagesSplashScreenOne =
+      'assets/images/splash_screen_one.jpg';
+  static const String imagesSplashScreenThree =
+      'assets/images/splash_screen_three.jpg';
+  static const String imagesSplashScreenTwo =
+      'assets/images/splash_screen_two.jpg';
   static const String localeAm = 'assets/locale/am.json';
   static const String localeEn = 'assets/locale/en.json';
   static const String localeEnAU = 'assets/locale/en-AU.json';
@@ -66,5 +86,4 @@ class Assets {
   static const String socialTiktok = 'assets/images/social/tiktok.svg';
   static const String socialTwitter = 'assets/images/social/twitter.svg';
   static const String socialYoutube = 'assets/images/social/youtube.svg';
-
 }

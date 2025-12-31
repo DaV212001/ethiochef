@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:ethio_chef/screens/auth/auth_screen.dart';
+import 'package:ethio_chef/screens/auth/layout/forgot_password_screen.dart';
 import 'package:ethio_chef/screens/subscription/layout/payment.dart';
 import 'package:ethio_chef/widgets/ad_block.dart';
 import 'package:ethio_chef/widgets/auth/auth_link.dart';
 import 'package:ethio_chef/widgets/auth/phone_input_field.dart';
+import 'package:ethio_chef/widgets/input_field.dart';
 import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -16,7 +18,6 @@ import 'package:quickalert/widgets/quickalert_dialog.dart';
 
 import '../../../main.dart';
 import '../../../services/authorization_service.dart';
-import '../../../services/firsebase_service.dart';
 import '../../../services/subscription_checker.dart';
 import '../../../services/user_service.dart';
 import '../../../utils/screen_utils.dart';
@@ -105,7 +106,7 @@ class _SignInState extends State<SignIn> {
                 isbottom: false,
               ),
             Image.asset(
-              "assets/images/sign_in_image.png",
+              "assets/images/logo.jpg",
               fit: BoxFit.fill,
             ),
             if (_bannerAd3 != null)
@@ -121,19 +122,34 @@ class _SignInState extends State<SignIn> {
                       controller: phoneController,
                       validate: true)
                 ])),
-            // Padding(
-            //     padding: const EdgeInsets.only(
-            //         left: 10, right: 10, top: 5, bottom: 10),
-            //     child: Column(children: [
-            //       InputField(
-            //         controller: passwordController,
-            //         hint: 'password'.tr(),
-            //         onChanged: (value) {
-            //           passwordController.text = value;
-            //         },
-            //         isObscure: true,
-            //       )
-            //     ])),
+            Padding(
+                padding: const EdgeInsets.only(
+                    left: 10, right: 10, top: 5, bottom: 10),
+                child: Column(children: [
+                  InputField(
+                    controller: passwordController,
+                    hint: 'password'.tr(),
+                    onChanged: (value) {
+                      passwordController.text = value;
+                    },
+                    isObscure: true,
+                  )
+                ])),
+            Align(
+              alignment: AlignmentGeometry.centerRight,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: GestureDetector(
+                    onTap: () {
+                      PersistentNavBarNavigator.pushNewScreen(context,
+                          screen: ForgotPasswordScreen());
+                    },
+                    child: Text(
+                      'Forgot password?',
+                      style: TextStyle(color: Colors.blue),
+                    )),
+              ),
+            ),
             AuthBtn(
               isLoading: isLoading,
               text: "sign_in_button".tr(),
@@ -193,7 +209,8 @@ class _SignInState extends State<SignIn> {
     try {
       UserService service = UserService();
       response = await service.login(
-          phone.replaceFirst('+', '').replaceAll(' ', ''), '');
+          phone.replaceFirst('+', '').replaceAll(' ', ''),
+          passwordController.text);
       Logger().d(response.body);
 
       if (response.statusCode == 200) {
@@ -265,9 +282,9 @@ class _SignInState extends State<SignIn> {
         // };
         // showSubscriptionAlert(userData);
         // } else {
-        await SubscriptionStatus().checkStatus();
+        // await SubscriptionStatus().checkStatus();
         await AuthService.setAuthorizationToken(access_token);
-        await FirebaseService().checkTokenRegistration();
+        // await FirebaseService().checkTokenRegistration();
         await AuthService.setRefreshToken(refresh_token);
 
         setState(() {

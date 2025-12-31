@@ -96,7 +96,7 @@ class _ImageFoodCardState extends State<ImageFoodCard> {
               PersistentNavBarNavigator.pushNewScreen(
                 context,
                 withNavBar: false,
-                screen: RecipeScreen(food: widget.food),
+                screen: RecipeScreen(chapter: widget.food),
               );
               break;
             case "User is not subscribed":

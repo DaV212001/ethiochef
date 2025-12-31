@@ -10,9 +10,9 @@ import '../../../widgets/home/all_food.dart';
 import 'food_carousel.dart';
 
 class CategoryCarousel extends StatefulWidget {
-  final List<Category> category;
+  final List<Category> categories;
 
-  const CategoryCarousel({super.key, required this.category});
+  const CategoryCarousel({super.key, required this.categories});
 
   @override
   State<CategoryCarousel> createState() => _CategoryCarouselState();
@@ -24,10 +24,15 @@ class _CategoryCarouselState extends State<CategoryCarousel> {
     double height = 240;
     double width = 220;
     final bool isTablet = ScreenUtils.isTablet(context);
+    if (widget.categories.isEmpty) {
+      return Center(
+        child: Text('No Subjects Found'),
+      );
+    }
     return ListView.builder(
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
-      itemCount: widget.category.length,
+      itemCount: widget.categories.length,
       physics: BouncingScrollPhysics(),
       itemBuilder: (context, index) {
         return Column(
@@ -37,7 +42,7 @@ class _CategoryCarouselState extends State<CategoryCarousel> {
               height: 15.h,
             ),
             Header(
-                title: widget.category[index].name!.toString(),
+                title: widget.categories[index].name!.toString(),
                 showMore: true,
                 showMoreText: 'show_more'.tr(),
                 onTap: () {
@@ -47,9 +52,9 @@ class _CategoryCarouselState extends State<CategoryCarousel> {
                           PageTransitionAnimation.cupertino,
                       context,
                       screen: AllFood(
-                          categoryId: widget.category[index].id,
+                          categoryId: widget.categories[index].id,
                           categoryName:
-                              widget.category[index].name!.toString()));
+                              widget.categories[index].name!.toString()));
                 }),
             SizedBox(
               height: 15.h,
@@ -58,7 +63,7 @@ class _CategoryCarouselState extends State<CategoryCarousel> {
               height: height,
               width: double.infinity,
               child: FoodCarousel(
-                categoryId: widget.category[index].id,
+                categoryId: widget.categories[index].id,
               ),
             )
           ],
