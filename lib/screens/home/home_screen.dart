@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   void initState() {
-    loadAd();
+    // loadAd();
     _future = fetchData();
     super.initState();
   }
