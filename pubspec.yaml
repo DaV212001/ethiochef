@@ -28,8 +28,8 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  offer18_plugin:
-    path: C:\flutter_dev\projects\echef\offer18_plugin
+#  offer18_plugin:
+#    path: C:\flutter_dev\projects\echef\offer18_plugin
   flutter:
     sdk: flutter
 

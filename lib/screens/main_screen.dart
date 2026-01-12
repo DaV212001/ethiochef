@@ -6,7 +6,6 @@ import 'package:ethio_chef/screens/category/categories_screen.dart';
 import 'package:ethio_chef/screens/home/home_screen.dart';
 import 'package:ethio_chef/screens/profile/profile_screen.dart';
 import 'package:ethio_chef/screens/tutor_list_screen.dart';
-import 'package:ethio_chef/screens/upload_recipe/astegni_form_screen.dart';
 import 'package:ethio_chef/widgets/loading.dart';
 import 'package:ethio_chef/widgets/pull_to_refresh.dart';
 import 'package:ethio_chef/widgets/svg_icon.dart';
@@ -15,7 +14,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../services/authorization_service.dart';
-import '../services/offer_18_plugin.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -40,8 +38,8 @@ class _MainScreenState extends State<MainScreen> {
       print('CONTEXT NULL');
     }
 
-    Offer18Plugin.initSDK('na.o18.click', '459', 'ethiochef_tid');
-    Offer18Plugin.getReferrerInstallUrl();
+    // Offer18Plugin.initSDK('na.o18.click', '459', 'ethiochef_tid');
+    // Offer18Plugin.getReferrerInstallUrl();
     _controller = PersistentTabController();
   }
 
@@ -76,7 +74,7 @@ class _MainScreenState extends State<MainScreen> {
     return [
       HomeScreen(),
       CategoriesScreen(),
-      AstegniFormScreen(),
+      // AstegniFormScreen(),
       // isLoading == true
       //     ? RefreshWidget(
       //         onRefresh: () async {
@@ -143,7 +141,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
         navBarHeight: 60.h,
-        navBarStyle: NavBarStyle.style15);
+        navBarStyle: NavBarStyle.style12);
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
@@ -181,20 +179,20 @@ class _MainScreenState extends State<MainScreen> {
         activeColorPrimary: activeColor,
         inactiveColorPrimary: inactiveColor,
       ),
-      PersistentBottomNavBarItem(
-        icon: SvgIcon(
-          image: Assets.iconsPlus,
-          color: Theme.of(context).colorScheme.secondaryContainer,
-        ),
-        inactiveIcon: SvgIcon(
-          size: 20,
-          image: Assets.iconsPlus,
-          color: Colors.white,
-        ),
-        textStyle: TextStyle(color: activeColor),
-        activeColorPrimary: activeColor,
-        inactiveColorPrimary: inactiveColor,
-      ),
+      // PersistentBottomNavBarItem(
+      //   icon: SvgIcon(
+      //     image: Assets.iconsPlus,
+      //     color: Theme.of(context).colorScheme.secondaryContainer,
+      //   ),
+      //   inactiveIcon: SvgIcon(
+      //     size: 20,
+      //     image: Assets.iconsPlus,
+      //     color: Colors.white,
+      //   ),
+      //   textStyle: TextStyle(color: activeColor),
+      //   activeColorPrimary: activeColor,
+      //   inactiveColorPrimary: inactiveColor,
+      // ),
       PersistentBottomNavBarItem(
         routeAndNavigatorSettings:
             RouteAndNavigatorSettings(initialRoute: '/competition'),

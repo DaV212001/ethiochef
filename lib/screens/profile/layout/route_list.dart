@@ -26,6 +26,7 @@ import '../../app_documentation/faq_screen.dart';
 import '../../app_documentation/privacy_policies_screen.dart';
 import '../../app_documentation/terms_and_conditions_screen.dart';
 import '../../auth/auth_screen.dart';
+import '../delete_account_screen.dart';
 
 class RouteList extends StatefulWidget {
   final Function()? onRefresh;
@@ -160,6 +161,20 @@ class _RouteListState extends State<RouteList> {
           PersistentNavBarNavigator.pushNewScreen(
             context,
             screen: AboutScreen(),
+            withNavBar: false,
+            pageTransitionAnimation: PageTransitionAnimation.cupertino,
+          );
+        },
+        "trailing":
+            Icon(Icons.chevron_right_outlined, color: theme.colorScheme.primary)
+      },
+      {
+        "title": "Delete Account",
+        "leadingIcon": Icons.delete,
+        "onTap": () {
+          PersistentNavBarNavigator.pushNewScreen(
+            context,
+            screen: DeleteAccountScreen(),
             withNavBar: false,
             pageTransitionAnimation: PageTransitionAnimation.cupertino,
           );
