@@ -1,14 +1,12 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart' as c;
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:ethio_chef/widgets/screen_head.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../models/promotion.dart';
-import '../../../theme/app_theme.dart';
 import '../../../utils/screen_utils.dart';
 import '../../../widgets/cached_image.dart';
-import '../../../widgets/home/ad_carousel_component.dart';
 
 class AdsCarousel extends StatefulWidget {
   final List<Promotion> promotion;
@@ -34,7 +32,8 @@ class _AdsCarouselState extends State<AdsCarousel> {
     {"id": 3, "image_path": 'assets/images/photo_3.jpg'}
   ];
 
-  final CarouselController carouselController = CarouselController();
+  final c.CarouselSliderController carouselController =
+      c.CarouselSliderController();
   int currentIndex = 0;
 
   @override
@@ -53,7 +52,7 @@ class _AdsCarouselState extends State<AdsCarousel> {
                 height: isTablet ? 250.h : 200.h,
               ),
             if (widget.promotion.isNotEmpty)
-              CarouselSlider(
+              c.CarouselSlider(
                 items: widget.promotion.map((promotion) {
                   return Builder(
                     builder: (BuildContext context) {
@@ -94,7 +93,7 @@ class _AdsCarouselState extends State<AdsCarousel> {
                   );
                 }).toList(),
                 carouselController: carouselController,
-                options: CarouselOptions(
+                options: c.CarouselOptions(
                   scrollPhysics: const BouncingScrollPhysics(),
                   autoPlay: true,
                   aspectRatio: 2,
