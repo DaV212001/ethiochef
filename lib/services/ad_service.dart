@@ -5,10 +5,19 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 class AdService extends GetxService with WidgetsBindingObserver {
   static AdService get to => Get.find<AdService>();
 
-  // Ad Unit IDs
-  static const String bannerAdUnitId = 'ca-app-pub-4750411587709054/6014720876';
-  static const String interstitialAdUnitId = 'ca-app-pub-4750411587709054/9602612094';
-  static const String appOpenAdUnitId = 'ca-app-pub-4750411587709054/4693548698';
+  // Set to true to verify whether the ad setup and UI work using Google's official test ad units
+  static const bool useTestAds = false;
+
+  // Ad Unit IDs (Google official test IDs vs Production Live IDs)
+  static String get bannerAdUnitId => useTestAds
+      ? 'ca-app-pub-3940256099942544/6300978111'
+      : 'ca-app-pub-4750411587709054/6014720876';
+  static String get interstitialAdUnitId => useTestAds
+      ? 'ca-app-pub-3940256099942544/1033173712'
+      : 'ca-app-pub-4750411587709054/9602612094';
+  static String get appOpenAdUnitId => useTestAds
+      ? 'ca-app-pub-3940256099942544/9257395921'
+      : 'ca-app-pub-4750411587709054/4693548698';
 
   /// PROGRAMMATIC DEVELOPER TOGGLE:
   /// True by default. The developer can toggle this at runtime or code level:
@@ -79,7 +88,7 @@ class AdService extends GetxService with WidgetsBindingObserver {
         onAdLoaded: (ad) {
           _interstitialAd = ad;
           _isInterstitialLoading = false;
-          debugPrint('AdService: Interstitial ad loaded.');
+          debugPrint('✅ [AdMob] Interstitial ad loaded successfully (unit: $interstitialAdUnitId).');
 
           _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
             onAdDismissedFullScreenContent: (ad) {
@@ -88,6 +97,7 @@ class AdService extends GetxService with WidgetsBindingObserver {
               loadInterstitialAd();
             },
             onAdFailedToShowFullScreenContent: (ad, error) {
+              debugPrint('❌ [AdMob] Interstitial ad failed to show: ${error.message} (code: ${error.code})');
               ad.dispose();
               _interstitialAd = null;
               loadInterstitialAd();
@@ -97,7 +107,10 @@ class AdService extends GetxService with WidgetsBindingObserver {
         onAdFailedToLoad: (error) {
           _interstitialAd = null;
           _isInterstitialLoading = false;
-          debugPrint('AdService: Interstitial ad failed to load: $error');
+          debugPrint('❌ [AdMob] Interstitial ad failed to load:');
+          debugPrint('   - Code: ${error.code} (${_getErrorExplanation(error.code)})');
+          debugPrint('   - Message: ${error.message}');
+          debugPrint('   - AdUnit: $interstitialAdUnitId');
         },
       ),
     );
@@ -143,12 +156,15 @@ class AdService extends GetxService with WidgetsBindingObserver {
           _appOpenAd = ad;
           _appOpenLoadTime = DateTime.now();
           _isAppOpenLoading = false;
-          debugPrint('AdService: App Open ad loaded.');
+          debugPrint('✅ [AdMob] App Open ad loaded successfully (unit: $appOpenAdUnitId).');
         },
         onAdFailedToLoad: (error) {
           _appOpenAd = null;
           _isAppOpenLoading = false;
-          debugPrint('AdService: App Open ad failed to load: $error');
+          debugPrint('❌ [AdMob] App Open ad failed to load:');
+          debugPrint('   - Code: ${error.code} (${_getErrorExplanation(error.code)})');
+          debugPrint('   - Message: ${error.message}');
+          debugPrint('   - AdUnit: $appOpenAdUnitId');
         },
       ),
     );
@@ -195,27 +211,49 @@ class AdService extends GetxService with WidgetsBindingObserver {
 
   // ==================== BANNER AD HELPER ====================
 
-  /// Creates and loads a BannerAd widget listener
+  /// Creates and loads a BannerAd widget listener with detailed logging
   static BannerAd createBannerAd({
     Function(BannerAd)? onLoaded,
     Function(BannerAd)? onAdLoaded,
     Function(LoadAdError)? onFailed,
   }) {
+    final adUnit = bannerAdUnitId;
     return BannerAd(
-      adUnitId: bannerAdUnitId,
+      adUnitId: adUnit,
       size: AdSize.banner,
       request: const AdRequest(),
       listener: BannerAdListener(
         onAdLoaded: (ad) {
+          debugPrint('✅ [AdMob] BannerAd LOADED successfully (unit: $adUnit)');
           onLoaded?.call(ad as BannerAd);
           onAdLoaded?.call(ad as BannerAd);
         },
         onAdFailedToLoad: (ad, error) {
+          debugPrint('❌ [AdMob] BannerAd FAILED to load:');
+          debugPrint('   - Code: ${error.code} (${_getErrorExplanation(error.code)})');
+          debugPrint('   - Message: ${error.message}');
+          debugPrint('   - Domain: ${error.domain}');
+          debugPrint('   - AdUnit: $adUnit');
           ad.dispose();
           onFailed?.call(error);
         },
       ),
     );
+  }
+
+  static String _getErrorExplanation(int code) {
+    switch (code) {
+      case 0:
+        return "INTERNAL_ERROR (Something happened internally; e.g. invalid response from ad server or Google Play services issue)";
+      case 1:
+        return "INVALID_REQUEST (The ad request was invalid; e.g. wrong ad unit ID, wrong App ID in AndroidManifest, or package name mismatch)";
+      case 2:
+        return "NETWORK_ERROR (Ad request failed due to network connectivity)";
+      case 3:
+        return "NO_FILL (Request reached AdMob successfully, but Google had no ad inventory to return. Common for new ad units, unverified accounts, policy limits, or test devices without test mode)";
+      default:
+        return "UNKNOWN_ERROR";
+    }
   }
 }
 

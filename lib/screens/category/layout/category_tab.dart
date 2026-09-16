@@ -39,7 +39,7 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
 
   void _loadAd() {
     print("Loading Category Banner Ads with ID: ${AdService.bannerAdUnitId}");
-    _bannerAdTop = AdService.createBannerAd(
+    AdService.createBannerAd(
       onAdLoaded: (ad) {
         if (mounted) {
           setState(() {
@@ -47,9 +47,16 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
           });
         }
       },
+      onFailed: (err) {
+        if (mounted) {
+          setState(() {
+            _bannerAdTop = null;
+          });
+        }
+      },
     )..load();
 
-    _bannerAdMiddle = AdService.createBannerAd(
+    AdService.createBannerAd(
       onAdLoaded: (ad) {
         if (mounted) {
           setState(() {
@@ -57,13 +64,27 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
           });
         }
       },
+      onFailed: (err) {
+        if (mounted) {
+          setState(() {
+            _bannerAdMiddle = null;
+          });
+        }
+      },
     )..load();
 
-    _bannerAdBottom = AdService.createBannerAd(
+    AdService.createBannerAd(
       onAdLoaded: (ad) {
         if (mounted) {
           setState(() {
             _bannerAdBottom = ad;
+          });
+        }
+      },
+      onFailed: (err) {
+        if (mounted) {
+          setState(() {
+            _bannerAdBottom = null;
           });
         }
       },
