@@ -4,21 +4,20 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:http/http.dart' as http;
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../models/food.dart';
 import '../models/language.dart';
 import '../screens/recipe/recipe_screen.dart';
+import '../services/ad_service.dart';
 import '../services/authorization_service.dart';
 import '../utils/constants.dart';
 import '../utils/error_util.dart';
 import '../utils/screen_utils.dart';
-import '../widgets/ad_block.dart';
 import '../widgets/category/category_card.dart';
 import '../widgets/error_card.dart';
-import 'auth/auth_screen.dart';
+import '../widgets/inline_banner_ad.dart';
 
 class FromNotif extends StatefulWidget {
   final String timeOfDay;
@@ -160,8 +159,6 @@ class _FromNotifState extends State<FromNotif> {
     }
   }
 
-  List<Food> _mealList = [];
-
   Future<dynamic>? _fetchMeals;
   Future<dynamic> _fetchMealsAtSpecificTime() async {
     Future<List<Food>> Function() fetchFunction = () {
@@ -213,58 +210,6 @@ class _FromNotifState extends State<FromNotif> {
   void initState() {
     super.initState();
     _fetchMeals = _fetchMealsAtSpecificTime();
-    loadAd();
-  }
-
-  static String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
-  static BannerAd? _bannerAd1;
-  static BannerAd? _bannerAd2;
-  static BannerAd? _bannerAd3;
-
-  void loadAd() async {
-    print("Loading Ads");
-    await BannerAd(
-      adUnitId: _adbannerUnitId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          _bannerAd1 = ad as BannerAd;
-        },
-        onAdFailedToLoad: (ad, err) {
-          print("Error loading ad: $err");
-          ad.dispose();
-        },
-      ),
-    ).load();
-    await BannerAd(
-      adUnitId: 'ca-app-pub-4750411587709054/1691458173',
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          _bannerAd2 = ad as BannerAd;
-        },
-        onAdFailedToLoad: (ad, err) {
-          print("Error loading ad: $err");
-          ad.dispose();
-        },
-      ),
-    ).load();
-    await BannerAd(
-      adUnitId: 'ca-app-pub-4750411587709054/2820228086',
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          _bannerAd3 = ad as BannerAd;
-        },
-        onAdFailedToLoad: (ad, err) {
-          print("Error loading ad: $err");
-          ad.dispose();
-        },
-      ),
-    ).load();
   }
 
   @override
@@ -275,7 +220,6 @@ class _FromNotifState extends State<FromNotif> {
     final double screenWidth = ScreenUtils.width(context);
 
     final int crossAxisCount = (screenWidth / desiredItemWidth).floor();
-    final double childAspectRatio = desiredItemWidth / desiredItemHeight;
     return Scaffold(
       // appBar: AppBar(
       //   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -308,127 +252,141 @@ class _FromNotifState extends State<FromNotif> {
             );
           } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
             // Successful state
-            List<Food> meals = snapshot.data![0];
-            List<Food> secondMeals = snapshot.data![1];
-            // int itemCount = ((MediaQuery.of(context).size.height - MediaQuery.of(context).size.height * 0.3 )/ (MediaQuery.of(context).size.height * 0.06)).floor();
-            // print('ITEM COUNT $itemCount');
-            return Column(
-              children: [
-                if (_bannerAd1 != null)
-                  AdBlock(bannerAd: _bannerAd1, isbottom: false),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Stack(
-                          children: [
-                            Container(
-                              height: MediaQuery.of(context).size.height * 0.4,
-                              width: MediaQuery.of(context).size.width,
-                              child: Image.asset(
-                                "assets/images/sign_in_image.png",
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Row(
-                                children: [
-                                  IconButton(
-                                    icon: Icon(Icons.arrow_back),
-                                    onPressed: () {
-                                      Phoenix.rebirth(context);
-                                    },
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      '${widget.timeOfDay[0].toUpperCase()}${widget.timeOfDay.substring(1)}',
-                                      style: Theme.of(
-                                        context,
-                                      ).primaryTextTheme.bodyLarge,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        if (_bannerAd2 != null)
-                          AdBlock(bannerAd: _bannerAd2, isbottom: false),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 18.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            final List<Food> allFoods = [];
+            if (snapshot.data is List &&
+                snapshot.data.isNotEmpty &&
+                snapshot.data[0] is List<Food>) {
+              final List<Food> l1 = snapshot.data[0] as List<Food>;
+              final List<Food> l2 =
+                  snapshot.data.length > 1 && snapshot.data[1] is List<Food>
+                      ? snapshot.data[1] as List<Food>
+                      : <Food>[];
+              final int maxLen = max(l1.length, l2.length);
+              for (int i = 0; i < maxLen; i++) {
+                if (i < l1.length) allFoods.add(l1[i]);
+                if (i < l2.length) allFoods.add(l2[i]);
+              }
+            } else if (snapshot.data is List) {
+              for (var item in snapshot.data) {
+                if (item is Food) allFoods.add(item);
+                if (item is List<Food>) allFoods.addAll(item);
+              }
+            }
+
+            final int count = crossAxisCount > 0 ? crossAxisCount : 2;
+            final List<List<Food>> rows = [];
+            for (int i = 0; i < allFoods.length; i += count) {
+              rows.add(allFoods.sublist(
+                i,
+                (i + count > allFoods.length) ? allFoods.length : i + count,
+              ));
+            }
+
+            return SafeArea(
+              child: Column(
+                children: [
+                  const InlineBannerAd(position: BannerPosition.top),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Stack(
                             children: [
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: 3,
-                                    physics: BouncingScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      print(
-                                        'FOOD NAME FROM NOTIF: ${meals[index].name}',
-                                      );
-
-                                      return InkWell(
-                                        onTap: () {
-                                          _navigateToRecipeScreen(meals[index]);
-                                        },
-                                        child: CategoryCard(food: meals[index]),
-                                      );
-                                    },
-                                    //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                    //   crossAxisCount: crossAxisCount,
-                                    //   childAspectRatio: childAspectRatio,
-                                    //   mainAxisSpacing: isTablet ? 5 : 0,
-                                    // ),
-                                  ),
+                                height: MediaQuery.of(context).size.height * 0.4,
+                                width: MediaQuery.of(context).size.width,
+                                child: Image.asset(
+                                  "assets/images/sign_in_image.png",
+                                  fit: BoxFit.fill,
                                 ),
                               ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.5,
+                              SafeArea(
+                                bottom: false,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: 3,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      print(
-                                        'FOOD NAME FROM NOTIF: ${secondMeals[index].name}',
-                                      );
-
-                                      return InkWell(
-                                        onTap: () {
-                                          _navigateToRecipeScreen(meals[index]);
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Row(
+                                    children: [
+                                      IconButton(
+                                        icon: const Icon(Icons.arrow_back),
+                                        onPressed: () {
+                                          Phoenix.rebirth(context);
                                         },
-                                        child: CategoryCard(
-                                          food: secondMeals[index],
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          widget.timeOfDay.isNotEmpty
+                                              ? '${widget.timeOfDay[0].toUpperCase()}${widget.timeOfDay.substring(1)}'
+                                              : '',
+                                          style: Theme.of(
+                                            context,
+                                          ).primaryTextTheme.bodyLarge,
                                         ),
-                                      );
-                                    },
-                                    //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                    //   crossAxisCount: crossAxisCount,
-                                    //   childAspectRatio: childAspectRatio,
-                                    //   mainAxisSpacing: isTablet ? 5 : 0,
-                                    // ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                        if (_bannerAd3 != null)
-                          AdBlock(bannerAd: _bannerAd3, isbottom: true),
-                      ],
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 10.w,
+                              vertical: 8.h,
+                            ),
+                            child: Column(
+                              children: [
+                                for (
+                                  int rowIndex = 0;
+                                  rowIndex < rows.length;
+                                  rowIndex++
+                                ) ...[
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      for (final food in rows[rowIndex])
+                                        Expanded(
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 5.w,
+                                              vertical: 6.h,
+                                            ),
+                                            child: SizedBox(
+                                              height: desiredItemHeight,
+                                              child: InkWell(
+                                                onTap: () {
+                                                  _navigateToRecipeScreen(food);
+                                                },
+                                                child: CategoryCard(food: food),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      for (
+                                        int i = 0;
+                                        i < count - rows[rowIndex].length;
+                                        i++
+                                      )
+                                        const Expanded(child: SizedBox.shrink()),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 6.h),
+                                    child: const InlineBannerAd(
+                                      position: BannerPosition.middle,
+                                    ),
+                                  ),
+                                ],
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           } else {
             // Empty state
