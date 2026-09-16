@@ -4,8 +4,10 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/web.dart';
 
+import '../services/ad_service.dart';
+
 class AdVisibilityController extends GetxController {
-  var isAdVisible = false.obs;
+  var isAdVisible = true.obs;
 
   @override
   void onInit() {
@@ -22,8 +24,9 @@ class AdVisibilityController extends GetxController {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         Logger().d(data);
-        // If data is "0", ads are off. If "1", ads are on.
-        if (data['data'] == "0") {
+        // If data is 0 or "0", ads are off. If 1 or "1", ads are on.
+        final rawVal = data['data'];
+        if (rawVal == 0 || rawVal == "0" || rawVal.toString() == "0") {
           isAdVisible.value = false;
         } else {
           isAdVisible.value = true;
@@ -32,7 +35,12 @@ class AdVisibilityController extends GetxController {
     } catch (e) {
       print('Error fetching ad visibility: $e');
       // Default to visible if there's an error
-      isAdVisible.value = false;
+      isAdVisible.value = true;
+    } finally {
+      // Sync with AdService if registered
+      if (Get.isRegistered<AdService>()) {
+        AdService.to.adsEnabled.value = isAdVisible.value;
+      }
     }
   }
 }

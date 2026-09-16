@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:logger/logger.dart';
 
@@ -35,6 +36,9 @@ class _RecipeScreenState extends State<RecipeScreen> {
   void initState() {
     _future = fetchData();
     loadAd();
+    if (Get.isRegistered<AdService>()) {
+      AdService.to.showInterstitialAd();
+    }
     super.initState();
   }
 
