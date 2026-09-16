@@ -58,8 +58,9 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void loadAd() {
-    print("Loading Home Banner Ads with ID: ${AdService.bannerAdUnitId}");
+    print("Loading Home Banner Ads (Top, Middle, Bottom)");
     AdService.createBannerAd(
+      position: BannerPosition.top,
       onAdLoaded: (ad) {
         if (mounted) {
           setState(() {
@@ -77,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen>
     )..load();
 
     AdService.createBannerAd(
+      position: BannerPosition.middle,
       onAdLoaded: (ad) {
         if (mounted) {
           setState(() {
@@ -94,6 +96,7 @@ class _HomeScreenState extends State<HomeScreen>
     )..load();
 
     AdService.createBannerAd(
+      position: BannerPosition.bottom,
       onAdLoaded: (ad) {
         if (mounted) {
           setState(() {

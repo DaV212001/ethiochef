@@ -58,8 +58,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void loadAd() {
-    print("Loading Profile Banner Ads with ID: ${AdService.bannerAdUnitId}");
+    print("Loading Profile Banner Ads (Top, Middle, Bottom)");
     AdService.createBannerAd(
+      position: BannerPosition.top,
       onAdLoaded: (ad) {
         if (mounted) {
           setState(() {
@@ -77,6 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     )..load();
 
     AdService.createBannerAd(
+      position: BannerPosition.middle,
       onAdLoaded: (ad) {
         if (mounted) {
           setState(() {
@@ -94,6 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     )..load();
 
     AdService.createBannerAd(
+      position: BannerPosition.bottom,
       onAdLoaded: (ad) {
         if (mounted) {
           setState(() {

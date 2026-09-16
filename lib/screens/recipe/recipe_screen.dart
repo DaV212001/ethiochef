@@ -69,9 +69,6 @@ class _RecipeScreenState extends State<RecipeScreen> {
   BannerAd? _bannerAdTop;
   BannerAd? _bannerAdMiddle;
   BannerAd? _bannerAdBottom;
-  bool _isTopAdLoaded = false;
-  bool _isMiddleAdLoaded = false;
-  bool _isBottomAdLoaded = false;
 
   @override
   void dispose() {
@@ -84,32 +81,56 @@ class _RecipeScreenState extends State<RecipeScreen> {
   void loadAd() {
     if (!AdService.to.adsEnabled.value) return;
 
-    print("Loading Recipe Ads with Banner ID: ${AdService.bannerAdUnitId}");
-    _bannerAdTop = AdService.createBannerAd(
+    print("Loading Recipe Banner Ads (Top, Middle, Bottom)");
+    AdService.createBannerAd(
+      position: BannerPosition.top,
       onAdLoaded: (ad) {
         if (mounted) {
           setState(() {
-            _isTopAdLoaded = true;
+            _bannerAdTop = ad;
+          });
+        }
+      },
+      onFailed: (err) {
+        if (mounted) {
+          setState(() {
+            _bannerAdTop = null;
           });
         }
       },
     )..load();
 
-    _bannerAdMiddle = AdService.createBannerAd(
+    AdService.createBannerAd(
+      position: BannerPosition.middle,
       onAdLoaded: (ad) {
         if (mounted) {
           setState(() {
-            _isMiddleAdLoaded = true;
+            _bannerAdMiddle = ad;
+          });
+        }
+      },
+      onFailed: (err) {
+        if (mounted) {
+          setState(() {
+            _bannerAdMiddle = null;
           });
         }
       },
     )..load();
 
-    _bannerAdBottom = AdService.createBannerAd(
+    AdService.createBannerAd(
+      position: BannerPosition.bottom,
       onAdLoaded: (ad) {
         if (mounted) {
           setState(() {
-            _isBottomAdLoaded = true;
+            _bannerAdBottom = ad;
+          });
+        }
+      },
+      onFailed: (err) {
+        if (mounted) {
+          setState(() {
+            _bannerAdBottom = null;
           });
         }
       },
@@ -191,7 +212,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (_isTopAdLoaded && _bannerAdTop != null && AdService.to.adsEnabled.value)
+            if (_bannerAdTop != null && AdService.to.adsEnabled.value)
               AdBlock(bannerAd: _bannerAdTop, isbottom: false),
             SafeArea(
               child: RecipeHeaderImage(
@@ -216,7 +237,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
                   RecipeHeader(food: food),
                   SizedBox(height: 10),
                   RecipeScreenTab(food: food),
-                  if (_isMiddleAdLoaded && _bannerAdMiddle != null && AdService.to.adsEnabled.value)
+                  if (_bannerAdMiddle != null && AdService.to.adsEnabled.value)
                     AdBlock(bannerAd: _bannerAdMiddle, isbottom: false),
                   CommentScreen(
                     foodId: food.id ?? widget.food.id ?? 0,
@@ -231,7 +252,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
                   ),
                   if (food.related_recipe != null && food.related_recipe!.isNotEmpty)
                     RecipeRelated(food: food.related_recipe),
-                  if (_isBottomAdLoaded && _bannerAdBottom != null && AdService.to.adsEnabled.value)
+                  if (_bannerAdBottom != null && AdService.to.adsEnabled.value)
                     AdBlock(bannerAd: _bannerAdBottom, isbottom: true),
                 ],
               ),

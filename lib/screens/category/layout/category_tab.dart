@@ -38,8 +38,9 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
   BannerAd? _bannerAdBottom;
 
   void _loadAd() {
-    print("Loading Category Banner Ads with ID: ${AdService.bannerAdUnitId}");
+    print("Loading Category Banner Ads (Top, Middle, Bottom)");
     AdService.createBannerAd(
+      position: BannerPosition.top,
       onAdLoaded: (ad) {
         if (mounted) {
           setState(() {
@@ -57,6 +58,7 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
     )..load();
 
     AdService.createBannerAd(
+      position: BannerPosition.middle,
       onAdLoaded: (ad) {
         if (mounted) {
           setState(() {
@@ -74,6 +76,7 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
     )..load();
 
     AdService.createBannerAd(
+      position: BannerPosition.bottom,
       onAdLoaded: (ad) {
         if (mounted) {
           setState(() {

@@ -2,16 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
+enum BannerPosition { top, middle, bottom }
+
 class AdService extends GetxService with WidgetsBindingObserver {
   static AdService get to => Get.find<AdService>();
 
   // Set to true to verify whether the ad setup and UI work using Google's official test ad units
   static const bool useTestAds = false;
 
-  // Ad Unit IDs (Google official test IDs vs Production Live IDs)
-  static String get bannerAdUnitId => useTestAds
+  // Banner Ad Unit IDs (Previous 3 separate IDs: Top, Middle, Bottom)
+  static String get topBannerAdUnitId => useTestAds
       ? 'ca-app-pub-3940256099942544/6300978111'
-      : 'ca-app-pub-4750411587709054/6014720876';
+      : 'ca-app-pub-4750411587709054/9425791625';
+  static String get middleBannerAdUnitId => useTestAds
+      ? 'ca-app-pub-3940256099942544/6300978111'
+      : 'ca-app-pub-4750411587709054/1691458173';
+  static String get bottomBannerAdUnitId => useTestAds
+      ? 'ca-app-pub-3940256099942544/6300978111'
+      : 'ca-app-pub-4750411587709054/2820228086';
+
+  // Legacy fallback getter
+  static String get bannerAdUnitId => topBannerAdUnitId;
+
+  // Interstitial & App Open Ad Unit IDs
   static String get interstitialAdUnitId => useTestAds
       ? 'ca-app-pub-3940256099942544/1033173712'
       : 'ca-app-pub-4750411587709054/9602612094';
@@ -211,25 +224,32 @@ class AdService extends GetxService with WidgetsBindingObserver {
 
   // ==================== BANNER AD HELPER ====================
 
-  /// Creates and loads a BannerAd widget listener with detailed logging
+  /// Creates and loads a BannerAd widget listener with position-based unit ID and detailed logging
   static BannerAd createBannerAd({
+    BannerPosition position = BannerPosition.top,
+    String? customAdUnitId,
     Function(BannerAd)? onLoaded,
     Function(BannerAd)? onAdLoaded,
     Function(LoadAdError)? onFailed,
   }) {
-    final adUnit = bannerAdUnitId;
+    final adUnit = customAdUnitId ??
+        (position == BannerPosition.top
+            ? topBannerAdUnitId
+            : position == BannerPosition.middle
+                ? middleBannerAdUnitId
+                : bottomBannerAdUnitId);
     return BannerAd(
       adUnitId: adUnit,
       size: AdSize.banner,
       request: const AdRequest(),
       listener: BannerAdListener(
         onAdLoaded: (ad) {
-          debugPrint('✅ [AdMob] BannerAd LOADED successfully (unit: $adUnit)');
+          debugPrint('✅ [AdMob] ${position.name.toUpperCase()} BannerAd LOADED successfully (unit: $adUnit)');
           onLoaded?.call(ad as BannerAd);
           onAdLoaded?.call(ad as BannerAd);
         },
         onAdFailedToLoad: (ad, error) {
-          debugPrint('❌ [AdMob] BannerAd FAILED to load:');
+          debugPrint('❌ [AdMob] ${position.name.toUpperCase()} BannerAd FAILED to load:');
           debugPrint('   - Code: ${error.code} (${_getErrorExplanation(error.code)})');
           debugPrint('   - Message: ${error.message}');
           debugPrint('   - Domain: ${error.domain}');
