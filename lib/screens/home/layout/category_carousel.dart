@@ -6,9 +6,11 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../../models/category.dart';
 import '../../../models/promotion.dart';
+import '../../../services/ad_service.dart';
 import '../../../utils/screen_utils.dart';
 import '../../../widgets/header.dart';
 import '../../../widgets/home/all_food.dart';
+import '../../../widgets/inline_banner_ad.dart';
 import 'food_carousel.dart';
 
 class CategoryCarousel extends StatefulWidget {
@@ -66,6 +68,8 @@ class _CategoryCarouselState extends State<CategoryCarousel> {
               width: double.infinity,
               child: FoodCarousel(categoryId: widget.category[index].id),
             ),
+            SizedBox(height: 10.h),
+            const InlineBannerAd(position: BannerPosition.middle),
           ],
         );
       },

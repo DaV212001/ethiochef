@@ -229,6 +229,8 @@ class _RecipeScreenState extends State<RecipeScreen> {
                 foodId: food.id ?? widget.food.id ?? 0,
               ),
             ),
+            if (_bannerAdMiddle != null && AdService.to.adsEnabled.value)
+              AdBlock(bannerAd: _bannerAdMiddle, isbottom: false),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
               child: Column(
@@ -237,8 +239,6 @@ class _RecipeScreenState extends State<RecipeScreen> {
                   RecipeHeader(food: food),
                   SizedBox(height: 10),
                   RecipeScreenTab(food: food),
-                  if (_bannerAdMiddle != null && AdService.to.adsEnabled.value)
-                    AdBlock(bannerAd: _bannerAdMiddle, isbottom: false),
                   CommentScreen(
                     foodId: food.id ?? widget.food.id ?? 0,
                     comments: comment,
