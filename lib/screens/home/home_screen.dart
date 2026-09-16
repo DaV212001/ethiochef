@@ -1,5 +1,3 @@
-import 'package:ethiochef/controllers/ad_visibility_controller.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -8,6 +6,7 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../controllers/home_controller.dart';
 import '../../generated/assets.dart';
+import '../../services/ad_service.dart';
 import '../../services/scheduled_notification_service.dart';
 import '../../utils/constants.dart';
 import '../../utils/screen_utils.dart';
@@ -46,49 +45,49 @@ class _HomeScreenState extends State<HomeScreen>
     listenNotification();
   }
 
-  static const String _adbannerUnitId = kDebugMode
-      ? 'ca-app-pub-3940256099942544/6300978111'
-      : 'ca-app-pub-4750411587709054/9425791625';
-  static const String _adbannerUnitId2 = kDebugMode
-      ? 'ca-app-pub-3940256099942544/6300978111'
-      : 'ca-app-pub-4750411587709054/1691458173';
-  static BannerAd? _bannerAd1;
-  static BannerAd? _bannerAd2;
+  BannerAd? _bannerAdTop;
+  BannerAd? _bannerAdMiddle;
+  BannerAd? _bannerAdBottom;
 
-  void loadAd() async {
-    print("Loading Ads");
-    await BannerAd(
-      adUnitId: _adbannerUnitId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
+  @override
+  void dispose() {
+    _bannerAdTop?.dispose();
+    _bannerAdMiddle?.dispose();
+    _bannerAdBottom?.dispose();
+    super.dispose();
+  }
+
+  void loadAd() {
+    print("Loading Home Banner Ads with ID: ${AdService.bannerAdUnitId}");
+    _bannerAdTop = AdService.createBannerAd(
+      onAdLoaded: (ad) {
+        if (mounted) {
           setState(() {
-            _bannerAd1 = ad as BannerAd;
+            _bannerAdTop = ad;
           });
-        },
-        onAdFailedToLoad: (ad, err) {
-          print("Error loading ad: $err");
-          ad.dispose();
-        },
-      ),
-    ).load();
-    await BannerAd(
-      adUnitId: _adbannerUnitId2,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
+        }
+      },
+    )..load();
+
+    _bannerAdMiddle = AdService.createBannerAd(
+      onAdLoaded: (ad) {
+        if (mounted) {
           setState(() {
-            _bannerAd2 = ad as BannerAd;
+            _bannerAdMiddle = ad;
           });
-        },
-        onAdFailedToLoad: (ad, err) {
-          print("Error loading ad: $err");
-          ad.dispose();
-        },
-      ),
-    ).load();
+        }
+      },
+    )..load();
+
+    _bannerAdBottom = AdService.createBannerAd(
+      onAdLoaded: (ad) {
+        if (mounted) {
+          setState(() {
+            _bannerAdBottom = ad;
+          });
+        }
+      },
+    )..load();
   }
 
   @override
@@ -118,22 +117,13 @@ class _HomeScreenState extends State<HomeScreen>
         onRefresh: () => controller.fetchHomeData(refresh: true),
         child: CustomScrollView(
           slivers: [
-            Obx(
-              () =>
-                  Get.find<AdVisibilityController>().isAdVisible.value &&
-                      _bannerAd2 != null
-                  ? SliverAppBar(
-                      pinned: true,
-                      floating: false,
-                      flexibleSpace: FlexibleSpaceBar(
-                        background: AdBlock(
-                          bannerAd: _bannerAd2,
-                          isbottom: false,
-                        ),
-                      ),
-                    )
-                  : const SliverToBoxAdapter(),
-            ),
+            if (_bannerAdTop != null)
+              SliverToBoxAdapter(
+                child: AdBlock(
+                  bannerAd: _bannerAdTop,
+                  isbottom: false,
+                ),
+              ),
 
             SliverList(
               delegate: SliverChildListDelegate([
@@ -161,12 +151,14 @@ class _HomeScreenState extends State<HomeScreen>
                         superMeal: controller.superMeal,
                         dinner: controller.dinner,
                       ),
-                      if (_bannerAd1 != null)
-                        AdBlock(bannerAd: _bannerAd1, isbottom: false),
+                      if (_bannerAdMiddle != null)
+                        AdBlock(bannerAd: _bannerAdMiddle, isbottom: false),
                       CategoryCarousel(
                         category: controller.categories,
                         secondLevelPromotions: controller.secondLevelPromotions,
                       ),
+                      if (_bannerAdBottom != null)
+                        AdBlock(bannerAd: _bannerAdBottom, isbottom: true),
                       SizedBox(height: 15.h),
                       SizedBox(height: 15.h),
                     ],

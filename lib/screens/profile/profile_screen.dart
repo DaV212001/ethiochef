@@ -39,6 +39,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late User user = User(lastName: '', firstName: '');
   bool isLoading = false;
 
+  BannerAd? _bannerAdTop;
+  BannerAd? _bannerAdMiddle;
+  BannerAd? _bannerAdBottom;
+
   @override
   void initState() {
     loadAd();
@@ -47,62 +51,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void dispose() {
-    _bannerAd1?.dispose();
-    _bannerAd2?.dispose();
-    _bannerAd3?.dispose();
+    _bannerAdTop?.dispose();
+    _bannerAdMiddle?.dispose();
+    _bannerAdBottom?.dispose();
     super.dispose();
   }
 
-  static String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
-  static BannerAd? _bannerAd1;
-  static BannerAd? _bannerAd2;
-  static BannerAd? _bannerAd3;
-  void loadAd() async {
-    if (Get.isRegistered<AdService>() && !AdService.to.adsEnabled.value) return;
-    print("Loading Ads");
-    await BannerAd(
-      adUnitId: _adbannerUnitId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          _bannerAd1 = ad as BannerAd;
-        },
-        onAdFailedToLoad: (ad, err) {
-          print("Error loading ad: $err");
-          ad.dispose();
-        },
-      ),
-    ).load();
-    await BannerAd(
-      adUnitId: 'ca-app-pub-4750411587709054/1691458173',
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          _bannerAd2 = ad as BannerAd;
-        },
-        onAdFailedToLoad: (ad, err) {
-          print("Error loading ad: $err");
-          ad.dispose();
-        },
-      ),
-    ).load();
+  void loadAd() {
+    print("Loading Profile Banner Ads with ID: ${AdService.bannerAdUnitId}");
+    _bannerAdTop = AdService.createBannerAd(
+      onAdLoaded: (ad) {
+        if (mounted) {
+          setState(() {
+            _bannerAdTop = ad;
+          });
+        }
+      },
+    )..load();
 
-    await BannerAd(
-      adUnitId: 'ca-app-pub-4750411587709054/2820228086',
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
-          _bannerAd3 = ad as BannerAd;
-        },
-        onAdFailedToLoad: (ad, err) {
-          print("Error loading ad: $err");
-          ad.dispose();
-        },
-      ),
-    ).load();
+    _bannerAdMiddle = AdService.createBannerAd(
+      onAdLoaded: (ad) {
+        if (mounted) {
+          setState(() {
+            _bannerAdMiddle = ad;
+          });
+        }
+      },
+    )..load();
+
+    _bannerAdBottom = AdService.createBannerAd(
+      onAdLoaded: (ad) {
+        if (mounted) {
+          setState(() {
+            _bannerAdBottom = ad;
+          });
+        }
+      },
+    )..load();
   }
 
   bool telebirr = false;
@@ -202,6 +187,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: SingleChildScrollView(
         child: Column(
           children: [
+            if (_bannerAdTop != null)
+              AdBlock(bannerAd: _bannerAdTop, isbottom: false),
             UserScreenHeader(
               guest: user.message == 'Guest Mode',
               user: user,
@@ -258,15 +245,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
             RouteList(
-              banner: _bannerAd3,
+              banner: _bannerAdMiddle,
               telebirr: telebirr,
               guest: user.message == 'Guest Mode',
               onRefresh: () {
                 controller.fetchData();
               },
             ),
-            if (_bannerAd2 != null)
-              AdBlock(bannerAd: _bannerAd2, isbottom: true),
             SizedBox(height: 5.h),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -327,6 +312,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               }
               return const SizedBox.shrink();
             }),
+            if (_bannerAdBottom != null)
+              AdBlock(bannerAd: _bannerAdBottom, isbottom: true),
             SizedBox(height: 45),
           ],
         ),

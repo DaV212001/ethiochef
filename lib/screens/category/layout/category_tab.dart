@@ -7,6 +7,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../../../controllers/category_food_controller.dart';
 import '../../../models/category.dart';
 import '../../../screens/category/layout/vertical_food_list.dart';
+import '../../../services/ad_service.dart';
 import '../../../utils/screen_utils.dart';
 import '../../../widgets/ad_block.dart';
 import '../../../widgets/screen_head.dart';
@@ -32,59 +33,41 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
     _loadAd();
   }
 
-  final String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
-  BannerAd? _bannerAd;
-  BannerAd? _bannerAd2;
-  BannerAd? _bannerAd3;
+  BannerAd? _bannerAdTop;
+  BannerAd? _bannerAdMiddle;
+  BannerAd? _bannerAdBottom;
 
-  void _loadAd() async {
-    BannerAd(
-      adUnitId: _adbannerUnitId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
+  void _loadAd() {
+    print("Loading Category Banner Ads with ID: ${AdService.bannerAdUnitId}");
+    _bannerAdTop = AdService.createBannerAd(
+      onAdLoaded: (ad) {
+        if (mounted) {
           setState(() {
-            _bannerAd = ad as BannerAd;
+            _bannerAdTop = ad;
           });
-        },
-        onAdFailedToLoad: (ad, err) {
-          ad.dispose();
-        },
-      ),
-    ).load();
+        }
+      },
+    )..load();
 
-    BannerAd(
-      adUnitId: _adbannerUnitId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
+    _bannerAdMiddle = AdService.createBannerAd(
+      onAdLoaded: (ad) {
+        if (mounted) {
           setState(() {
-            _bannerAd2 = ad as BannerAd;
+            _bannerAdMiddle = ad;
           });
-        },
-        onAdFailedToLoad: (ad, err) {
-          ad.dispose();
-        },
-      ),
-    ).load();
+        }
+      },
+    )..load();
 
-    BannerAd(
-      adUnitId: _adbannerUnitId,
-      request: const AdRequest(),
-      size: AdSize.banner,
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {
+    _bannerAdBottom = AdService.createBannerAd(
+      onAdLoaded: (ad) {
+        if (mounted) {
           setState(() {
-            _bannerAd3 = ad as BannerAd;
+            _bannerAdBottom = ad;
           });
-        },
-        onAdFailedToLoad: (ad, err) {
-          ad.dispose();
-        },
-      ),
-    ).load();
+        }
+      },
+    )..load();
   }
 
   @override
@@ -92,7 +75,7 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
     final bool isTablet = ScreenUtils.isTablet(context);
     final ThemeData theme = Theme.of(context);
     List<Tab> tabs = widget.category
-        .map((e) => Tab(text: e.name!.toString()))
+        .map((e) => Tab(text: e.name.toString()))
         .toList();
 
     return SafeArea(
@@ -101,9 +84,8 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            _bannerAd != null
-                ? AdBlock(bannerAd: _bannerAd, isbottom: false)
-                : const SizedBox.shrink(),
+            if (_bannerAdTop != null)
+              AdBlock(bannerAd: _bannerAdTop, isbottom: false),
 
             ScreenHead(
               hasNotification: true,
@@ -143,8 +125,8 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
                   key: PageStorageKey(
                     'category_${widget.category[selectedIndex].id}',
                   ),
-                  bannerAd2: _bannerAd2,
-                  bannerAd3: _bannerAd3,
+                  bannerAd2: _bannerAdMiddle,
+                  bannerAd3: _bannerAdBottom,
                   pagingController: controller.pagingController,
                   isSearchList: false,
                 ),
@@ -158,6 +140,9 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
 
   @override
   void dispose() {
+    _bannerAdTop?.dispose();
+    _bannerAdMiddle?.dispose();
+    _bannerAdBottom?.dispose();
     super.dispose();
   }
 }
