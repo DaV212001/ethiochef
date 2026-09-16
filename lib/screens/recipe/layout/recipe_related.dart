@@ -13,6 +13,9 @@ class RecipeRelated extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (food == null || food!.isEmpty) {
+      return const SizedBox.shrink();
+    }
     final bool isTablet = ScreenUtils.isTablet(context);
     double height = 260;
     double width = 165;

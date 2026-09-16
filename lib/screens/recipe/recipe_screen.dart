@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:logger/logger.dart';
 
 import '../../../models/food.dart';
 import '../../../screens/recipe/layout/recipe_header.dart';
@@ -43,15 +42,10 @@ class _RecipeScreenState extends State<RecipeScreen> {
   }
 
   Future<dynamic> fetchData() async {
-    Food foodData = widget.food;
-    try {
-      print('fetchData');
-      final foodService = FoodService();
-      foodData = await foodService.fetchFoodById(widget.food.id!);
-      print('fetchDataBYID');
-    } catch (error, s) {
-      Logger().t("Failed to fetch latest food details, falling back to passed food: $error", stackTrace: s);
-    }
+    print('fetchData');
+    final foodService = FoodService();
+    final Food foodData = await foodService.fetchFoodById(widget.food.id!);
+    print('fetchDataBYID');
 
     List<Comments> commentData = [];
     try {
@@ -131,18 +125,47 @@ class _RecipeScreenState extends State<RecipeScreen> {
           future: _future,
           builder: (context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Loading();
+              return SafeArea(
+                child: Stack(
+                  children: [
+                    Positioned(
+                      top: 10,
+                      left: 10,
+                      child: IconButton(
+                        icon: Icon(Icons.arrow_back, color: theme.colorScheme.secondaryContainer),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ),
+                    Center(child: Loading()),
+                  ],
+                ),
+              );
             }
-            if (snapshot.hasError) {
-              print(snapshot.error);
-              return Center(
-                child: ErrorCard(
-                  errorType: snapshot.error.toString(),
-                  refresh: () {
-                    setState(() {
-                      _future = fetchData();
-                    });
-                  },
+            if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
+              print('RecipeScreen error: ${snapshot.error}');
+              final String err = snapshot.hasError ? snapshot.error.toString() : "no_internet";
+              return SafeArea(
+                child: Stack(
+                  children: [
+                    Positioned(
+                      top: 10,
+                      left: 10,
+                      child: IconButton(
+                        icon: Icon(Icons.arrow_back, color: theme.colorScheme.secondaryContainer),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ),
+                    Center(
+                      child: ErrorCard(
+                        errorType: err,
+                        refresh: () {
+                          setState(() {
+                            _future = fetchData();
+                          });
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               );
             }
@@ -163,7 +186,6 @@ class _RecipeScreenState extends State<RecipeScreen> {
   }
 
   Widget buildRecipeScreen(Food food, List<Comments> comment, User? user) {
-    ThemeData theme = Theme.of(context);
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(
@@ -183,7 +205,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
                     _future = fetchData();
                   });
                 },
-                foodId: food.id!,
+                foodId: food.id ?? widget.food.id ?? 0,
               ),
             ),
             Padding(
@@ -197,7 +219,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
                   if (_isMiddleAdLoaded && _bannerAdMiddle != null && AdService.to.adsEnabled.value)
                     AdBlock(bannerAd: _bannerAdMiddle, isbottom: false),
                   CommentScreen(
-                    foodId: food.id!,
+                    foodId: food.id ?? widget.food.id ?? 0,
                     comments: comment,
                     refresh: () {
                       print("Should call this guy");
@@ -207,7 +229,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
                     },
                     user: user,
                   ),
-                  if (!food.related_recipe!.isEmpty)
+                  if (food.related_recipe != null && food.related_recipe!.isNotEmpty)
                     RecipeRelated(food: food.related_recipe),
                   if (_isBottomAdLoaded && _bannerAdBottom != null && AdService.to.adsEnabled.value)
                     AdBlock(bannerAd: _bannerAdBottom, isbottom: true),

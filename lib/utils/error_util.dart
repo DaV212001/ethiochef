@@ -94,6 +94,19 @@ class ErrorUtil {
   static ErrorData getErrorType(String type) {
     print("Error type for error card $type");
     type = removeExceptionPrefix(type);
+    if (type.contains("no_internet") ||
+        type.contains("SocketException") ||
+        type.contains("ClientException") ||
+        type.contains("Failed host lookup") ||
+        type.contains("NetworkImageLoadException") ||
+        type.contains("Connection refused") ||
+        type.contains("Connection reset") ||
+        type.contains("Connection timed out") ||
+        type.contains("TimeoutException") ||
+        type.contains("HandshakeException") ||
+        type.contains("HttpException")) {
+      return noConnectionError;
+    }
     switch (type) {
       case "500":
         return internalServerError;

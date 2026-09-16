@@ -65,28 +65,30 @@ class _RecipeScreenTabState extends State<RecipeScreenTab> {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: widget.food.ingredients!.entries.map((
-                          ingredient,
-                        ) {
-                          return Flex(
-                            direction: Axis.vertical,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                "${index++}. ${ingredient.value}",
-                                softWrap: true,
-                                overflow: TextOverflow.visible,
-                                style: TextStyle(
-                                  fontSize: isTablet ? 15.sp : 19.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: theme.colorScheme.secondaryContainer,
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                            ],
-                          );
-                        }).toList(),
+                        children: (widget.food.ingredients != null && widget.food.ingredients!.isNotEmpty)
+                            ? widget.food.ingredients!.entries.map((
+                                ingredient,
+                              ) {
+                                return Flex(
+                                  direction: Axis.vertical,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${index++}. ${ingredient.value}",
+                                      softWrap: true,
+                                      overflow: TextOverflow.visible,
+                                      style: TextStyle(
+                                        fontSize: isTablet ? 15.sp : 19.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: theme.colorScheme.secondaryContainer,
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
+                                  ],
+                                );
+                              }).toList()
+                            : [const SizedBox.shrink()],
                       );
                     },
                   )
@@ -100,27 +102,29 @@ class _RecipeScreenTabState extends State<RecipeScreenTab> {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: widget.food.stepsList!.entries.map((step) {
-                          return Flex(
-                            direction: Axis.vertical,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const SizedBox(width: 8.0),
-                              Text(
-                                "${index++}. ${step.value}",
-                                softWrap: true,
-                                overflow: TextOverflow.visible,
-                                style: TextStyle(
-                                  fontSize: isTablet ? 15.sp : 19.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: theme.colorScheme.secondaryContainer,
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                            ],
-                          );
-                        }).toList(),
+                        children: (widget.food.stepsList != null && widget.food.stepsList!.isNotEmpty)
+                            ? widget.food.stepsList!.entries.map((step) {
+                                return Flex(
+                                  direction: Axis.vertical,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(width: 8.0),
+                                    Text(
+                                      "${index++}. ${step.value}",
+                                      softWrap: true,
+                                      overflow: TextOverflow.visible,
+                                      style: TextStyle(
+                                        fontSize: isTablet ? 15.sp : 19.sp,
+                                        fontWeight: FontWeight.w600,
+                                        color: theme.colorScheme.secondaryContainer,
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
+                                  ],
+                                );
+                              }).toList()
+                            : [const SizedBox.shrink()],
                       );
                     },
                   ),
