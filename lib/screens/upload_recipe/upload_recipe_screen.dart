@@ -1,20 +1,20 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/screens/upload_recipe/layout/basics_step.dart';
-import 'package:ethio_chef/screens/upload_recipe/layout/ingredients_step.dart';
-import 'package:ethio_chef/screens/upload_recipe/layout/steps_header.dart';
-import 'package:ethio_chef/screens/upload_recipe/layout/steps_step.dart';
-import 'package:ethio_chef/screens/upload_recipe/layout/video_step.dart';
-import 'package:ethio_chef/services/scheduled_notification_service.dart';
-import 'package:ethio_chef/widgets/ad_block.dart';
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:http/http.dart' as http;
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
+import '../../../screens/upload_recipe/layout/basics_step.dart';
+import '../../../screens/upload_recipe/layout/ingredients_step.dart';
+import '../../../screens/upload_recipe/layout/steps_header.dart';
+import '../../../screens/upload_recipe/layout/steps_step.dart';
+import '../../../screens/upload_recipe/layout/video_step.dart';
+import '../../../services/scheduled_notification_service.dart';
+import '../../../widgets/ad_block.dart';
 import '../../models/recipe.dart';
 import '../../services/recipe_service.dart';
 import '../../services/subscription_checker.dart';
@@ -88,7 +88,7 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
         foregroundColor: theme.colorScheme.primary,
         elevation: 0,
         title: Text(
-          "extra_skills".tr(),
+          "extra_skills".tr,
           style: TextStyle(
             fontSize: 19.sp,
             fontWeight: FontWeight.w600,
@@ -175,7 +175,7 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
                 ? Column(
                     children: [
                       Text(
-                        "uploading_title".tr(),
+                        "uploading_title".tr,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: theme.colorScheme.primary,
@@ -305,8 +305,8 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
         await NotificationScheduled.showNotification(
           id: 1,
           payload: 'food.uploaded',
-          body: "submitted_successfully".tr(),
-          title: "successful".tr(),
+          body: "submitted_successfully".tr,
+          title: "successful".tr,
         );
         reset();
         PersistentNavBarNavigator.pushNewScreen(
@@ -330,14 +330,14 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('failed_to_send_recipe'.tr()),
-          content: Text('please_try_again'.tr()),
+          title: Text('failed_to_send_recipe'.tr),
+          content: Text('please_try_again'.tr),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('ok'.tr()),
+              child: Text('ok'.tr),
             ),
           ],
         );
@@ -379,7 +379,7 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
         SnackBar logIn = SnackBar(
             padding: EdgeInsets.symmetric(vertical: 20),
             content:
-                Text('please_subscribe_to_see_ingredients_and_steps'.tr()));
+                Text('please_subscribe_to_see_ingredients_and_steps'.tr));
         PersistentNavBarNavigator.pushNewScreen(
           context,
           withNavBar: false,

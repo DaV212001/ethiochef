@@ -1,5 +1,5 @@
-import 'package:ethio_chef/models/food.dart';
-import 'package:ethio_chef/widgets/category/food_card.dart';
+import '../../models/food.dart';
+import '../../widgets/category/food_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';

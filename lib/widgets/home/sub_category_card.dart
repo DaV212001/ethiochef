@@ -1,6 +1,6 @@
-import 'package:ethio_chef/models/sub_category.dart';
-import 'package:ethio_chef/theme/app_theme.dart';
-import 'package:ethio_chef/widgets/cached_image.dart';
+import '../../models/sub_category.dart';
+import '../../theme/app_theme.dart';
+import '../../widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';

@@ -1,6 +1,6 @@
-import 'package:ethio_chef/models/category.dart';
-import 'package:ethio_chef/models/competition.dart';
-import 'package:ethio_chef/models/food.dart';
+import '../models/category.dart';
+import '../models/competition.dart';
+import '../models/food.dart';
 
 import '../models/contestants.dart';
 

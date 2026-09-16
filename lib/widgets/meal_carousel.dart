@@ -1,8 +1,8 @@
-import 'package:ethio_chef/models/food.dart';
-import 'package:ethio_chef/widgets/category/category_card.dart';
-import 'package:ethio_chef/widgets/category/food_card.dart';
-import 'package:ethio_chef/widgets/home/image_food_card.dart';
-import 'package:ethio_chef/widgets/meal_card.dart';
+import '../models/food.dart';
+import '../widgets/category/category_card.dart';
+import '../widgets/category/food_card.dart';
+import '../widgets/home/image_food_card.dart';
+import '../widgets/meal_card.dart';
 import 'package:flutter/material.dart';
 
 

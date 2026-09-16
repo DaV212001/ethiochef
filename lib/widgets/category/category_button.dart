@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../models/category.dart';
-import 'package:ethio_chef/models/language.dart';
+import '../../models/language.dart';
 
 class CategorySideBarCard extends StatelessWidget {
   final Category category;

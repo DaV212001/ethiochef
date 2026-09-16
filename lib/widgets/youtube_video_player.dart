@@ -1,4 +1,4 @@
-import 'package:ethio_chef/generated/assets.dart';
+import '../generated/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:pod_player/pod_player.dart';
 

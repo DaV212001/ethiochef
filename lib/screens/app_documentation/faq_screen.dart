@@ -1,12 +1,13 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import '../../models/faqs.dart';
 import '../../services/app_doc_services.dart';
 import '../../widgets/info_card.dart';
 import '../../widgets/main_app_bar.dart';
 
 class FaqScreen extends StatefulWidget {
-  const FaqScreen({Key? key}) : super(key: key);
+  const FaqScreen({super.key});
 
   @override
   _FaqScreenState createState() => _FaqScreenState();
@@ -30,37 +31,32 @@ class _FaqScreenState extends State<FaqScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if(isLoading)
-    return Scaffold(
-      appBar: MainAppBar(
-        title: "faq".tr(),
-        hasMainIcons: false,
-      ),
-      body: Center(child: CircularProgressIndicator()),
-    );
-    if(faqs.length== 0)
+    if (isLoading) {
       return Scaffold(
-        appBar: MainAppBar(
-          title: "faq".tr(),
-          hasMainIcons: false,
-        ),
-        body: Center(
-            child: InfoCard(
-                onPress: () {
-                  fetchFaqs();
-                },
-                infoTitle: "faq".tr(),
-                infoBody: "no".tr(args: ["faq".tr()]),
-                closeText: "",
-                buttonText: "refresh".tr(),
-                infoImage: "",
-                closeBtn: false))
+        appBar: MainAppBar(title: "faq".tr, hasMainIcons: false),
+        body: Center(child: CircularProgressIndicator()),
       );
+    }
+    if (faqs.isEmpty) {
+      return Scaffold(
+        appBar: MainAppBar(title: "faq".tr, hasMainIcons: false),
+        body: Center(
+          child: InfoCard(
+            onPress: () {
+              fetchFaqs();
+            },
+            infoTitle: "faq".tr,
+            infoBody: "no".trParams({'info': "faq".tr}),
+            closeText: "",
+            buttonText: "refresh".tr,
+            infoImage: "",
+            closeBtn: false,
+          ),
+        ),
+      );
+    }
     return Scaffold(
-      appBar: MainAppBar(
-        title: "faq".tr(),
-        hasMainIcons: false,
-      ),
+      appBar: MainAppBar(title: "faq".tr, hasMainIcons: false),
       body: ListView.builder(
         physics: BouncingScrollPhysics(),
         scrollDirection: Axis.vertical,
@@ -73,7 +69,7 @@ class _FaqScreenState extends State<FaqScreen> {
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text(faqs[index].answer!),
-              )
+              ),
             ],
           );
         },

@@ -1,23 +1,23 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/models/competition.dart';
-import 'package:ethio_chef/services/competition_service.dart';
-import 'package:ethio_chef/theme/app_theme.dart';
-import 'package:ethio_chef/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
+import '../../models/competition.dart';
 import '../../models/recipe_show_checker.dart';
 import '../../screens/auth/auth_screen.dart';
 import '../../screens/competition/competitions_screen.dart';
 import '../../screens/subscription/all_subscriptions.dart';
+import '../../services/competition_service.dart';
+import '../../theme/app_theme.dart';
 import '../../utils/screen_utils.dart';
+import '../cached_image.dart';
 
 class CompetitionsCard extends StatefulWidget {
   final Competition competition;
 
   const CompetitionsCard({Key? key, required this.competition})
-      : super(key: key);
+    : super(key: key);
 
   @override
   _CompetitionsCardState createState() => _CompetitionsCardState();
@@ -35,39 +35,46 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
     switch (status) {
       case 'Not logged in':
         setState(() => _isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          content: Text('Please subscribe to see ingredients and steps'.tr()),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            content: Text('Please subscribe to see ingredients and steps'.tr),
+          ),
+        );
         _login();
         break;
 
       case 'Another user logged in':
         setState(() => _isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          content: Text('another_account_login'.tr()),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            content: Text('another_account_login'.tr),
+          ),
+        );
         _login();
         break;
 
       case 'User is subscribed':
         try {
-          final response = await CompetitionService()
-              .likeCompetition(widget.competition.id!);
+          final response = await CompetitionService().likeCompetition(
+            widget.competition.id!,
+          );
 
           if (response?.statusCode == 200) {
             setState(() {
               _isLoading = false;
               _likes++;
             });
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text('Competition liked!')));
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text('Competition liked!')));
           }
         } catch (e) {
           setState(() => _isLoading = false);
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(e.toString())));
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(e.toString())));
         }
         break;
 
@@ -102,8 +109,11 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
     ThemeData theme = Theme.of(context);
     return GestureDetector(
       onTap: () {
-        PersistentNavBarNavigator.pushNewScreen(context,
-            withNavBar: false, screen: CompetitionsScreen());
+        PersistentNavBarNavigator.pushNewScreen(
+          context,
+          withNavBar: false,
+          screen: CompetitionsScreen(),
+        );
       },
       child: Container(
         decoration: BoxDecoration(
@@ -142,29 +152,29 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
                           color: theme.colorScheme.secondaryContainer,
                         ),
                       ),
-                      Text(
-                        'votes'.tr(args: [widget.competition.votes.toString()]),
-                        style: TextStyle(
-                          fontSize: isTablet ? 10.sp : 14.sp,
-                          fontWeight: FontWeight.w400,
-                          color: theme.colorScheme.secondaryContainer,
-                        ),
-                      ),
+                      // Text(
+                      //   'votes'.tr(args: [widget.competition.votes.toString()]),
+                      //   style: TextStyle(
+                      //     fontSize: isTablet ? 10.sp : 14.sp,
+                      //     fontWeight: FontWeight.w400,
+                      //     color: theme.colorScheme.secondaryContainer,
+                      //   ),
+                      // ),
                     ],
                   ),
                   SizedBox(height: 9.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'days_left'
-                            .tr(args: [widget.competition.daysLeft.toString()]),
-                        style: TextStyle(
-                          fontSize: isTablet ? 10.sp : 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: theme.colorScheme.secondaryContainer,
-                        ),
-                      ),
+                      // Text(
+                      //   'days_left'
+                      //       .tr(args: [widget.competition.daysLeft.toString()]),
+                      //   style: TextStyle(
+                      //     fontSize: isTablet ? 10.sp : 14.sp,
+                      //     fontWeight: FontWeight.w500,
+                      //     color: theme.colorScheme.secondaryContainer,
+                      //   ),
+                      // ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -173,17 +183,19 @@ class _CompetitionsCardState extends State<CompetitionsCard> {
                             child: GestureDetector(
                               onTap: _likeCompetition,
                               child: Container(
-                                  width: 30,
-                                  height: 30,
-                                  decoration: BoxDecoration(
-                                      color: Colors.orange,
-                                      shape: BoxShape.circle),
-                                  child: _isLoading
-                                      ? const CircularProgressIndicator()
-                                      : const Icon(
-                                          Icons.thumb_up_sharp,
-                                          color: Colors.white,
-                                        )),
+                                width: 30,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                  color: Colors.orange,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: _isLoading
+                                    ? const CircularProgressIndicator()
+                                    : const Icon(
+                                        Icons.thumb_up_sharp,
+                                        color: Colors.white,
+                                      ),
+                              ),
                             ),
                           ),
                           Text(

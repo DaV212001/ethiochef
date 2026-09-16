@@ -1,6 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class StepsHeader extends StatefulWidget {
   final int activeStep;
@@ -22,16 +22,18 @@ class _StepsHeaderState extends State<StepsHeader> {
           backgroundColor: Colors.white,
           child: CircleAvatar(
             radius: 7,
-            backgroundColor: widget.activeStep >= index ? theme.colorScheme.primaryContainer : theme.unselectedWidgetColor,
+            backgroundColor: widget.activeStep >= index
+                ? theme.colorScheme.primaryContainer
+                : theme.unselectedWidgetColor,
           ),
         ),
         title: stepNumber == 1
-            ? "basic_info".tr()
+            ? "basic_info".tr
             : stepNumber == 2
-            ? 'ingredients'.tr()
+            ? 'ingredients'.tr
             : stepNumber == 3
-            ? 'steps'.tr():
-          'video'.tr()
+            ? 'steps'.tr
+            : 'video'.tr,
       );
     });
     return EasyStepper(

@@ -1,15 +1,17 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/services/food_service.dart';
-import 'package:ethio_chef/widgets/cached_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../../models/comment.dart';
 import '../../../models/food.dart';
 import '../../../models/user.dart';
+import '../../../services/authorization_service.dart';
+import '../../../services/food_service.dart';
+import '../../../widgets/cached_image.dart';
 import '../../../widgets/youtube_video_player.dart';
+import '../../auth/auth_screen.dart';
 import '../../comment/add_edit_comment.dart';
 
 class RecipeHeaderImage extends StatefulWidget {
@@ -18,7 +20,7 @@ class RecipeHeaderImage extends StatefulWidget {
   final int foodId;
   final Comments? comments;
   final Function() refresh;
-  final User user;
+  final User? user;
   final List<Likes> likes;
   final Food? food;
   const RecipeHeaderImage({
@@ -28,7 +30,7 @@ class RecipeHeaderImage extends StatefulWidget {
     this.comments,
     required this.refresh,
     required this.foodId,
-    required this.user,
+    this.user,
     required this.likes,
     this.food,
   });
@@ -38,18 +40,39 @@ class RecipeHeaderImage extends StatefulWidget {
 }
 
 class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
-  late bool isLiked = false;
+  bool isLiked = false;
+
   @override
   void initState() {
-    for (int i = 0; i < widget.food!.likes!.length; i++) {
-      if (widget.user.id == widget.food?.likes![i].user_id) {
-        setState(() {
-          isLiked = true;
-        });
-        break;
+    super.initState();
+    _checkIfLiked(updateState: false);
+  }
+
+  @override
+  void didUpdateWidget(RecipeHeaderImage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.food != oldWidget.food) {
+      _checkIfLiked();
+    }
+  }
+
+  void _checkIfLiked({bool updateState = true}) {
+    bool found = false;
+    if (widget.user != null && widget.food?.likes != null) {
+      for (var like in widget.food!.likes!) {
+        if (widget.user!.id == like.user_id) {
+          found = true;
+          break;
+        }
       }
     }
-    super.initState();
+    if (updateState) {
+      setState(() {
+        isLiked = found;
+      });
+    } else {
+      isLiked = found;
+    }
   }
 
   bool isSaved = false;
@@ -59,45 +82,52 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     ThemeData theme = Theme.of(context);
-    isSaved =
-        Food.savedRecipes.any((food) => Food.isSameFood(food, widget.food!));
+    isSaved = Food.savedRecipes.any(
+      (food) => Food.isSameFood(food, widget.food!),
+    );
     return Column(
       children: [
-        Stack(children: [
-          if (widget.food?.video != null &&
-              widget.food!.video!.isNotEmpty &&
-              widget.food?.video != "")
-            SizedBox(
-              width: width,
-              height: height * 0.3,
-              child: YoutubeVideoPlayer(
-                link: widget.food!.video.toString(),
+        Stack(
+          children: [
+            if (widget.food?.video != null &&
+                widget.food!.video!.isNotEmpty &&
+                widget.food?.video != "")
+              SizedBox(
+                width: width,
+                height: height * 0.3,
+                child: YoutubeVideoPlayer(link: widget.food!.video.toString()),
               ),
-            ),
-          if (widget.food?.video == null || widget.food?.video == "")
-            SizedBox(
-              width: width,
-              height: height * 0.4,
-              child: CachedImage(url: widget.image, fit: BoxFit.fill),
-            ),
-          Positioned(
+            if (widget.food?.video == null || widget.food?.video == "")
+              SizedBox(
+                width: width,
+                height: height * 0.4,
+                child: CachedImage(url: widget.image, fit: BoxFit.fill),
+              ),
+            Positioned(
               top: 5,
               right: 10,
               left: 10,
               child: SafeArea(
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
                     GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: circularBackground(
-                          child: Icon(Icons.arrow_back,
-                              color: theme.colorScheme.primary),
-                        )),
-                  ])))
-        ]),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: circularBackground(
+                        child: Icon(
+                          Icons.arrow_back,
+                          color: theme.colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -106,12 +136,24 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      PersistentNavBarNavigator.pushNewScreen(context,
-                          screen: AddEditComment(
-                              isEditing: false,
-                              foodId: widget.foodId,
-                              refresh: widget.refresh));
+                    onTap: () async {
+                      bool loggedIn = await AuthService.isUserLoggedIn();
+                      if (!loggedIn || widget.user == null) {
+                        PersistentNavBarNavigator.pushNewScreen(
+                          context,
+                          screen: const AuthScreen(isSignIn: true),
+                          withNavBar: false,
+                        );
+                        return;
+                      }
+                      PersistentNavBarNavigator.pushNewScreen(
+                        context,
+                        screen: AddEditComment(
+                          isEditing: false,
+                          foodId: widget.foodId,
+                          refresh: widget.refresh,
+                        ),
+                      );
                     },
                     child: circularBackground(
                       child: Icon(
@@ -119,28 +161,29 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
                         color: theme.colorScheme.primary,
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
-            SizedBox(
-              width: 5.h,
-            ),
+            SizedBox(width: 5.h),
             GestureDetector(
               onTap: () async {
                 print(Food.savedRecipes.toString());
                 // Use the custom function to check if the widget.food is in the savedRecipes list
-                if (Food.savedRecipes
-                    .any((food) => Food.isSameFood(food, widget.food!))) {
+                if (Food.savedRecipes.any(
+                  (food) => Food.isSameFood(food, widget.food!),
+                )) {
                   Food.deleteRecipe(widget.food!);
                   Food.savedRecipes = await Food.loadRecipesFromSharedPrefs();
                   setState(() {});
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text('delete'.tr())));
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text('delete'.tr)));
                 } else {
                   Food.addRecipe(widget.food!);
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text('saved'.tr())));
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text('saved'.tr)));
                 }
                 setState(() {
                   isSaved = !isSaved;
@@ -148,24 +191,42 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
                 print('secondcheck: ${Food.savedRecipes.toString()}');
               },
               child: circularBackground(
-                  child: Icon(
-                isSaved
-                    ? CupertinoIcons.bookmark_fill
-                    : CupertinoIcons.bookmark,
-                color: theme.colorScheme.primary,
-              )),
+                child: Icon(
+                  isSaved
+                      ? CupertinoIcons.bookmark_fill
+                      : CupertinoIcons.bookmark,
+                  color: theme.colorScheme.primary,
+                ),
+              ),
             ),
-            SizedBox(
-              width: 5.h,
-            ),
+            SizedBox(width: 5.h),
             GestureDetector(
               onTap: () async {
-                print("isLiked pressed widget.isLiked = ${isLiked}");
-                if (isLiked == false) {
-                  await likeFood();
+                bool loggedIn = await AuthService.isUserLoggedIn();
+                if (!loggedIn || widget.user == null) {
+                  PersistentNavBarNavigator.pushNewScreen(
+                    context,
+                    screen: const AuthScreen(isSignIn: true),
+                    withNavBar: false,
+                  );
+                  return;
+                }
+                final bool originalLiked = isLiked;
+                setState(() {
+                  isLiked = !isLiked;
+                });
+
+                bool success = false;
+                if (!originalLiked) {
+                  success = await likeFood();
                 } else {
-                  print("unlike");
-                  await unLikeFood();
+                  success = await unLikeFood();
+                }
+
+                if (!success && mounted) {
+                  setState(() {
+                    isLiked = originalLiked;
+                  });
                 }
               },
               child: circularBackground(
@@ -187,8 +248,9 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
     return Container(
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(100)),
-          color: Theme.of(context).colorScheme.onPrimary),
+        borderRadius: BorderRadius.all(Radius.circular(100)),
+        color: Theme.of(context).colorScheme.onPrimary,
+      ),
       child: child,
     );
   }
@@ -205,6 +267,7 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
         throw Exception();
       }
     } catch (e) {
+      Get.snackbar('unknown_title'.tr, 'unknown_body'.tr);
       print(e);
     }
     return false;

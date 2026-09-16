@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:ethio_chef/models/user.dart';
+import '../models/user.dart';
 import 'package:http/http.dart' as http;
 
 import '../utils/constants.dart';

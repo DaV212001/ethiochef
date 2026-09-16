@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:ethio_chef/models/competition.dart';
-import 'package:ethio_chef/models/language.dart';
-import 'package:ethio_chef/services/user_service.dart';
-import 'package:ethio_chef/utils/place_holder_data.dart';
+import '../models/competition.dart';
+import '../models/language.dart';
+import '../services/user_service.dart';
+import '../utils/place_holder_data.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/user.dart';

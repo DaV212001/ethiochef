@@ -1,13 +1,11 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/models/food.dart';
-import 'package:ethio_chef/services/subscription_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
+import '../../models/food.dart';
 import '../../screens/auth/auth_screen.dart';
 import '../../screens/recipe/recipe_screen.dart';
-import '../../screens/subscription/layout/payment.dart';
+import '../../services/authorization_service.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/screen_utils.dart';
 import '../cached_image.dart';
@@ -16,8 +14,12 @@ class CategoryCard extends StatefulWidget {
   final Food food;
   final bool isSearchList;
   final String? name;
-  const CategoryCard(
-      {super.key, required this.food, this.isSearchList = false, this.name});
+  const CategoryCard({
+    super.key,
+    required this.food,
+    this.isSearchList = false,
+    this.name,
+  });
 
   @override
   State<CategoryCard> createState() => _CategoryCardState();
@@ -33,80 +35,39 @@ class _CategoryCardState extends State<CategoryCard> {
     ThemeData theme = Theme.of(context);
     if (widget.name == null) {
       return GestureDetector(
-          onTap: () async {
-            setState(() {
-              isLoading = true;
-            });
-            String? status = SubscriptionStatus().status;
-            setState(() {
-              isLoading = false;
-            });
-            print("Status  = = = = = = = =  = $status");
-            switch (status) {
-              case "Not logged in":
-                print("Not logged in");
-                SnackBar logIn = SnackBar(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    content: Text(
-                        'please_subscribe_to_see_ingredients_and_steps'.tr()));
-                loginFunction();
-                // ScaffoldMessenger.of(context).showSnackBar(logIn);
-                break;
-              case "Another user logged in":
-                print("Another user logged in");
-                SnackBar logIn = SnackBar(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    content: Text('another_account_login'.tr()));
-                ScaffoldMessenger.of(context).showSnackBar(logIn);
-                loginFunction();
-                break;
-              case "User is subscribed":
-                print("User is subscribed");
-                PersistentNavBarNavigator.pushNewScreen(
-                  context,
-                  withNavBar: false,
-                  screen: RecipeScreen(food: widget.food),
-                );
-                break;
-              case "User is not subscribed":
-                print("User is not subscribed hereeeeeeeeeeeeeeeeeeeeeeee");
-                PersistentNavBarNavigator.pushNewScreen(
-                  context,
-                  screen:
-                      PaymentCheckout(isSMS: true, isNormalSubscription: true),
-                  withNavBar: false,
-                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
-                );
-                break;
-            }
-          },
-          child: Card(
-            color: theme.cardColor,
-            child: ListView(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              children: [
-                buildBody(),
-                SizedBox(
-                  height: 2,
-                ),
-                buildContent(context)
-              ],
-            ),
-          ));
+        onTap: () async {
+          final access_token = await AuthService.getAuthorizationToken();
+
+          if (access_token != null &&
+              access_token.isNotEmpty &&
+              access_token != 'none') {
+            print("Access token exists, navigating to recipe");
+            PersistentNavBarNavigator.pushNewScreen(
+              context,
+              withNavBar: false,
+              screen: RecipeScreen(food: widget.food),
+            );
+          } else {
+            print("No access token, navigating to login");
+            loginFunction(context);
+          }
+        },
+        child: Card(
+          color: theme.cardColor,
+          child: ListView(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            children: [buildBody(), SizedBox(height: 2), buildContent(context)],
+          ),
+        ),
+      );
     } else {
       return Card(
         color: theme.cardColor,
         child: ListView(
           physics: NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          children: [
-            buildBody(),
-            SizedBox(
-              height: 2,
-            ),
-            buildContent(context)
-          ],
+          children: [buildBody(), SizedBox(height: 2), buildContent(context)],
         ),
       );
     }
@@ -121,13 +82,11 @@ class _CategoryCardState extends State<CategoryCard> {
       alignment: Alignment.center,
       children: [
         Container(
-            color: theme.cardColor,
-            margin: EdgeInsets.only(bottom: bottom),
-            child: buildCoverImage()),
-        Positioned(
-          top: top,
-          child: buildProfileImage(),
-        )
+          color: theme.cardColor,
+          margin: EdgeInsets.only(bottom: bottom),
+          child: buildCoverImage(),
+        ),
+        Positioned(top: top, child: buildProfileImage()),
       ],
     );
   }
@@ -135,66 +94,69 @@ class _CategoryCardState extends State<CategoryCard> {
   Widget buildCoverImage() {
     ThemeData theme = Theme.of(context);
     return Container(
-        color: theme.cardColor,
-        height: coverHeight,
-        width: double.infinity,
-        child: ClipRRect(
-          borderRadius: AppTheme.allBorderRadius,
-          child: CachedImage(
-            url: widget.food.thumbnail,
-            fit: BoxFit.fill,
-          ),
-        ));
+      color: theme.cardColor,
+      height: coverHeight,
+      width: double.infinity,
+      child: ClipRRect(
+        borderRadius: AppTheme.allBorderRadius,
+        child: CachedImage(url: widget.food.thumbnail, fit: BoxFit.fill),
+      ),
+    );
   }
 
   Widget buildProfileImage() => ClipOval(
-          child: Material(
-        // Replace this child with your own
-        elevation: 8.0,
-        shape: CircleBorder(),
-        child: CircleAvatar(
-          backgroundColor: Colors.white,
-          child: Image.asset(
-            'assets/images/logo.png',
-            height: 80,
-            fit: BoxFit.fill,
-          ),
-          radius: profileHeight / 2,
+    child: Material(
+      // Replace this child with your own
+      elevation: 8.0,
+      shape: CircleBorder(),
+      child: CircleAvatar(
+        backgroundColor: Colors.white,
+        child: Image.asset(
+          'assets/images/logo.png',
+          height: 80,
+          fit: BoxFit.fill,
         ),
-      ));
+        radius: profileHeight / 2,
+      ),
+    ),
+  );
   Widget buildContent(context) {
     final bool isTablet = ScreenUtils.isTablet(context);
     ThemeData theme = Theme.of(context);
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          widget.isSearchList
-              ? FittedBox(
-                  child: Text(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        widget.isSearchList
+            ? FittedBox(
+                child: Text(
                   widget.food.Name.toString(),
                   style: TextStyle(
-                      fontSize: isTablet ? 11.sp : 15.sp,
-                      fontWeight: FontWeight.w600,
-                      color: theme.colorScheme.secondaryContainer),
-                ))
-              : FittedBox(
-                  child: Text(
-                    '${widget.food.name}',
-                    style: TextStyle(
-                        fontSize: isTablet
-                            ? 11.sp
-                            : widget.name != null
-                                ? 13.sp
-                                : 15.sp,
-                        fontWeight: FontWeight.w600,
-                        color: theme.colorScheme.secondaryContainer),
+                    fontSize: isTablet ? 11.sp : 15.sp,
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.secondaryContainer,
                   ),
-                )
-        ]);
+                ),
+              )
+            : FittedBox(
+                child: Text(
+                  '${widget.food.name}',
+                  style: TextStyle(
+                    fontSize: isTablet
+                        ? 11.sp
+                        : widget.name != null
+                        ? 13.sp
+                        : 15.sp,
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.secondaryContainer,
+                  ),
+                ),
+              ),
+      ],
+    );
   }
 
-  void loginFunction() {
+  void loginFunction(BuildContext context) {
     PersistentNavBarNavigator.pushNewScreen(
       context,
       withNavBar: false,

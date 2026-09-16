@@ -1,8 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
+import '../../../widgets/main_button.dart';
 import '../../models/comment.dart';
 import '../../services/comment_service.dart';
 import '../../utils/screen_utils.dart';
@@ -14,11 +14,13 @@ class AddEditComment extends StatefulWidget {
   final Comments? comments;
   final bool isEditing;
   final Function() refresh;
-  const AddEditComment({super.key,
+  const AddEditComment({
+    super.key,
     this.comments,
     required this.isEditing,
     required this.foodId,
-    required this.refresh});
+    required this.refresh,
+  });
 
   @override
   State<AddEditComment> createState() => _AddEditCommentState();
@@ -31,7 +33,7 @@ class _AddEditCommentState extends State<AddEditComment> {
   TextEditingController commentController = TextEditingController();
   @override
   void initState() {
-    if(widget.comments != null){
+    if (widget.comments != null) {
       setState(() {
         commentController.text = widget.comments!.comment;
       });
@@ -41,55 +43,54 @@ class _AddEditCommentState extends State<AddEditComment> {
 
   @override
   Widget build(BuildContext context) {
-
     ThemeData theme = Theme.of(context);
     final bool isTablet = ScreenUtils.isTablet(context);
     return Scaffold(
-        appBar: MainAppBar(
-          title: "comment".tr(),
-          hasMainIcons: false,
-        ),
-        body: SingleChildScrollView(
-          child: SafeArea(
-            child: Padding(
-              padding: EdgeInsets.only(
-                  left: isTablet ? 80.w : 40.w,
-                  right: isTablet ? 80.w : 40.w,
-                  top: isTablet ? 50.h : 10.h),
-              child: Form(
-                key: formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    CustomFormField(
-                      name: "comment".tr(),
-                      controller: commentController,
-                      hint: 'comment'.tr(),
-                      maxLines: 10,
-                      minLines: 3,
-                      required: true,
-                    ),
-                    MainButton(
-                      text: widget.isEditing ? 'edit_comment'.tr() : 'add_comment'.tr(),
-                      onPress: () {
-                        if (widget.isEditing) {
-                          editComment();
-                        } else {
-                          addComment();
-                        }
-                      },
-                      isLoading: isLoading,
-                    ),
-
-                  ],
-                ),
+      appBar: MainAppBar(title: "comment".tr, hasMainIcons: false),
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: isTablet ? 80.w : 40.w,
+              right: isTablet ? 80.w : 40.w,
+              top: isTablet ? 50.h : 10.h,
+            ),
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CustomFormField(
+                    name: "comment".tr,
+                    controller: commentController,
+                    hint: 'comment'.tr,
+                    maxLines: 10,
+                    minLines: 3,
+                    required: true,
+                  ),
+                  MainButton(
+                    text: widget.isEditing
+                        ? 'edit_comment'.tr
+                        : 'add_comment'.tr,
+                    onPress: () {
+                      if (widget.isEditing) {
+                        editComment();
+                      } else {
+                        addComment();
+                      }
+                    },
+                    isLoading: isLoading,
+                  ),
+                ],
               ),
             ),
           ),
-        )
+        ),
+      ),
     );
   }
+
   void editComment() async {
     if (formKey.currentState!.validate()) {
       setState(() {
@@ -98,32 +99,35 @@ class _AddEditCommentState extends State<AddEditComment> {
       print("commentController.text ${commentController.text}");
       CommentService service = CommentService();
       try {
-        var response =
-        await    service.updateComment( widget.comments!.id!,
-            widget.foodId, commentController.text);
+        var response = await service.updateComment(
+          widget.comments!.id!,
+          widget.foodId,
+          commentController.text,
+        );
         if (response.statusCode == 200) {
           widget.refresh();
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('update_comment_successful'.tr())),
+            SnackBar(content: Text('update_comment_successful'.tr)),
           );
           Navigator.of(context).pop();
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('update_comment_failed'.tr())),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('update_comment_failed'.tr)));
           throw Exception();
         }
       } catch (e) {
         print(e);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('update_comment_failed'.tr())),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('update_comment_failed'.tr)));
       }
       setState(() {
         isLoading = false;
       });
     }
   }
+
   Future<bool> addComment() async {
     if (formKey.currentState!.validate()) {
       setState(() {
@@ -133,26 +137,28 @@ class _AddEditCommentState extends State<AddEditComment> {
       print("commentController.text ${commentController.text}");
       CommentService service = CommentService();
       try {
-        bool response =
-        await service.createComment(widget.foodId, commentController.text);
+        bool response = await service.createComment(
+          widget.foodId,
+          commentController.text,
+        );
         if (response == true) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('add_comment_successful'.tr())),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('add_comment_successful'.tr)));
           widget.refresh();
           Navigator.of(context).pop();
           return true;
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('add_comment_failed'.tr())),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('add_comment_failed'.tr)));
           throw Exception();
         }
       } catch (e) {
         print(e);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('add_comment_failed'.tr())),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('add_comment_failed'.tr)));
       }
       setState(() {
         isLoading = false;

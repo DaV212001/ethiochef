@@ -3,18 +3,18 @@ import 'dart:io';
 
 import 'package:cloudinary_flutter/cloudinary_context.dart';
 import 'package:cloudinary_url_gen/cloudinary.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/screens/competition/layout/successfully_uploded.dart';
-import 'package:ethio_chef/widgets/recipe_status/empty_recipe.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
+import '../../../screens/competition/layout/successfully_uploded.dart';
 import '../../../services/competition_service.dart';
 import '../../../utils/screen_utils.dart';
 import '../../../widgets/loading.dart';
 import '../../../widgets/main_button.dart';
+import '../../../widgets/recipe_status/empty_recipe.dart';
 import '../../upload_recipe/layout/video_step.dart';
 
 class UploadCompetitionVideo extends StatefulWidget {
@@ -37,8 +37,9 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
   bool checkBoxTicked = false;
   @override
   void initState() {
-    CloudinaryContext.cloudinary =
-        Cloudinary.fromCloudName(cloudName: "ttreeadvert");
+    CloudinaryContext.cloudinary = Cloudinary.fromCloudName(
+      cloudName: "ttreeadvert",
+    );
     super.initState();
   }
 
@@ -91,8 +92,9 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
       builder: (context) {
         return AlertDialog(
           title: Text('Failed to upload video'),
-          content:
-              Text('There was an error uploading the video. Please try again.'),
+          content: Text(
+            'There was an error uploading the video. Please try again.',
+          ),
           actions: [
             TextButton(
               onPressed: () {
@@ -112,38 +114,44 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
     final ThemeData theme = Theme.of(context);
     final bool isTablet = ScreenUtils.isTablet(context);
     return Scaffold(
-        appBar: AppBar(
-          title: Text("submit_a_competition".tr(),
-              style: TextStyle(color: theme.colorScheme.primary)),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Icon(
-                Icons.arrow_back,
-                color: theme.colorScheme.primary,
-              )),
+      appBar: AppBar(
+        title: Text(
+          "submit_a_competition".tr,
+          style: TextStyle(color: theme.colorScheme.primary),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Container(
-              child: SingleChildScrollView(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: Icon(Icons.arrow_back, color: theme.colorScheme.primary),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Container(
+          child: SingleChildScrollView(
             child: Column(
               children: [
                 Container(
                   padding: EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                      border: Border.all(
-                          color: theme.colorScheme.primary, width: 1)),
+                    border: Border.all(
+                      color: theme.colorScheme.primary,
+                      width: 1,
+                    ),
+                  ),
                   child: Column(
                     children: [
-                      Text("awards_title".tr(),
-                          style: TextStyle(
-                              fontSize: isTablet ? 13.sp : 17.sp,
-                              fontWeight: FontWeight.w800,
-                              color: theme.colorScheme.primary)),
+                      Text(
+                        "awards_title".tr,
+                        style: TextStyle(
+                          fontSize: isTablet ? 13.sp : 17.sp,
+                          fontWeight: FontWeight.w800,
+                          color: theme.colorScheme.primary,
+                        ),
+                      ),
                       AwardsList(theme: theme),
                     ],
                   ),
@@ -160,8 +168,10 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
                         checkBoxTicked = value!;
                       });
                     },
-                    title: Text("agree_with_copyright".tr(),
-                        style: TextStyle(color: Colors.black)),
+                    title: Text(
+                      "agree_with_copyright".tr,
+                      style: TextStyle(color: Colors.black),
+                    ),
                     controlAffinity:
                         ListTileControlAffinity.leading, // add this line
                   ),
@@ -172,14 +182,18 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
                         ? Column(
                             children: [
                               Icon(
-                                  color: theme.colorScheme.error,
-                                  size: 300,
-                                  Icons.error),
-                              Text("video_upload_failed".tr(),
-                                  style: TextStyle(
-                                      fontSize: isTablet ? 13.sp : 17.sp,
-                                      fontWeight: FontWeight.w800,
-                                      color: theme.colorScheme.primary)),
+                                color: theme.colorScheme.error,
+                                size: 300,
+                                Icons.error,
+                              ),
+                              Text(
+                                "video_upload_failed".tr,
+                                style: TextStyle(
+                                  fontSize: isTablet ? 13.sp : 17.sp,
+                                  fontWeight: FontWeight.w800,
+                                  color: theme.colorScheme.primary,
+                                ),
+                              ),
                               if (alreadyUploaded)
                                 MainButton(
                                   onPress: () async {
@@ -193,12 +207,15 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
                                     await uploadVideo();
                                     CompetitionService service =
                                         CompetitionService();
-                                    var response =
-                                        await service.sendCompetitionVideo(
-                                            videoUrl, widget.competitionId);
+                                    var response = await service
+                                        .sendCompetitionVideo(
+                                          videoUrl,
+                                          widget.competitionId,
+                                        );
                                     if (response.statusCode == 200) {
                                       print(
-                                          "=================================================== POP");
+                                        "=================================================== POP",
+                                      );
                                       setState(() {
                                         uploading_failed = false;
                                         uploading = false;
@@ -211,7 +228,8 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
                                             PageTransitionAnimation.cupertino,
                                       );
                                     } else if (jsonDecode(
-                                            response.body)["message"] ==
+                                          response.body,
+                                        )["message"] ==
                                         "User has already applied to this contest") {
                                       setState(() {
                                         alreadyUploaded == true;
@@ -219,56 +237,59 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
                                         uploading = false;
                                       });
                                       showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return Center(
-                                              child: Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.8,
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                ),
-                                                child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Text(
-                                                          'no_more_than_one_video'
-                                                              .tr(),
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: TextStyle(
-                                                            fontSize: 14,
-                                                            color: Colors.black,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: MainButton(
-                                                            text: 'ok'.tr(),
-                                                            onPress: () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            }),
-                                                      ),
-                                                    ]),
+                                        context: context,
+                                        builder: (context) {
+                                          return Center(
+                                            child: Container(
+                                              width:
+                                                  MediaQuery.of(
+                                                    context,
+                                                  ).size.width *
+                                                  0.8,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
                                               ),
-                                            );
-                                          });
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                          8.0,
+                                                        ),
+                                                    child: Text(
+                                                      'no_more_than_one_video'
+                                                          .tr,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                          8.0,
+                                                        ),
+                                                    child: MainButton(
+                                                      text: 'ok'.tr,
+                                                      onPress: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
                                     } else {
                                       setState(() {
                                         uploading_failed = true;
@@ -277,8 +298,8 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
                                     }
                                   },
                                   width: 200.w,
-                                  text: "resend".tr(),
-                                )
+                                  text: "resend".tr,
+                                ),
                             ],
                           )
                         : Visibility(
@@ -286,7 +307,7 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
                               children: [
                                 uploaded == true
                                     ? Text(
-                                        "successful".tr(),
+                                        "successful".tr,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           color: theme.colorScheme.primary,
@@ -294,11 +315,14 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
                                           fontSize: 15.sp,
                                         ),
                                       )
-                                    : Text("video_is_uploading".tr(),
+                                    : Text(
+                                        "video_is_uploading".tr,
                                         style: TextStyle(
-                                            fontSize: isTablet ? 13.sp : 17.sp,
-                                            fontWeight: FontWeight.w800,
-                                            color: theme.colorScheme.primary)),
+                                          fontSize: isTablet ? 13.sp : 17.sp,
+                                          fontWeight: FontWeight.w800,
+                                          color: theme.colorScheme.primary,
+                                        ),
+                                      ),
                                 if (uploading && uploaded == false) Loading(),
                               ],
                             ),
@@ -318,9 +342,11 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
                                 await uploadVideo();
                                 CompetitionService service =
                                     CompetitionService();
-                                var response =
-                                    await service.sendCompetitionVideo(
-                                        videoUrl, widget.competitionId);
+                                var response = await service
+                                    .sendCompetitionVideo(
+                                      videoUrl,
+                                      widget.competitionId,
+                                    );
                                 setState(() {
                                   video = null;
                                 });
@@ -329,7 +355,8 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
                                     uploaded = true;
                                   });
                                   print(
-                                      "=================================================== POP");
+                                    "=================================================== POP",
+                                  );
                                   await PersistentNavBarNavigator.pushNewScreen(
                                     context,
                                     screen: SuccessfullyUploaded(),
@@ -338,7 +365,8 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
                                         PageTransitionAnimation.cupertino,
                                   );
                                 } else if (jsonDecode(
-                                        response.body)["message"] ==
+                                      response.body,
+                                    )["message"] ==
                                     "User has already applied to this contest") {
                                   setState(() {
                                     alreadyUploaded == true;
@@ -346,52 +374,54 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
                                     uploading = false;
                                   });
                                   showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return Center(
-                                          child: Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.8,
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
+                                    context: context,
+                                    builder: (context) {
+                                      return Center(
+                                        child: Container(
+                                          width:
+                                              MediaQuery.of(
+                                                context,
+                                              ).size.width *
+                                              0.8,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(
+                                              20,
                                             ),
-                                            child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Text(
-                                                      'no_more_than_one_video'
-                                                          .tr(),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.black,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: MainButton(
-                                                        text: 'ok'.tr(),
-                                                        onPress: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        }),
-                                                  ),
-                                                ]),
                                           ),
-                                        );
-                                      });
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.all(
+                                                  8.0,
+                                                ),
+                                                child: Text(
+                                                  'no_more_than_one_video'.tr,
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.all(
+                                                  8.0,
+                                                ),
+                                                child: MainButton(
+                                                  text: 'ok'.tr,
+                                                  onPress: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
                                 } else {
                                   setState(() {
                                     uploading_failed = true;
@@ -403,10 +433,12 @@ class _UploadCompetitionVideoState extends State<UploadCompetitionVideo> {
                               back: () {},
                             ),
                           ),
-                  )
+                  ),
               ],
             ),
-          )),
-        ));
+          ),
+        ),
+      ),
+    );
   }
 }

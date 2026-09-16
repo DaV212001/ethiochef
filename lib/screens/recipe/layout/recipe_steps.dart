@@ -1,6 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/generated/assets.dart';
-import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 
 class RecipeSteps extends StatelessWidget {
@@ -27,10 +24,11 @@ class RecipeSteps extends StatelessWidget {
               softWrap: true,
               overflow: TextOverflow.visible,
               style: TextStyle(
-                  fontSize: 19,
-                  fontWeight: FontWeight.w500,
-                  color: theme.buttonTheme.colorScheme?.secondary),
-            )
+                fontSize: 19,
+                fontWeight: FontWeight.w500,
+                color: theme.buttonTheme.colorScheme?.secondary,
+              ),
+            ),
           ],
         );
       }).toList(),

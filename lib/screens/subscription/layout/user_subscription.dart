@@ -1,6 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/models/subscriptionplans.dart' as h;
-import 'package:ethio_chef/services/user_service.dart' as u;
+import 'package:get/get.dart';
+import '../../../models/subscriptionplans.dart' as h;
+import '../../../services/user_service.dart' as u;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:quickalert/quickalert.dart';
@@ -26,7 +26,7 @@ class _UserSubscriptionState extends State<UserSubscription> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text('your_sub'.tr(),
+        Text('your_sub'.tr,
             style: TextStyle(
                 fontSize: 17.sp,
                 fontWeight: FontWeight.w800,
@@ -43,7 +43,7 @@ class _UserSubscriptionState extends State<UserSubscription> {
               physics: BouncingScrollPhysics(),
               itemBuilder: (context, index) {
                 return SubscriptionCard(
-                  buttonName: 'delete'.tr(),
+                  buttonName: 'delete'.tr,
                   plan: widget.userSubscriptionPlans[index].plan!,
                   price: widget.userSubscriptionPlans[index].price.toString(),
                   duration: widget.duration_user,
@@ -53,15 +53,15 @@ class _UserSubscriptionState extends State<UserSubscription> {
                       type: QuickAlertType.error,
                       showCancelBtn: true,
                       showConfirmBtn: true,
-                      title: "warning".tr(),
-                      text: 'delete_subscription_warning'.tr(),
+                      title: "warning".tr,
+                      text: 'delete_subscription_warning'.tr,
                       titleAlignment: TextAlign.center,
                       textAlignment: TextAlign.center,
-                      confirmBtnText: 'delete'.tr(),
+                      confirmBtnText: 'delete'.tr,
                       onConfirmBtnTap: () {
                         deleteSubscription(index);
                       },
-                      cancelBtnText: 'cancel'.tr(),
+                      cancelBtnText: 'cancel'.tr,
                       onCancelBtnTap: () {
                         Navigator.pop(context);
                       },

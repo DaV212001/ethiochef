@@ -1,13 +1,13 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/models/language.dart';
-import 'package:ethio_chef/models/subscriptionplans.dart' as h;
-import 'package:ethio_chef/screens/subscription/layout/user_subscription.dart';
-import 'package:ethio_chef/services/subscription_checker.dart';
-import 'package:ethio_chef/services/user_service.dart' as u;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
+import '../../../models/language.dart';
+import '../../../models/subscriptionplans.dart' as h;
+import '../../../screens/subscription/layout/user_subscription.dart';
+import '../../../services/subscription_checker.dart';
+import '../../../services/user_service.dart' as u;
 import '../../models/user.dart';
 import '../../models/verification.dart';
 import '../../services/payment_service.dart';
@@ -25,14 +25,15 @@ class AllSubscriptions extends StatefulWidget {
   final bool isSignUp;
   final bool? isStepper;
   final Function(int) returnPrice;
-  const AllSubscriptions(
-      {super.key,
-      required this.returnPrice,
-      required this.isSignUp,
-      required this.first_name,
-      required this.last_name,
-      required this.phone,
-      this.isStepper = false});
+  const AllSubscriptions({
+    super.key,
+    required this.returnPrice,
+    required this.isSignUp,
+    required this.first_name,
+    required this.last_name,
+    required this.phone,
+    this.isStepper = false,
+  });
 
   @override
   State<AllSubscriptions> createState() => _AllSubscriptionsState();
@@ -118,55 +119,46 @@ class _AllSubscriptionsState extends State<AllSubscriptions> {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         body: SafeArea(
-            maintainBottomViewPadding: true,
-            child: FutureBuilder(
-                future: _subscriptionPlansFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    return SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      physics: const BouncingScrollPhysics(),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SubscriptionHeader(isStepper: widget.isStepper!),
-                          if (userSubscriptionPlans.isNotEmpty)
-                            UserSubscription(
-                              duration_user: duration_user,
-                              userSubscriptionPlans: userSubscriptionPlans,
-                            ),
-                          Divider(
-                            thickness: 1,
-                            height: 1,
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text('extend'.tr(),
-                              style: TextStyle(
-                                  fontSize: 17.sp,
-                                  fontWeight: FontWeight.w800,
-                                  color: theme.colorScheme.secondaryContainer)),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Divider(
-                            thickness: 1,
-                            height: 1,
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          if (userSubscriptionPlans.isEmpty) Subscriptions()
-                        ],
+          maintainBottomViewPadding: true,
+          child: FutureBuilder(
+            future: _subscriptionPlansFuture,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                return SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SubscriptionHeader(isStepper: widget.isStepper!),
+                      if (userSubscriptionPlans.isNotEmpty)
+                        UserSubscription(
+                          duration_user: duration_user,
+                          userSubscriptionPlans: userSubscriptionPlans,
+                        ),
+                      Divider(thickness: 1, height: 1),
+                      SizedBox(height: 5),
+                      Text(
+                        'extend'.tr,
+                        style: TextStyle(
+                          fontSize: 17.sp,
+                          fontWeight: FontWeight.w800,
+                          color: theme.colorScheme.secondaryContainer,
+                        ),
                       ),
-                    );
-                  } else {
-                    return Center(
-                      child: Loading(),
-                    );
-                  }
-                })),
+                      SizedBox(height: 5),
+                      Divider(thickness: 1, height: 1),
+                      SizedBox(height: 5),
+                      if (userSubscriptionPlans.isEmpty) Subscriptions(),
+                    ],
+                  ),
+                );
+              } else {
+                return Center(child: Loading());
+              }
+            },
+          ),
+        ),
       ),
     );
   }
@@ -183,43 +175,50 @@ class _AllSubscriptionsState extends State<AllSubscriptions> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: crossAxisCount,
-              childAspectRatio: childAspectRatio,
-              mainAxisSpacing: isTablet ? 5 : 0,
-            ),
-            physics: BouncingScrollPhysics(),
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            itemCount: subscriptionPlans.length,
-            itemBuilder: (context, index) {
-              duration =
-                  subscriptionPlans[index].duration!.toString() + " Months";
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: PriceCard(
-                  title: Language.getLocaleCode() == 'en' ? 'Monthly' : 'ወርሃዊ',
-                  price: subscriptionPlans[index].price.toString(),
-                  subPriceText: duration,
-                  billedText: subscriptionPlans[index].plan!,
-                  onPress: () async {
-                    Verification verification = await PaymentService()
-                        .getChapaCheckoutLink(subscriptionPlans[index].price!,
-                            '', first_name, last_name + "_" + phone, phone);
-                    print(
-                        "verification.checkoutUrl ${verification.checkoutUrl}");
-                    print("PaymentService");
-                    await PersistentNavBarNavigator.pushNewScreen(context,
-                        screen: PaymentScreen(url: verification.checkoutUrl!));
-                    await SubscriptionStatus().checkStatus();
-                    print("amount ${subscriptionPlans[index].price}");
-                    widget.returnPrice(subscriptionPlans[index].price!);
-                    Navigator.of(context).pop();
-                  },
-                  duration: subscriptionPlans[index].duration!,
-                ),
-              );
-            })
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
+            childAspectRatio: childAspectRatio,
+            mainAxisSpacing: isTablet ? 5 : 0,
+          ),
+          physics: BouncingScrollPhysics(),
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical,
+          itemCount: subscriptionPlans.length,
+          itemBuilder: (context, index) {
+            duration =
+                subscriptionPlans[index].duration!.toString() + " Months";
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: PriceCard(
+                title: Language.getLocaleCode() == 'en' ? 'Monthly' : 'ወርሃዊ',
+                price: subscriptionPlans[index].price.toString(),
+                subPriceText: duration,
+                billedText: subscriptionPlans[index].plan!,
+                onPress: () async {
+                  Verification verification = await PaymentService()
+                      .getChapaCheckoutLink(
+                        subscriptionPlans[index].price!,
+                        '',
+                        first_name,
+                        last_name + "_" + phone,
+                        phone,
+                      );
+                  print("verification.checkoutUrl ${verification.checkoutUrl}");
+                  print("PaymentService");
+                  await PersistentNavBarNavigator.pushNewScreen(
+                    context,
+                    screen: PaymentScreen(url: verification.checkoutUrl!),
+                  );
+                  await SubscriptionStatus().checkStatus();
+                  print("amount ${subscriptionPlans[index].price}");
+                  widget.returnPrice(subscriptionPlans[index].price!);
+                  Navigator.of(context).pop();
+                },
+                duration: subscriptionPlans[index].duration!,
+              ),
+            );
+          },
+        ),
       ],
     );
   }

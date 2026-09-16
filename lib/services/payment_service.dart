@@ -1,15 +1,15 @@
 import 'dart:convert';
 
-import 'package:easy_localization/easy_localization.dart' as easy;
-import 'package:ethio_chef/services/authorization_service.dart';
-import 'package:ethio_chef/services/user_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart' as getx;
 import 'package:http/http.dart' as http;
+import 'package:logger/logger.dart';
 
 import '../models/payment_methods.dart';
 import '../models/user.dart';
 import '../models/verification.dart';
+import '../services/authorization_service.dart';
+import '../services/user_service.dart';
 import '../utils/constants.dart';
 
 class PaymentService {
@@ -26,18 +26,19 @@ class PaymentService {
 
     Map<String, dynamic> cancelMandateBody = {
       "phone_number": user.phone,
-      "mandateID": mandateData['mandateId']
+      "mandateID": mandateData['mandateId'],
     };
 
     print(cancelMandateBody);
 
     var response = await http.post(
-        Uri.parse("https://apiv2.ethiochef.com/telebirr/cancelMandate"),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'JWT $token'
-        },
-        body: jsonEncode(cancelMandateBody));
+      Uri.parse("https://apiv2.ethiochef.com/telebirr/cancelMandate"),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'JWT $token',
+      },
+      body: jsonEncode(cancelMandateBody),
+    );
     print('CANCEL MANDATE RESPONSE: ${response.body}'); // print(response.body);
 
     return response;
@@ -48,17 +49,20 @@ class PaymentService {
     String? token = await AuthService.getAuthorizationToken();
     Map<String, dynamic> getMandateBody = {
       "phoneNumber": user.phone,
-      "type": "ACTIVE"
+      "type": "ACTIVE",
     };
 
     print(getMandateBody);
     var response;
     try {
-      var request = http.Request(
-          'GET', Uri.parse("https://apiv2.ethiochef.com/telebirr/getMandate"))
-        ..headers['Content-Type'] = 'application/json'
-        ..headers['Authorization'] = 'JWT $token'
-        ..body = jsonEncode(getMandateBody);
+      var request =
+          http.Request(
+              'GET',
+              Uri.parse("https://apiv2.ethiochef.com/telebirr/getMandate"),
+            )
+            ..headers['Content-Type'] = 'application/json'
+            ..headers['Authorization'] = 'JWT $token'
+            ..body = jsonEncode(getMandateBody);
 
       response = await request.send();
     } catch (e) {
@@ -74,52 +78,61 @@ class PaymentService {
     return jsonDecode(responseBody);
   }
 
-  Future<Verification> getChapaCheckoutLink(int amount, String email,
-      String first_name, String last_name, String phone_number) async {
+  Future<Verification> getChapaCheckoutLink(
+    int amount,
+    String email,
+    String first_name,
+    String last_name,
+    String phone_number,
+  ) async {
     print({
       "amount": amount, //
       "email": email,
       "first_name": first_name,
       "last_name": last_name,
-      "phone_number": phone_number //
+      "phone_number": phone_number, //
     });
     Verification verification = Verification();
-    print(jsonEncode({
-      "amount": amount,
-      "email": email,
-      "first_name": first_name,
-      "last_name": last_name,
-      "phone_number": phone_number
-    }));
-    final response =
-        await http.post(Uri.parse("https://apiv2.ethiochef.com/pay/chapa"),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: jsonEncode({
-              "amount": amount,
-              "email": email,
-              "first_name": first_name,
-              "last_name": last_name,
-              "phone_number": phone_number
-            }));
+    print(
+      jsonEncode({
+        "amount": amount,
+        "email": email,
+        "first_name": first_name,
+        "last_name": last_name,
+        "phone_number": phone_number,
+      }),
+    );
+    final response = await http.post(
+      Uri.parse("https://apiv2.ethiochef.com/pay/chapa"),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        "amount": amount,
+        "email": email,
+        "first_name": first_name,
+        "last_name": last_name,
+        "phone_number": phone_number,
+      }),
+    );
     print(response.statusCode);
     print(response.body);
     if (response.statusCode == 200) {
       print(jsonDecode(response.body)['data']['data']['checkout_url']);
-      verification.checkoutUrl =
-          jsonDecode(response.body)['data']['data']['checkout_url'];
+      verification.checkoutUrl = jsonDecode(
+        response.body,
+      )['data']['data']['checkout_url'];
       verification.txref = jsonDecode(response.body)['tx_ref'];
       return verification;
     } else {
       throw Exception(
-          'statuscode: ${response.statusCode.toString()}, message: ${response.body}');
+        'statuscode: ${response.statusCode.toString()}, message: ${response.body}',
+      );
     }
   }
 
   Future<bool> verifyChapaPayment(String txref) async {
-    final Uri url =
-        Uri.parse("https://api.chapa.co/v1/transaction/verify/$txref}");
+    final Uri url = Uri.parse(
+      "https://api.chapa.co/v1/transaction/verify/$txref}",
+    );
 
     final response = await http.get(
       url,
@@ -139,10 +152,12 @@ class PaymentService {
     final response = await http.get(
       Uri.parse('${Constants.url}/pay/payment-methods'),
     );
+
     print("response.statusCode = ${response.statusCode}");
     print("response.statusCode = ${response.body}");
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);
+      Logger().d(jsonData);
       final List<dynamic> paymentData = jsonData['data'];
       print("paymentData $paymentData");
       return paymentData
@@ -153,29 +168,31 @@ class PaymentService {
     }
   }
 
-  Future<http.Response> telebirrPay(
-      {required String phoneNumber,
-      required String firstName,
-      required String lastName,
-      // required int paymentId,
-      required int paymentAmount,
-      required String fcmToken}) async {
+  Future<http.Response> telebirrPay({
+    required String phoneNumber,
+    required String firstName,
+    required String lastName,
+    required int paymentAmount,
+    required String fcmToken,
+    int paymentId = 0,
+  }) async {
     var body = {
-      // "id": paymentId,
+      "package_id": paymentId,
       "amount": paymentAmount,
       "phone_number": phoneNumber,
       "first_name": firstName,
       "last_name": lastName,
-      "fcm_token": fcmToken
+      "fcm_token": fcmToken,
     };
 
     var requestBody = jsonEncode(body);
     print("requestBody $requestBody");
-    var response = await http.post(Uri.parse("${Constants.url}/telebirr/pay"),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: requestBody);
+    var response = await http.post(
+      Uri.parse("${Constants.url}/pay"),
+      headers: {'Content-Type': 'application/json'},
+      body: requestBody,
+    );
+    Logger().d(response.body);
     print(response.body);
     // if (response.statusCode == 200) {
     //   print('INITIATING COUNT DOWN');
@@ -186,7 +203,7 @@ class PaymentService {
     //   });
     // }
     if (response.statusCode != 200) {
-      getx.Get.snackbar(easy.tr('error'), easy.tr('pay_again'));
+      getx.Get.snackbar('error'.tr, 'pay_again'.tr);
     }
     return response;
   }
@@ -211,11 +228,10 @@ class PaymentService {
   // }
 
   Future<http.Response> initPayment(
-      String phoneNumber, int paymentAmount) async {
-    var body = {
-      "amount": paymentAmount,
-      "phone_number": phoneNumber,
-    };
+    String phoneNumber,
+    int paymentAmount,
+  ) async {
+    var body = {"amount": paymentAmount, "phone_number": phoneNumber};
 
     var requestBody = jsonEncode(body);
     print("requestBody $requestBody");
@@ -223,21 +239,24 @@ class PaymentService {
     // Show loading overlay
     var response = await http.post(
       Uri.parse("${Constants.url}/telebirr/initPayment"),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: {'Content-Type': 'application/json'},
       body: requestBody,
     );
     print(response.body);
     if (response.statusCode != 200) {
-      getx.Get.snackbar(easy.tr('error'), easy.tr('pay_again'));
+      getx.Get.snackbar('error'.tr, 'pay_again'.tr);
     }
 
     return response;
   }
 
-  Future<http.Response> makePayment(Map userData, int paymentId, User user,
-      int paymentAmount, bool isSignUp) async {
+  Future<http.Response> makePayment(
+    Map userData,
+    int paymentId,
+    User user,
+    int paymentAmount,
+    bool isSignUp,
+  ) async {
     var body = {};
     String? fcmToken = await FirebaseMessaging.instance.getToken();
     print("FCMTOKENNNNNNNNNNNNNNNNN: $fcmToken");
@@ -249,19 +268,22 @@ class PaymentService {
         "phone_number": userData['phone'],
         "first_name": userData['first_name'],
         "last_name": userData['last_name'],
+        "package_id": paymentId,
       };
-      if (paymentId == 6) {
-        if (fcmToken == null) {
-          print('FCM TOKEN IS NULL');
-        }
-        response = await telebirrPay(
-            phoneNumber: userData['phone'],
-            firstName: userData['first_name'],
-            lastName: userData['last_name'],
-            // paymentId: paymentId,
-            paymentAmount: paymentAmount,
-            fcmToken: fcmToken!);
+      // if (paymentId == 6) {
+      if (fcmToken == null) {
+        print('FCM TOKEN IS NULL');
       }
+      response = await telebirrPay(
+        phoneNumber: userData['phone'],
+        firstName: userData['first_name'],
+        lastName: userData['last_name'],
+        paymentId: paymentId,
+        paymentAmount: paymentAmount,
+        fcmToken: fcmToken!,
+      );
+      return response;
+      // }
     } else {
       body = {
         "id": paymentId,
@@ -275,19 +297,25 @@ class PaymentService {
           print('FCM TOKEN IS NULL');
         }
         response = await telebirrPay(
-            phoneNumber: user.phone.toString(),
-            firstName: user.firstName,
-            lastName: user.lastName,
-            // paymentId: paymentId,
-            paymentAmount: paymentAmount,
-            fcmToken: fcmToken!);
+          phoneNumber: user.phone.toString(),
+          firstName: user.firstName,
+          lastName: user.lastName,
+          // paymentId: paymentId,
+          paymentAmount: paymentAmount,
+          fcmToken: fcmToken!,
+        );
       }
     }
     if (paymentId != 6) {
+      var body = {"user_id": user.id, "package_id": paymentId};
       var requestBody = jsonEncode(body);
       print("requestBody $requestBody");
-      response = await http.post(Uri.parse("${Constants.url}/pay"),
-          headers: {"Content-type": "application/json"}, body: requestBody);
+      response = await http.post(
+        Uri.parse("${Constants.url}/pay"),
+        headers: {"Content-type": "application/json"},
+        body: requestBody,
+      );
+      Logger().d(response.body);
       print(response.body);
       print(response.statusCode);
     }
@@ -302,10 +330,22 @@ class PaymentService {
       "adv_sub5": "",
       "coupon": "",
       "sale": "",
-      "payout": ""
+      "payout": "",
     };
     print(args);
     // await Offer18Plugin.trackConversion(args);
+    return response;
+  }
+
+  Future<http.Response> payForPackage(int userId, int packageId) async {
+    var body = {"user_id": userId, "package_id": packageId};
+    var requestBody = jsonEncode(body);
+    print("requestBody $requestBody");
+    var response = await http.post(
+      Uri.parse("${Constants.url}/pay"),
+      headers: {"Content-type": "application/json"},
+      body: requestBody,
+    );
     return response;
   }
 }

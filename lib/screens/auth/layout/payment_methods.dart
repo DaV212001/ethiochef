@@ -1,19 +1,19 @@
 import 'dart:convert';
 
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/models/payment_methods.dart';
-import 'package:ethio_chef/models/subscriptionplans.dart';
-import 'package:ethio_chef/screens/auth/layout/payment_screen.dart';
-import 'package:ethio_chef/widgets/ad_block.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../../main.dart';
+import '../../../models/payment_methods.dart';
+import '../../../models/subscriptionplans.dart';
 import '../../../models/user.dart';
+import '../../../screens/auth/layout/payment_screen.dart';
 import '../../../services/payment_service.dart';
 import '../../../utils/screen_utils.dart';
+import '../../../widgets/ad_block.dart';
 import '../../../widgets/error_card.dart';
 import '../../../widgets/loading.dart';
 import '../../../widgets/main_app_bar.dart';
@@ -23,11 +23,12 @@ class PaymentMethodScreen extends StatefulWidget {
   final List<PaymentMethods>? payments;
   final SubscriptionPlans selectedSubscriptionPlan;
   final Map userData;
-  PaymentMethodScreen(
-      {super.key,
-      this.payments,
-      required this.userData,
-      required this.selectedSubscriptionPlan});
+  PaymentMethodScreen({
+    super.key,
+    this.payments,
+    required this.userData,
+    required this.selectedSubscriptionPlan,
+  });
 
   @override
   State<PaymentMethodScreen> createState() => _PaymentMethodScreenState();
@@ -78,15 +79,19 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
       ),
     ).load();
     await BannerAd(
-        adUnitId: _adbannerUnitId,
-        request: const AdRequest(),
-        size: AdSize.banner,
-        listener: BannerAdListener(onAdLoaded: (ad) {
+      adUnitId: _adbannerUnitId,
+      request: const AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
           _bannerAd3 = ad as BannerAd;
-        }, onAdFailedToLoad: (ad, err) {
+        },
+        onAdFailedToLoad: (ad, err) {
           print("Error loading ad: $err");
           ad.dispose();
-        })).load();
+        },
+      ),
+    ).load();
   }
 
   Future<dynamic> fetchData() async {
@@ -104,47 +109,43 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MainAppBar(
-        title: 'please_select_payment_method'.tr(),
+        title: 'please_select_payment_method'.tr,
         hasMainIcons: false,
       ),
       body: FutureBuilder(
-          future: _future,
-          builder: (context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Loading();
-            }
-            if (snapshot.hasError) {
-              return Center(
-                  child: ErrorCard(
+        future: _future,
+        builder: (context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Loading();
+          }
+          if (snapshot.hasError) {
+            return Center(
+              child: ErrorCard(
                 errorType: snapshot.error.toString(),
                 refresh: () {
                   setState(() {
                     _future = fetchData();
                   });
                 },
-              ));
-            }
-            return Column(
-              children: [
-                if (_bannerAd1 != null)
-                  AdBlock(
-                    bannerAd: _bannerAd1,
-                    isbottom: false,
-                  ),
-                buildPaymentMethodScreen(snapshot.data as List<PaymentMethods>),
-                if (paymentInProgress)
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CircularProgressIndicator(),
-                  ),
-                if (_bannerAd3 != null)
-                  AdBlock(
-                    bannerAd: _bannerAd3,
-                    isbottom: false,
-                  ),
-              ],
+              ),
             );
-          }),
+          }
+          return Column(
+            children: [
+              if (_bannerAd1 != null)
+                AdBlock(bannerAd: _bannerAd1, isbottom: false),
+              buildPaymentMethodScreen(snapshot.data as List<PaymentMethods>),
+              if (paymentInProgress)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircularProgressIndicator(),
+                ),
+              if (_bannerAd3 != null)
+                AdBlock(bannerAd: _bannerAd3, isbottom: false),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -171,10 +172,10 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
           String bank_name = payments[index].bank_name == "CHAPA"
               ? "CBE birr, telebirr and others"
               : payments[index].bank_name == "ABYSINIA"
-                  ? "Pay in USD"
-                  : payments[index].bank_name == "ETHSWITCH"
-                      ? "Pay on ATM cards"
-                      : payments[index].bank_name;
+              ? "Pay in USD"
+              : payments[index].bank_name == "ETHSWITCH"
+              ? "Pay on ATM cards"
+              : payments[index].bank_name;
 
           return Column(
             children: [
@@ -188,23 +189,27 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                     paymentInProgress = true;
                   });
                   var response = await service.makePayment(
-                      widget.userData,
-                      payments[index].id,
-                      unWanted,
-                      widget.selectedSubscriptionPlan.price!,
-                      true);
+                    widget.userData,
+                    payments[index].id,
+                    unWanted,
+                    widget.selectedSubscriptionPlan.price!,
+                    true,
+                  );
 
                   if (response.statusCode == 200) {
                     if (payments[index].id != 6) {
-                      var checkoutUrl =
-                          jsonDecode(response.body)['data']['checkout_url'];
+                      var checkoutUrl = jsonDecode(
+                        response.body,
+                      )['data']['checkout_url'];
                       print(jsonDecode(response.body)['data']['checkout_url']);
                       print(checkoutUrl);
                       setState(() {
                         paymentInProgress == false;
                       });
-                      await PersistentNavBarNavigator.pushNewScreen(context,
-                          screen: PaymentScreen(url: checkoutUrl));
+                      await PersistentNavBarNavigator.pushNewScreen(
+                        context,
+                        screen: PaymentScreen(url: checkoutUrl),
+                      );
                       RestartWidget.restartApp(context);
                     } else {
                       Future.delayed(Duration(seconds: 60), () {
@@ -219,16 +224,14 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                       paymentInProgress = false;
                     });
                     ScaffoldMessenger.of(context).showSnackBar(
-                        (SnackBar(content: Text('telebirr_error'.tr()))));
+                      (SnackBar(content: Text('telebirr_error'.tr))),
+                    );
                   }
                 },
               ),
               if (index == payments.length / 2)
                 if (_bannerAd2 != null)
-                  AdBlock(
-                    bannerAd: _bannerAd2,
-                    isbottom: true,
-                  ),
+                  AdBlock(bannerAd: _bannerAd2, isbottom: true),
             ],
           );
         },

@@ -1,12 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart' as c;
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/widgets/screen_head.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../../models/promotion.dart';
 import '../../../utils/screen_utils.dart';
 import '../../../widgets/cached_image.dart';
+import '../../../widgets/screen_head.dart';
 
 class AdsCarousel extends StatefulWidget {
   final List<Promotion> promotion;
@@ -26,11 +26,11 @@ class _AdsCarouselState extends State<AdsCarousel> {
 
   // List<PhotosModel> images = [];
 
-  List imageList = [
-    {"id": 1, "image_path": 'assets/images/photo_1.jpg'},
-    {"id": 2, "image_path": 'assets/images/photo_2.jpg'},
-    {"id": 3, "image_path": 'assets/images/photo_3.jpg'}
-  ];
+  // List imageList = [
+  //   {"id": 1, "image_path": 'assets/images/photo_1.jpg'},
+  //   {"id": 2, "image_path": 'assets/images/photo_2.jpg'},
+  //   {"id": 3, "image_path": 'assets/images/photo_3.jpg'}
+  // ];
 
   final c.CarouselSliderController carouselController =
       c.CarouselSliderController();
@@ -43,69 +43,71 @@ class _AdsCarouselState extends State<AdsCarousel> {
     ThemeData theme = Theme.of(context);
     return Container(
       color: theme.colorScheme.primary,
-      child: Column(children: [
-        Stack(
-          children: [
-            if (widget.promotion.isEmpty)
-              Image.asset(
-                "assets/images/logo.png",
-                height: isTablet ? 250.h : 200.h,
-              ),
-            if (widget.promotion.isNotEmpty)
-              c.CarouselSlider(
-                items: widget.promotion.map((promotion) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return Stack(
-                        fit: StackFit.expand,
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: CachedImage(
-                              url: promotion.image,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: Container(
-                              height: 40,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.bottomCenter,
-                                  end: Alignment.center,
-                                  colors: [
-                                    theme.colorScheme.primary,
-                                    theme.colorScheme.primary
-                                        .withOpacity(0.0), // Transparent black
-                                  ],
-                                ),
-                              ),
-                              width: MediaQuery.of(context).size.width,
-                              child: SizedBox(),
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                }).toList(),
-                carouselController: carouselController,
-                options: c.CarouselOptions(
-                  scrollPhysics: const BouncingScrollPhysics(),
-                  autoPlay: true,
-                  aspectRatio: 2,
-                  viewportFraction: 1,
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      currentIndex = index;
-                    });
-                  },
+      child: Column(
+        children: [
+          Stack(
+            children: [
+              if (widget.promotion.isEmpty)
+                Image.asset(
+                  "assets/images/logo.png",
+                  height: isTablet ? 250.h : 200.h,
                 ),
-              ),
-            Positioned(
+              if (widget.promotion.isNotEmpty)
+                c.CarouselSlider(
+                  items: widget.promotion.map((promotion) {
+                    return Builder(
+                      builder: (BuildContext context) {
+                        return Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              child: CachedImage(
+                                url: promotion.image,
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              child: Container(
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.bottomCenter,
+                                    end: Alignment.center,
+                                    colors: [
+                                      theme.colorScheme.primary,
+                                      theme.colorScheme.primary.withOpacity(
+                                        0.0,
+                                      ), // Transparent black
+                                    ],
+                                  ),
+                                ),
+                                width: MediaQuery.of(context).size.width,
+                                child: SizedBox(),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }).toList(),
+                  carouselController: carouselController,
+                  options: c.CarouselOptions(
+                    scrollPhysics: const BouncingScrollPhysics(),
+                    autoPlay: true,
+                    aspectRatio: 2,
+                    viewportFraction: 1,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        currentIndex = index;
+                      });
+                    },
+                  ),
+                ),
+              Positioned(
                 bottom: 10,
                 right: 0,
                 child: Padding(
@@ -127,25 +129,24 @@ class _AdsCarouselState extends State<AdsCarousel> {
                                 horizontal: 3.0,
                               ),
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: currentIndex == entry.key
-                                      ? theme.colorScheme.surface
-                                      : theme.colorScheme.primaryContainer),
+                                borderRadius: BorderRadius.circular(10),
+                                color: currentIndex == entry.key
+                                    ? theme.colorScheme.surface
+                                    : theme.colorScheme.primaryContainer,
+                              ),
                             ),
                           );
                         }).toList(),
-                      )
+                      ),
                     ],
                   ),
-                ))
-          ],
-        ),
-        ScreenHead(
-          hasNotification: true,
-          screen: 0,
-          searchHint: "search".tr(),
-        )
-      ]),
+                ),
+              ),
+            ],
+          ),
+          ScreenHead(hasNotification: true, screen: 0, searchHint: "search".tr),
+        ],
+      ),
     );
   }
 }

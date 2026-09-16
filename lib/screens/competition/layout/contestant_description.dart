@@ -1,6 +1,6 @@
-import 'package:ethio_chef/models/competition.dart';
-import 'package:ethio_chef/screens/competition/layout/competition_header_image.dart';
-import 'package:ethio_chef/widgets/main_app_bar.dart';
+import '../../../models/competition.dart';
+import '../../../screens/competition/layout/competition_header_image.dart';
+import '../../../widgets/main_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

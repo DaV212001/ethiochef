@@ -1,9 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/models/language.dart';
-import 'package:ethio_chef/screens/subscription/layout/user_subscription.dart';
+import 'package:ethiochef/screens/subscription/layout/user_subscription.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
+import '../../../models/language.dart';
 import '../../../models/subscriptionplans.dart';
 import '../../../services/user_service.dart';
 import '../../../utils/screen_utils.dart';
@@ -15,13 +15,14 @@ class AllSubscriptionStep extends StatefulWidget {
   bool? isSMS;
   List<SubscriptionPlans> subscriptionPlans;
   List<SubscriptionPlans>? userSubscriptionPlans;
-  AllSubscriptionStep(
-      {super.key,
-      required this.returnPrice,
-      required this.subscriptionPlans,
-      required this.isNormalSubscription,
-      this.userSubscriptionPlans,
-      this.isSMS});
+  AllSubscriptionStep({
+    super.key,
+    required this.returnPrice,
+    required this.subscriptionPlans,
+    required this.isNormalSubscription,
+    this.userSubscriptionPlans,
+    this.isSMS,
+  });
 
   @override
   State<AllSubscriptionStep> createState() => _AllSubscriptionStepState();
@@ -50,10 +51,13 @@ class _AllSubscriptionStepState extends State<AllSubscriptionStep> {
     var userData = await userService.fetchUserProfile();
     setState(() {
       if (widget.isNormalSubscription == true && widget.isSMS == false) {
-        expiryDate = userData?.lastPaidDate!.add(Duration(
+        expiryDate = userData?.lastPaidDate!.add(
+          Duration(
             days: userData.subscription!.price == 2
                 ? 1
-                : userData.subscription!.duration! * 30));
+                : userData.subscription!.duration! * 30,
+          ),
+        );
         print('CHECKING EXPIRATION DATE: ${expiryDate}');
       }
     });
@@ -81,19 +85,20 @@ class _AllSubscriptionStepState extends State<AllSubscriptionStep> {
       children: [
         if (widget.isNormalSubscription == true && widget.isSMS == false)
           UserSubscription(
-              duration_user: expiryDate == null
-                  ? ""
-                  : expiryDate!.difference(now).inDays == 0
-                      ? "hours_left".tr(args: [
-                          expiryDate!.difference(now).inHours.toString()
-                        ])
-                      : "days_left".tr(args: [
-                          expiryDate!.difference(now).inDays.toString()
-                        ]),
-              userSubscriptionPlans: widget.userSubscriptionPlans!),
+            duration_user: expiryDate == null
+                ? ""
+                : expiryDate!.difference(now).inDays == 0
+                ? "hours_left".trParams({
+                    'expiry': expiryDate!.difference(now).inHours.toString(),
+                  })
+                : "days_left".trParams({
+                    'expiry': expiryDate!.difference(now).inDays.toString(),
+                  }),
+            userSubscriptionPlans: widget.userSubscriptionPlans!,
+          ),
         // if (widget.isNormalSubscription == true && isFromBank == false)
         //   Text(
-        //     "sms_user_message".tr(),
+        //     "sms_user_message".tr,
         //     style: TextStyle(
         //         fontSize: 15.sp,
         //         fontWeight: FontWeight.bold,
@@ -103,46 +108,47 @@ class _AllSubscriptionStepState extends State<AllSubscriptionStep> {
             (widget.userSubscriptionPlans != null &&
                 widget.userSubscriptionPlans!.isEmpty))
           Text(
-            "please_select_a_plan".tr(),
+            "please_select_a_plan".tr,
             style: TextStyle(
-                fontSize: 15.sp,
-                fontWeight: FontWeight.bold,
-                color: theme.colorScheme.primary),
+              fontSize: 15.sp,
+              fontWeight: FontWeight.bold,
+              color: theme.colorScheme.primary,
+            ),
           ),
         if ((widget.userSubscriptionPlans != null &&
                 widget.userSubscriptionPlans!.isEmpty) ||
             widget.isSMS == true)
           GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: crossAxisCount,
-                childAspectRatio: childAspectRatio,
-                mainAxisSpacing: isTablet ? 5 : 0,
-              ),
-              physics: BouncingScrollPhysics(),
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              itemCount: widget.subscriptionPlans.length,
-              itemBuilder: (context, index) {
-                duration =
-                    widget.subscriptionPlans[index].duration!.toString() +
-                        " Months";
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: PriceCard(
-                    title:
-                        Language.getLocaleCode() == 'en' ? 'Monthly' : 'ወርሃዊ',
-                    price: widget.subscriptionPlans[index].price.toString(),
-                    subPriceText: duration,
-                    billedText: widget.subscriptionPlans[index].plan!,
-                    onPress: () async {
-                      print(widget.subscriptionPlans[index]);
-                      widget.returnPrice(widget.subscriptionPlans[index]);
-                      print("gone");
-                    },
-                    duration: widget.subscriptionPlans[index].duration!,
-                  ),
-                );
-              })
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: crossAxisCount,
+              childAspectRatio: childAspectRatio,
+              mainAxisSpacing: isTablet ? 5 : 0,
+            ),
+            physics: BouncingScrollPhysics(),
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            itemCount: widget.subscriptionPlans.length,
+            itemBuilder: (context, index) {
+              duration =
+                  widget.subscriptionPlans[index].duration!.toString() +
+                  " Months";
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: PriceCard(
+                  title: Language.getLocaleCode() == 'en' ? 'Monthly' : 'ወርሃዊ',
+                  price: widget.subscriptionPlans[index].price.toString(),
+                  subPriceText: duration,
+                  billedText: widget.subscriptionPlans[index].plan!,
+                  onPress: () async {
+                    print(widget.subscriptionPlans[index]);
+                    widget.returnPrice(widget.subscriptionPlans[index]);
+                    print("gone");
+                  },
+                  duration: widget.subscriptionPlans[index].duration!,
+                ),
+              );
+            },
+          ),
       ],
     );
   }

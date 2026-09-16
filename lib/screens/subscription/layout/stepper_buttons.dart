@@ -1,5 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../widgets/main_button.dart';
 
@@ -12,15 +12,16 @@ class PaymentStepperControlButtons extends StatelessWidget {
   final bool isSignUp;
   final bool? increaseActiveStep;
 
-  const PaymentStepperControlButtons(
-      {super.key,
-        this.increaseActiveStep,
-        required this.next,
-        this.back,
-        required this.index,
-        required this.isSignUp,
-        this.awaitResponse = false,
-        this.showBackButton = true});
+  const PaymentStepperControlButtons({
+    super.key,
+    this.increaseActiveStep,
+    required this.next,
+    this.back,
+    required this.index,
+    required this.isSignUp,
+    this.awaitResponse = false,
+    this.showBackButton = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +29,9 @@ class PaymentStepperControlButtons extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         if (index != 0)
-          MainButton(width: double.infinity, onPress: back!, text: 'back'.tr()),
-        if(index ==1 && isSignUp == false && increaseActiveStep == true)
-          MainButton(width: double.infinity, onPress: back!, text: 'back'.tr()),
+          MainButton(width: double.infinity, onPress: back!, text: 'back'.tr),
+        if (index == 1 && isSignUp == false && increaseActiveStep == true)
+          MainButton(width: double.infinity, onPress: back!, text: 'back'.tr),
       ],
     );
   }

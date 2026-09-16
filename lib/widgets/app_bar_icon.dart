@@ -1,4 +1,4 @@
-import 'package:ethio_chef/widgets/svg_icon.dart';
+import '../widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

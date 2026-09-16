@@ -1,13 +1,8 @@
 import 'dart:convert';
 
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/models/food.dart';
-import 'package:ethio_chef/screens/recipe/recipe_screen.dart';
-import 'package:ethio_chef/theme/app_theme.dart';
-import 'package:ethio_chef/widgets/cached_image.dart';
-import 'package:ethio_chef/widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:overflow_text_animated/overflow_text_animated.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
@@ -15,6 +10,11 @@ import '../../screens/auth/auth_screen.dart';
 import '../../screens/subscription/all_subscriptions.dart';
 import '../../services/authorization_service.dart';
 import '../../services/user_service.dart';
+import '../models/food.dart';
+import '../screens/recipe/recipe_screen.dart';
+import '../theme/app_theme.dart';
+import '../widgets/cached_image.dart';
+import '../widgets/main_button.dart';
 
 class SearchCard extends StatefulWidget {
   static int foodCardType = 1;
@@ -50,14 +50,15 @@ class _SearchCardState extends State<SearchCard> {
               ClipRRect(
                 borderRadius: AppTheme.allBorderRadius,
                 child: Container(
-                    width: 170.w,
-                    height: 175.h,
-                    child: CachedImage(
-                        url: widget.food.thumbnail, fit: BoxFit.fill)),
+                  width: 170.w,
+                  height: 175.h,
+                  child: CachedImage(
+                    url: widget.food.thumbnail,
+                    fit: BoxFit.fill,
+                  ),
+                ),
               ),
-              SizedBox(
-                width: 10.w,
-              ),
+              SizedBox(width: 10.w),
               SizedBox(height: 170.h, child: info(theme)),
             ],
           ),
@@ -65,7 +66,7 @@ class _SearchCardState extends State<SearchCard> {
             isLoading: isLoading,
             height: 60.h,
             width: 200.w,
-            text: "show_recipe".tr(),
+            text: "show_recipe".tr,
             onPress: () async {
               print("Food Card");
               setState(() {
@@ -83,8 +84,9 @@ class _SearchCardState extends State<SearchCard> {
                     isLoading = false;
                   });
                   SnackBar logIn = SnackBar(
-                      padding: EdgeInsets.symmetric(vertical: 20),
-                      content: Text('another_account_login'.tr()));
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    content: Text('another_account_login'.tr),
+                  );
                   ScaffoldMessenger.of(context).showSnackBar(logIn);
                   loginFunction();
                 }
@@ -117,14 +119,16 @@ class _SearchCardState extends State<SearchCard> {
                   isLoading = false;
                 });
                 SnackBar logIn = SnackBar(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    content: Text(
-                        'Please subscribe to see ingredients and steps'.tr()));
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  content: Text(
+                    'Please subscribe to see ingredients and steps'.tr,
+                  ),
+                );
                 ScaffoldMessenger.of(context).showSnackBar(logIn);
                 loginFunction();
               }
             },
-          )
+          ),
         ],
       ),
     );
@@ -196,9 +200,9 @@ class _SearchCardState extends State<SearchCard> {
         //       SizedBox(
         //         width: 150.w,
         //         child: Text(
-        //           widget.food.mealTime.toString()=="1"? 'breakfast'.tr() :
-        //           widget.food.mealTime.toString()=="2"? 'lunch'.tr() :
-        //           widget.food.mealTime.toString()=="3"? 'dinner'.tr() : 'supper'.tr(),
+        //           widget.food.mealTime.toString()=="1"? 'breakfast'.tr :
+        //           widget.food.mealTime.toString()=="2"? 'lunch'.tr :
+        //           widget.food.mealTime.toString()=="3"? 'dinner'.tr : 'supper'.tr,
         //           style: theme.textTheme.labelMedium?.copyWith(
         //             color: theme.colorScheme.tertiary,
         //           ),

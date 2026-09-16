@@ -1,16 +1,12 @@
-
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../models/food.dart';
 import '../../services/food_service.dart';
 import '../../widgets/app_bar_search.dart';
 import '../../widgets/error_card.dart';
-import '../../widgets/main_app_bar.dart';
 import '../category/layout/vertical_food_list.dart';
-
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -20,8 +16,9 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final PagingController<int, Food> _pagingController =
-  PagingController(firstPageKey: 1);
+  final PagingController<int, Food> _pagingController = PagingController(
+    firstPageKey: 1,
+  );
   late FocusNode _searchFieldFocusNode;
   late String currentQuery = '';
   bool searchedOnce = false;
@@ -52,70 +49,72 @@ class _SearchScreenState extends State<SearchScreen> {
     //     color: theme.colorScheme.primary, size: 25.sp);
     // final bool isTablet = ScreenUtils.isTablet(context);
     return Scaffold(
-        appBar: AppBar(
-          iconTheme: const IconThemeData(
-            color: Colors.black,
-          ),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          title: AppBarSearchBar(
-            enabled: true,
-            onSearchQueryChange: onChange,
-            focusNode: _searchFieldFocusNode,
-          ),
-          leading: IconButton(
-            icon:  Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5),
-              child: Icon(Icons.arrow_back),
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            color: theme.primaryColor,
-          ),
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.black),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: AppBarSearchBar(
+          enabled: true,
+          onSearchQueryChange: onChange,
+          focusNode: _searchFieldFocusNode,
         ),
-        body: searchedOnce
-            ? Center(
-          child: VerticalFoodList(
-              pagingController: _pagingController, isSearchList: true),
-        )
-            : Center(
-            child: ErrorCard(
-              errorType: "empty_search_query"
-            )));
+        leading: IconButton(
+          icon: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: Icon(Icons.arrow_back),
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          color: theme.primaryColor,
+        ),
+      ),
+      body: searchedOnce
+          ? Center(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: VerticalFoodList(
+                      pagingController: _pagingController,
+                      isSearchList: true,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : Center(child: ErrorCard(errorType: "empty_search_query")),
+    );
   }
 
   void onChange(String query) {
-    EasyDebounce.debounce(
-      'search_debounce',
-      Duration(milliseconds: 500),
-          () {
-        if (query == "") {
-          setState(() {
-            searchedOnce = false;
+    EasyDebounce.debounce('search_debounce', Duration(milliseconds: 500), () {
+      if (query == "") {
+        setState(() {
+          searchedOnce = false;
+        });
+      } else if (currentQuery != query && query != "") {
+        if (!searchedOnce) {
+          _pagingController.addPageRequestListener((pageKey) {
+            fetchData(currentQuery, pageKey)
+                .then((data) {
+                  if (data.length < 15) {
+                    _pagingController.appendLastPage(data);
+                  } else {
+                    _pagingController.appendPage(data, pageKey + 1);
+                  }
+                })
+                .catchError((error) {
+                  _pagingController.error = error;
+                });
           });
-        } else if (currentQuery != query && query != "") {
-          if (!searchedOnce) {
-            _pagingController.addPageRequestListener((pageKey) {
-              fetchData(currentQuery, pageKey).then((data) {
-                if (data.length < 15) {
-                  _pagingController.appendLastPage(data);
-                } else {
-                  _pagingController.appendPage(data, pageKey + 1);
-                }
-              }).catchError((error) {
-                _pagingController.error = error;
-              });
-            });
-            setState(() {
-              searchedOnce = true;
-            });
-          }
-          currentQuery = query;
-          _pagingController.refresh();
+          setState(() {
+            searchedOnce = true;
+          });
         }
-      },
-    );
+        currentQuery = query;
+        _pagingController.refresh();
+      }
+    });
   }
 
   @override

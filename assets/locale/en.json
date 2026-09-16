@@ -1,4 +1,6 @@
 {
+  "password": "Password",
+  "please_enter_your_password": "Please enter your password",
   "welcome_back_title": "Ethio Chef",
   "welcome_back_body": "Welcome Back",
   "sub_canceled": "Subscription has been canceled",
@@ -252,5 +254,6 @@
   "sms_user_message": "Please choose your option",
   "get_support": "-If you have any questions talk to us on telegram.",
   "already_voted": "You have already voted for this contestant",
-  "agree_with_privacy_policy": "I agree with the terms and conditions"
+  "agree_with_privacy_policy": "I agree with the terms and conditions",
+  "forgot_password": "Forgot Password?"
 }

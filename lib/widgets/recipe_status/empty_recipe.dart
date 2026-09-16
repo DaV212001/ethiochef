@@ -1,9 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/screens/upload_recipe/upload_recipe_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
+import '../../screens/upload_recipe/upload_recipe_screen.dart';
 import '../../utils/screen_utils.dart';
 import '../main_button.dart';
 
@@ -25,12 +25,13 @@ class EmptyRecipe extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Icon(
-              color: theme.colorScheme.primary,
-              size: 100,
-              Icons.fastfood_outlined),
+            color: theme.colorScheme.primary,
+            size: 100,
+            Icons.fastfood_outlined,
+          ),
           AwardsList(theme: theme),
           Text(
-            "submit_a_recipe".tr(),
+            "submit_a_recipe".tr,
             style: TextStyle(
               color: theme.colorScheme.tertiary,
               fontWeight: FontWeight.normal,
@@ -39,16 +40,17 @@ class EmptyRecipe extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           MainButton(
-              width: 200.w,
-              text: 'submit_a_recipe'.tr(),
-              onPress: () async {
-                PersistentNavBarNavigator.pushNewScreen(
-                  context,
-                  screen: UploadRecipeScreen(),
-                  withNavBar: false,
-                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
-                );
-              })
+            width: 200.w,
+            text: 'submit_a_recipe'.tr,
+            onPress: () async {
+              PersistentNavBarNavigator.pushNewScreen(
+                context,
+                screen: UploadRecipeScreen(),
+                withNavBar: false,
+                pageTransitionAnimation: PageTransitionAnimation.cupertino,
+              );
+            },
+          ),
         ],
       ),
     );
@@ -56,10 +58,7 @@ class EmptyRecipe extends StatelessWidget {
 }
 
 class AwardsList extends StatelessWidget {
-  const AwardsList({
-    super.key,
-    required this.theme,
-  });
+  const AwardsList({super.key, required this.theme});
 
   final ThemeData theme;
 
@@ -67,9 +66,7 @@ class AwardsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          'awards_subtitle'.tr(),
-        ),
+        Text('awards_subtitle'.tr),
         Row(
           children: [
             Container(
@@ -79,15 +76,13 @@ class AwardsList extends StatelessWidget {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "1",
-                ),
+                child: Text("1"),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "first_award".tr(),
+                "first_award".tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: theme.colorScheme.primary,
@@ -107,15 +102,13 @@ class AwardsList extends StatelessWidget {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "2",
-                ),
+                child: Text("2"),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "second_award".tr(),
+                "second_award".tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: theme.colorScheme.primary,
@@ -135,15 +128,13 @@ class AwardsList extends StatelessWidget {
               ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "3",
-                ),
+                child: Text("3"),
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "third_award".tr(),
+                "third_award".tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: theme.colorScheme.primary,

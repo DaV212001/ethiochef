@@ -1,16 +1,16 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/models/food.dart';
-import 'package:ethio_chef/screens/recipe/recipe_screen.dart';
-import 'package:ethio_chef/theme/app_theme.dart';
-import 'package:ethio_chef/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
+import '../../models/food.dart';
 import '../../models/recipe_show_checker.dart';
 import '../../screens/auth/auth_screen.dart';
+import '../../screens/recipe/recipe_screen.dart';
 import '../../screens/subscription/all_subscriptions.dart';
+import '../../theme/app_theme.dart';
 import '../../utils/screen_utils.dart';
+import '../cached_image.dart';
 
 class FoodCard extends StatefulWidget {
   static int foodCardType = 1;
@@ -44,17 +44,19 @@ class _FoodCardState extends State<FoodCard> {
         fit: StackFit.expand,
         children: [
           Container(
-              width: double.infinity,
-              height: isTablet ? 105.h : 110.h,
-              child: ClipRRect(
-                borderRadius: AppTheme.allBorderRadius,
-                child: CachedImage(
-                  url: widget.food.thumbnail,
-                  fit: BoxFit.fill,
-                ),
-              )),
+            width: double.infinity,
+            height: isTablet ? 105.h : 110.h,
+            child: ClipRRect(
+              borderRadius: AppTheme.allBorderRadius,
+              child: CachedImage(url: widget.food.thumbnail, fit: BoxFit.fill),
+            ),
+          ),
           Positioned(
-              bottom: 0, right: 0, left: 0, child: buildDetails(context, theme))
+            bottom: 0,
+            right: 0,
+            left: 0,
+            child: buildDetails(context, theme),
+          ),
         ],
       ),
     );
@@ -65,8 +67,9 @@ class _FoodCardState extends State<FoodCard> {
     return Container(
       height: 70,
       decoration: BoxDecoration(
-          color: theme.colorScheme.primary.withOpacity(0.4),
-          borderRadius: AppTheme.bottomBorderRadius),
+        color: theme.colorScheme.primary.withOpacity(0.4),
+        borderRadius: AppTheme.bottomBorderRadius,
+      ),
       padding: EdgeInsets.only(bottom: 5.h, left: 5.w, right: 5.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,11 +86,13 @@ class _FoodCardState extends State<FoodCard> {
                   ),
                 )
               : FittedBox(
-                  child: Text(widget.food.name.toString(),
-                      style: theme.textTheme.headlineMedium?.copyWith(
-                        color: theme.colorScheme.tertiary,
-                        fontWeight: FontWeight.w600,
-                      )),
+                  child: Text(
+                    widget.food.name.toString(),
+                    style: theme.textTheme.headlineMedium?.copyWith(
+                      color: theme.colorScheme.tertiary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
           SizedBox(
             width: double.infinity,
@@ -95,27 +100,27 @@ class _FoodCardState extends State<FoodCard> {
             child: ElevatedButton(
               onPressed: () async {
                 SnackBar checking = SnackBar(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    showCloseIcon: true,
-                    content: Text('checking_subscription_please_wait'.tr()));
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  showCloseIcon: true,
+                  content: Text('checking_subscription_please_wait'.tr),
+                );
                 ScaffoldMessenger.of(context).showSnackBar(checking);
                 String status = await Check.checkToShow();
                 switch (status) {
                   case "Not logged in":
-                    print("Not logged in");
-                    SnackBar logIn = SnackBar(
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                        content: Text(
-                            'please_subscribe_to_see_ingredients_and_steps'
-                                .tr()));
-                    loginFunction();
-                    // ScaffoldMessenger.of(context).showSnackBar(logIn);
+                    print("Not logged in - viewing recipe as guest");
+                    PersistentNavBarNavigator.pushNewScreen(
+                      context,
+                      withNavBar: false,
+                      screen: RecipeScreen(food: widget.food),
+                    );
                     break;
                   case "Another user logged in":
                     print("Another user logged in");
                     SnackBar logIn = SnackBar(
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                        content: Text('another_account_login'.tr()));
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      content: Text('another_account_login'.tr),
+                    );
                     ScaffoldMessenger.of(context).showSnackBar(logIn);
                     loginFunction();
                     break;
@@ -144,14 +149,16 @@ class _FoodCardState extends State<FoodCard> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                  backgroundColor: theme.buttonTheme.colorScheme?.primary),
+                backgroundColor: theme.buttonTheme.colorScheme?.primary,
+              ),
               child: FittedBox(
                 child: Text(
-                  'show_recipe'.tr(),
+                  'show_recipe'.tr,
                   style: TextStyle(
-                      fontSize: isTablet ? 12.sp : 16.sp,
-                      fontWeight: FontWeight.w500,
-                      color: theme.buttonTheme.colorScheme?.secondary),
+                    fontSize: isTablet ? 12.sp : 16.sp,
+                    fontWeight: FontWeight.w500,
+                    color: theme.buttonTheme.colorScheme?.secondary,
+                  ),
                 ),
               ),
             ),

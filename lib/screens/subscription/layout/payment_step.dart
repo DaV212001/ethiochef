@@ -1,5 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/models/payment_methods.dart';
+import 'package:get/get.dart';
+import '../../../models/payment_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -28,7 +28,7 @@ class _PaymentStepState extends State<PaymentStep> {
     ThemeData theme = Theme.of(context);
     return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
       Text(
-        "please_select_payment_method".tr(),
+        "please_select_payment_method".tr,
         style: TextStyle(
             fontSize: 15.sp,
             fontWeight: FontWeight.bold,

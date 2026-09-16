@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/screens/competition/competitions_screen.dart';
-import 'package:ethio_chef/widgets/input_field.dart';
-import 'package:ethio_chef/widgets/upload_recipe/image_field.dart';
-import 'package:ethio_chef/widgets/upload_recipe/stepper_control_buttons.dart';
+import 'package:get/get.dart';
+import '../../../screens/competition/competitions_screen.dart';
+import '../../../widgets/input_field.dart';
+import '../../../widgets/upload_recipe/image_field.dart';
+import '../../../widgets/upload_recipe/stepper_control_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -75,15 +75,15 @@ class _BasicsStepState extends State<BasicsStep> {
               ),
               InputField(
                   controller: widget.nameController,
-                  label: "dish_name".tr(),
-                  hint: "enter_dish_name".tr()),
+                  label: "dish_name".tr,
+                  hint: "enter_dish_name".tr),
               SizedBox(
                 height: 10,
               ),
               InputField(
                 controller: widget.descriptionController,
-                label: "dish_description".tr(),
-                hint: "enter_dish_description".tr(),
+                label: "dish_description".tr,
+                hint: "enter_dish_description".tr,
                 maxLines: 3,
                 minLines: 3,
                 height: 100,
@@ -104,13 +104,13 @@ class _BasicsStepState extends State<BasicsStep> {
             child: Column(
               children: [
                 Text(
-                  'do_you_have_skills_title'.tr(),
+                  'do_you_have_skills_title'.tr,
                   style: TextStyle(
                       fontSize: 15.sp,
                       fontWeight: FontWeight.bold,
                       color: theme.colorScheme.primary),),
                 Text(
-                  'do_you_have_skills_description'.tr(),
+                  'do_you_have_skills_description'.tr,
                   style: TextStyle(
                       fontSize: 15.sp,
                       fontWeight: FontWeight.bold,
@@ -119,7 +119,7 @@ class _BasicsStepState extends State<BasicsStep> {
                   height: 10,
                 ),
                 Text(
-                  'buy_your_food'.tr(),
+                  'buy_your_food'.tr,
                   style: TextStyle(
                       fontSize: 15.sp,
                       fontWeight: FontWeight.bold,
@@ -150,7 +150,7 @@ class _BasicsStepState extends State<BasicsStep> {
               widget.hasUserAgreed(hasAgreed);
               print("Not called");
             },
-            title: Text('food_submission_agreement'.tr(),
+            title: Text('food_submission_agreement'.tr,
                 style: TextStyle(
                     fontSize: isTablet ? 11.sp : 15.sp,
                     fontWeight: FontWeight.w600,
@@ -167,7 +167,7 @@ class _BasicsStepState extends State<BasicsStep> {
                 checkBoxTicked = value!;
               });
             },
-            title: Text("agree_with_copyright".tr(),
+            title: Text("agree_with_copyright".tr,
                 style: TextStyle(
                     fontSize: isTablet ? 11.sp : 15.sp,
                     fontWeight: FontWeight.w600,
@@ -206,7 +206,7 @@ class _BasicsStepState extends State<BasicsStep> {
                                 size: 50,
                               ),
                               Text(
-                                "food_submission_agreement_title".tr(),
+                                "food_submission_agreement_title".tr,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                   fontSize: 20.sp,
@@ -214,7 +214,7 @@ class _BasicsStepState extends State<BasicsStep> {
                                 ),
                               ),
                               Text(
-                                "agree_with_copyright".tr(),
+                                "agree_with_copyright".tr,
                                 style: TextStyle(
                                   color: theme.colorScheme.tertiary,
                                   fontWeight: FontWeight.normal,
@@ -226,7 +226,7 @@ class _BasicsStepState extends State<BasicsStep> {
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   MainButton(
-                                      text: 'food_submission_agreement_title'.tr(),
+                                      text: 'food_submission_agreement_title'.tr,
                                       onPress: () async {
                                         setState(() {
                                           checkBoxTicked = true;
@@ -239,7 +239,7 @@ class _BasicsStepState extends State<BasicsStep> {
                                         Navigator.of(context).pop();
                                       },
                                       child: Text(
-                                        "cancel".tr(),
+                                        "cancel".tr,
                                         style:
                                         TextStyle(color: theme.colorScheme.primary, fontSize: 14.sp),
                                       ))
@@ -281,7 +281,7 @@ class _BasicsStepState extends State<BasicsStep> {
                                 size: 50,
                               ),
                               Text(
-                                "food_submission_agreement_title".tr(),
+                                "food_submission_agreement_title".tr,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                   fontSize: 20.sp,
@@ -289,7 +289,7 @@ class _BasicsStepState extends State<BasicsStep> {
                                 ),
                               ),
                               Text(
-                                "food_submission_agreement".tr(),
+                                "food_submission_agreement".tr,
                                 style: TextStyle(
                                   color: theme.colorScheme.tertiary,
                                   fontWeight: FontWeight.normal,
@@ -301,7 +301,7 @@ class _BasicsStepState extends State<BasicsStep> {
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   MainButton(
-                                      text: 'food_submission_agreement_title'.tr(),
+                                      text: 'food_submission_agreement_title'.tr,
                                       onPress: () async {
                                         setState(() {
                                           hasAgreed = true;
@@ -314,7 +314,7 @@ class _BasicsStepState extends State<BasicsStep> {
                                         Navigator.of(context).pop();
                                       },
                                       child: Text(
-                                        "cancel".tr(),
+                                        "cancel".tr,
                                         style:
                                         TextStyle(color: theme.colorScheme.primary, fontSize: 14.sp),
                                       ))
@@ -370,7 +370,7 @@ class _BasicsStepState extends State<BasicsStep> {
       alignment: Alignment.centerLeft,
       child: Padding(
         padding: const EdgeInsets.only(left: 15.0, top: 5),
-        child: Text("image_is_required".tr(),
+        child: Text("image_is_required".tr,
             style: Theme.of(context)
                 .textTheme
                 .labelMedium

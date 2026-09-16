@@ -1,12 +1,9 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/models/food.dart';
-import 'package:ethio_chef/utils/place_holder_data.dart';
-import 'package:ethio_chef/widgets/header.dart';
-import 'package:ethio_chef/widgets/horizontal_food_carousel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
+import '../../../models/food.dart';
 import '../../../utils/screen_utils.dart';
 import '../../../widgets/meal_carousel.dart';
 
@@ -21,7 +18,8 @@ class HomeCategoryTab extends StatelessWidget {
     required this.breakfast,
     required this.lunch,
     required this.superMeal,
-    required this.dinner});
+    required this.dinner,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,42 +29,44 @@ class HomeCategoryTab extends StatelessWidget {
       length: 4,
       child: Column(
         children: [
-          // Header(title: "meal".tr()),
-          SizedBox(
-            height: 10.h,
-          ),
+          // Header(title: "meal".tr),
+          SizedBox(height: 10.h),
           ButtonsTabBar(
             backgroundColor: theme.colorScheme.primary,
             unselectedBackgroundColor: Colors.transparent,
-            unselectedLabelStyle:  TextStyle(
-                fontSize: isTablet ? 11.sp : 15.sp,
-                fontWeight: FontWeight.w500,
-                color: theme.colorScheme.primary),
-            labelStyle:  TextStyle(
-                fontSize: isTablet ? 11.sp : 15.sp,
-                fontWeight: FontWeight.w600,
-                color: Colors.white),
+            unselectedLabelStyle: TextStyle(
+              fontSize: isTablet ? 11.sp : 15.sp,
+              fontWeight: FontWeight.w500,
+              color: theme.colorScheme.primary,
+            ),
+            labelStyle: TextStyle(
+              fontSize: isTablet ? 11.sp : 15.sp,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
             contentPadding: EdgeInsets.symmetric(horizontal: 10),
             radius: 5,
             tabs: [
-              Tab(text: 'breakfast'.tr()),
-              Tab(text: 'lunch'.tr()),
-              Tab(text: 'supper'.tr()),
-              Tab(text: 'dinner'.tr())
+              Tab(text: 'breakfast'.tr),
+              Tab(text: 'lunch'.tr),
+              Tab(text: 'supper'.tr),
+              Tab(text: 'dinner'.tr),
             ],
           ),
           SizedBox(
             height: 220,
-            child: TabBarView(children: [
-              for(int i=1;i<5;i++)
-                MealCarousel(
-                  type: i,
-                  breakfast: breakfast,
-                  dinner: dinner,
-                  lunch: lunch,
-                  superMeal: superMeal,
-                )
-            ]),
+            child: TabBarView(
+              children: [
+                for (int i = 1; i < 5; i++)
+                  MealCarousel(
+                    type: i,
+                    breakfast: breakfast,
+                    dinner: dinner,
+                    lunch: lunch,
+                    superMeal: superMeal,
+                  ),
+              ],
+            ),
           ),
         ],
       ),

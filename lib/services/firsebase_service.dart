@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:ethio_chef/screens/from_scheduled_notif.dart';
-import 'package:ethio_chef/services/scheduled_notification_service.dart';
-import 'package:ethio_chef/services/user_service.dart';
+import '../screens/from_scheduled_notif.dart';
+import '../services/scheduled_notification_service.dart';
+import '../services/user_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';

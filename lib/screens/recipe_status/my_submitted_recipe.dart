@@ -1,8 +1,8 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/utils/screen_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
+import '../../../utils/screen_utils.dart';
 import '../../models/submitted_recipe.dart';
 import '../../services/recipe_service.dart';
 import '../../widgets/error_card.dart';
@@ -43,38 +43,40 @@ class _SubmittedRecipeState extends State<SubmittedRecipe>
     final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("submitted_recipes".tr(),
-            style: TextStyle(color: theme.colorScheme.primary)),
+        title: Text(
+          "submitted_recipes".tr,
+          style: TextStyle(color: theme.colorScheme.primary),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: GestureDetector(
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Icon(
-              Icons.arrow_back,
-              color: theme.colorScheme.primary,
-            )),
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: Icon(Icons.arrow_back, color: theme.colorScheme.primary),
+        ),
       ),
       body: FutureBuilder(
-          future: _future,
-          builder: (context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Loading();
-            }
-            if (snapshot.hasError) {
-              return Center(
-                  child: ErrorCard(
+        future: _future,
+        builder: (context, AsyncSnapshot<dynamic> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Loading();
+          }
+          if (snapshot.hasError) {
+            return Center(
+              child: ErrorCard(
                 errorType: snapshot.error.toString(),
                 refresh: () {
                   setState(() {
                     _future = fetchData();
                   });
                 },
-              ));
-            }
-            return buildRecipeScreen(snapshot.data as List<MySubmittedRecipe>);
-          }),
+              ),
+            );
+          }
+          return buildRecipeScreen(snapshot.data as List<MySubmittedRecipe>);
+        },
+      ),
     );
   }
 
@@ -99,9 +101,10 @@ class _SubmittedRecipeState extends State<SubmittedRecipe>
       itemBuilder: (BuildContext context, int index) {
         var resp = recipe[index];
         return SubmittedRecipeCard(
-            recipe: recipe[index],
-            name: recipe[index].title,
-            isApproved: recipe[index].approved);
+          recipe: recipe[index],
+          name: recipe[index].title,
+          isApproved: recipe[index].approved,
+        );
       },
     );
   }

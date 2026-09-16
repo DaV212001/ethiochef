@@ -1,10 +1,8 @@
-
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../models/category.dart';
-import '../../services/category_service.dart';
+import '../../controllers/category_controller.dart';
 import '../../widgets/error_card.dart';
-import '../../widgets/info_card.dart';
 import '../../widgets/loading.dart';
 import '../../widgets/pull_to_refresh.dart';
 import 'layout/category_tab.dart';
@@ -17,56 +15,28 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
-  Future? _future;
-bool isLoading = false;
-
-  Future<dynamic> fetchSubCatData() async {
-    try {
-      print('subCategoryService');
-      final categoryService = CategoryService();
-      final categoryData = await categoryService.fetchCategories();
-      return categoryData;
-    } catch (error) {
-      rethrow;
-    }
-  }
-  @override
-  void initState() {
-    _future = fetchSubCatData();
-
-    super.initState();
-  }
+  final CategoryController controller = Get.put(CategoryController());
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
-    return RefreshWidget(
-      child: Scaffold(
-          body: FutureBuilder(
-              future: _future,
-              builder: (context, AsyncSnapshot<dynamic> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Loading();
-                }
-                if (snapshot.hasError) {
-                  return Center(
-                      child: ErrorCard(
-                        errorType: snapshot.error.toString(),
-                        refresh: () {
-                          setState(() {
-                            _future = fetchSubCatData();
-                          });
-                        },
-                      ));
-                }
-                return CategoryCustomTab(category: snapshot.data as List<Category>);
-              })),
-        onRefresh: ()async{
-          setState(() {
-            _future = fetchSubCatData();
-          });
+    return Scaffold(
+      body: Obx(() {
+        if (controller.isLoading.value && controller.categories.isEmpty) {
+          return Loading();
         }
+        if (controller.hasError.value && controller.categories.isEmpty) {
+          return Center(
+            child: ErrorCard(
+              errorType: controller.errorMessage.value,
+              refresh: () => controller.fetchCategories(),
+            ),
+          );
+        }
+        return RefreshWidget(
+          onRefresh: () => controller.fetchCategories(),
+          child: CategoryCustomTab(category: controller.categories),
+        );
+      }),
     );
   }
-
 }

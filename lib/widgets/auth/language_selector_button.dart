@@ -1,15 +1,17 @@
 import 'dart:async';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/models/language.dart';
-import 'package:ethio_chef/theme/model_theme.dart';
+import 'package:ethiochef/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
-import '../../main.dart';
-
+import '../../controllers/category_controller.dart';
+import '../../controllers/category_food_controller.dart';
+import '../../controllers/theme_mode_controller.dart';
+import '../../models/language.dart';
+import '../../theme/model_theme.dart';
 import '../../utils/screen_utils.dart';
 
 class LanguageSelectorButton extends StatefulWidget {
@@ -34,11 +36,14 @@ class _LanguageSelectorButtonState extends State<LanguageSelectorButton> {
           padding: EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             children: [
-              Text(Language.selectedLanguage.name,
+              Text(
+                Language.selectedLanguage.name,
                 style: TextStyle(
-                    fontSize: isTablet ? 11.sp : 15.sp,
-                    fontWeight: FontWeight.w600,
-                    color: theme.colorScheme.secondaryContainer),)
+                  fontSize: isTablet ? 11.sp : 15.sp,
+                  fontWeight: FontWeight.w600,
+                  color: theme.colorScheme.secondaryContainer,
+                ),
+              ),
             ],
           ),
         ),
@@ -48,33 +53,45 @@ class _LanguageSelectorButtonState extends State<LanguageSelectorButton> {
               value: item,
               child: Text(
                 item.name,
-                  style: TextStyle(
-                      fontSize: isTablet ? 11.sp : 15.sp,
-                      fontWeight: FontWeight.w600,
-                      color: theme.colorScheme.primary)
+                style: TextStyle(
+                  fontSize: isTablet ? 11.sp : 15.sp,
+                  fontWeight: FontWeight.w600,
+                  color: theme.colorScheme.primary,
+                ),
               ),
             ),
           ),
         ],
         onChanged: (value) {
-
+          if (value == null) return;
           setState(() {
-            Language.selectedLanguage = value!;
-            context.setLocale(value.code);
-            lang.languageCode = value.code.countryCode??value.code.languageCode;
-            print(lang.languageCode);
+            Language.selectedLanguage = value;
+            // lang.languageCode =
+            //     value.code.countryCode ?? value.code.languageCode;
+            // print(lang.languageCode);
             print(Language.selectedLanguage.name);
+            Get.updateLocale(value.code);
+            ThemeModeController.saveLanguage(value.code);
             changed = true;
           });
           widget.onChange();
-          RestartWidget.restartApp(context);
+          // RestartWidget.restartApp(context);
+          if (Get.isRegistered<HomeController>()) {
+            Get.find<HomeController>().fetchHomeData();
+          }
+          if (Get.isRegistered<CategoryController>()) {
+            Get.find<CategoryController>().fetchCategories();
+          }
+          if (Get.isRegistered<CategoryFoodController>()) {
+            Get.find<CategoryFoodController>().refreshData();
+          }
         },
         dropdownStyleData: DropdownStyleData(
           width: 160,
           padding: const EdgeInsets.symmetric(vertical: 6),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
-            color: Theme.of(context).colorScheme.secondary
+            color: Theme.of(context).colorScheme.secondary,
           ),
           offset: const Offset(0, 8),
         ),

@@ -1,5 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+
+import '../config/storage_config.dart';
 
 class Language {
   final String name;
@@ -8,34 +9,29 @@ class Language {
   Language(this.name, this.code);
 
   static List<Language> languages = [
-        Language('አማርኛ', const Locale('am')),
-        Language('Afan Oromoo', const Locale('en', 'GB')),
-        // Language('ትግርኛ', const Locale('en', 'AU')),
-        Language('English', const Locale('en'))
-      ];
+    Language('አማርኛ', const Locale('am')),
+    Language('Afan Oromoo', const Locale('it')),
+    // Language('ትግርኛ', const Locale('en', 'AU')),
+    Language('English', const Locale('en')),
+  ];
 
   static Language selectedLanguage = Language('English', const Locale('en'));
 
   static Language getSelectedLanguage(BuildContext context) {
-    final Locale currentLocale = context.locale;
-    final Language lang  = languages.firstWhere((language) => language.code == currentLocale,
-        orElse: () => languages.first);
-    return lang;
+    String lang = ConfigPreference.getLanguage();
+    return languages.firstWhere(
+      (language) {
+        String code = language.code.languageCode;
+        if (code == 'it') return lang == 'or';
+        if (code == 'en' && language.code.countryCode == 'AU')
+          return lang == 'ti';
+        return code == lang;
+      },
+      orElse: () => languages.last, // Default to English
+    );
   }
 
-  static String getLocaleCode(){
-    if(selectedLanguage == languages[0]){
-      return "am";
-    } else if (selectedLanguage == languages[1]){
-      return "or";
-    }else {
-      return "en";
-    }
-
-    // else if (selectedLanguage == languages[2]){
-    //   return "tr";
-    // }
+  static String getLocaleCode() {
+    return ConfigPreference.getLanguage();
   }
-
-  
 }

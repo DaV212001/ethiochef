@@ -1,6 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/models/competition.dart';
-import 'package:ethio_chef/theme/model_theme.dart';
+import 'package:get/get.dart';
+import '../../../models/competition.dart';
+import '../../../theme/model_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +39,7 @@ class CompetitionHeader extends StatelessWidget {
           ),
         ),
         Text(
-          "days_left".tr(args: [competition.daysLeft.toString()]),
+          "days_left".trParams({'0': competition.daysLeft.toString()}),
           style: TextStyle(
               fontSize: isTablet ? 10.sp : 14.sp,
               fontWeight: FontWeight.w400,
@@ -59,7 +59,7 @@ class CompetitionHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "description".tr(),
+          "description".tr,
           style: TextStyle(
               fontSize: isTablet ? 13.sp : 17.sp,
               fontWeight: FontWeight.w800,

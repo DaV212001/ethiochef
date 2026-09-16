@@ -1,8 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/generated/assets.dart';
-import 'package:ethio_chef/widgets/input_field.dart';
-import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../generated/assets.dart';
+import '../../widgets/input_field.dart';
+import '../../widgets/svg_icon.dart';
 
 class StepField extends StatelessWidget {
   final int index;
@@ -10,12 +11,13 @@ class StepField extends StatelessWidget {
   final TextEditingController stepController;
   final Function() onMinus;
 
-  const StepField(
-      {super.key,
-      required this.index,
-      required this.stepController,
-      required this.onMinus,
-      required this.isOnlyStep});
+  const StepField({
+    super.key,
+    required this.index,
+    required this.stepController,
+    required this.onMinus,
+    required this.isOnlyStep,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -45,21 +47,19 @@ class StepField extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: 10,),
+          SizedBox(width: 10),
           Expanded(
-            child: InputField(
-              controller: stepController,
-              hint: "steps".tr(),
-            ),
+            child: InputField(controller: stepController, hint: "steps".tr),
           ),
           IconButton(
             icon: SvgIcon(
-                color: isOnlyStep
-                    ? theme.unselectedWidgetColor
-                    : theme.colorScheme.tertiary,
-                image: Assets.iconsMinus),
+              color: isOnlyStep
+                  ? theme.unselectedWidgetColor
+                  : theme.colorScheme.tertiary,
+              image: Assets.iconsMinus,
+            ),
             onPressed: isOnlyStep ? null : onMinus,
-          )
+          ),
         ],
       ),
     );

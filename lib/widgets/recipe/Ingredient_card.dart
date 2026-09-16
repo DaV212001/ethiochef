@@ -1,4 +1,4 @@
-import 'package:ethio_chef/theme/app_theme.dart';
+import '../../theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class IngredientCard extends StatelessWidget {

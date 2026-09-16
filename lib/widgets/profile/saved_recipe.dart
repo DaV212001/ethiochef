@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/widgets/profile/saved_recipe_desc.dart';
+import 'package:ethiochef/widgets/profile/saved_recipe_desc.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../../models/food.dart';
@@ -50,18 +50,18 @@ class _SavedRecipeState extends State<SavedRecipe> {
     final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("saved_recipes".tr(),
-            style: TextStyle(color: theme.colorScheme.primary)),
+        title: Text(
+          "saved_recipes".tr,
+          style: TextStyle(color: theme.colorScheme.primary),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: GestureDetector(
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Icon(
-              Icons.arrow_back,
-              color: theme.colorScheme.primary,
-            )),
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: Icon(Icons.arrow_back, color: theme.colorScheme.primary),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -69,40 +69,41 @@ class _SavedRecipeState extends State<SavedRecipe> {
             isLoading == true
                 ? Center(child: CircularProgressIndicator())
                 : Food.savedRecipes.length == 0
-                    ? Center(
-                        child: Text("no_saved_recipes".tr(),
-                            style: TextStyle(color: Colors.black)),
-                      )
-                    : SizedBox(
-                        height: 200,
-                        child: GridView.builder(
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                          ),
-                          itemCount: Food.savedRecipes.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            var resp = Food.savedRecipes[index];
-                            return GestureDetector(
-                              onTap: () {
-                                print("tap");
-                                PersistentNavBarNavigator.pushNewScreen(
-                                  context,
-                                  screen: SavedRecipeDescription(food: resp),
-                                  withNavBar: false,
-                                  pageTransitionAnimation:
-                                      PageTransitionAnimation.cupertino,
-                                );
-                              },
-                              child: SavedRecipeCard(
-                                recipe: resp,
-                                name: resp.name.toString(),
-                                imageUrl: File(resp.thumbnail),
-                              ),
+                ? Center(
+                    child: Text(
+                      "no_saved_recipes".tr,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  )
+                : SizedBox(
+                    height: 200,
+                    child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                      ),
+                      itemCount: Food.savedRecipes.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        var resp = Food.savedRecipes[index];
+                        return GestureDetector(
+                          onTap: () {
+                            print("tap");
+                            PersistentNavBarNavigator.pushNewScreen(
+                              context,
+                              screen: SavedRecipeDescription(food: resp),
+                              withNavBar: false,
+                              pageTransitionAnimation:
+                                  PageTransitionAnimation.cupertino,
                             );
                           },
-                        ),
-                      )
+                          child: SavedRecipeCard(
+                            recipe: resp,
+                            name: resp.name.toString(),
+                            imageUrl: File(resp.thumbnail),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
           ],
         ),
       ),

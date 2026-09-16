@@ -1,7 +1,7 @@
 import 'package:buttons_tabbar/buttons_tabbar.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../models/notification.dart';
 import '../../services/notification_service.dart';
@@ -18,8 +18,8 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreenState extends State<NotificationScreen> {
-  Future<List<NotificationData>> _notifications =
-      NotificationService().fetchNotifications();
+  Future<List<NotificationData>> _notifications = NotificationService()
+      .fetchNotifications();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
     return Scaffold(
       appBar: MainAppBar(
-        title: 'notifications'.tr(),
+        title: 'notifications'.tr,
         hasSearchField: false,
         hasMainIcons: false,
         specialAction: [
@@ -41,7 +41,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               });
             },
             child: Text(
-              'mark_all_as_read'.tr(),
+              'mark_all_as_read'.tr,
               style: TextStyle(
                 color: theme.buttonTheme.colorScheme?.primary,
                 fontSize: isTablet ? 10.sp : null,
@@ -60,8 +60,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
           if (snapshot.hasError || snapshot.data == null) {
             return Center(
               child: InfoCard(
-                onPress: () => setState(() => _notifications =
-                    NotificationService().fetchNotifications()),
+                onPress: () => setState(
+                  () => _notifications = NotificationService()
+                      .fetchNotifications(),
+                ),
                 infoTitle: 'Error',
                 infoBody: 'Getting failed',
                 buttonText: 'Reload',
@@ -86,10 +88,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
             );
           }
 
-          final readNotifications =
-              notifications.where((n) => n.isRead).toList();
-          final unreadNotifications =
-              notifications.where((n) => !n.isRead).toList();
+          final readNotifications = notifications
+              .where((n) => n.isRead)
+              .toList();
+          final unreadNotifications = notifications
+              .where((n) => !n.isRead)
+              .toList();
 
           return SafeArea(
             child: DefaultTabController(
@@ -102,19 +106,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     backgroundColor: theme.colorScheme.primary,
                     unselectedBackgroundColor: Colors.transparent,
                     unselectedLabelStyle: TextStyle(
-                        fontSize: isTablet ? 11.sp : 15.sp,
-                        fontWeight: FontWeight.w500,
-                        color: theme.colorScheme.primary),
+                      fontSize: isTablet ? 11.sp : 15.sp,
+                      fontWeight: FontWeight.w500,
+                      color: theme.colorScheme.primary,
+                    ),
                     labelStyle: TextStyle(
-                        fontSize: isTablet ? 11.sp : 15.sp,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white),
+                      fontSize: isTablet ? 11.sp : 15.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
                     contentPadding: EdgeInsets.symmetric(horizontal: 10),
                     radius: 5,
                     tabs: [
-                      Tab(text: 'read'.tr()),
-                      Tab(text: 'unread'.tr()),
-                      Tab(text: 'all'.tr()),
+                      Tab(text: 'read'.tr),
+                      Tab(text: 'unread'.tr),
+                      Tab(text: 'all'.tr),
                     ],
                   ),
                   Expanded(
@@ -139,7 +145,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
   int selectedIndex = 0;
 
   Widget _buildNotificationList(
-      BuildContext context, List<NotificationData> notifications) {
+    BuildContext context,
+    List<NotificationData> notifications,
+  ) {
     final bool isTablet = ScreenUtils.isTablet(context);
 
     return ListView.builder(
@@ -150,9 +158,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
       itemBuilder: (context, index) => NotificationCard(
         isRead: notifications[index].isRead,
         reFresh: () => setState(
-            () => _notifications = NotificationService().fetchNotifications()),
-        delete: () => NotificationService()
-            .markNotificationAsRead(notifications[index].id),
+          () => _notifications = NotificationService().fetchNotifications(),
+        ),
+        delete: () => NotificationService().markNotificationAsRead(
+          notifications[index].id,
+        ),
         data: notifications[index],
       ),
     );

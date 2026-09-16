@@ -1,5 +1,5 @@
-import 'package:ethio_chef/models/subscriptionplans.dart';
-import 'package:ethio_chef/models/user.dart';
+import '../models/subscriptionplans.dart';
+import '../models/user.dart';
 
 class UserProfile {
   final int? id;

@@ -1,4 +1,4 @@
-import 'package:ethio_chef/models/language.dart';
+import '../models/language.dart';
 
 class TermsAndConditions{
   final String title;

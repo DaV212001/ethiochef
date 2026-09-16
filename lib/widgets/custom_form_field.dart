@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -36,23 +35,20 @@ class CustomFormField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hint,
         labelText: name,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.r),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r)),
         focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.r),
-            borderSide:
-            BorderSide(width: 1, color: Theme
-                .of(context)
-                .colorScheme
-                .primary)
+          borderRadius: BorderRadius.circular(10.r),
+          borderSide: BorderSide(
+            width: 1,
+            color: Theme.of(context).colorScheme.primary,
+          ),
         ),
         errorStyle: isTablet ? AppTheme.inputFieldErrorStyleTablet : null,
       ),
       validator: (value) {
-        if (value!.isEmpty && required) {
-          return "is_required".tr(args: [name]);
-        }
+        // if (value!.isEmpty && required) {
+        //   return "is_required".tr(args: [name]);
+        // }
         return null;
       },
     );

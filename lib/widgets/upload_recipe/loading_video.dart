@@ -1,5 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class LoadingVideo extends StatefulWidget {
   @override
@@ -38,29 +38,24 @@ class _LoadingVideoState extends State<LoadingVideo> {
               SizedBox(
                 height: 20,
                 width: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 3,
-                ),
+                child: CircularProgressIndicator(strokeWidth: 3),
               ),
               SizedBox(width: 10),
               Text(
-                "video_is_loading".tr(),
+                "video_is_loading".tr,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.unselectedWidgetColor.withOpacity(0.85),
                 ),
               ),
             ],
           ),
-          if (showSecondRow)
-            SizedBox(
-              height: 10
-            ),
+          if (showSecondRow) SizedBox(height: 10),
           if (showSecondRow) // Show the second row if showSecondRow is true
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "video_is_loading_body".tr(),
+                  "video_is_loading_body".tr,
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.unselectedWidgetColor.withOpacity(0.85),
                   ),

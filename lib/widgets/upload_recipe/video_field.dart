@@ -1,23 +1,24 @@
 import 'dart:io';
 
 import 'package:chewie/chewie.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/widgets/upload_recipe/loading_video.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pod_player/pod_player.dart';
+
+import 'loading_video.dart';
 
 class VideoField extends StatefulWidget {
   final bool invalid;
   final File? video;
   final Function(File?) onVideoSelected;
 
-  const VideoField(
-      {Key? key,
-        required this.onVideoSelected,
-        this.video,
-        this.invalid = false})
-      : super(key: key);
+  const VideoField({
+    Key? key,
+    required this.onVideoSelected,
+    this.video,
+    this.invalid = false,
+  }) : super(key: key);
 
   @override
   State<VideoField> createState() => _VideoFieldState();
@@ -50,8 +51,9 @@ class _VideoFieldState extends State<VideoField> {
                   right: 4,
                   child: Ink(
                     child: InkWell(
-                        onTap: clearVideo,
-                        child: buildClearIcon(theme.colorScheme.primary)),
+                      onTap: clearVideo,
+                      child: buildClearIcon(theme.colorScheme.primary),
+                    ),
                   ),
                 ),
             ],
@@ -63,30 +65,32 @@ class _VideoFieldState extends State<VideoField> {
 
   Widget buildVideo(ThemeData theme) {
     return Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          border: Border.all(
-            color: widget.invalid
-                ? theme.colorScheme.error
-                : theme.colorScheme.primary.withOpacity(0.5),
-            width: 1,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(
+          color: widget.invalid
+              ? theme.colorScheme.error
+              : theme.colorScheme.primary.withOpacity(0.5),
+          width: 1,
+        ),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(5),
+        child: Container(
+          constraints: BoxConstraints(minHeight: 200.0, maxHeight: 400),
+          child: Ink(
+            width: double.infinity,
+            child: InkWell(
+              child: isLoadingVideo
+                  ? LoadingVideo()
+                  : videoController != null
+                  ? Chewie(controller: chewieController!)
+                  : button(theme),
+            ),
           ),
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(5),
-          child: Container(
-              constraints: BoxConstraints(minHeight: 200.0, maxHeight: 400),
-              child: Ink(
-                width: double.infinity,
-                child: InkWell(
-                  child: isLoadingVideo
-                      ? LoadingVideo()
-                      : videoController != null
-                      ? Chewie(controller: chewieController!)
-                      : button(theme),
-                ),
-              )),
-        ));
+      ),
+    );
   }
 
   Widget button(ThemeData theme) {
@@ -98,13 +102,17 @@ class _VideoFieldState extends State<VideoField> {
           Icon(
             Icons.video_camera_back_outlined,
             size: 30,
-            color: theme.colorScheme.primary.withOpacity(0.85).withOpacity(0.85),
+            color: theme.colorScheme.primary
+                .withOpacity(0.85)
+                .withOpacity(0.85),
           ),
           SizedBox(width: 10),
-          Text("tap_here_to_add_a_video".tr(),
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.primary.withOpacity(0.85)
-              ))
+          Text(
+            "tap_here_to_add_a_video".tr,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.primary.withOpacity(0.85),
+            ),
+          ),
         ],
       ),
     );
@@ -132,7 +140,9 @@ class _VideoFieldState extends State<VideoField> {
     });
     var maxFileSizeInBytes = 100 * 1048576; // 100mb
     final pickedFile = await picker.pickVideo(
-        source: ImageSource.gallery, maxDuration: Duration(minutes: 10));
+      source: ImageSource.gallery,
+      maxDuration: Duration(minutes: 10),
+    );
     if (pickedFile == null) {
       setState(() {
         isLoadingVideo = false;
@@ -142,9 +152,9 @@ class _VideoFieldState extends State<VideoField> {
     var videoPath = await pickedFile.readAsBytes();
     var fileSize = videoPath.length; // Get the file size in bytes
     if (fileSize >= maxFileSizeInBytes) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("video_file_size_limit".tr())),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("video_file_size_limit".tr)));
       setState(() {
         isLoadingVideo = false;
       });

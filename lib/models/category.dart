@@ -1,6 +1,6 @@
 
-import 'package:ethio_chef/utils/constants.dart';
-import 'package:ethio_chef/models/language.dart';
+import '../utils/constants.dart';
+import '../models/language.dart';
 
 class Category {
   final int id;

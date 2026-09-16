@@ -1,36 +1,34 @@
-import 'package:ethio_chef/theme/my_theme_preference.dart';
 import 'package:flutter/material.dart';
 
+import '../theme/my_theme_preference.dart';
+
 class ModelTheme extends ChangeNotifier {
-
   ///LANGUAGE
-  LanguagePreferences languagePreferences = LanguagePreferences();
-  String _languageCode = 'en';
-  String get languageCode => _languageCode;
+  // LanguagePreferences languagePreferences = LanguagePreferences();
+  // String _languageCode = 'en';
+  // String get languageCode => _languageCode;
+  //
+  // Future<void> getLanguageCode() async {
+  //   languageCode = await languagePreferences.getLanguage();
+  // }
 
-  Future<void> getLanguageCode() async {
-    languageCode = await languagePreferences.getLanguage();
-  }
-
-  set languageCode(String value) {
-    _languageCode = value;
-    languagePreferences.setLanguage(value);
-    notifyListeners();
-  }
-
+  // set languageCode(String value) {
+  //   _languageCode = value;
+  //   languagePreferences.setLanguage(value);
+  //   notifyListeners();
+  // }
 
   ///THEME
   late bool _isDark;
   late MyThemePreferences _preferences;
   bool get isDark => _isDark;
 
-
   ModelTheme() {
     _isDark = false;
     _preferences = MyThemePreferences();
     getPreferences();
   }
-//Switching the themes
+  //Switching the themes
   set setIsDark(bool value) {
     _isDark = value;
     _preferences.setTheme(value);
@@ -41,6 +39,4 @@ class ModelTheme extends ChangeNotifier {
     _isDark = await _preferences.getTheme();
     notifyListeners();
   }
-
-
 }

@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class Header extends StatelessWidget {
   final String title;
@@ -8,59 +6,53 @@ class Header extends StatelessWidget {
   final Function()? onTap;
   final String? showMoreText;
 
-  const Header(
-      {super.key,
-        required this.title,
-        this.showMore = false,
-        this.onTap,
-        this.showMoreText});
+  const Header({
+    super.key,
+    required this.title,
+    this.showMore = false,
+    this.onTap,
+    this.showMoreText,
+  });
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Container(
       margin: const EdgeInsets.only(top: 5),
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child:  Row(
+      // padding: EdgeInsets.symmetric(horizontal: 10),
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(
-            width: MediaQuery.of(context).size.width * 0.6,
+            width: MediaQuery.of(context).size.width * 0.5,
             child: Text(
               title,
               style: TextStyle(
-                  letterSpacing: 0.5,
-                  fontSize: 19,
-                  overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.w800,
-                  color: theme.colorScheme.primary),
+                letterSpacing: 0.5,
+                fontSize: 15,
+                overflow: TextOverflow.ellipsis,
+                fontWeight: FontWeight.w800,
+                color: theme.colorScheme.primary,
+              ),
             ),
           ),
-          Visibility(
-              visible: showMore,
+          if (showMore) Spacer(),
+          if (showMore)
+            Expanded(
               child: GestureDetector(
                 onTap: onTap,
-                child: Row(
-                  children: [
-                    Text(
-                      showMoreText ?? "",
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                          color: theme.colorScheme.primary),
-                    ),
-                    // SizedBox(
-                    //   width: 2,
-                    // ),
-                    // Icon(
-                    //   CupertinoIcons.arrow_right,
-                    //   color: theme.colorScheme.primary,
-                    //   size: 20,
-                    // )
-                  ],
+                child: Text(
+                  showMoreText ?? "",
+                  style: TextStyle(
+                    fontSize: 13,
+                    overflow: TextOverflow.ellipsis,
+                    fontWeight: FontWeight.w500,
+                    color: theme.colorScheme.primary,
+                  ),
                 ),
-              )),
+              ),
+            ),
         ],
       ),
     );

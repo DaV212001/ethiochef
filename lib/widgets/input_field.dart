@@ -1,5 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class InputField extends StatelessWidget {
   static final NoType = 0;
@@ -18,7 +18,8 @@ class InputField extends StatelessWidget {
   final int minLines;
   final TextInputType inputType;
 
-  const InputField({super.key,
+  const InputField({
+    super.key,
     required this.controller,
     this.label,
     this.hint,
@@ -62,7 +63,7 @@ class InputField extends StatelessWidget {
         minLines: minLines,
         textAlignVertical: TextAlignVertical.center,
         decoration: InputDecoration(
-          prefixIcon: icon != null ? Icon(icon,size: 20,) : null,
+          prefixIcon: icon != null ? Icon(icon, size: 20) : null,
           labelText: label,
           hintText: hint,
           // alignLabelWithHint: true,
@@ -75,23 +76,24 @@ class InputField extends StatelessWidget {
 
   String? validateNoType(String? value) {
     if (value == null || value.isEmpty) {
-      return 'enter_dish_name'.tr();
+      return 'enter_dish_name'.tr;
     }
     return null;
   }
 
   String? validateNameType(String? value) {
     if (value == null || value.isEmpty) {
-      return "name_is_required".tr();
+      return "name_is_required".tr;
     }
     return null;
   }
 
   String? validateEmailType(String? value) {
     if (value == null || value.isEmpty) {
-      return "email_is_required".tr();
-    } else
-    if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$').hasMatch(value)) {
+      return "email_is_required".tr;
+    } else if (!RegExp(
+      r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$',
+    ).hasMatch(value)) {
       return 'Invalid email format';
     }
     return null;
@@ -105,5 +107,4 @@ class InputField extends StatelessWidget {
     }
     return null;
   }
-
 }

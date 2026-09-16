@@ -1,6 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../widgets/main_app_bar.dart';
 
@@ -10,19 +10,15 @@ class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: MainAppBar(
-          title: tr("about"),
-          hasMainIcons: false,
+      appBar: MainAppBar(title: "about".tr, hasMainIcons: false),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+        child: Column(
+          children: [
+            Text("about_description".tr, style: TextStyle(fontSize: 15.sp)),
+          ],
         ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
-          child: Column(
-            children: [
-              Text(tr("about_description"), style: TextStyle(
-                  fontSize: 15.sp
-              ),)
-            ],
-          ),
-        ));
+      ),
+    );
   }
 }

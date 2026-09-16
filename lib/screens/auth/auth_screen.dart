@@ -1,7 +1,7 @@
-import 'package:ethio_chef/generated/assets.dart';
-import 'package:ethio_chef/screens/auth/layout/sign_in.dart';
-import 'package:ethio_chef/screens/auth/layout/sign_up.dart';
-import 'package:ethio_chef/widgets/auth/language_selector_button.dart';
+import '../../../generated/assets.dart';
+import '../../../screens/auth/layout/sign_in.dart';
+import '../../../screens/auth/layout/sign_up.dart';
+import '../../../widgets/auth/language_selector_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 

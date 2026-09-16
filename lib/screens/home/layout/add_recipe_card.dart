@@ -1,6 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/screens/upload_recipe/upload_recipe_screen.dart';
-import 'package:ethio_chef/theme/app_theme.dart';
+import 'package:get/get.dart';
+import '../../../screens/upload_recipe/upload_recipe_screen.dart';
+import '../../../theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -47,7 +47,7 @@ class AddRecipeCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "add_your_own_recipe".tr(),
+                        "add_your_own_recipe".tr,
                         style: theme.textTheme.headlineSmall?.copyWith(
                             color: theme.colorScheme.surface,
                             fontWeight: FontWeight.w600),
@@ -62,7 +62,7 @@ class AddRecipeCard extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 10.h),
-                  Text("add_your_own_recipe_body".tr(),
+                  Text("add_your_own_recipe_body".tr,
                       style: theme.textTheme.labelSmall
                           ?.copyWith(color: theme.colorScheme.surface)),
                   SizedBox(height: 15.h),
@@ -84,7 +84,7 @@ class AddRecipeCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "submit_a_recipe".tr(),
+                              "submit_a_recipe".tr,
                               style: theme.textTheme.headlineSmall?.copyWith(
                                   color: theme.colorScheme.surface,
                                   fontWeight: FontWeight.w600),

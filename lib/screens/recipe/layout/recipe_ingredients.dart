@@ -1,11 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/generated/assets.dart';
-import 'package:ethio_chef/utils/screen_utils.dart';
-import 'package:ethio_chef/widgets/recipe/Ingredient_card.dart';
-import 'package:ethio_chef/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 
-import '../../../models/food.dart';
+import '../../../utils/screen_utils.dart';
 
 class RecipeIngredients extends StatelessWidget {
   final Map<String, dynamic> ingredients;
@@ -25,25 +20,26 @@ class RecipeIngredients extends StatelessWidget {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: ingredients!.entries.map((ingredient) {
-          return Flex(
-            direction: Axis.vertical,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-               Text(
-                  ingredient.value,
-                  softWrap: true,
-                  overflow: TextOverflow.visible,
-                  style: TextStyle(
-                      fontSize: 19,
-                      fontWeight: FontWeight.w500,
-                      color: theme.buttonTheme.colorScheme?.secondary),
-                )
-            ],
-          );
-        }).toList(),
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: ingredients!.entries.map((ingredient) {
+        return Flex(
+          direction: Axis.vertical,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              ingredient.value,
+              softWrap: true,
+              overflow: TextOverflow.visible,
+              style: TextStyle(
+                fontSize: 19,
+                fontWeight: FontWeight.w500,
+                color: theme.buttonTheme.colorScheme?.secondary,
+              ),
+            ),
+          ],
+        );
+      }).toList(),
     );
   }
 }

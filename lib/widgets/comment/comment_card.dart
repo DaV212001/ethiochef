@@ -1,6 +1,6 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../models/comment.dart';
@@ -12,15 +12,16 @@ import '../../utils/screen_utils.dart';
 class CommentCard extends StatelessWidget {
   final Comments comment;
   final int? fooId;
-  final User user;
+  final User? user;
   final Function() refresh;
 
-  const CommentCard(
-      {super.key,
-      required this.comment,
-      required this.refresh,
-      required this.fooId,
-      required this.user});
+  const CommentCard({
+    super.key,
+    required this.comment,
+    required this.refresh,
+    required this.fooId,
+    this.user,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +31,10 @@ class CommentCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: isTablet ? 0.w : 10.w),
       padding: EdgeInsets.only(
-          top: isTablet ? 5.w : 10.h,
-          right: isTablet ? 5.w : 10.w,
-          left: isTablet ? 5.w : 10.w),
+        top: isTablet ? 5.w : 10.h,
+        right: isTablet ? 5.w : 10.w,
+        left: isTablet ? 5.w : 10.w,
+      ),
       decoration: BoxDecoration(
         color: theme.cardColor,
         borderRadius: BorderRadius.all(Radius.circular(5.r)),
@@ -44,20 +46,21 @@ class CommentCard extends StatelessWidget {
           Text(
             "${comment.user.firstName} ${comment.user.lastName}",
             style: TextStyle(
-                fontSize: isTablet ? 8.sp : 13.sp, fontWeight: FontWeight.w300),
+              fontSize: isTablet ? 8.sp : 13.sp,
+              fontWeight: FontWeight.w300,
+            ),
           ),
           const Divider(),
           Text(
             comment.comment,
             style: TextStyle(
-                fontSize: isTablet ? 11.sp : 16.sp,
-                fontWeight: FontWeight.w500),
+              fontSize: isTablet ? 11.sp : 16.sp,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           Visibility(
-            visible: comment.user.id == user.id,
-            child: Column(
-              children: [const Divider(), buildButtons(context)],
-            ),
+            visible: user != null && comment.user.id == user!.id,
+            child: Column(children: [const Divider(), buildButtons(context)]),
             replacement: SizedBox.shrink(),
           ),
         ],
@@ -73,19 +76,22 @@ class CommentCard extends StatelessWidget {
       children: [
         InkWell(
           onTap: () {
-            PersistentNavBarNavigator.pushNewScreen(context,
-                screen: AddEditComment(
-                    isEditing: true,
-                    foodId: fooId!,
-                    comments: comment,
-                    refresh: () {
-                      refresh();
-                    }));
+            PersistentNavBarNavigator.pushNewScreen(
+              context,
+              screen: AddEditComment(
+                isEditing: true,
+                foodId: fooId!,
+                comments: comment,
+                refresh: () {
+                  refresh();
+                },
+              ),
+            );
           },
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 0.w, vertical: 10.h),
             child: Text(
-              "edit_comment".tr(),
+              "edit_comment".tr,
               style: TextStyle(
                 color: theme.primaryColor,
                 fontWeight: FontWeight.normal,
@@ -101,14 +107,15 @@ class CommentCard extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
             child: Text(
-              "delete".tr(),
+              "delete".tr,
               style: TextStyle(
-                  color: theme.colorScheme.error,
-                  fontWeight: FontWeight.normal,
-                  fontSize: isTablet ? 11.sp : 15.sp),
+                color: theme.colorScheme.error,
+                fontWeight: FontWeight.normal,
+                fontSize: isTablet ? 11.sp : 15.sp,
+              ),
             ),
           ),
-        )
+        ),
       ],
     );
   }
@@ -120,19 +127,19 @@ class CommentCard extends StatelessWidget {
       if (response.statusCode == 200) {
         refresh();
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('deleted_comment_successful'.tr())),
+          SnackBar(content: Text('deleted_comment_successful'.tr)),
         );
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('deleted_comment_failed'.tr())),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('deleted_comment_failed'.tr)));
         throw Exception();
       }
     } catch (e) {
       print(e);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('deleted_comment_failed'.tr())),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('deleted_comment_failed'.tr)));
     }
   }
 }

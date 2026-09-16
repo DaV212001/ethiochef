@@ -1,23 +1,31 @@
 import 'dart:io';
 
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/screens/profile/layout/update_profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../../../models/user_profile.dart';
+import '../../../../services/authorization_service.dart';
 import '../../../../services/user_service.dart';
 import '../../../../theme/app_theme.dart';
 import '../../../../utils/screen_utils.dart';
 import '../../../../widgets/profile/profile_widget.dart';
+import '../../../screens/auth/auth_screen.dart';
+import '../../../screens/profile/layout/update_profile_screen.dart';
 
 class UserScreenHeader extends StatefulWidget {
   final UserProfile user;
+  final bool guest;
   final Function() reFresh;
-  UserScreenHeader({super.key, required this.user, required this.reFresh});
+  UserScreenHeader({
+    super.key,
+    required this.user,
+    required this.reFresh,
+    required this.guest,
+  });
 
   @override
   State<UserScreenHeader> createState() => _UserScreenHeaderState();
@@ -33,7 +41,8 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
   @override
   void initState() {
     print(
-        "============================================================================================================================================");
+      "============================================================================================================================================",
+    );
     if (widget.user.user?.profile_picture != null) {
       print("pic my ${widget.user.user?.profile_picture}");
       profilePicture = widget.user.user?.profile_picture;
@@ -42,7 +51,8 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
     }
     print("pic my this ${profilePicture}");
     print(
-        "============================================================================================================================================");
+      "============================================================================================================================================",
+    );
     super.initState();
   }
 
@@ -63,7 +73,18 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
             imagePath: widget.user.user?.profile_picture,
             hasEditButton: false,
             isFile: isFile,
-            onClicked: showOptions,
+            onClicked: () async {
+              bool loggedIn = await AuthService.isUserLoggedIn();
+              if (!loggedIn) {
+                PersistentNavBarNavigator.pushNewScreen(
+                  context,
+                  screen: const AuthScreen(isSignIn: true),
+                  withNavBar: false,
+                );
+                return;
+              }
+              showOptions();
+            },
           ),
           SizedBox(width: 10.h),
           Expanded(
@@ -71,50 +92,74 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("$formattedName",
-                    style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w800,
-                        color: theme.colorScheme.secondaryContainer)),
+                Text(
+                  "$formattedName",
+                  style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w800,
+                    color: theme.colorScheme.secondaryContainer,
+                  ),
+                ),
                 if (widget.user.user?.email != null) SizedBox(height: 5.h),
                 if (widget.user.user?.email != null)
-                  Text(widget.user.user!.email.toString(),
-                      style: TextStyle(
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w400,
-                          color: theme.colorScheme.onTertiary)),
+                  Text(
+                    widget.user.user!.email.toString(),
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w400,
+                      color: theme.colorScheme.onTertiary,
+                    ),
+                  ),
               ],
             ),
           ),
           SizedBox(width: 5.h),
           ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStatePropertyAll(theme.colorScheme.primary)),
-              onPressed: () {
-                print(widget.user.user?.phone);
-                String? str = widget.user.user?.phone.toString();
-                String? phone = str?.substring(1);
-                print(phone);
-                PersistentNavBarNavigator.pushNewScreen(context,
-                    screen: UpdateProfileScreen(
-                        imagePath: profilePicture,
-                        hasEditButton: false,
-                        isFile: isFile,
-                        email: widget.user.user?.email ?? '',
-                        firstName: widget.user.user!.firstName,
-                        lastName: widget.user.user!.lastName,
-                        phone: phone.toString(),
-                        reFresh: () {
-                          print("call this");
-                          widget.reFresh();
-                        }));
-              },
-              child: Text("edit".tr(),
-                  style: TextStyle(
-                      fontSize: 15.sp,
-                      fontWeight: FontWeight.w800,
-                      color: theme.colorScheme.secondary)))
+            style: ButtonStyle(
+              backgroundColor: MaterialStatePropertyAll(
+                theme.colorScheme.primary,
+              ),
+            ),
+            onPressed: () async {
+              bool loggedIn = await AuthService.isUserLoggedIn();
+              if (!loggedIn) {
+                PersistentNavBarNavigator.pushNewScreen(
+                  context,
+                  screen: const AuthScreen(isSignIn: true),
+                  withNavBar: false,
+                );
+                return;
+              }
+              print(widget.user.user?.phone);
+              String? str = widget.user.user?.phone.toString();
+              String? phone = str != null && str.length > 1 ? str.substring(1) : str;
+              print(phone);
+              PersistentNavBarNavigator.pushNewScreen(
+                context,
+                screen: UpdateProfileScreen(
+                  imagePath: profilePicture,
+                  hasEditButton: false,
+                  isFile: isFile,
+                  email: widget.user.user?.email ?? '',
+                  firstName: widget.user.user?.firstName ?? '',
+                  lastName: widget.user.user?.lastName ?? '',
+                  phone: phone.toString(),
+                  reFresh: () {
+                    print("call this");
+                    widget.reFresh();
+                  },
+                ),
+              );
+            },
+            child: Text(
+              "edit".tr,
+              style: TextStyle(
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w800,
+                color: theme.colorScheme.secondary,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -153,10 +198,7 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
       builder: (context) => CupertinoActionSheet(
         actions: [
           CupertinoActionSheetAction(
-            child: Text(
-              'photo_gallery'.tr(),
-              style: TextStyle(fontSize: 20.sp),
-            ),
+            child: Text('photo_gallery'.tr, style: TextStyle(fontSize: 20.sp)),
             onPressed: () {
               // close the options modal
               Navigator.of(context).pop();
@@ -165,10 +207,7 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
             },
           ),
           CupertinoActionSheetAction(
-            child: Text(
-              'camera'.tr(),
-              style: TextStyle(fontSize: 20.sp),
-            ),
+            child: Text('camera'.tr, style: TextStyle(fontSize: 20.sp)),
             onPressed: () {
               // close the options modal
               Navigator.of(context).pop();
@@ -185,23 +224,26 @@ class _UserScreenHeaderState extends State<UserScreenHeader> {
     var response;
     final bool isTablet = ScreenUtils.isTablet(context);
     SnackBar success = SnackBar(
-        content: Text(
-      "Profile picture updated successfully", //todo localization
-      style: isTablet ? AppTheme.snackBarStyleTablet : AppTheme.snackBarStyle,
-    ));
+      content: Text(
+        "Profile picture updated successfully", //todo localization
+        style: isTablet ? AppTheme.snackBarStyleTablet : AppTheme.snackBarStyle,
+      ),
+    );
     SnackBar failed = SnackBar(
-        content: Text(
-      "Profile picture updated failed",
-      style: isTablet ? AppTheme.snackBarStyleTablet : AppTheme.snackBarStyle,
-    ));
+      content: Text(
+        "Profile picture updated failed",
+        style: isTablet ? AppTheme.snackBarStyleTablet : AppTheme.snackBarStyle,
+      ),
+    );
     try {
       UserService service = UserService();
       response = await service.updateProfile(
-          widget.user.user!.firstName,
-          widget.user.user!.lastName,
-          widget.user.user!.email.toString(),
-          widget.user.user!.phone.toString(),
-          profilePicture);
+        widget.user.user!.firstName,
+        widget.user.user!.lastName,
+        widget.user.user!.email.toString(),
+        widget.user.user!.phone.toString(),
+        profilePicture,
+      );
       print("==========response1 ==== ${response.statusCode}");
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(success);

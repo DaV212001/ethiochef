@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -23,22 +23,22 @@ class _SuccessfullyUploadedState extends State<SuccessfullyUploaded> {
     final ThemeData theme = Theme.of(context);
     final bool isTablet = ScreenUtils.isTablet(context);
     return Scaffold(
-        appBar: AppBar(
-          title: Text("successful".tr(),
-              style: TextStyle(color: theme.colorScheme.primary)),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: GestureDetector(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: Icon(
-                Icons.arrow_back,
-                color: theme.colorScheme.primary,
-              )),
+      appBar: AppBar(
+        title: Text(
+          "successful".tr,
+          style: TextStyle(color: theme.colorScheme.primary),
         ),
-        body: SingleChildScrollView(
-            child: Container(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: Icon(Icons.arrow_back, color: theme.colorScheme.primary),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
           height: isTablet ? 600.h : 450.h,
           width: isTablet ? 275.w : 400.w,
           padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10.w),
@@ -49,11 +49,12 @@ class _SuccessfullyUploadedState extends State<SuccessfullyUploaded> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Icon(
-                  color: theme.colorScheme.primary,
-                  size: 100,
-                  Icons.check_circle),
+                color: theme.colorScheme.primary,
+                size: 100,
+                Icons.check_circle,
+              ),
               Text(
-                "successful".tr(),
+                "successful".tr,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: theme.colorScheme.primary,
@@ -62,7 +63,7 @@ class _SuccessfullyUploadedState extends State<SuccessfullyUploaded> {
                 ),
               ),
               Text(
-                "successful_upload".tr(),
+                "successful_upload".tr,
                 style: TextStyle(
                   color: theme.colorScheme.secondary,
                   fontWeight: FontWeight.normal,
@@ -71,13 +72,16 @@ class _SuccessfullyUploadedState extends State<SuccessfullyUploaded> {
                 textAlign: TextAlign.center,
               ),
               MainButton(
-                  width: 200.w,
-                  text: 'upload_another'.tr(),
-                  onPress: () async {
-                    Navigator.of(context).pop();
-                  })
+                width: 200.w,
+                text: 'upload_another'.tr,
+                onPress: () async {
+                  Navigator.of(context).pop();
+                },
+              ),
             ],
           ),
-        )));
+        ),
+      ),
+    );
   }
 }

@@ -1,7 +1,7 @@
-import 'dart:convert';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../../models/competition.dart';
 import '../../../utils/screen_utils.dart';
@@ -25,25 +25,26 @@ class _SaveCompetitionVideoState extends State<SaveCompetitionVideo> {
     final ThemeData theme = Theme.of(context);
     final bool isTablet = ScreenUtils.isTablet(context);
     return Scaffold(
-        appBar: AppBar(
-          title: Text("upload_competition".tr(),style: TextStyle(
-              color: theme.colorScheme.primary
-          )),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: GestureDetector(
-              onTap: () {
-                Navigator.of(context).popUntil((route) => route.settings.name == '/competition');
-              },
-              child: Icon(
-                Icons.arrow_back,
-                color: theme.colorScheme.primary,
-              )),
+      appBar: AppBar(
+        title: Text(
+          "upload_competition".tr,
+          style: TextStyle(color: theme.colorScheme.primary),
         ),
-        body:  Container(
-            child: Column(
-              children: [
-              VideoStep(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.of(
+              context,
+            ).popUntil((route) => route.settings.name == '/competition');
+          },
+          child: Icon(Icons.arrow_back, color: theme.colorScheme.primary),
+        ),
+      ),
+      body: Container(
+        child: Column(
+          children: [
+            VideoStep(
               isCompetition: false,
               video: video,
               updateVideo: (video) {
@@ -52,21 +53,16 @@ class _SaveCompetitionVideoState extends State<SaveCompetitionVideo> {
                   this.video = video;
                 });
               },
-              next: (video){
-                Competition newRecipe = Competition(
-                    videoFile: video,
-                );
-
+              next: (video) {
+                Competition newRecipe = Competition(videoFile: video);
 
                 Competition.addCompetition(newRecipe);
               },
-              back: (){
-
-              },
-            )
-              ]
-        )
-    )
+              back: () {},
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

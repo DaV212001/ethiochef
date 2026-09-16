@@ -1,6 +1,6 @@
 import 'package:abushakir/abushakir.dart';
-import 'package:ethio_chef/models/language.dart';
-import 'package:ethio_chef/widgets/main_button.dart';
+import '../models/language.dart';
+import '../widgets/main_button.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

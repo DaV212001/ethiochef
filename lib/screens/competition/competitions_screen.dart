@@ -1,12 +1,12 @@
 import 'package:blur/blur.dart';
-import 'package:easy_localization/easy_localization.dart';
-import 'package:ethio_chef/models/competition.dart';
-import 'package:ethio_chef/screens/subscription/layout/payment.dart';
-import 'package:ethio_chef/services/competition_service.dart';
-import 'package:ethio_chef/utils/constants.dart';
-import 'package:ethio_chef/widgets/ad_block.dart';
-import 'package:ethio_chef/widgets/recipe_status/empty_recipe.dart';
-import 'package:ethio_chef/widgets/screen_head.dart';
+import 'package:get/get.dart';
+import '../../../models/competition.dart';
+import '../../../screens/subscription/layout/payment.dart';
+import '../../../services/competition_service.dart';
+import '../../../utils/constants.dart';
+import '../../../widgets/ad_block.dart';
+import '../../../widgets/recipe_status/empty_recipe.dart';
+import '../../../widgets/screen_head.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -106,7 +106,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
       size: AdSize.banner,
       listener: BannerAdListener(
         onAdLoaded: (ad) {
-          _bannerAd2 = ad as BannerAd;
+          _bannerAd1 = ad as BannerAd;
         },
         onAdFailedToLoad: (ad, err) {
           print("Error loading ad: $err");
@@ -207,7 +207,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                             size: 50,
                           ),
                           Text(
-                            "sms_payment_error".tr(),
+                            "sms_payment_error".tr,
                             textAlign: TextAlign.start,
                             style: TextStyle(
                               fontSize: 20.sp,
@@ -218,7 +218,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               MainButton(
-                                  text: 'yes'.tr(),
+                                  text: 'yes'.tr,
                                   onPress: () async {
                                     PersistentNavBarNavigator.pushNewScreen(
                                         context,
@@ -259,7 +259,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
             ScreenHead(
               hasNotification: true,
               screen: 1,
-              searchHint: "search".tr(),
+              searchHint: "search".tr,
             ),
             if (_bannerAd1 != null)
               AdBlock(
@@ -321,7 +321,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
               autofocus: true,
               elevation: 4,
               isExtended: true,
-              tooltip: 'upload_video'.tr(),
+              tooltip: 'upload_video'.tr,
               onPressed: () async {
                 setState(() {
                   isLoading = true;
@@ -337,7 +337,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                       color: Colors.white,
                     )
                   : Text(
-                      'upload_video'.tr(),
+                      'upload_video'.tr,
                       style: TextStyle(
                           fontSize: isTablet ? 13.sp : 15.sp,
                           fontWeight: FontWeight.w800,
@@ -355,12 +355,12 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
       case "Not logged in":
         showSnackBarAndNavigate(
             context,
-            'please_subscribe_to_see_ingredients_and_steps'.tr(),
+            'please_subscribe_to_see_ingredients_and_steps'.tr,
             AuthScreen(isSignIn: true));
         break;
       case "Another user logged in":
         showSnackBarAndNavigate(
-            context, 'another_account_login'.tr(), AuthScreen(isSignIn: true));
+            context, 'another_account_login'.tr, AuthScreen(isSignIn: true));
         break;
       case "User is subscribed":
         print("User is subscribed");
@@ -420,7 +420,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                     size: 50,
                   ),
                   Text(
-                    "sms_payment_error".tr(),
+                    "sms_payment_error".tr,
                     textAlign: TextAlign.start,
                     style: TextStyle(
                       fontSize: 20.sp,
@@ -431,7 +431,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       MainButton(
-                          text: 'pay'.tr(),
+                          text: 'pay'.tr,
                           onPress: () async {
                             PersistentNavBarNavigator.pushNewScreen(context,
                                 withNavBar: false,
@@ -481,7 +481,7 @@ Widget supportButton(Color color, String? link, String image, bool isTablet,
           SizedBox(
               width: 250,
               child: Text(
-                text ?? "get_support".tr(),
+                text ?? "get_support".tr,
                 softWrap: true,
                 maxLines: 2,
               ))
@@ -496,7 +496,7 @@ Future<void> _launchUrl(String url, bool isTablet) async {
   if (!await launchUrl(_url)) {
     SnackBar(
         content: Text(
-      'open_link_failed'.tr(),
+      'open_link_failed'.tr,
       style: isTablet ? AppTheme.snackBarStyleTablet : AppTheme.snackBarStyle,
     ));
   }

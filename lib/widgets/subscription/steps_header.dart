@@ -1,7 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class StepsHeader extends StatefulWidget {
   final int activeStep;
@@ -36,47 +36,43 @@ class _StepsHeaderState extends State<StepsHeader> {
         finishedLineColor: theme.colorScheme.primaryContainer,
       ),
       steps: steps(theme),
-      showTitle: false,//Todo make true when you can avoid the padding
+      showTitle: false, //Todo make true when you can avoid the padding
       // onStepReached: (index) => setState(() => activeStep = index),
     );
   }
 
   List<EasyStep> steps(ThemeData theme) => [
-      EasyStep(
-          title:'delivery'.tr(),
-          activeIcon: Icon(
-            Icons.subscriptions,
-            grade: 1.1,
-            color: theme.colorScheme.primary,
-          ),
-          icon: Icon(
-            Icons.subscriptions,
-            grade: 1.1,
-            color: theme.unselectedWidgetColor,
-          ),
-          finishIcon: Icon(
-            Icons.check_circle,
-            grade: 1.1,
-            color: theme.colorScheme.primary,
-          )
-      ),
     EasyStep(
-        title:'payment'.tr(),
-        activeIcon: Icon(
-          Icons.payment,
-          grade: 1.1,
-          color: theme.colorScheme.primary,
-        ),
-        icon: Icon(
-          Icons.payment,
-          grade: 1.1,
-          color: theme.unselectedWidgetColor,
-        ),
-        finishIcon: Icon(
-          Icons.check_circle,
-          grade: 1.1,
-          color: theme.colorScheme.primary,
-        )
-    )
+      title: 'delivery'.tr,
+      activeIcon: Icon(
+        Icons.subscriptions,
+        grade: 1.1,
+        color: theme.colorScheme.primary,
+      ),
+      icon: Icon(
+        Icons.subscriptions,
+        grade: 1.1,
+        color: theme.unselectedWidgetColor,
+      ),
+      finishIcon: Icon(
+        Icons.check_circle,
+        grade: 1.1,
+        color: theme.colorScheme.primary,
+      ),
+    ),
+    EasyStep(
+      title: 'payment'.tr,
+      activeIcon: Icon(
+        Icons.payment,
+        grade: 1.1,
+        color: theme.colorScheme.primary,
+      ),
+      icon: Icon(Icons.payment, grade: 1.1, color: theme.unselectedWidgetColor),
+      finishIcon: Icon(
+        Icons.check_circle,
+        grade: 1.1,
+        color: theme.colorScheme.primary,
+      ),
+    ),
   ];
 }

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:ethio_chef/services/user_service.dart';
+import 'package:ethiochef/services/user_service.dart';
 
 import 'authorization_service.dart';
 
@@ -20,18 +20,18 @@ class SubscriptionStatus {
     print("checkStatus 1");
     var token = await AuthService.getAuthorizationToken();
     print("checkStatus 2");
-    if(token=="none"){
+    if (token == "none") {
       status = "Not logged in";
     } else {
       UserService service = UserService();
       var response = await service.checkUserSubscription();
       print('RESPONSE FROM STATUSSSSSSSSSSSSSSSSSSSSSSSSSS: ${response.body}');
       final jsonData = json.decode(response.body);
-      if(jsonData['message'] == "Invalid Token, Redirect to login"){
+      if (jsonData['message'] == "Invalid Token, Redirect to login") {
         status = "Another user logged in";
       } else {
-        if(response.statusCode == 200) {
-          if(jsonData['message'] == "User is subscribed"){
+        if (response.statusCode == 200) {
+          if (jsonData['data'] != []) {
             status = "User is subscribed";
           } else {
             status = "User is not subscribed";

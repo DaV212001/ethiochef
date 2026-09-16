@@ -1,5 +1,5 @@
-import 'package:ethio_chef/generated/assets.dart';
-import 'package:ethio_chef/widgets/svg_icon.dart';
+import '../../generated/assets.dart';
+import '../../widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 
 class AddButton extends StatelessWidget {
