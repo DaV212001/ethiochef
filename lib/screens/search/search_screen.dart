@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../../models/food.dart';
+import '../../services/ad_service.dart';
 import '../../services/food_service.dart';
 import '../../widgets/app_bar_search.dart';
 import '../../widgets/error_card.dart';
+import '../../widgets/inline_banner_ad.dart';
 import '../category/layout/vertical_food_list.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -69,20 +71,27 @@ class _SearchScreenState extends State<SearchScreen> {
           color: theme.primaryColor,
         ),
       ),
-      body: searchedOnce
-          ? Center(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: VerticalFoodList(
-                      pagingController: _pagingController,
-                      isSearchList: true,
+      body: Column(
+        children: [
+          const InlineBannerAd(position: BannerPosition.top),
+          Expanded(
+            child: searchedOnce
+                ? Center(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: VerticalFoodList(
+                            pagingController: _pagingController,
+                            isSearchList: true,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            )
-          : Center(child: ErrorCard(errorType: "empty_search_query")),
+                  )
+                : Center(child: ErrorCard(errorType: "empty_search_query")),
+          ),
+        ],
+      ),
     );
   }
 
