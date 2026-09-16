@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:logger/web.dart';
 
 import '../services/ad_service.dart';
+import '../utils/constants.dart';
 
 class AdVisibilityController extends GetxController {
   var isAdVisible = true.obs;
@@ -18,7 +19,7 @@ class AdVisibilityController extends GetxController {
   Future<void> fetchAdVisibility() async {
     try {
       final response = await http.get(
-        Uri.parse('https://api.ethiochef.com/api/user/ad_visiblity'),
+        Uri.parse('${Constants.url}/user/ad_visiblity'),
       );
       Logger().d(response.statusCode);
       if (response.statusCode == 200) {

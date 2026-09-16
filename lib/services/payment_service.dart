@@ -32,7 +32,7 @@ class PaymentService {
     print(cancelMandateBody);
 
     var response = await http.post(
-      Uri.parse("https://apiv2.ethiochef.com/telebirr/cancelMandate"),
+      Uri.parse("${Constants.url}/telebirr/cancelMandate"),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'JWT $token',
@@ -58,7 +58,7 @@ class PaymentService {
       var request =
           http.Request(
               'GET',
-              Uri.parse("https://apiv2.ethiochef.com/telebirr/getMandate"),
+              Uri.parse("${Constants.url}/telebirr/getMandate"),
             )
             ..headers['Content-Type'] = 'application/json'
             ..headers['Authorization'] = 'JWT $token'
@@ -103,7 +103,7 @@ class PaymentService {
       }),
     );
     final response = await http.post(
-      Uri.parse("https://apiv2.ethiochef.com/pay/chapa"),
+      Uri.parse("${Constants.url}/pay/chapa"),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         "amount": amount,
