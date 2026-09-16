@@ -10,16 +10,18 @@ class AdService extends GetxService with WidgetsBindingObserver {
   // Set to true to verify whether the ad setup and UI work using Google's official test ad units
   static const bool useTestAds = false;
 
-  // Banner Ad Unit IDs (Previous 3 separate IDs: Top, Middle, Bottom)
+  // Banner Ad Unit IDs (Active AdMob unit ID for all slots)
+  static const String _liveBannerAdUnitId = 'ca-app-pub-4750411587709054/6014720876';
+
   static String get topBannerAdUnitId => useTestAds
       ? 'ca-app-pub-3940256099942544/6300978111'
-      : 'ca-app-pub-4750411587709054/9425791625';
+      : _liveBannerAdUnitId;
   static String get middleBannerAdUnitId => useTestAds
       ? 'ca-app-pub-3940256099942544/6300978111'
-      : 'ca-app-pub-4750411587709054/1691458173';
+      : _liveBannerAdUnitId;
   static String get bottomBannerAdUnitId => useTestAds
       ? 'ca-app-pub-3940256099942544/6300978111'
-      : 'ca-app-pub-4750411587709054/2820228086';
+      : _liveBannerAdUnitId;
 
   // Legacy fallback getter
   static String get bannerAdUnitId => topBannerAdUnitId;
