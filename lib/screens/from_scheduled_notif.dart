@@ -200,34 +200,13 @@ class _FromNotifState extends State<FromNotif> {
     return selectedMeals;
   }
 
-  void _navigateToRecipeScreen(Food selectedFood) async {
+  void _navigateToRecipeScreen(Food selectedFood) {
     print('FROM NOTIF NAVIGATION TO RECIPE SCREEN');
-    final access_token = await AuthService.getAuthorizationToken();
-
-    if (access_token != null &&
-        access_token.isNotEmpty &&
-        access_token != 'none') {
-      print("Access token exists, navigating to recipe");
-      PersistentNavBarNavigator.pushNewScreen(
-        context,
-        withNavBar: false,
-        screen: RecipeScreen(food: selectedFood),
-      );
-    } else {
-      print("No access token, navigating to login");
-      loginFunction(selectedFood);
-    }
-  }
-
-  void loginFunction(Food selectedFood) {
     PersistentNavBarNavigator.pushNewScreen(
       context,
       withNavBar: false,
-      screen: AuthScreen(isSignIn: true, isFromNotification: true),
-    ).then((value) {
-      print('RECHEKKKKKKKKKKKK');
-      _navigateToRecipeScreen(selectedFood);
-    });
+      screen: RecipeScreen(food: selectedFood),
+    );
   }
 
   @override

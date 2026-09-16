@@ -39,25 +39,33 @@ class _RecipeScreenState extends State<RecipeScreen> {
   }
 
   Future<dynamic> fetchData() async {
+    Food foodData = widget.food;
     try {
       print('fetchData');
       final foodService = FoodService();
-      var foodData = await foodService.fetchFoodById(widget.food.id!);
+      foodData = await foodService.fetchFoodById(widget.food.id!);
       print('fetchDataBYID');
-      final commentService = CommentService();
-      var commentData = await commentService.fetchComments(widget.food.id!);
-      final userService = UserService();
-      User? userData;
-      try {
-        userData = await userService.fetchLoggedInUser();
-      } catch (e) {
-        print("User not logged in or fetch error: $e");
-      }
-      return [foodData, commentData, userData];
     } catch (error, s) {
-      Logger().t(error, stackTrace: s);
-      rethrow;
+      Logger().t("Failed to fetch latest food details, falling back to passed food: $error", stackTrace: s);
     }
+
+    List<Comments> commentData = [];
+    try {
+      final commentService = CommentService();
+      commentData = await commentService.fetchComments(widget.food.id!);
+    } catch (e) {
+      print("Error fetching comments: $e");
+    }
+
+    final userService = UserService();
+    User? userData;
+    try {
+      userData = await userService.fetchLoggedInUser();
+    } catch (e) {
+      print("User not logged in or fetch error: $e");
+    }
+
+    return [foodData, commentData, userData];
   }
 
   BannerAd? _bannerAdTop;

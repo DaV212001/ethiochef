@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
@@ -119,22 +118,24 @@ class FoodService {
       }
       Logger().d(userData);
       print("access_token $accessToken");
-      final headers = <String, dynamic>{};
+      final headers = <String, String>{};
       if (accessToken != null && accessToken != "none" && accessToken.isNotEmpty) {
         headers['Authorization'] = 'JWT $accessToken';
       }
-      final response = await Dio().get(
-        '${Constants.url}/user/food/$foodId?&limit=1000&lang=${Language.getLocaleCode()}',
-        options: Options(headers: headers),
-        data: userId != null ? {'user_id': userId} : null,
+      final targetUserId = userId ?? 1551;
+      final response = await http.get(
+        Uri.parse(
+          '${Constants.url}/user/food/$foodId?user_id=$targetUserId&limit=1000&lang=${Language.getLocaleCode()}',
+        ),
+        headers: headers,
       );
 
       print("Response body ${Language.getLocaleCode()}");
-      print(response.data);
+      print(response.body);
       print(response.statusCode);
 
       if (response.statusCode == 200) {
-        final data = response.data;
+        final data = jsonDecode(response.body);
         Logger().d(data);
         final foodData = data['data'];
         print('CHECKING checkpointVIDEO FROM API: ${foodData['video']}');

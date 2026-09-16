@@ -67,66 +67,12 @@ class _SearchCardState extends State<SearchCard> {
             height: 60.h,
             width: 200.w,
             text: "show_recipe".tr,
-            onPress: () async {
-              print("Food Card");
-              setState(() {
-                isLoading = true;
-              });
-
-              var token = await AuthService.getAuthorizationToken();
-              if (token != null) {
-                UserService service = UserService();
-                var response = await service.checkUserSubscription();
-                final jsonData = json.decode(response.body);
-                print("user jsonData $jsonData");
-                if (jsonData['message'] == "Invalid Token, Redirect to login") {
-                  setState(() {
-                    isLoading = false;
-                  });
-                  SnackBar logIn = SnackBar(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    content: Text('another_account_login'.tr),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(logIn);
-                  loginFunction();
-                }
-                if (response.statusCode == 200) {
-                  if (jsonData['message'] == "User is subscribed") {
-                    PersistentNavBarNavigator.pushNewScreen(
-                      context,
-                      withNavBar: false,
-                      screen: RecipeScreen(food: widget.food),
-                    );
-                  } else {
-                    PersistentNavBarNavigator.pushNewScreen(
-                      context,
-                      withNavBar: false,
-                      screen: AllSubscriptions(
-                        returnPrice: (int) {},
-                        first_name: "",
-                        last_name: "",
-                        isSignUp: false,
-                        phone: "",
-                      ),
-                    );
-                  }
-                }
-                setState(() {
-                  isLoading = false;
-                });
-              } else {
-                setState(() {
-                  isLoading = false;
-                });
-                SnackBar logIn = SnackBar(
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  content: Text(
-                    'Please subscribe to see ingredients and steps'.tr,
-                  ),
-                );
-                ScaffoldMessenger.of(context).showSnackBar(logIn);
-                loginFunction();
-              }
+            onPress: () {
+              PersistentNavBarNavigator.pushNewScreen(
+                context,
+                withNavBar: false,
+                screen: RecipeScreen(food: widget.food),
+              );
             },
           ),
         ],

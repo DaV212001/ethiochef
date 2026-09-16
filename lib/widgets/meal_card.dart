@@ -25,57 +25,12 @@ class _MealCardState extends State<MealCard> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return GestureDetector(
-      onTap: () async {
-        print("Meal Card");
-
-        SnackBar checking = SnackBar(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          showCloseIcon: true,
-          content: Text('checking_subscription_please_wait'.tr),
+      onTap: () {
+        PersistentNavBarNavigator.pushNewScreen(
+          context,
+          withNavBar: false,
+          screen: RecipeScreen(food: widget.food),
         );
-        ScaffoldMessenger.of(context).showSnackBar(checking);
-        String status = await Check.checkToShow();
-        switch (status) {
-          case "Not logged in":
-            print("Not logged in - viewing recipe as guest");
-            PersistentNavBarNavigator.pushNewScreen(
-              context,
-              withNavBar: false,
-              screen: RecipeScreen(food: widget.food),
-            );
-            break;
-          case "Another user logged in":
-            print("Another user logged in");
-            SnackBar logIn = SnackBar(
-              padding: EdgeInsets.symmetric(vertical: 20),
-              content: Text('another_account_login'.tr),
-            );
-            ScaffoldMessenger.of(context).showSnackBar(logIn);
-            loginFunction();
-            break;
-          case "User is subscribed":
-            print("User is subscribed");
-            PersistentNavBarNavigator.pushNewScreen(
-              context,
-              withNavBar: false,
-              screen: RecipeScreen(food: widget.food),
-            );
-            break;
-          case "User is not subscribed":
-            print("User is not subscribed");
-            PersistentNavBarNavigator.pushNewScreen(
-              context,
-              withNavBar: false,
-              screen: AllSubscriptions(
-                returnPrice: (int) {},
-                first_name: "",
-                last_name: "",
-                isSignUp: false,
-                phone: "",
-              ),
-            );
-            break;
-        }
       },
       child: Card(
         color: Colors.transparent,

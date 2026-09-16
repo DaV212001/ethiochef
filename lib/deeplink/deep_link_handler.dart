@@ -78,29 +78,7 @@ class _DeepLinkHandlerState extends State<DeepLinkHandler> {
     //   print(e);
     // }
 
-    // Check if the user is logged in
-    AuthService.getAuthorizationToken().then((token) {
-      if (token == "none") {
-        // User is not logged in, navigate to AuthScreen
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                AuthScreen(isSignIn: true, isfromDeepLink: true),
-          ),
-        ).then((value) {
-          // Check login status again after returning from AuthScreen
-          AuthService.getAuthorizationToken().then((newToken) {
-            if (newToken != "none") {
-              _navigateToDeepLink(uri);
-            }
-          });
-        });
-      } else {
-        // User is logged in, navigate to DeepLinkNavigation
-        _navigateToDeepLink(uri);
-      }
-    });
+    _navigateToDeepLink(uri);
   }
 
   void _navigateToDeepLink(Uri uri) {

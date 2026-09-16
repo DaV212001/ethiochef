@@ -35,22 +35,12 @@ class _CategoryCardState extends State<CategoryCard> {
     ThemeData theme = Theme.of(context);
     if (widget.name == null) {
       return GestureDetector(
-        onTap: () async {
-          final access_token = await AuthService.getAuthorizationToken();
-
-          if (access_token != null &&
-              access_token.isNotEmpty &&
-              access_token != 'none') {
-            print("Access token exists, navigating to recipe");
-            PersistentNavBarNavigator.pushNewScreen(
-              context,
-              withNavBar: false,
-              screen: RecipeScreen(food: widget.food),
-            );
-          } else {
-            print("No access token, navigating to login");
-            loginFunction(context);
-          }
+        onTap: () {
+          PersistentNavBarNavigator.pushNewScreen(
+            context,
+            withNavBar: false,
+            screen: RecipeScreen(food: widget.food),
+          );
         },
         child: Card(
           color: theme.cardColor,
