@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -261,6 +262,125 @@ class AdService extends GetxService with WidgetsBindingObserver {
         },
       ),
     );
+  // ==================== SEQUENTIAL BANNER QUEUE & RATE LIMIT PROTECTION ====================
+
+  static final Map<String, DateTime> _adUnitCooldowns = {};
+  static final List<_QueuedBannerRequest> _bannerQueue = [];
+  static bool _isProcessingBannerQueue = false;
+
+  static bool isAdUnitInCooldown(String adUnitId) {
+    final cooldownUntil = _adUnitCooldowns[adUnitId];
+    if (cooldownUntil == null) return false;
+    if (DateTime.now().isBefore(cooldownUntil)) {
+      return true;
+    }
+    _adUnitCooldowns.remove(adUnitId);
+    return false;
+  }
+
+  static void setAdUnitCooldown(String adUnitId, {int seconds = 15}) {
+    _adUnitCooldowns[adUnitId] = DateTime.now().add(Duration(seconds: seconds));
+  }
+
+  /// Queues a banner ad load sequentially with backoff protection.
+  /// Prevents AdMob "Too many recently failed requests" rate limits when multiple
+  /// inline banners mount simultaneously.
+  static void loadBannerSequentially({
+    required BannerPosition position,
+    String? customAdUnitId,
+    required bool Function() isMounted,
+    required Function(BannerAd) onLoaded,
+    required Function(LoadAdError) onFailed,
+  }) {
+    final adUnit = customAdUnitId ??
+        (position == BannerPosition.top
+            ? topBannerAdUnitId
+            : position == BannerPosition.middle
+                ? middleBannerAdUnitId
+                : bottomBannerAdUnitId);
+
+    _bannerQueue.add(_QueuedBannerRequest(
+      adUnitId: adUnit,
+      position: position,
+      isMounted: isMounted,
+      onLoaded: onLoaded,
+      onFailed: onFailed,
+    ));
+
+    _processBannerQueue();
+  }
+
+  static Future<void> _processBannerQueue() async {
+    if (_isProcessingBannerQueue) return;
+    _isProcessingBannerQueue = true;
+
+    while (_bannerQueue.isNotEmpty) {
+      final request = _bannerQueue.removeAt(0);
+
+      if (!request.isMounted()) {
+        continue;
+      }
+
+      if (isAdUnitInCooldown(request.adUnitId)) {
+        final remainingSeconds = _adUnitCooldowns[request.adUnitId]!
+            .difference(DateTime.now())
+            .inSeconds;
+        debugPrint(
+          '⏳ [AdMob] Skipping ${request.position.name.toUpperCase()} BannerAd request for ${request.adUnitId}: cooldown active (${remainingSeconds}s remaining to prevent AdMob rate limiting).',
+        );
+        request.onFailed(
+          LoadAdError(
+            1,
+            'com.google.android.gms.ads',
+            'Ad unit is in cooldown to prevent rate limiting',
+            null,
+          ),
+        );
+        continue;
+      }
+
+      final completer = Completer<void>();
+
+      BannerAd(
+        adUnitId: request.adUnitId,
+        size: AdSize.banner,
+        request: const AdRequest(),
+        listener: BannerAdListener(
+          onAdLoaded: (ad) {
+            debugPrint('✅ [AdMob] ${request.position.name.toUpperCase()} BannerAd LOADED successfully (unit: ${request.adUnitId})');
+            _adUnitCooldowns.remove(request.adUnitId);
+            if (request.isMounted()) {
+              request.onLoaded(ad as BannerAd);
+            } else {
+              ad.dispose();
+            }
+            if (!completer.isCompleted) completer.complete();
+          },
+          onAdFailedToLoad: (ad, error) {
+            debugPrint('❌ [AdMob] ${request.position.name.toUpperCase()} BannerAd FAILED to load:');
+            debugPrint('   - Code: ${error.code} (${_getErrorExplanation(error.code)})');
+            debugPrint('   - Message: ${error.message}');
+            debugPrint('   - AdUnit: ${request.adUnitId}');
+            ad.dispose();
+
+            // Set a 15-second cooldown on failure to avoid Google SDK rate limits
+            setAdUnitCooldown(request.adUnitId, seconds: 15);
+
+            if (request.isMounted()) {
+              request.onFailed(error);
+            }
+            if (!completer.isCompleted) completer.complete();
+          },
+        ),
+      ).load();
+
+      await completer.future;
+
+      // Small pacing delay between sequential requests
+      await Future.delayed(const Duration(milliseconds: 1200));
+    }
+
+    _isProcessingBannerQueue = false;
   }
 
   static String _getErrorExplanation(int code) {
@@ -299,4 +419,20 @@ class AdRouteObserver extends NavigatorObserver {
       debugPrint('AdRouteObserver error: $e');
     }
   }
+}
+
+class _QueuedBannerRequest {
+  final String adUnitId;
+  final BannerPosition position;
+  final bool Function() isMounted;
+  final Function(BannerAd) onLoaded;
+  final Function(LoadAdError) onFailed;
+
+  _QueuedBannerRequest({
+    required this.adUnitId,
+    required this.position,
+    required this.isMounted,
+    required this.onLoaded,
+    required this.onFailed,
+  });
 }

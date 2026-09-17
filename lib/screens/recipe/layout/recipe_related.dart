@@ -18,7 +18,7 @@ class RecipeRelated extends StatelessWidget {
     }
     final bool isTablet = ScreenUtils.isTablet(context);
     double height = 260;
-    double width = 165;
+    double width = 175;
     ThemeData theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,7 +43,10 @@ class RecipeRelated extends StatelessWidget {
             itemExtent: width,
             itemCount: food!.length,
             itemBuilder: (BuildContext context, int index) {
-              return CategoryCard(food: food![index], isSearchList: false);
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 4.w),
+                child: CategoryCard(food: food![index], isSearchList: false),
+              );
             },
           ),
         ),

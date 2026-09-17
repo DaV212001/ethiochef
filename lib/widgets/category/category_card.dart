@@ -40,7 +40,7 @@ class _CategoryCardState extends State<CategoryCard> {
           return Card(
             color: theme.cardColor,
             elevation: 2,
-            margin: EdgeInsets.zero,
+            margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
             shape: RoundedRectangleBorder(
               borderRadius: AppTheme.allBorderRadius,
             ),
@@ -82,7 +82,7 @@ class _CategoryCardState extends State<CategoryCard> {
           return Card(
             color: theme.cardColor,
             elevation: 2,
-            margin: EdgeInsets.zero,
+            margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
             shape: RoundedRectangleBorder(
               borderRadius: AppTheme.allBorderRadius,
             ),

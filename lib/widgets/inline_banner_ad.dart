@@ -33,13 +33,17 @@ class _InlineBannerAdState extends State<InlineBannerAd> {
   void _loadAd() {
     if (!AdService.to.adsEnabled.value) return;
 
-    _bannerAd = AdService.createBannerAd(
+    AdService.loadBannerSequentially(
       position: widget.position,
-      onAdLoaded: (ad) {
+      isMounted: () => mounted,
+      onLoaded: (ad) {
         if (mounted) {
           setState(() {
+            _bannerAd = ad;
             _isLoaded = true;
           });
+        } else {
+          ad.dispose();
         }
       },
       onFailed: (error) {
@@ -49,12 +53,13 @@ class _InlineBannerAdState extends State<InlineBannerAd> {
           });
         }
       },
-    )..load();
+    );
   }
 
   @override
   void dispose() {
     _bannerAd?.dispose();
+    _bannerAd = null;
     super.dispose();
   }
 

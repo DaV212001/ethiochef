@@ -136,7 +136,7 @@ class _FoodCarouselState extends State<FoodCarousel> {
       );
     }
     double height = 220;
-    double width = 170;
+    double width = 175;
     return Container(
       height: height,
       child: ListView.builder(
@@ -147,7 +147,7 @@ class _FoodCarouselState extends State<FoodCarousel> {
         itemCount: food.length,
         itemBuilder: (BuildContext context, int index) {
           return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 1.w),
+            padding: EdgeInsets.symmetric(horizontal: 4.w),
             child: CategoryCard(food: food[index]),
           );
         },

@@ -23,7 +23,7 @@ class MealCarousel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double height = 220;
-    double width = 165;
+    double width = 175;
 
     return Container(
       height: height,
@@ -38,11 +38,14 @@ class MealCarousel extends StatelessWidget {
           type == 3?superMeal.length:
           dinner.length,
           itemBuilder: (BuildContext context, int index) {
-            return buildFoodCard(
-                food: type == 1?breakfast[index]:
-                type == 2?lunch[index]:
-                type == 3?superMeal[index]:
-                dinner[index]
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4.0),
+              child: buildFoodCard(
+                  food: type == 1?breakfast[index]:
+                  type == 2?lunch[index]:
+                  type == 3?superMeal[index]:
+                  dinner[index]
+              ),
             );
           }
       ),
