@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../services/ad_service.dart';
 import 'loading.dart';
 
 class RefreshWidget extends StatefulWidget {
@@ -29,6 +30,7 @@ class _RefreshWidgetState extends State<RefreshWidget> {
   );
 
   void _onRefresh() async {
+    AdService.clearCooldownsAndRequestRefresh();
     await widget.onRefresh();
     _refreshController.refreshCompleted();
   }

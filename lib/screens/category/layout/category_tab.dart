@@ -38,60 +38,77 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
   BannerAd? _bannerAdBottom;
 
   void _loadAd() {
+    if (!AdService.to.adsEnabled.value) return;
     print("Loading Category Banner Ads (Top, Middle, Bottom)");
-    AdService.createBannerAd(
-      position: BannerPosition.top,
-      onAdLoaded: (ad) {
-        if (mounted) {
-          setState(() {
-            _bannerAdTop = ad;
-          });
-        }
-      },
-      onFailed: (err) {
-        if (mounted) {
-          setState(() {
-            _bannerAdTop = null;
-          });
-        }
-      },
-    )..load();
 
-    AdService.createBannerAd(
-      position: BannerPosition.middle,
-      onAdLoaded: (ad) {
-        if (mounted) {
-          setState(() {
-            _bannerAdMiddle = ad;
-          });
-        }
-      },
-      onFailed: (err) {
-        if (mounted) {
-          setState(() {
-            _bannerAdMiddle = null;
-          });
-        }
-      },
-    )..load();
+    if (_bannerAdTop == null) {
+      AdService.loadBannerSequentially(
+        position: BannerPosition.top,
+        isMounted: () => mounted,
+        onLoaded: (ad) {
+          if (mounted) {
+            setState(() {
+              _bannerAdTop = ad;
+            });
+          } else {
+            ad.dispose();
+          }
+        },
+        onFailed: (err) {
+          if (mounted) {
+            setState(() {
+              _bannerAdTop = null;
+            });
+          }
+        },
+      );
+    }
 
-    AdService.createBannerAd(
-      position: BannerPosition.bottom,
-      onAdLoaded: (ad) {
-        if (mounted) {
-          setState(() {
-            _bannerAdBottom = ad;
-          });
-        }
-      },
-      onFailed: (err) {
-        if (mounted) {
-          setState(() {
-            _bannerAdBottom = null;
-          });
-        }
-      },
-    )..load();
+    if (_bannerAdMiddle == null) {
+      AdService.loadBannerSequentially(
+        position: BannerPosition.middle,
+        isMounted: () => mounted,
+        onLoaded: (ad) {
+          if (mounted) {
+            setState(() {
+              _bannerAdMiddle = ad;
+            });
+          } else {
+            ad.dispose();
+          }
+        },
+        onFailed: (err) {
+          if (mounted) {
+            setState(() {
+              _bannerAdMiddle = null;
+            });
+          }
+        },
+      );
+    }
+
+    if (_bannerAdBottom == null) {
+      AdService.loadBannerSequentially(
+        position: BannerPosition.bottom,
+        isMounted: () => mounted,
+        onLoaded: (ad) {
+          if (mounted) {
+            setState(() {
+              _bannerAdBottom = ad;
+            });
+          } else {
+            ad.dispose();
+          }
+        },
+        onFailed: (err) {
+          if (mounted) {
+            setState(() {
+              _bannerAdBottom = null;
+            });
+          }
+        },
+      );
+    }
   }
 
   @override
@@ -143,6 +160,8 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
             Expanded(
               child: RefreshIndicator(
                 onRefresh: () async {
+                  AdService.clearCooldownsAndRequestRefresh();
+                  _loadAd();
                   controller.refreshData();
                 },
                 child: VerticalFoodList(

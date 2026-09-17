@@ -4,6 +4,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:logger/logger.dart';
 
 import '../../../models/food.dart';
+import '../../../services/ad_service.dart';
 import '../../../services/food_service.dart';
 import '../../screens/category/layout/vertical_food_list.dart';
 import '../../widgets/main_app_bar.dart';
@@ -64,7 +65,6 @@ class _AllFoodState extends State<AllFood> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: MainAppBar(
         hasBackButton: true,
@@ -78,6 +78,7 @@ class _AllFoodState extends State<AllFood> {
           Expanded(
             child: RefreshIndicator(
               onRefresh: () async {
+                AdService.clearCooldownsAndRequestRefresh();
                 setState(() {
                   _pagingController.refresh();
                 });

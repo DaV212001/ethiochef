@@ -58,60 +58,77 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void loadAd() {
+    if (!AdService.to.adsEnabled.value) return;
     print("Loading Home Banner Ads (Top, Middle, Bottom)");
-    AdService.createBannerAd(
-      position: BannerPosition.top,
-      onAdLoaded: (ad) {
-        if (mounted) {
-          setState(() {
-            _bannerAdTop = ad;
-          });
-        }
-      },
-      onFailed: (err) {
-        if (mounted) {
-          setState(() {
-            _bannerAdTop = null;
-          });
-        }
-      },
-    )..load();
 
-    AdService.createBannerAd(
-      position: BannerPosition.middle,
-      onAdLoaded: (ad) {
-        if (mounted) {
-          setState(() {
-            _bannerAdMiddle = ad;
-          });
-        }
-      },
-      onFailed: (err) {
-        if (mounted) {
-          setState(() {
-            _bannerAdMiddle = null;
-          });
-        }
-      },
-    )..load();
+    if (_bannerAdTop == null) {
+      AdService.loadBannerSequentially(
+        position: BannerPosition.top,
+        isMounted: () => mounted,
+        onLoaded: (ad) {
+          if (mounted) {
+            setState(() {
+              _bannerAdTop = ad;
+            });
+          } else {
+            ad.dispose();
+          }
+        },
+        onFailed: (err) {
+          if (mounted) {
+            setState(() {
+              _bannerAdTop = null;
+            });
+          }
+        },
+      );
+    }
 
-    AdService.createBannerAd(
-      position: BannerPosition.bottom,
-      onAdLoaded: (ad) {
-        if (mounted) {
-          setState(() {
-            _bannerAdBottom = ad;
-          });
-        }
-      },
-      onFailed: (err) {
-        if (mounted) {
-          setState(() {
-            _bannerAdBottom = null;
-          });
-        }
-      },
-    )..load();
+    if (_bannerAdMiddle == null) {
+      AdService.loadBannerSequentially(
+        position: BannerPosition.middle,
+        isMounted: () => mounted,
+        onLoaded: (ad) {
+          if (mounted) {
+            setState(() {
+              _bannerAdMiddle = ad;
+            });
+          } else {
+            ad.dispose();
+          }
+        },
+        onFailed: (err) {
+          if (mounted) {
+            setState(() {
+              _bannerAdMiddle = null;
+            });
+          }
+        },
+      );
+    }
+
+    if (_bannerAdBottom == null) {
+      AdService.loadBannerSequentially(
+        position: BannerPosition.bottom,
+        isMounted: () => mounted,
+        onLoaded: (ad) {
+          if (mounted) {
+            setState(() {
+              _bannerAdBottom = ad;
+            });
+          } else {
+            ad.dispose();
+          }
+        },
+        onFailed: (err) {
+          if (mounted) {
+            setState(() {
+              _bannerAdBottom = null;
+            });
+          }
+        },
+      );
+    }
   }
 
   @override
@@ -125,7 +142,11 @@ class _HomeScreenState extends State<HomeScreen>
           return Center(
             child: ErrorCard(
               errorType: controller.errorMessage.value,
-              refresh: () => controller.fetchHomeData(refresh: true),
+              refresh: () {
+                AdService.clearCooldownsAndRequestRefresh();
+                loadAd();
+                controller.fetchHomeData(refresh: true);
+              },
             ),
           );
         }
@@ -138,7 +159,11 @@ class _HomeScreenState extends State<HomeScreen>
     final bool isTablet = ScreenUtils.isTablet(context);
     return SafeArea(
       child: RefreshIndicator(
-        onRefresh: () => controller.fetchHomeData(refresh: true),
+        onRefresh: () async {
+          AdService.clearCooldownsAndRequestRefresh();
+          loadAd();
+          await controller.fetchHomeData(refresh: true);
+        },
         child: CustomScrollView(
           slivers: [
             if (_bannerAdTop != null)

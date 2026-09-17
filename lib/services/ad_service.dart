@@ -11,18 +11,23 @@ class AdService extends GetxService with WidgetsBindingObserver {
   // Set to true to verify whether the ad setup and UI work using Google's official test ad units
   static const bool useTestAds = false;
 
-  // Banner Ad Unit IDs (Active AdMob unit ID for all slots)
-  static const String _liveBannerAdUnitId = 'ca-app-pub-4750411587709054/6014720876';
+  // Banner Ad Unit IDs (Separated Top, Middle, Bottom)
+  static const String _liveTopBannerAdUnitId =
+      'ca-app-pub-4750411587709054/9425791625';
+  static const String _liveMiddleBannerAdUnitId =
+      'ca-app-pub-4750411587709054/1691458173';
+  static const String _liveBottomBannerAdUnitId =
+      'ca-app-pub-4750411587709054/2820228086';
 
   static String get topBannerAdUnitId => useTestAds
       ? 'ca-app-pub-3940256099942544/6300978111'
-      : _liveBannerAdUnitId;
+      : _liveTopBannerAdUnitId;
   static String get middleBannerAdUnitId => useTestAds
       ? 'ca-app-pub-3940256099942544/6300978111'
-      : _liveBannerAdUnitId;
+      : _liveMiddleBannerAdUnitId;
   static String get bottomBannerAdUnitId => useTestAds
       ? 'ca-app-pub-3940256099942544/6300978111'
-      : _liveBannerAdUnitId;
+      : _liveBottomBannerAdUnitId;
 
   // Legacy fallback getter
   static String get bannerAdUnitId => topBannerAdUnitId;
@@ -270,6 +275,10 @@ class AdService extends GetxService with WidgetsBindingObserver {
   static final List<_QueuedBannerRequest> _bannerQueue = [];
   static bool _isProcessingBannerQueue = false;
 
+  /// Global notifier incremented on pull-to-refresh across screens.
+  /// Listening banner widgets whose ads failed or were skipped will attempt a reload.
+  static final ValueNotifier<int> refreshNotifier = ValueNotifier<int>(0);
+
   static bool isAdUnitInCooldown(String adUnitId) {
     final cooldownUntil = _adUnitCooldowns[adUnitId];
     if (cooldownUntil == null) return false;
@@ -283,6 +292,14 @@ class AdService extends GetxService with WidgetsBindingObserver {
   static void setAdUnitCooldown(String adUnitId, {int seconds = 15}) {
     _adUnitCooldowns[adUnitId] = DateTime.now().add(Duration(seconds: seconds));
   }
+
+  /// Clears active failure cooldowns and triggers a reload event for all listening banner widgets.
+  static void clearCooldownsAndRequestRefresh() {
+    debugPrint('🔄 [AdMob] Pull-to-refresh: clearing ad unit cooldowns and triggering banner retry.');
+    _adUnitCooldowns.clear();
+    refreshNotifier.value++;
+  }
+
 
   /// Queues a banner ad load sequentially with backoff protection.
   /// Prevents AdMob "Too many recently failed requests" rate limits when multiple

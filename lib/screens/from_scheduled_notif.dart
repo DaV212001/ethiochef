@@ -246,6 +246,7 @@ class _FromNotifState extends State<FromNotif> {
             return ErrorCard(
               errorType: 'custom_error_type', // Pass appropriate error type
               refresh: () {
+                AdService.clearCooldownsAndRequestRefresh();
                 setState(() {
                   _fetchMeals = _fetchMealsAtSpecificTime();
                 });
@@ -268,13 +269,16 @@ class _FromNotifState extends State<FromNotif> {
                 if (i < l2.length) allFoods.add(l2[i]);
               }
             } else if (snapshot.data is List) {
-              for (var item in snapshot.data) {
-                if (item is Food) allFoods.add(item);
-                if (item is List<Food>) allFoods.addAll(item);
+              for (final item in snapshot.data) {
+                if (item is Food) {
+                  allFoods.add(item);
+                } else if (item is List<Food>) {
+                  allFoods.addAll(item);
+                }
               }
             }
 
-            final int count = crossAxisCount > 0 ? crossAxisCount : 2;
+            final int count = crossAxisCount.clamp(1, 4);
             final List<List<Food>> rows = [];
             for (int i = 0; i < allFoods.length; i += count) {
               rows.add(allFoods.sublist(
@@ -288,7 +292,14 @@ class _FromNotifState extends State<FromNotif> {
                 children: [
                   const InlineBannerAd(position: BannerPosition.top),
                   Expanded(
-                    child: SingleChildScrollView(
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        AdService.clearCooldownsAndRequestRefresh();
+                        setState(() {
+                          _fetchMeals = _fetchMealsAtSpecificTime();
+                        });
+                      },
+                      child: SingleChildScrollView(
                       child: Column(
                         children: [
                           Stack(
@@ -386,9 +397,10 @@ class _FromNotifState extends State<FromNotif> {
                       ),
                     ),
                   ),
-                ],
-              ),
-            );
+                ),
+              ],
+            ),
+          );
           } else {
             // Empty state
             return Center(
