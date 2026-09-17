@@ -216,7 +216,8 @@ class _FromNotifState extends State<FromNotif> {
   Widget build(BuildContext context) {
     final bool isTablet = ScreenUtils.isTablet(context);
     final double desiredItemWidth = isTablet ? 130.w : 150.w;
-    final double desiredItemHeight = isTablet ? 220.h : 200.h;
+    final double desiredItemHeight =
+        isTablet ? 260.h.clamp(250.0, 320.0) : 240.h.clamp(230.0, 270.0);
     final double screenWidth = ScreenUtils.width(context);
 
     final int crossAxisCount = (screenWidth / desiredItemWidth).floor();

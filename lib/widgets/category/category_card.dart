@@ -26,13 +26,104 @@ class CategoryCard extends StatefulWidget {
 }
 
 class _CategoryCardState extends State<CategoryCard> {
-  final double coverHeight = 150;
-  final double profileHeight = 64;
-  bool isLoading = false;
+  static const double profileHeight = 52.0;
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
+    final cardContent = LayoutBuilder(
+      builder: (context, constraints) {
+        final bool hasBoundedHeight =
+            constraints.hasBoundedHeight && constraints.maxHeight != double.infinity;
+
+        if (hasBoundedHeight) {
+          return Card(
+            color: theme.cardColor,
+            elevation: 2,
+            margin: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(
+              borderRadius: AppTheme.allBorderRadius,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      Positioned.fill(
+                        bottom: profileHeight / 2,
+                        child: ClipRRect(
+                          borderRadius: AppTheme.allBorderRadius,
+                          child: CachedImage(
+                            url: widget.food.thumbnail,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        child: buildProfileImage(),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
+                  child: buildContent(context),
+                ),
+              ],
+            ),
+          );
+        } else {
+          // Unbounded height fallback
+          const double fallbackCoverHeight = 140.0;
+          return Card(
+            color: theme.cardColor,
+            elevation: 2,
+            margin: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(
+              borderRadius: AppTheme.allBorderRadius,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(
+                  height: fallbackCoverHeight + (profileHeight / 2),
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      Positioned.fill(
+                        bottom: profileHeight / 2,
+                        child: ClipRRect(
+                          borderRadius: AppTheme.allBorderRadius,
+                          child: CachedImage(
+                            url: widget.food.thumbnail,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        child: buildProfileImage(),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
+                  child: buildContent(context),
+                ),
+              ],
+            ),
+          );
+        }
+      },
+    );
+
     if (widget.name == null) {
       return GestureDetector(
         onTap: () {
@@ -42,107 +133,76 @@ class _CategoryCardState extends State<CategoryCard> {
             screen: RecipeScreen(food: widget.food),
           );
         },
-        child: Card(
-          color: theme.cardColor,
-          child: ListView(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            children: [buildBody(), SizedBox(height: 2), buildContent(context)],
-          ),
-        ),
+        child: cardContent,
       );
     } else {
-      return Card(
-        color: theme.cardColor,
-        child: ListView(
-          physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          children: [buildBody(), SizedBox(height: 2), buildContent(context)],
-        ),
-      );
+      return cardContent;
     }
   }
 
-  Widget buildBody() {
-    ThemeData theme = Theme.of(context);
-    final bottom = profileHeight / 2;
-    final top = coverHeight - profileHeight / 2;
-    return Stack(
-      clipBehavior: Clip.none,
-      alignment: Alignment.center,
-      children: [
-        Container(
-          color: theme.cardColor,
-          margin: EdgeInsets.only(bottom: bottom),
-          child: buildCoverImage(),
-        ),
-        Positioned(top: top, child: buildProfileImage()),
-      ],
-    );
-  }
-
-  Widget buildCoverImage() {
-    ThemeData theme = Theme.of(context);
-    return Container(
-      color: theme.cardColor,
-      height: coverHeight,
-      width: double.infinity,
-      child: ClipRRect(
-        borderRadius: AppTheme.allBorderRadius,
-        child: CachedImage(url: widget.food.thumbnail, fit: BoxFit.fill),
-      ),
-    );
-  }
-
   Widget buildProfileImage() => ClipOval(
-    child: Material(
-      // Replace this child with your own
-      elevation: 8.0,
-      shape: CircleBorder(),
-      child: CircleAvatar(
-        backgroundColor: Colors.white,
-        child: Image.asset(
-          'assets/images/logo.png',
-          height: 80,
-          fit: BoxFit.fill,
+        child: Material(
+          elevation: 6.0,
+          shape: const CircleBorder(),
+          child: CircleAvatar(
+            backgroundColor: Colors.white,
+            radius: profileHeight / 2,
+            child: Image.asset(
+              'assets/images/logo.png',
+              height: profileHeight,
+              width: profileHeight,
+              fit: BoxFit.contain,
+            ),
+          ),
         ),
-        radius: profileHeight / 2,
-      ),
-    ),
-  );
-  Widget buildContent(context) {
+      );
+
+  Widget buildContent(BuildContext context) {
     final bool isTablet = ScreenUtils.isTablet(context);
-    ThemeData theme = Theme.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        widget.isSearchList
-            ? FittedBox(
-                child: Text(
-                  widget.food.Name.toString(),
-                  style: TextStyle(
-                    fontSize: isTablet ? 11.sp : 15.sp,
-                    fontWeight: FontWeight.w600,
-                    color: theme.colorScheme.secondaryContainer,
-                  ),
-                ),
-              )
-            : FittedBox(
-                child: Text(
-                  '${widget.food.name}',
-                  style: TextStyle(
-                    fontSize: isTablet
-                        ? 11.sp
-                        : widget.name != null
-                        ? 13.sp
-                        : 15.sp,
-                    fontWeight: FontWeight.w600,
-                    color: theme.colorScheme.secondaryContainer,
-                  ),
-                ),
-              ),
-      ],
+    final ThemeData theme = Theme.of(context);
+
+    String title = '';
+    if (widget.name != null &&
+        widget.name!.trim().isNotEmpty &&
+        widget.name != 'null') {
+      title = widget.name!.trim();
+    } else if (widget.isSearchList &&
+        widget.food.Name != null &&
+        widget.food.Name!.trim().isNotEmpty &&
+        widget.food.Name != 'null') {
+      title = widget.food.Name!.trim();
+    } else if (widget.food.name != null &&
+        widget.food.name!.trim().isNotEmpty &&
+        widget.food.name != 'null') {
+      title = widget.food.name!.trim();
+    } else if (widget.food.Name != null &&
+        widget.food.Name!.trim().isNotEmpty &&
+        widget.food.Name != 'null') {
+      title = widget.food.Name!.trim();
+    }
+
+    return SizedBox(
+      height: 24.h,
+      child: Center(
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: isTablet
+                  ? 12.sp
+                  : widget.name != null
+                      ? 13.sp
+                      : 14.sp,
+              fontWeight: FontWeight.w600,
+              color: theme.colorScheme.secondaryContainer,
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -150,7 +210,7 @@ class _CategoryCardState extends State<CategoryCard> {
     PersistentNavBarNavigator.pushNewScreen(
       context,
       withNavBar: false,
-      screen: AuthScreen(isSignIn: true),
+      screen: const AuthScreen(isSignIn: true),
     );
   }
 }

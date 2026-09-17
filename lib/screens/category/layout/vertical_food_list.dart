@@ -104,7 +104,8 @@ class _VerticalFoodListState extends State<VerticalFoodList> {
   @override
   Widget build(BuildContext context) {
     final bool isTablet = ScreenUtils.isTablet(context);
-    final double desiredItemHeight = isTablet ? 220.h : 200.h;
+    final double desiredItemHeight =
+        isTablet ? 260.h.clamp(250.0, 320.0) : 240.h.clamp(230.0, 270.0);
     final int crossAxisCount = _calculateCrossAxisCount();
 
     return CustomScrollView(

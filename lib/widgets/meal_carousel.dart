@@ -22,7 +22,7 @@ class MealCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double height = 180;
+    double height = 220;
     double width = 165;
 
     return Container(
