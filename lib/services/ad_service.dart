@@ -262,6 +262,8 @@ class AdService extends GetxService with WidgetsBindingObserver {
         },
       ),
     );
+  }
+
   // ==================== SEQUENTIAL BANNER QUEUE & RATE LIMIT PROTECTION ====================
 
   static final Map<String, DateTime> _adUnitCooldowns = {};
