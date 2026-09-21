@@ -16,6 +16,7 @@ import '../../../screens/upload_recipe/layout/video_step.dart';
 import '../../../services/scheduled_notification_service.dart';
 import '../../../widgets/ad_block.dart';
 import '../../models/recipe.dart';
+import '../../services/ad_service.dart';
 import '../../services/recipe_service.dart';
 import '../../services/subscription_checker.dart';
 import '../../widgets/loading.dart';

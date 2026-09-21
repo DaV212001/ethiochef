@@ -14,6 +14,7 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../generated/assets.dart';
+import '../../services/ad_service.dart';
 import '../../services/subscription_checker.dart';
 import '../../services/user_service.dart';
 import '../../theme/app_theme.dart';

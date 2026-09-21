@@ -4,6 +4,7 @@ import '../../../screens/auth/layout/sign_up.dart';
 import '../../../widgets/auth/language_selector_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import '../../services/ad_service.dart';
 
 class AuthScreen extends StatefulWidget {
   final bool isSignIn;

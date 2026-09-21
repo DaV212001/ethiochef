@@ -10,6 +10,7 @@ import 'package:logger/logger.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import '../../../models/subscriptionplans.dart';
+import '../../../services/ad_service.dart';
 import '../../../services/user_service.dart';
 import '../../../widgets/ad_block.dart';
 import '../../../widgets/auth/auth_btn.dart';

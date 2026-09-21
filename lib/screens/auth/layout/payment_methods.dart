@@ -11,6 +11,7 @@ import '../../../models/payment_methods.dart';
 import '../../../models/subscriptionplans.dart';
 import '../../../models/user.dart';
 import '../../../screens/auth/layout/payment_screen.dart';
+import '../../../services/ad_service.dart';
 import '../../../services/payment_service.dart';
 import '../../../utils/screen_utils.dart';
 import '../../../widgets/ad_block.dart';
