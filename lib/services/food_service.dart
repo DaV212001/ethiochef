@@ -123,19 +123,48 @@ class FoodService {
         headers['Authorization'] = 'JWT $accessToken';
       }
       final targetUserId = userId ?? 1551;
-      final response = await http.get(
+      final currentLocale = Language.getLocaleCode();
+      var response = await http.get(
         Uri.parse(
-          '${Constants.url}/user/food/$foodId?user_id=$targetUserId&limit=1000&lang=${Language.getLocaleCode()}',
+          '${Constants.url}/user/food/$foodId?user_id=$targetUserId&limit=1000&lang=$currentLocale',
         ),
         headers: headers,
       );
 
-      print("Response body ${Language.getLocaleCode()}");
+      print("Response body $currentLocale");
       print(response.body);
       print(response.statusCode);
 
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+      dynamic data;
+      try {
+        data = jsonDecode(response.body);
+      } catch (e) {
+        data = null;
+      }
+
+      // If food was not found in the current language (e.g. food 578 only exists in 'am'), fallback to 'am'
+      if ((response.statusCode != 200 || data == null || data['data'] == null) && currentLocale != 'am') {
+        debugPrint("⚠️ Food $foodId not found in '$currentLocale'. Attempting fallback to 'am'...");
+        try {
+          final fallbackResponse = await http.get(
+            Uri.parse(
+              '${Constants.url}/user/food/$foodId?user_id=$targetUserId&limit=1000&lang=am',
+            ),
+            headers: headers,
+          );
+          if (fallbackResponse.statusCode == 200) {
+            final fallbackData = jsonDecode(fallbackResponse.body);
+            if (fallbackData != null && fallbackData['data'] != null) {
+              data = fallbackData;
+              response = fallbackResponse;
+            }
+          }
+        } catch (e) {
+          debugPrint("Fallback to 'am' failed: $e");
+        }
+      }
+
+      if (response.statusCode == 200 && data != null && data['data'] != null) {
         Logger().d(data);
         final foodData = data['data'];
         print('CHECKING checkpointVIDEO FROM API: ${foodData['video']}');

@@ -56,6 +56,20 @@ class Food {
     this.isLiked,
   });
 
+  static String? parseVideoUrl(dynamic raw) {
+    if (raw == null) return null;
+    String str = raw.toString().trim();
+    if (str.isEmpty || str == 'null') return null;
+    if (str.startsWith('http://') || str.startsWith('https://')) {
+      return str;
+    }
+    if (str.startsWith('/')) {
+      return '${Constants.ImageAPI}$str';
+    } else {
+      return '${Constants.ImageAPI}/$str';
+    }
+  }
+
   factory Food.fromSingleFoodJson(Map<String, dynamic> json) {
     print("==============================================================");
     print("==============================================================");
@@ -91,7 +105,10 @@ class Food {
       id: json['id'],
       subcategoriesId: json['subcategories_id'] is String
           ? int.parse(json['subcategories_id'])
-          : json['subcategories_id'] ?? 0,
+          : json['subcategories_id'] ??
+              (json['subcategories-id'] is String
+                  ? int.parse(json['subcategories-id'])
+                  : json['subcategories-id'] ?? 0),
       categoryId: json['category_id'] is String
           ? int.parse(json['category_id'])
           : json['category_id'] ?? 0,
@@ -110,7 +127,16 @@ class Food {
       preparationTime: json['cooking_time'] is String
           ? int.parse(json['cooking_time'])
           : json['cooking_time'] ?? 0,
-      video: json['video'] ?? null,
+      video: parseVideoUrl(
+        json['video'] ??
+            json['video_url'] ??
+            json['videoUrl'] ??
+            json['video_link'] ??
+            json['youtube_url'] ??
+            json['youtube_link'] ??
+            json['youtube'] ??
+            json['link'],
+      ),
       servings: json['serving'] is String
           ? int.parse(json['serving'])
           : json['serving'] ?? 0,
@@ -222,6 +248,16 @@ class Food {
           ? int.parse(json['serving'])
           : json['serving'],
       thumbnail: thumbnail,
+      video: parseVideoUrl(
+        json['video'] ??
+            json['video_url'] ??
+            json['videoUrl'] ??
+            json['video_link'] ??
+            json['youtube_url'] ??
+            json['youtube_link'] ??
+            json['youtube'] ??
+            json['link'],
+      ),
       likes: List<Likes>.from(
         json['likes']?.map((dynamic like) => Likes.fromFood(like)) ?? [],
       ),
@@ -278,6 +314,12 @@ class Food {
           ? int.parse(json['serving'])
           : json['serving'],
       thumbnail: thumbnail,
+      video: parseVideoUrl(
+        json['video'] ??
+            json['video_url'] ??
+            json['videoUrl'] ??
+            json['youtube_url'],
+      ),
       likes: List<Likes>.from(
         json['likes']?.map((dynamic like) => Likes.fromFood(like)) ?? [],
       ),
@@ -308,8 +350,6 @@ class Food {
     } else {
       meal = 4;
     }
-    Map<String, dynamic> name = {'name': ''};
-    String Name = '';
     String description = '';
     // if (Language.getLocaleCode() == 'en') {
     //   Name = json['name_en'];
@@ -337,6 +377,12 @@ class Food {
       description: description,
       mealTime: meal,
       thumbnail: thumbnail,
+      video: parseVideoUrl(
+        json['video'] ??
+            json['video_url'] ??
+            json['videoUrl'] ??
+            json['youtube_url'],
+      ),
     );
   }
 

@@ -94,8 +94,11 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
                 widget.food?.video != "")
               SizedBox(
                 width: width,
-                height: height * 0.3,
-                child: YoutubeVideoPlayer(link: widget.food!.video.toString()),
+                height: height * 0.35,
+                child: YoutubeVideoPlayer(
+                  link: widget.food!.video.toString(),
+                  thumbnailUrl: widget.image,
+                ),
               ),
             if (widget.food?.video == null || widget.food?.video == "")
               SizedBox(
