@@ -77,6 +77,7 @@ void main() async {
     "==========================MobileAds.instance.initialize()====================================",
   );
   MobileAds.instance.initialize();
+  await AdService.loadCachedAdUnits();
   print(
     "=========================MobileAds.instance.initialize()=====================================",
   );

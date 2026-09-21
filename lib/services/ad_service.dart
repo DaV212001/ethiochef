@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum BannerPosition { top, middle, bottom }
 
@@ -11,30 +14,121 @@ class AdService extends GetxService with WidgetsBindingObserver {
   // Set to true to verify whether the ad setup and UI work using Google's official test ad units
   static const bool useTestAds = false;
 
-  // Active Standard Banner Ad Unit ID
-  static const String _liveBannerAdUnitId =
+  // Remote Ad Units API endpoint
+  static const String adUnitsApiUrl =
+      'https://api.ethiochef.com/api/user/ad_units';
+
+  // Fallback Standard Ad Unit IDs
+  static const String fallbackBannerAdUnitId =
       'ca-app-pub-4750411587709054/7572899454';
+  static const String fallbackInterstitialAdUnitId =
+      'ca-app-pub-4750411587709054/8502837745';
+  static const String fallbackAppOpenAdUnitId =
+      'ca-app-pub-4750411587709054/8619221961';
+
+  // Dynamic live ad units (initialized with fallbacks, updated from API or cache)
+  static String _liveBannerAdUnitId = fallbackBannerAdUnitId;
+  static String _liveInterstitialAdUnitId = fallbackInterstitialAdUnitId;
+  static String _liveAppOpenAdUnitId = fallbackAppOpenAdUnitId;
+
+  // Storage keys for persistent caching
+  static const String _prefKeyBanner = 'cached_ad_unit_banner';
+  static const String _prefKeyInterstitial = 'cached_ad_unit_interstitial';
+  static const String _prefKeyAppOpen = 'cached_ad_unit_app_open';
+
+  /// Loads cached ad units from SharedPreferences into static fields.
+  static Future<void> loadCachedAdUnits() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final cachedBanner = prefs.getString(_prefKeyBanner)?.trim();
+      final cachedInterstitial = prefs.getString(_prefKeyInterstitial)?.trim();
+      final cachedAppOpen = prefs.getString(_prefKeyAppOpen)?.trim();
+
+      if (cachedBanner != null && cachedBanner.isNotEmpty) {
+        _liveBannerAdUnitId = cachedBanner;
+      }
+      if (cachedInterstitial != null && cachedInterstitial.isNotEmpty) {
+        _liveInterstitialAdUnitId = cachedInterstitial;
+      }
+      if (cachedAppOpen != null && cachedAppOpen.isNotEmpty) {
+        _liveAppOpenAdUnitId = cachedAppOpen;
+      }
+      debugPrint('📦 [AdMob] Cached ad units loaded: banner=$_liveBannerAdUnitId, interstitial=$_liveInterstitialAdUnitId, appOpen=$_liveAppOpenAdUnitId');
+    } catch (e) {
+      debugPrint('⚠️ [AdMob] Error loading cached ad units: $e');
+    }
+  }
+
+  /// Fetches latest ad unit IDs from the backend API, updates cache and in-memory IDs.
+  static Future<void> fetchRemoteAdUnits() async {
+    try {
+      debugPrint('🌐 [AdMob] Fetching remote ad units from $adUnitsApiUrl...');
+      final response = await http
+          .get(Uri.parse(adUnitsApiUrl))
+          .timeout(const Duration(seconds: 10));
+
+      if (response.statusCode == 200) {
+        final dynamic body = jsonDecode(response.body);
+        final dynamic data = body is Map<String, dynamic> ? body['data'] : null;
+        if (data is Map<String, dynamic>) {
+          final banner = data['banner']?.toString().trim();
+          final interstitial = data['interstitial']?.toString().trim();
+          final appOpen = data['app_open']?.toString().trim();
+
+          final prefs = await SharedPreferences.getInstance();
+
+          if (banner != null && banner.isNotEmpty) {
+            _liveBannerAdUnitId = banner;
+            await prefs.setString(_prefKeyBanner, banner);
+          }
+          if (interstitial != null && interstitial.isNotEmpty) {
+            _liveInterstitialAdUnitId = interstitial;
+            await prefs.setString(_prefKeyInterstitial, interstitial);
+          }
+          if (appOpen != null && appOpen.isNotEmpty) {
+            _liveAppOpenAdUnitId = appOpen;
+            await prefs.setString(_prefKeyAppOpen, appOpen);
+          }
+
+          debugPrint(
+            '✅ [AdMob] Remote ad units updated: '
+            'banner=$_liveBannerAdUnitId, interstitial=$_liveInterstitialAdUnitId, appOpen=$_liveAppOpenAdUnitId',
+          );
+
+          // If interstitial or app-open ads are not yet loaded, trigger load
+          if (Get.isRegistered<AdService>()) {
+            final service = AdService.to;
+            if (service.adsEnabled.value) {
+              if (service._interstitialAd == null && !service._isInterstitialLoading) {
+                service.loadInterstitialAd();
+              }
+              if (service._appOpenAd == null && !service._isAppOpenLoading) {
+                service.loadAppOpenAd();
+              }
+            }
+          }
+        }
+      } else {
+        debugPrint('⚠️ [AdMob] Failed to fetch remote ad units: HTTP ${response.statusCode}');
+      }
+    } catch (e) {
+      debugPrint('⚠️ [AdMob] Error fetching remote ad units: $e');
+    }
+  }
 
   static String get topBannerAdUnitId => useTestAds
       ? 'ca-app-pub-3940256099942544/6300978111'
       : _liveBannerAdUnitId;
-  static String get middleBannerAdUnitId => useTestAds
-      ? 'ca-app-pub-3940256099942544/6300978111'
-      : _liveBannerAdUnitId;
-  static String get bottomBannerAdUnitId => useTestAds
-      ? 'ca-app-pub-3940256099942544/6300978111'
-      : _liveBannerAdUnitId;
-
-  // Legacy fallback getter
+  static String get middleBannerAdUnitId => topBannerAdUnitId;
+  static String get bottomBannerAdUnitId => topBannerAdUnitId;
   static String get bannerAdUnitId => topBannerAdUnitId;
 
-  // Standard Interstitial & App Open Ad Unit IDs
   static String get interstitialAdUnitId => useTestAds
       ? 'ca-app-pub-3940256099942544/1033173712'
-      : 'ca-app-pub-4750411587709054/8502837745';
+      : _liveInterstitialAdUnitId;
   static String get appOpenAdUnitId => useTestAds
       ? 'ca-app-pub-3940256099942544/9257395921'
-      : 'ca-app-pub-4750411587709054/8619221961';
+      : _liveAppOpenAdUnitId;
 
   /// PROGRAMMATIC DEVELOPER TOGGLE:
   /// True by default. The developer can toggle this at runtime or code level:
@@ -56,10 +150,7 @@ class AdService extends GetxService with WidgetsBindingObserver {
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addObserver(this);
-    if (adsEnabled.value) {
-      loadInterstitialAd();
-      loadAppOpenAd();
-    }
+    _initAdUnitsAndLoad();
 
     // React to toggle changes
     ever(adsEnabled, (bool enabled) {
@@ -73,6 +164,15 @@ class AdService extends GetxService with WidgetsBindingObserver {
         _appOpenAd = null;
       }
     });
+  }
+
+  Future<void> _initAdUnitsAndLoad() async {
+    await loadCachedAdUnits();
+    if (adsEnabled.value) {
+      loadInterstitialAd();
+      loadAppOpenAd();
+    }
+    await fetchRemoteAdUnits();
   }
 
   @override
@@ -289,10 +389,11 @@ class AdService extends GetxService with WidgetsBindingObserver {
     _adUnitCooldowns[adUnitId] = DateTime.now().add(Duration(seconds: seconds));
   }
 
-  /// Clears active failure cooldowns and triggers a reload event for all listening banner widgets.
+  /// Clears active failure cooldowns, refreshes ad units from API, and triggers a reload event for all listening banner widgets.
   static void clearCooldownsAndRequestRefresh() {
-    debugPrint('🔄 [AdMob] Pull-to-refresh: clearing ad unit cooldowns and triggering banner retry.');
+    debugPrint('🔄 [AdMob] Pull-to-refresh: clearing ad unit cooldowns, fetching latest ad units, and triggering banner retry.');
     _adUnitCooldowns.clear();
+    fetchRemoteAdUnits();
     refreshNotifier.value++;
   }
 
