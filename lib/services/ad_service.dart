@@ -11,9 +11,9 @@ class AdService extends GetxService with WidgetsBindingObserver {
   // Set to true to verify whether the ad setup and UI work using Google's official test ad units
   static const bool useTestAds = false;
 
-  // Active Banner Ad Unit ID (single available unit for all banner slots)
+  // Active Standard Banner Ad Unit ID
   static const String _liveBannerAdUnitId =
-      'ca-app-pub-4750411587709054/6014720876';
+      'ca-app-pub-4750411587709054/7572899454';
 
   static String get topBannerAdUnitId => useTestAds
       ? 'ca-app-pub-3940256099942544/6300978111'
@@ -28,13 +28,13 @@ class AdService extends GetxService with WidgetsBindingObserver {
   // Legacy fallback getter
   static String get bannerAdUnitId => topBannerAdUnitId;
 
-  // Interstitial & App Open Ad Unit IDs
+  // Standard Interstitial & App Open Ad Unit IDs
   static String get interstitialAdUnitId => useTestAds
       ? 'ca-app-pub-3940256099942544/1033173712'
-      : 'ca-app-pub-4750411587709054/9602612094';
+      : 'ca-app-pub-4750411587709054/8502837745';
   static String get appOpenAdUnitId => useTestAds
       ? 'ca-app-pub-3940256099942544/9257395921'
-      : 'ca-app-pub-4750411587709054/4693548698';
+      : 'ca-app-pub-4750411587709054/8619221961';
 
   /// PROGRAMMATIC DEVELOPER TOGGLE:
   /// True by default. The developer can toggle this at runtime or code level:

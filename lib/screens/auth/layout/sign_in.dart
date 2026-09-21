@@ -46,7 +46,7 @@ class _SignInState extends State<SignIn> {
     loadAd();
   }
 
-  static String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
+  static String get _adbannerUnitId => AdService.topBannerAdUnitId;
   static BannerAd? _bannerAd1;
   static BannerAd? _bannerAd2;
   static BannerAd? _bannerAd3;
@@ -68,7 +68,7 @@ class _SignInState extends State<SignIn> {
       ),
     ).load();
     await BannerAd(
-      adUnitId: 'ca-app-pub-4750411587709054/1691458173',
+      adUnitId: AdService.middleBannerAdUnitId,
       request: const AdRequest(),
       size: AdSize.banner,
       listener: BannerAdListener(
@@ -82,7 +82,7 @@ class _SignInState extends State<SignIn> {
       ),
     ).load();
     await BannerAd(
-      adUnitId: 'ca-app-pub-4750411587709054/2820228086',
+      adUnitId: AdService.bottomBannerAdUnitId,
       request: const AdRequest(),
       size: AdSize.banner,
       listener: BannerAdListener(

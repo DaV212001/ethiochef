@@ -24,7 +24,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   }
 
-  static String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
+  static String get _adbannerUnitId => AdService.topBannerAdUnitId;
   static BannerAd? _bannerAd1;
   static BannerAd? _bannerAd2;
   static BannerAd? _bannerAd3;
@@ -46,7 +46,7 @@ class _AuthScreenState extends State<AuthScreen> {
       ),
     ).load();
     await BannerAd(
-      adUnitId: 'ca-app-pub-4750411587709054/1691458173',
+      adUnitId: AdService.middleBannerAdUnitId,
       request: const AdRequest(),
       size: AdSize.banner,
       listener: BannerAdListener(
@@ -60,7 +60,7 @@ class _AuthScreenState extends State<AuthScreen> {
       ),
     ).load();
     await BannerAd(
-        adUnitId: _adbannerUnitId,
+        adUnitId: AdService.bottomBannerAdUnitId,
         request: const AdRequest(),
         size: AdSize.banner,
         listener: BannerAdListener(

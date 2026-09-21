@@ -58,7 +58,7 @@ class _UploadRecipeScreenState extends State<UploadRecipeScreen> {
     super.initState();
   }
 
-  static String _adbannerUnitId = 'ca-app-pub-4750411587709054/9425791625';
+  static String get _adbannerUnitId => AdService.topBannerAdUnitId;
   static BannerAd? _bannerAd1;
 
   void loadAd() async {
