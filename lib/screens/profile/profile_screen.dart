@@ -33,11 +33,15 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<ProfileScreen>
+    with AutomaticKeepAliveClientMixin {
   final ProfileController controller = Get.put(ProfileController());
   bool isLoggedIn = false;
   late User user = User(lastName: '', firstName: '');
   bool isLoading = false;
+
+  @override
+  bool get wantKeepAlive => true;
 
   BannerAd? _bannerAdTop;
   BannerAd? _bannerAdMiddle;
@@ -75,11 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
         },
         onFailed: (err) {
-          if (mounted) {
-            setState(() {
-              _bannerAdTop = null;
-            });
-          }
+          debugPrint('⚠️ [AdMob] Profile top banner failed: ${err.message}');
         },
       );
     }
@@ -98,11 +98,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
         },
         onFailed: (err) {
-          if (mounted) {
-            setState(() {
-              _bannerAdMiddle = null;
-            });
-          }
+          debugPrint('⚠️ [AdMob] Profile middle banner failed: ${err.message}');
         },
       );
     }
@@ -121,11 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
         },
         onFailed: (err) {
-          if (mounted) {
-            setState(() {
-              _bannerAdBottom = null;
-            });
-          }
+          debugPrint('⚠️ [AdMob] Profile bottom banner failed: ${err.message}');
         },
       );
     }
@@ -136,6 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   int amount = 0;
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final bool isTablet = ScreenUtils.isTablet(context);
     ThemeData theme = Theme.of(context);
     return SafeArea(

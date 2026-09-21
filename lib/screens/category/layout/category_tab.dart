@@ -20,9 +20,13 @@ class CategoryCustomTab extends StatefulWidget {
   State<CategoryCustomTab> createState() => _CategoryCustomTabState();
 }
 
-class _CategoryCustomTabState extends State<CategoryCustomTab> {
+class _CategoryCustomTabState extends State<CategoryCustomTab>
+    with AutomaticKeepAliveClientMixin {
   final CategoryFoodController controller = Get.put(CategoryFoodController());
   int selectedIndex = 0;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -55,11 +59,7 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
           }
         },
         onFailed: (err) {
-          if (mounted) {
-            setState(() {
-              _bannerAdTop = null;
-            });
-          }
+          debugPrint('⚠️ [AdMob] Category top banner failed: ${err.message}');
         },
       );
     }
@@ -78,11 +78,7 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
           }
         },
         onFailed: (err) {
-          if (mounted) {
-            setState(() {
-              _bannerAdMiddle = null;
-            });
-          }
+          debugPrint('⚠️ [AdMob] Category middle banner failed: ${err.message}');
         },
       );
     }
@@ -101,11 +97,7 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
           }
         },
         onFailed: (err) {
-          if (mounted) {
-            setState(() {
-              _bannerAdBottom = null;
-            });
-          }
+          debugPrint('⚠️ [AdMob] Category bottom banner failed: ${err.message}');
         },
       );
     }
@@ -113,6 +105,7 @@ class _CategoryCustomTabState extends State<CategoryCustomTab> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final bool isTablet = ScreenUtils.isTablet(context);
     final ThemeData theme = Theme.of(context);
     List<Tab> tabs = widget.category

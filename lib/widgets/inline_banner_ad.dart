@@ -20,10 +20,14 @@ class InlineBannerAd extends StatefulWidget {
   State<InlineBannerAd> createState() => _InlineBannerAdState();
 }
 
-class _InlineBannerAdState extends State<InlineBannerAd> {
+class _InlineBannerAdState extends State<InlineBannerAd>
+    with AutomaticKeepAliveClientMixin {
   BannerAd? _bannerAd;
   bool _isLoaded = false;
   bool _isLoading = false;
+
+  @override
+  bool get wantKeepAlive => _isLoaded;
 
   @override
   void initState() {
@@ -54,6 +58,7 @@ class _InlineBannerAdState extends State<InlineBannerAd> {
             _bannerAd = ad;
             _isLoaded = true;
           });
+          updateKeepAlive();
         } else {
           ad.dispose();
         }
@@ -79,6 +84,7 @@ class _InlineBannerAdState extends State<InlineBannerAd> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     if (!_isLoaded || _bannerAd == null) return const SizedBox.shrink();
     if (!AdService.to.adsEnabled.value) return const SizedBox.shrink();
 

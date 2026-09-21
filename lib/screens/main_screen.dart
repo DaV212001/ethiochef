@@ -26,6 +26,12 @@ class _MainScreenState extends State<MainScreen> {
   bool isLoggedIn = false;
   bool isLoading = false;
 
+  late final List<Widget> _screens = const [
+    HomeScreen(),
+    CategoriesScreen(),
+    ProfileScreen(),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -67,53 +73,11 @@ class _MainScreenState extends State<MainScreen> {
     print("Logged in status = $isLoggedIn");
   }
 
-  List<Widget> _buildScreens() {
-    return [
-      HomeScreen(),
-      CategoriesScreen(),
-      // UploadRecipeScreen(),
-      // isLoading == true
-      //     ? RefreshWidget(
-      //         onRefresh: () async {
-      //           _checkFirstTimeUser();
-      //         },
-      //         child: Center(
-      //           child: Scaffold(
-      //             body: Center(
-      //               child: Column(
-      //                 children: [Center(child: Loading())],
-      //               ),
-      //             ),
-      //           ),
-      //         ),
-      //       )
-      //     : isLoggedIn
-      //         ? CompetitionsScreen()
-      //         : AuthScreen(isSignIn: true),
-      // isLoading == true
-      //     ? RefreshWidget(
-      //         onRefresh: () async {
-      //           _checkFirstTimeUser();
-      //         },
-      //         child: Center(
-      //           child: Scaffold(
-      //             body: Center(
-      //               child: Column(children: [Center(child: Loading())]),
-      //             ),
-      //           ),
-      //         ),
-      //       )
-      //     : isLoggedIn
-      //     ?
-      ProfileScreen(),
-      // : AuthScreen(isSignIn: true),
-    ];
-  }
-
   @override
   Widget build(BuildContext context) {
     return PersistentTabView(
       context,
+      stateManagement: true,
       onItemSelected: (index) {
         try {
           if (Get.isRegistered<AdService>()) {
@@ -126,7 +90,7 @@ class _MainScreenState extends State<MainScreen> {
       popBehaviorOnSelectedNavBarItemPress: PopBehavior.all,
       bottomScreenMargin: 70,
       controller: _controller,
-      screens: _buildScreens(),
+      screens: _screens,
       items: _navBarsItems(),
       confineToSafeArea: true,
       backgroundColor: Theme.of(

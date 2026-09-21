@@ -138,6 +138,7 @@ class AdService extends GetxService with WidgetsBindingObserver {
   // Interstitial Ad
   InterstitialAd? _interstitialAd;
   bool _isInterstitialLoading = false;
+  bool _isShowingInterstitialAd = false;
   DateTime? _lastInterstitialShownAt;
 
   // App Open Ad
@@ -145,6 +146,8 @@ class AdService extends GetxService with WidgetsBindingObserver {
   bool _isAppOpenLoading = false;
   bool _isShowingAppOpenAd = false;
   DateTime? _appOpenLoadTime;
+  bool _hasShownColdStartAppOpen = false;
+  final DateTime _appStartTime = DateTime.now();
 
   @override
   void onInit() {
@@ -170,7 +173,7 @@ class AdService extends GetxService with WidgetsBindingObserver {
     await loadCachedAdUnits();
     if (adsEnabled.value) {
       loadInterstitialAd();
-      loadAppOpenAd();
+      loadAppOpenAd(isColdStart: true);
     }
     await fetchRemoteAdUnits();
   }
@@ -208,12 +211,17 @@ class AdService extends GetxService with WidgetsBindingObserver {
           debugPrint('✅ [AdMob] Interstitial ad loaded successfully (unit: $interstitialAdUnitId).');
 
           _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
+            onAdShowedFullScreenContent: (ad) {
+              _isShowingInterstitialAd = true;
+            },
             onAdDismissedFullScreenContent: (ad) {
+              _isShowingInterstitialAd = false;
               ad.dispose();
               _interstitialAd = null;
               loadInterstitialAd();
             },
             onAdFailedToShowFullScreenContent: (ad, error) {
+              _isShowingInterstitialAd = false;
               debugPrint('❌ [AdMob] Interstitial ad failed to show: ${error.message} (code: ${error.code})');
               ad.dispose();
               _interstitialAd = null;
@@ -236,7 +244,7 @@ class AdService extends GetxService with WidgetsBindingObserver {
   /// Show interstitial ad on navigation / screen changes.
   /// Includes a 15-second debounce safeguard so users aren't overwhelmed.
   void showInterstitialAd({bool force = false}) {
-    if (!adsEnabled.value) return;
+    if (!adsEnabled.value || _isShowingAppOpenAd || _isShowingInterstitialAd) return;
 
     if (!force && _lastInterstitialShownAt != null) {
       final difference = DateTime.now().difference(_lastInterstitialShownAt!);
@@ -258,7 +266,7 @@ class AdService extends GetxService with WidgetsBindingObserver {
 
   // ==================== APP OPEN AD ====================
 
-  void loadAppOpenAd() {
+  void loadAppOpenAd({bool isColdStart = false}) {
     if (!adsEnabled.value || _isAppOpenLoading || _appOpenAd != null) {
       return;
     }
@@ -274,6 +282,15 @@ class AdService extends GetxService with WidgetsBindingObserver {
           _appOpenLoadTime = DateTime.now();
           _isAppOpenLoading = false;
           debugPrint('✅ [AdMob] App Open ad loaded successfully (unit: $appOpenAdUnitId).');
+
+          // Show right when the app opens on cold start
+          if (!_hasShownColdStartAppOpen &&
+              DateTime.now().difference(_appStartTime).inSeconds < 15 &&
+              !_isShowingInterstitialAd) {
+            _hasShownColdStartAppOpen = true;
+            debugPrint('🚀 [AdMob] Displaying App Open ad right on cold start.');
+            showAppOpenAdIfAvailable();
+          }
         },
         onAdFailedToLoad: (error) {
           _appOpenAd = null;
@@ -288,7 +305,7 @@ class AdService extends GetxService with WidgetsBindingObserver {
   }
 
   void showAppOpenAdIfAvailable() {
-    if (!adsEnabled.value || _isShowingAppOpenAd) return;
+    if (!adsEnabled.value || _isShowingAppOpenAd || _isShowingInterstitialAd) return;
 
     if (_appOpenAd == null) {
       debugPrint('AdService: App Open ad not ready yet.');

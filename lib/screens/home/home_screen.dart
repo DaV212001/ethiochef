@@ -28,8 +28,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   final HomeController controller = Get.put(HomeController());
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -75,11 +78,7 @@ class _HomeScreenState extends State<HomeScreen>
           }
         },
         onFailed: (err) {
-          if (mounted) {
-            setState(() {
-              _bannerAdTop = null;
-            });
-          }
+          debugPrint('⚠️ [AdMob] Home top banner failed: ${err.message}');
         },
       );
     }
@@ -98,11 +97,7 @@ class _HomeScreenState extends State<HomeScreen>
           }
         },
         onFailed: (err) {
-          if (mounted) {
-            setState(() {
-              _bannerAdMiddle = null;
-            });
-          }
+          debugPrint('⚠️ [AdMob] Home middle banner failed: ${err.message}');
         },
       );
     }
@@ -121,11 +116,7 @@ class _HomeScreenState extends State<HomeScreen>
           }
         },
         onFailed: (err) {
-          if (mounted) {
-            setState(() {
-              _bannerAdBottom = null;
-            });
-          }
+          debugPrint('⚠️ [AdMob] Home bottom banner failed: ${err.message}');
         },
       );
     }
@@ -133,6 +124,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: Obx(() {
         if (controller.isLoading.value) {

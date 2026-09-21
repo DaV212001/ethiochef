@@ -14,11 +14,16 @@ class CategoriesScreen extends StatefulWidget {
   State<CategoriesScreen> createState() => _CategoriesScreenState();
 }
 
-class _CategoriesScreenState extends State<CategoriesScreen> {
+class _CategoriesScreenState extends State<CategoriesScreen>
+    with AutomaticKeepAliveClientMixin {
   final CategoryController controller = Get.put(CategoryController());
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       body: Obx(() {
         if (controller.isLoading.value && controller.categories.isEmpty) {
@@ -34,7 +39,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         }
         return RefreshWidget(
           onRefresh: () => controller.fetchCategories(),
-          child: CategoryCustomTab(category: controller.categories),
+          child: CategoryCustomTab(
+            key: const PageStorageKey('category_custom_tab'),
+            category: controller.categories,
+          ),
         );
       }),
     );
