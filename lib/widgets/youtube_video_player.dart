@@ -11,10 +11,10 @@ class YoutubeVideoPlayer extends StatefulWidget {
   final String? thumbnailUrl;
 
   const YoutubeVideoPlayer({
-    Key? key,
+    super.key,
     required this.link,
     this.thumbnailUrl,
-  }) : super(key: key);
+  });
 
   @override
   State<YoutubeVideoPlayer> createState() => _YoutubeVideoPlayerState();
@@ -155,7 +155,7 @@ class _YoutubeVideoPlayerState extends State<YoutubeVideoPlayer> {
               Positioned.fill(
                 child: CachedImage(url: widget.thumbnailUrl!, fit: BoxFit.cover),
               ),
-            Container(color: Colors.black.withOpacity(0.35)),
+            Container(color: const Color.fromRGBO(0, 0, 0, 0.35)),
             const CircularProgressIndicator(color: Colors.white),
           ],
         ),
@@ -172,14 +172,14 @@ class _YoutubeVideoPlayerState extends State<YoutubeVideoPlayer> {
               Positioned.fill(
                 child: CachedImage(url: widget.thumbnailUrl!, fit: BoxFit.cover),
               ),
-            Container(color: Colors.black.withOpacity(0.4)),
+            Container(color: const Color.fromRGBO(0, 0, 0, 0.4)),
             InkWell(
               onTap: _launchExternalVideo,
               borderRadius: BorderRadius.circular(50),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.7),
+                  color: const Color.fromRGBO(0, 0, 0, 0.7),
                   borderRadius: BorderRadius.circular(30),
                   border: Border.all(color: Colors.white54, width: 1.5),
                 ),
@@ -213,7 +213,7 @@ class _YoutubeVideoPlayerState extends State<YoutubeVideoPlayer> {
       podProgressBarConfig: PodProgressBarConfig(
         playingBarColor: theme.colorScheme.primary,
         circleHandlerColor: theme.colorScheme.primary,
-        bufferedBarColor: theme.colorScheme.primary.withOpacity(0.5),
+        bufferedBarColor: theme.colorScheme.primary.withAlpha(128),
       ),
       controller: _controller!,
       backgroundColor: theme.colorScheme.tertiary,
