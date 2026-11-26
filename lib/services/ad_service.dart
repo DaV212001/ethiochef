@@ -196,72 +196,15 @@ class AdService extends GetxService with WidgetsBindingObserver {
   // ==================== INTERSTITIAL AD ====================
 
   void loadInterstitialAd() {
-    if (!adsEnabled.value || _isInterstitialLoading || _interstitialAd != null) {
-      return;
-    }
-    _isInterstitialLoading = true;
-
-    InterstitialAd.load(
-      adUnitId: interstitialAdUnitId,
-      request: const AdRequest(),
-      adLoadCallback: InterstitialAdLoadCallback(
-        onAdLoaded: (ad) {
-          _interstitialAd = ad;
-          _isInterstitialLoading = false;
-          debugPrint('✅ [AdMob] Interstitial ad loaded successfully (unit: $interstitialAdUnitId).');
-
-          _interstitialAd!.fullScreenContentCallback = FullScreenContentCallback(
-            onAdShowedFullScreenContent: (ad) {
-              _isShowingInterstitialAd = true;
-            },
-            onAdDismissedFullScreenContent: (ad) {
-              _isShowingInterstitialAd = false;
-              ad.dispose();
-              _interstitialAd = null;
-              loadInterstitialAd();
-            },
-            onAdFailedToShowFullScreenContent: (ad, error) {
-              _isShowingInterstitialAd = false;
-              debugPrint('❌ [AdMob] Interstitial ad failed to show: ${error.message} (code: ${error.code})');
-              ad.dispose();
-              _interstitialAd = null;
-              loadInterstitialAd();
-            },
-          );
-        },
-        onAdFailedToLoad: (error) {
-          _interstitialAd = null;
-          _isInterstitialLoading = false;
-          debugPrint('❌ [AdMob] Interstitial ad failed to load:');
-          debugPrint('   - Code: ${error.code} (${_getErrorExplanation(error.code)})');
-          debugPrint('   - Message: ${error.message}');
-          debugPrint('   - AdUnit: $interstitialAdUnitId');
-        },
-      ),
-    );
+    // Interstitial ads removed
+    return;
   }
 
   /// Show interstitial ad on navigation / screen changes.
   /// Includes a 15-second debounce safeguard so users aren't overwhelmed.
   void showInterstitialAd({bool force = false}) {
-    if (!adsEnabled.value || _isShowingAppOpenAd || _isShowingInterstitialAd) return;
-
-    if (!force && _lastInterstitialShownAt != null) {
-      final difference = DateTime.now().difference(_lastInterstitialShownAt!);
-      if (difference.inSeconds < 15) {
-        debugPrint('AdService: Skipping interstitial due to cooldown.');
-        return;
-      }
-    }
-
-    if (_interstitialAd == null) {
-      debugPrint('AdService: Interstitial ad not ready yet.');
-      loadInterstitialAd();
-      return;
-    }
-
-    _lastInterstitialShownAt = DateTime.now();
-    _interstitialAd!.show();
+    // Interstitial ads removed
+    return;
   }
 
   // ==================== APP OPEN AD ====================

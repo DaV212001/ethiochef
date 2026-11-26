@@ -187,9 +187,22 @@ class FirebaseService {
     });
   }
 
+  Future<String?> _safeGetFcmToken() async {
+    try {
+      return await _firebaseMessaging.getToken();
+    } catch (e) {
+      print('FCM getToken skipped/unavailable: $e');
+      return null;
+    }
+  }
+
   Future<void> initNotification(BuildContext context) async {
-    await _firebaseMessaging.requestPermission();
-    final fCMToken = await _firebaseMessaging.getToken();
+    try {
+      await _firebaseMessaging.requestPermission();
+    } catch (e) {
+      print('FCM requestPermission error: $e');
+    }
+    final fCMToken = await _safeGetFcmToken();
     print('Token: $fCMToken');
     initPushNotifications(context);
   }
@@ -226,7 +239,8 @@ class FirebaseService {
         "==============================================================================================");
     if (tokenRegistered == false && login == false) {
       print("not logged in");
-      final fCMToken = await _firebaseMessaging.getToken();
+      final fCMToken = await _safeGetFcmToken();
+      if (fCMToken == null) return;
 
       await prefs.setBool('firebase_token_registered', true);
       print('FCM TOKEN: $fCMToken');
@@ -256,7 +270,8 @@ class FirebaseService {
         return;
       }
       print("access_token $access_token");
-      final fCMToken = await _firebaseMessaging.getToken();
+      final fCMToken = await _safeGetFcmToken();
+      if (fCMToken == null) return;
       print('FCM TOKEN: $fCMToken');
       final body = jsonEncode({"token": fCMToken, "user_id": userData?.userId});
       print(body);

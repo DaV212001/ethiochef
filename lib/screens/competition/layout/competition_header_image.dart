@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../widgets/youtube_video_player.dart';
+import '../../../models/food.dart';
 
 class CompetitionHeaderImage extends StatefulWidget {
   final String image;
@@ -25,16 +26,18 @@ class _CompetitionHeaderImageState extends State<CompetitionHeaderImage> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     ThemeData theme = Theme.of(context);
+    final hasValidVideo = widget.video.isNotEmpty &&
+        Food.parseVideoUrl(widget.video) != null;
     return Stack(children: [
-      if (widget.video != null&& widget.video!.isNotEmpty && widget.video != "")
+      if (hasValidVideo)
         SizedBox(
           width: width,
           height: height * 0.3,
           child: YoutubeVideoPlayer(
             link: widget.video.toString(),
           ),
-        ),
-      if (widget.video == null || widget.video == "")
+        )
+      else
         SizedBox(
           width: width,
           height: height * 0.4,

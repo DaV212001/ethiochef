@@ -5,6 +5,7 @@ import 'package:ethiochef/controllers/ad_visibility_controller.dart';
 import 'package:ethiochef/translations/app_translations.dart';
 import 'package:fast_cached_network_image/fast_cached_network_image.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -30,6 +31,9 @@ import 'controllers/theme_mode_controller.dart';
 import 'firebase_options.dart';
 
 Future<void> requestAlarmPermission() async {
+  if (kIsWeb || defaultTargetPlatform != TargetPlatform.android) {
+    return;
+  }
   var status = await Permission.scheduleExactAlarm.status;
   print('STATTUUSSSS: $status');
   if (!status.isGranted) {
@@ -218,7 +222,7 @@ class _EthioChefState extends State<EthioChef> {
             designSize: const Size(412, 892), //Never change this value
             child: GetMaterialApp(
               navigatorKey: navigatorKey,
-              navigatorObservers: [AdRouteObserver()],
+              // navigatorObservers: [AdRouteObserver()],
               // localizationsDelegates: [
               //   GlobalMaterialLocalizations.delegate,
               //   GlobalCupertinoLocalizations.delegate,

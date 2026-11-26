@@ -56,18 +56,105 @@ class Food {
     this.isLiked,
   });
 
+  bool get hasVideo => video != null && video!.trim().isNotEmpty;
+
   static String? parseVideoUrl(dynamic raw) {
     if (raw == null) return null;
+    if (raw is num && raw <= 0) return null;
+    if (raw is bool && !raw) return null;
+
     String str = raw.toString().trim();
-    if (str.isEmpty || str == 'null') return null;
+    if (str.isEmpty) return null;
+
+    final lower = str.toLowerCase();
+    // Falsy or placeholder values commonly returned by APIs/databases
+    if (lower == 'null' ||
+        lower == '0' ||
+        lower == '-1' ||
+        lower == 'false' ||
+        lower == 'none' ||
+        lower == 'undefined' ||
+        lower == 'no' ||
+        lower == 'n/a') {
+      return null;
+    }
+
+    // Strip query parameters and hash fragments to check the actual file path
+    final cleanPath = lower.split('?').first.split('#').first;
+
+    // Check if the URL/file points to a non-video format (e.g. PDF, documents, static images)
+    const nonVideoExtensions = [
+      '.pdf',
+      '.doc',
+      '.docx',
+      '.xls',
+      '.xlsx',
+      '.ppt',
+      '.pptx',
+      '.txt',
+      '.zip',
+      '.rar',
+      '.csv',
+      '.jpg',
+      '.jpeg',
+      '.png',
+      '.webp',
+      '.gif',
+      '.svg',
+      '.bmp',
+      '.ico',
+    ];
+    for (final ext in nonVideoExtensions) {
+      if (cleanPath.endsWith(ext)) {
+        return null;
+      }
+    }
+
+    // Special check: prevent URLs pointing to a root 0 or invalid path like https://www.ethiochef.com/0 or /0
+    if (cleanPath == '/0' || cleanPath.endsWith('/0')) {
+      return null;
+    }
+
+    // If it's already an absolute HTTP/HTTPS URL
     if (str.startsWith('http://') || str.startsWith('https://')) {
       return str;
     }
+
+    // Direct YouTube video ID (standard 11-char alphanumeric + '-' or '_')
+    if (RegExp(r'^[a-zA-Z0-9_-]{11}$').hasMatch(str)) {
+      return 'https://www.youtube.com/watch?v=$str';
+    }
+
+    // Relative path on server (e.g. /uploads/video.mp4 or uploads/video.mp4)
     if (str.startsWith('/')) {
       return '${Constants.ImageAPI}$str';
-    } else {
+    } else if (str.startsWith('uploads/') ||
+        str.startsWith('storage/') ||
+        str.startsWith('videos/')) {
       return '${Constants.ImageAPI}/$str';
     }
+
+    // Fallback: If it has a known video extension (e.g. "myvideo.mp4")
+    const videoExtensions = [
+      '.mp4',
+      '.m4v',
+      '.mov',
+      '.webm',
+      '.mkv',
+      '.avi',
+      '.3gp',
+      '.ts',
+      '.m3u8',
+      '.flv',
+    ];
+    for (final ext in videoExtensions) {
+      if (cleanPath.endsWith(ext)) {
+        return '${Constants.ImageAPI}/$str';
+      }
+    }
+
+    // Any other arbitrary non-path string (like random text or numbers) is not a valid video
+    return null;
   }
 
   factory Food.fromSingleFoodJson(Map<String, dynamic> json) {
@@ -425,7 +512,7 @@ class Food {
       ingredients: jsonDecode(json['ingredients']),
       preparationTime: json['preparationTime'],
       posterImage: json['posterImage'],
-      video: json['video'],
+      video: parseVideoUrl(json['video']),
       comments: jsonDecode(json['comments']),
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],

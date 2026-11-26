@@ -63,11 +63,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCXHJs6-5GBNZtL8sup3lDpsxccMQQ2rwE',
-    appId: '1:1038349049933:ios:9998e5abdd9eafa7e3fc04',
+    appId: '1:1038349049933:ios:68e89c097f8bb897e3fc04',
     messagingSenderId: '1038349049933',
     projectId: 'ethiochef-f96a7',
-    storageBucket: 'ethiochef-f96a7.appspot.com',
-    iosBundleId: 'com.example.echef',
+    storageBucket: 'ethiochef-f96a7.firebasestorage.app',
+    iosBundleId: 'com.peacetechnology.ethiochef',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(

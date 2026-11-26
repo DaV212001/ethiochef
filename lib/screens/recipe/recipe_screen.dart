@@ -35,9 +35,7 @@ class _RecipeScreenState extends State<RecipeScreen> {
   void initState() {
     _future = fetchData();
     loadAd();
-    if (Get.isRegistered<AdService>()) {
-      AdService.to.showInterstitialAd();
-    }
+
     super.initState();
   }
 

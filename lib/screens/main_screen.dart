@@ -78,15 +78,7 @@ class _MainScreenState extends State<MainScreen> {
     return PersistentTabView(
       context,
       stateManagement: true,
-      onItemSelected: (index) {
-        try {
-          if (Get.isRegistered<AdService>()) {
-            AdService.to.showInterstitialAd();
-          }
-        } catch (e) {
-          debugPrint("Tab ad error: $e");
-        }
-      },
+      onItemSelected: (index) {},
       popBehaviorOnSelectedNavBarItemPress: PopBehavior.all,
       bottomScreenMargin: 70,
       controller: _controller,

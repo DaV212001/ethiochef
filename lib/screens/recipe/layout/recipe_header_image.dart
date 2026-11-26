@@ -85,13 +85,14 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
     isSaved = Food.savedRecipes.any(
       (food) => Food.isSameFood(food, widget.food!),
     );
+    final hasValidVideo = widget.food?.video != null &&
+        widget.food!.video!.trim().isNotEmpty &&
+        Food.parseVideoUrl(widget.food!.video) != null;
     return Column(
       children: [
         Stack(
           children: [
-            if (widget.food?.video != null &&
-                widget.food!.video!.isNotEmpty &&
-                widget.food?.video != "")
+            if (hasValidVideo)
               SizedBox(
                 width: width,
                 height: height * 0.35,
@@ -99,8 +100,8 @@ class _RecipeHeaderImageState extends State<RecipeHeaderImage> {
                   link: widget.food!.video.toString(),
                   thumbnailUrl: widget.image,
                 ),
-              ),
-            if (widget.food?.video == null || widget.food?.video == "")
+              )
+            else
               SizedBox(
                 width: width,
                 height: height * 0.4,

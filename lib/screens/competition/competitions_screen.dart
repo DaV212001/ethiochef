@@ -1,6 +1,7 @@
 import 'package:blur/blur.dart';
 import 'package:get/get.dart';
 import '../../../models/competition.dart';
+import '../../../models/food.dart';
 import '../../../screens/subscription/layout/payment.dart';
 import '../../../services/competition_service.dart';
 import '../../../utils/constants.dart';
@@ -277,7 +278,7 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                   children: [
                     CompetitionHeaderImage(
                       image: competition[0].image.toString(),
-                      video: competition[0].videoFromContestant.toString(),
+                      video: competition[0].videoFromContestant?.toString() ?? "",
                     ),
                     CompetitionHeader(
                       competition: competition[0],
@@ -285,7 +286,8 @@ class _CompetitionsScreenState extends State<CompetitionsScreen> {
                     SizedBox(
                       height: 10.h,
                     ),
-                    if (competition[0].video != null)
+                    if (competition[0].video != null &&
+                        Food.parseVideoUrl(competition[0].video) != null)
                       YoutubeVideoPlayer(
                         link: competition[0].video!,
                       ),
