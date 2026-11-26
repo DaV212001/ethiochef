@@ -73,46 +73,63 @@ class ProfileController extends GetxController {
     final confirmed = await showDialog<bool>(
       context: context,
       useRootNavigator: true,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Row(
-          children: [
-            const Icon(
-              Icons.warning_amber_rounded,
-              color: Colors.redAccent,
-              size: 24,
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Text(
-                'delete_account'.tr,
-                style: const TextStyle(fontWeight: FontWeight.bold),
+      builder: (ctx) {
+        final isDark = Theme.of(ctx).brightness == Brightness.dark;
+        final bgColor = isDark ? const Color(0xFF1E293B) : Colors.white;
+        final titleColor = isDark ? Colors.white : const Color(0xFF141115);
+        final bodyColor = isDark ? Colors.white70 : const Color(0xFF333333);
+
+        return AlertDialog(
+          backgroundColor: bgColor,
+          surfaceTintColor: Colors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: Row(
+            children: [
+              const Icon(
+                Icons.warning_amber_rounded,
+                color: Colors.redAccent,
+                size: 24,
               ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  'delete_account'.tr,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: titleColor,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          content: Text(
+            'delete_account_confirm_message'.tr,
+            style: TextStyle(height: 1.4, color: bodyColor),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(false),
+              child: Text(
+                'cancel'.tr,
+                style: TextStyle(color: bodyColor),
+              ),
+            ),
+            FilledButton(
+              style: FilledButton.styleFrom(
+                backgroundColor: Colors.redAccent,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              onPressed: () => Navigator.of(ctx).pop(true),
+              child: Text('delete_account'.tr),
             ),
           ],
-        ),
-        content: Text(
-          'delete_account_confirm_message'.tr,
-          style: const TextStyle(height: 1.4),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: Text('cancel'.tr),
-          ),
-          FilledButton(
-            style: FilledButton.styleFrom(
-              backgroundColor: Colors.redAccent,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text('delete_account'.tr),
-          ),
-        ],
-      ),
+        );
+      },
     );
 
     if (confirmed == true) {
