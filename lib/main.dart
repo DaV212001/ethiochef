@@ -221,6 +221,7 @@ class _EthioChefState extends State<EthioChef> {
           return ScreenUtilInit(
             designSize: const Size(412, 892), //Never change this value
             child: GetMaterialApp(
+              debugShowCheckedModeBanner: false,
               navigatorKey: navigatorKey,
               // navigatorObservers: [AdRouteObserver()],
               // localizationsDelegates: [
