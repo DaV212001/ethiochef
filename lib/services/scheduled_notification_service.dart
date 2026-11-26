@@ -8,6 +8,7 @@ import 'package:timezone/timezone.dart' as tz;
 
 import '../main.dart';
 import '../screens/from_scheduled_notif.dart';
+import 'firsebase_service.dart';
 
 void backGroundhandler(NotificationResponse payload) {
   onSelectNotification(payload.payload, navigatorKey.currentContext!);
@@ -48,7 +49,11 @@ class NotificationScheduled {
     bool initScheduled = false,
   }) async {
     final android = AndroidInitializationSettings('@drawable/ic_launcher2');
-    final iOS = DarwinInitializationSettings();
+    final iOS = DarwinInitializationSettings(
+      requestAlertPermission: !FirebaseService.skipPermissionRequest,
+      requestBadgePermission: !FirebaseService.skipPermissionRequest,
+      requestSoundPermission: !FirebaseService.skipPermissionRequest,
+    );
     final settings = InitializationSettings(android: android, iOS: iOS);
     await _notifications.initialize(
       settings,

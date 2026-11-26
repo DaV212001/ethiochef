@@ -11,6 +11,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../controllers/profile_controller.dart';
 import '../../../main.dart';
 import '../../../screens/subscription/layout/payment.dart';
 import '../../../services/authorization_service.dart';
@@ -219,54 +220,26 @@ class _RouteListState extends State<RouteList> {
           color: theme.colorScheme.primary,
         ),
       },
-      if (!widget.guest)
+      if (!widget.guest && widget.telebirr)
         {
           "title": deleteString,
-          "leadingIcon": Icons.delete,
+          "leadingIcon": Icons.cancel_outlined,
           "onTap": () async {
-            if (widget.telebirr) {
-              Get.showOverlay(
-                asyncFunction: () async {
-                  await deleteTelebirrSub(context);
-                },
-                loadingWidget: const Center(child: CircularProgressIndicator()),
-              );
-            } else {
-              buildShowDialogForDeleteAccount(context);
-            }
-
-            // await QuickAlert.show(
-            //   context: context,
-            //   type: QuickAlertType.error,
-            //   showCancelBtn: true,
-            //   showConfirmBtn: true,
-            //   title: "warning".tr,
-            //   text: 'delete_subscription_warning'.tr,
-            //   titleAlignment: TextAlign.center,
-            //   textAlignment: TextAlign.center,
-            //   confirmBtnText: 'delete'.tr,
-            //   onConfirmBtnTap: ()  {
-            //     deleteSub();
-            //   },
-            //   cancelBtnText: 'cancel'.tr,
-            //   onCancelBtnTap: (){
-            //     Navigator.pop(context);
-            //   },
-            //   confirmBtnColor: Colors.red,
-            //   cancelBtnTextStyle: TextStyle(
-            //       color: Colors.black,
-            //       fontWeight: FontWeight.bold
-            //   ),
-            //   backgroundColor: Colors.white,
-            //   headerBackgroundColor: Colors.grey,
-            //   confirmBtnTextStyle: const TextStyle(
-            //     color: Colors.white,
-            //     fontWeight: FontWeight.bold,
-            //   ),
-            //   barrierColor: Colors.red,
-            //   titleColor: Colors.red,
-            //   textColor: Colors.red,
-            // );
+            Get.showOverlay(
+              asyncFunction: () async {
+                await deleteTelebirrSub(context);
+              },
+              loadingWidget: const Center(child: CircularProgressIndicator()),
+            );
+          },
+        },
+      if (!widget.guest)
+        {
+          "title": "delete_account".tr,
+          "leadingIcon": Icons.delete_forever_rounded,
+          "isDestructive": true,
+          "onTap": () {
+            Get.find<ProfileController>().requestAccountDeletion(context);
           },
         },
     ];
@@ -277,17 +250,22 @@ class _RouteListState extends State<RouteList> {
         children: [
           RouteContainer(
             routePart: general,
-            indexTwo: 2,
+            indexTwo: general.length - 1,
             routeName: "general".tr,
           ),
-          RouteContainer(
-            routePart: status,
-            indexTwo: 1,
-            routeName: "status".tr,
-          ),
+          if (status.isNotEmpty)
+            RouteContainer(
+              routePart: status,
+              indexTwo: status.length - 1,
+              routeName: "status".tr,
+            ),
           if (widget.banner != null)
             AdBlock(bannerAd: widget.banner, isbottom: false),
-          RouteContainer(routePart: other, indexTwo: 4, routeName: "other".tr),
+          RouteContainer(
+            routePart: other,
+            indexTwo: other.length - 1,
+            routeName: "other".tr,
+          ),
         ],
       ),
     );

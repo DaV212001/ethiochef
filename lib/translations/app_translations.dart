@@ -288,6 +288,12 @@ class AppTranslations extends Translations {
       "agree_with_privacy_policy": "I agree with the terms and conditions",
       "forgot_password": "Forgot Password?",
       "password_must_be_4_digits": "Password must be exactly 4 digits",
+      "delete_account": "Delete Account",
+      "delete_account_confirm_message":
+          "Submit an account deletion request? This will permanently delete your EthioChef profile, saved recipes, and account data. This action cannot be undone once processed.",
+      "delete_account_request_title": "Request Submitted",
+      "delete_account_request_body":
+          "Your account deletion request is pending and will be processed.",
     },
     'am': {
       "password": "የይለፍ ቃል",
@@ -500,6 +506,12 @@ class AppTranslations extends Translations {
       "second_award": "ከ999 እስከ 800 ላይክ - 10,000 ብር",
       "third_award": "ከ799 እስከ 500 ላይክ - 5000 ብር",
       "del_sub": "አካዉንቶን ያጥፉ",
+      "delete_account": "አካዉንት ያጥፉ",
+      "delete_account_confirm_message":
+          "የአካውንት መሰረዝ ጥያቄ ማስገባት ይፈልጋሉ? ይህ የኢትዮ ሼፍ መገለጫዎን፣ የተቀመጡ የምግብ አዘገጃጀቶችን እና የአካውንት መረጃዎን በቋሚነት ያጠፋል። ይህ እርምጃ አንዴ ከተፈጸመ ሊመለስ አይችልም።",
+      "delete_account_request_title": "ጥያቄው ቀርቧል",
+      "delete_account_request_body":
+          "የአካውንት መሰረዝ ጥያቄዎ በሂደት ላይ ነው እና ይፈጸማል።",
       "del_succ": "በተሳካ ሁኔታ አጥፍተዋል",
       "del_fail": "ማጥፋት አልተሳካም፣ እባክዎ እንደገና ይሞክሩ",
       "submit_a_competition": "የውድድር ቪዲዮ ያሰገቡ",
@@ -773,6 +785,12 @@ class AppTranslations extends Translations {
       "second_award": "999 hanga 800 likes - Birrii 10,000",
       "third_award": "799 hanga 500 likes - Birrii 5,000",
       "del_sub": "Herrega Haquu",
+      "delete_account": "Herrega Haquu",
+      "delete_account_confirm_message":
+          "Gaaffii haquu herregaa erguu barbaadduu? Kun piroofaayilii EthioChef keessan, recipes qusatamanii fi odeeffannoo herregaa dhaabbataadhaan ni haqa. Gochi kun erga raawwatamee booda duubatti hin deebi'u.",
+      "delete_account_request_title": "Gaaffiin Ergameera",
+      "delete_account_request_body":
+          "Gaaffiin haquu herrega keessanii eeggataa jira, ni raawwatamas.",
       "del_succ": "Milkaa'inaan Haqame",
       "del_fail": "Haquun hin milkoofne, maaloo irra deebi'ii yaali",
       "food_submission_agreement":

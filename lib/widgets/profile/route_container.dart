@@ -42,6 +42,7 @@ class RouteContainer extends StatelessWidget {
                   onTap: routePart[index]["onTap"],
                   title: routePart[index]["title"],
                   icon: routePart[index]["leadingIcon"],
+                  isDestructive: routePart[index]["isDestructive"] == true,
                 ),
                 index == indexTwo
                     ? SizedBox.shrink()

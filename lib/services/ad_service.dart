@@ -10,6 +10,7 @@ enum BannerPosition { top, middle, bottom }
 
 class AdService extends GetxService with WidgetsBindingObserver {
   static AdService get to => Get.find<AdService>();
+  static bool skipAppOpenAds = false;
 
   // Set to true to verify whether the ad setup and UI work using Google's official test ad units
   static const bool useTestAds = false;
@@ -210,7 +211,7 @@ class AdService extends GetxService with WidgetsBindingObserver {
   // ==================== APP OPEN AD ====================
 
   void loadAppOpenAd({bool isColdStart = false}) {
-    if (!adsEnabled.value || _isAppOpenLoading || _appOpenAd != null) {
+    if (skipAppOpenAds || !adsEnabled.value || _isAppOpenLoading || _appOpenAd != null) {
       return;
     }
     _isAppOpenLoading = true;
@@ -248,7 +249,7 @@ class AdService extends GetxService with WidgetsBindingObserver {
   }
 
   void showAppOpenAdIfAvailable() {
-    if (!adsEnabled.value || _isShowingAppOpenAd || _isShowingInterstitialAd) return;
+    if (skipAppOpenAds || !adsEnabled.value || _isShowingAppOpenAd || _isShowingInterstitialAd) return;
 
     if (_appOpenAd == null) {
       debugPrint('AdService: App Open ad not ready yet.');

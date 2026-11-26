@@ -15,6 +15,7 @@ import '../utils/constants.dart';
 import 'authorization_service.dart';
 
 class FirebaseService {
+  static bool skipPermissionRequest = false;
   final _firebaseMessaging = FirebaseMessaging.instance;
   final _androidChannel = const AndroidNotificationChannel(
       'high_importance_channel', 'High Importance Notifications',
@@ -72,11 +73,13 @@ class FirebaseService {
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
             alert: true, badge: true, sound: true);
-    await FirebaseMessaging.instance.requestPermission(
-      announcement: true,
-      carPlay: true,
-      criticalAlert: true,
-    );
+    if (!skipPermissionRequest) {
+      await FirebaseMessaging.instance.requestPermission(
+        announcement: true,
+        carPlay: true,
+        criticalAlert: true,
+      );
+    }
 
     print("here 3");
     FirebaseMessaging.instance.getInitialMessage().then((message) {
@@ -197,10 +200,12 @@ class FirebaseService {
   }
 
   Future<void> initNotification(BuildContext context) async {
-    try {
-      await _firebaseMessaging.requestPermission();
-    } catch (e) {
-      print('FCM requestPermission error: $e');
+    if (!skipPermissionRequest) {
+      try {
+        await _firebaseMessaging.requestPermission();
+      } catch (e) {
+        print('FCM requestPermission error: $e');
+      }
     }
     final fCMToken = await _safeGetFcmToken();
     print('Token: $fCMToken');

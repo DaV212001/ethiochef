@@ -1,0 +1,186 @@
+name: Record App Store Guideline 2.1 Demo (iOS Simulator)
+
+on:
+  workflow_dispatch:
+    inputs:
+      simulator_device:
+        description: 'iOS Simulator Device Name or Pattern'
+        required: true
+        default: 'iPhone 16'
+        type: string
+
+jobs:
+  record-demo:
+    name: Record Guideline 2.1 Demo Video on iOS Simulator
+    runs-on: macos-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.4'
+          channel: 'stable'
+          cache: true
+
+      - name: Verify Environment
+        run: |
+          flutter --version
+          xcodebuild -version
+          xcrun simctl list devices available
+
+      - name: Install FFmpeg
+        run: |
+          if ! command -v ffmpeg >/dev/null 2>&1; then
+            echo "Installing FFmpeg via Homebrew..."
+            brew install ffmpeg || true
+          fi
+          command -v ffmpeg || echo "FFmpeg unavailable, will fall back to raw simulator MP4"
+
+      - name: Install Dependencies
+        run: |
+          flutter config --no-enable-swift-package-manager
+          flutter precache --ios
+          flutter pub get
+          cd ios
+          pod install --repo-update
+          cd ..
+
+      - name: Boot Simulator & Clean Status Bar
+        id: boot-sim
+        run: |
+          DEVICE_NAME="${{ inputs.simulator_device }}"
+          UDID=$(python3 - "$DEVICE_NAME" <<'PY'
+          import json, re, subprocess, sys
+          requested = sys.argv[1].strip()
+          patterns = [re.escape(requested) + r"$", re.escape(requested), r"iPhone 1[678] Pro", r"iPhone 1[678]", r"iPhone "]
+          data = json.loads(subprocess.check_output(["xcrun", "simctl", "list", "devices", "available", "-j"]))
+          for pat_str in patterns:
+              pat = re.compile(pat_str)
+              for runtime, devs in sorted(data.get("devices", {}).items(), reverse=True):
+                  if "iOS" not in runtime:
+                      continue
+                  for d in devs:
+                      if d.get("isAvailable") and pat.search(d.get("name", "")):
+                          print(f"Matched {d['name']} ({runtime}) -> {d['udid']}", file=sys.stderr)
+                          print(d["udid"])
+                          sys.exit(0)
+          PY
+          )
+
+          if [ -z "$UDID" ]; then
+            echo "ERROR: No available iPhone simulator found!"
+            xcrun simctl list devices available
+            exit 1
+          fi
+
+          echo "sim_udid=$UDID" >> "$GITHUB_OUTPUT"
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
+
+          xcrun simctl status_bar "$UDID" override \
+            --time "9:41" \
+            --dataNetwork "wifi" \
+            --wifiMode "active" \
+            --wifiBars 3 \
+            --cellularMode "active" \
+            --cellularBars 4 \
+            --batteryState "charged" \
+            --batteryLevel 100 || true
+
+      - name: Pre-build & Pre-grant Simulator Permissions
+        run: |
+          UDID="${{ steps.boot-sim.outputs.sim_udid }}"
+          echo "Pre-building iOS simulator app..."
+          flutter build ios --simulator --no-codesign
+
+          echo "Installing Runner.app onto simulator $UDID..."
+          xcrun simctl install "$UDID" build/ios/iphonesimulator/Runner.app
+
+          echo "Pre-granting privacy permissions to com.peacetechnology.ethiochef..."
+          xcrun simctl privacy "$UDID" grant all com.peacetechnology.ethiochef || true
+          xcrun simctl privacy "$UDID" grant photos com.peacetechnology.ethiochef || true
+          xcrun simctl privacy "$UDID" grant camera com.peacetechnology.ethiochef || true
+          xcrun simctl privacy "$UDID" grant microphone com.peacetechnology.ethiochef || true
+
+      - name: Run Integration Test & Record Screen
+        run: |
+          UDID="${{ steps.boot-sim.outputs.sim_udid }}"
+          RAW_VIDEO="/tmp/raw_demo.mp4"
+
+          (
+            echo "Recording daemon: Waiting for EthioChef app to launch on simulator..."
+            while ! xcrun simctl spawn "$UDID" launchctl list 2>/dev/null | grep -q "com.peacetechnology.ethiochef" && ! pgrep -f "Runner.app/Runner" >/dev/null 2>&1; do
+              sleep 0.5
+            done
+            echo "EthioChef app detected! Starting screen recording..."
+            xcrun simctl io "$UDID" recordVideo --codec=h264 "$RAW_VIDEO"
+          ) &
+          DAEMON_PID=$!
+
+          echo "Running Flutter Integration Test..."
+          set +e
+          flutter test integration_test/app_review_demo_test.dart -d "$UDID"
+          TEST_EXIT_CODE=$?
+          set -e
+
+          echo "Integration test exited with code: $TEST_EXIT_CODE. Finalizing recording..."
+          kill -INT $(pgrep -f "recordVideo") 2>/dev/null || true
+          kill -INT "$DAEMON_PID" 2>/dev/null || true
+          sleep 4
+          xcrun simctl shutdown "$UDID" || true
+
+          if [ ! -f "$RAW_VIDEO" ]; then
+            echo "Error: Video recording was not generated!"
+            exit 1
+          fi
+
+          echo "Raw video size: $(ls -lh "$RAW_VIDEO" | awk '{print $5}')"
+          if [ "$TEST_EXIT_CODE" -ne 0 ]; then
+            echo "Warning: Integration test exited with non-zero code $TEST_EXIT_CODE"
+          fi
+
+      - name: Finalize & Compress Demo Video (< 30 MB)
+        run: |
+          RAW_VIDEO="/tmp/raw_demo.mp4"
+          OUTPUT_VIDEO="ethiochef_guideline_2_1_demo.mp4"
+
+          if command -v ffmpeg >/dev/null 2>&1; then
+            ffmpeg -y -i "$RAW_VIDEO" \
+              -vf "fps=30,scale=1080:-2:flags=lanczos" \
+              -c:v libx264 \
+              -crf 24 \
+              -preset medium \
+              -profile:v high \
+              -pix_fmt yuv420p \
+              -movflags +faststart \
+              -an \
+              "$OUTPUT_VIDEO"
+          else
+            cp "$RAW_VIDEO" "$OUTPUT_VIDEO"
+          fi
+
+          FINAL_SIZE_BYTES=$(wc -c < "$OUTPUT_VIDEO")
+          FINAL_SIZE_MB=$((FINAL_SIZE_BYTES / 1048576))
+          echo "Final video ready: $OUTPUT_VIDEO (${FINAL_SIZE_MB} MB)"
+
+          if [ "$FINAL_SIZE_MB" -ge 30 ]; then
+            echo "Error: Video size exceeds 30MB limit!"
+            exit 1
+          fi
+
+      - name: Upload Guideline 2.1 Demo Video Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ethiochef-guideline-2-1-demo
+          path: ethiochef_guideline_2_1_demo.mp4
+          retention-days: 14
