@@ -8,6 +8,9 @@ on:
         required: true
         default: 'iPhone 16'
         type: string
+  push:
+    branches:
+      - 'ci/record-review-demo'
 
 jobs:
   record-demo:
@@ -58,7 +61,7 @@ jobs:
       - name: Boot Simulator & Clean Status Bar
         id: boot-sim
         run: |
-          DEVICE_NAME="${{ inputs.simulator_device }}"
+          DEVICE_NAME="${{ github.event.inputs.simulator_device || 'iPhone 16' }}"
           UDID=$(python3 - "$DEVICE_NAME" <<'PY'
           import json, re, subprocess, sys
           requested = sys.argv[1].strip()
