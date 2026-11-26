@@ -1,0 +1,57 @@
+name: iOS App Store Review Submitter
+
+on:
+  # workflow_run is disabled to prevent test/draft builds from automatically submitting to App Store Review.
+  # Trigger manually via workflow_dispatch when ready to submit.
+  workflow_dispatch:
+    inputs:
+      build_number:
+        description: 'Build Number (e.g., 93)'
+        required: false
+      version_name:
+        description: 'Version Name (e.g., 4.0.27)'
+        required: false
+      release_notes:
+        description: "Release Notes (What is new in this version)"
+        required: false
+        default: "Bug fixes and optimizations"
+
+jobs:
+  submit-for-review:
+    name: Submit Build to App Store Review
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          pip install requests pyjwt cryptography
+
+      - name: Submit to App Store Review
+        env:
+          APPSTORE_KEY_ID: ${{ secrets.APPSTORE_KEY_ID }}
+          APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+          APPSTORE_API_KEY_BASE64: ${{ secrets.APPSTORE_API_KEY_BASE64 }}
+          INPUT_BUILD_NUMBER: ${{ github.event.inputs.build_number }}
+          INPUT_VERSION_NAME: ${{ github.event.inputs.version_name }}
+          INPUT_RELEASE_NOTES: ${{ github.event.inputs.release_notes }}
+        run: |
+          ARGS=()
+          if [ -n "$INPUT_BUILD_NUMBER" ]; then
+            ARGS+=(--build-number "$INPUT_BUILD_NUMBER")
+          fi
+          if [ -n "$INPUT_VERSION_NAME" ]; then
+            ARGS+=(--version-name "$INPUT_VERSION_NAME")
+          fi
+          if [ -n "$INPUT_RELEASE_NOTES" ]; then
+            ARGS+=(--notes "$INPUT_RELEASE_NOTES")
+          fi
+          python3 tool/submit_appstore_review.py "${ARGS[@]}"
