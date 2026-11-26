@@ -49,30 +49,29 @@ Future<void> notifyHostRecorder(String action) async {
   try {
     await http
         .get(Uri.parse('http://127.0.0.1:45678/$action'))
-        .timeout(const Duration(seconds: 10));
+        .timeout(const Duration(seconds: 20));
   } catch (e) {
     debugPrint('[EthioChef Demo] Host recorder notice ($action): $e');
   }
 }
 
-Finder findPreferredRecipeCard(WidgetTester tester) {
-  final allCards = find.byType(CategoryCard);
-  final elements = allCards.evaluate().toList();
-  for (final el in elements) {
-    final widget = el.widget as CategoryCard;
+int findPreferredRecipeIndex(WidgetTester tester) {
+  final elements = find.byType(CategoryCard).evaluate().toList();
+  for (int i = 0; i < elements.length; i++) {
+    final widget = elements[i].widget as CategoryCard;
     if (widget.name == null &&
         widget.food.video != null &&
         Food.parseVideoUrl(widget.food.video) != null) {
-      return find.byWidget(widget);
+      return i;
     }
   }
-  for (final el in elements) {
-    final widget = el.widget as CategoryCard;
+  for (int i = 0; i < elements.length; i++) {
+    final widget = elements[i].widget as CategoryCard;
     if (widget.name == null) {
-      return find.byWidget(widget);
+      return i;
     }
   }
-  return allCards.first;
+  return 0;
 }
 
 void main() {
@@ -144,10 +143,12 @@ void main() {
         final cards = find.byType(CategoryCard);
         expect(cards, findsWidgets, reason: 'Home screen should display recipe cards');
 
-        final recipeCard = findPreferredRecipeCard(tester);
-        await tester.ensureVisible(recipeCard);
+        final cardIdx = findPreferredRecipeIndex(tester);
+        await tester.ensureVisible(cards.at(cardIdx));
         await pumpRealTime(tester, const Duration(milliseconds: 500));
-        await tester.tap(recipeCard, warnIfMissed: false);
+        final refreshedCards = find.byType(CategoryCard);
+        final tapIdx = cardIdx < refreshedCards.evaluate().length ? cardIdx : 0;
+        await tester.tap(refreshedCards.at(tapIdx), warnIfMissed: false);
         await pumpRealTime(tester, const Duration(seconds: 5));
 
         // If an embedded video player loaded without external fallback, tap play briefly

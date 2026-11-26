@@ -134,12 +134,12 @@ jobs:
                           rec_proc = subprocess.Popen(
                               ["xcrun", "simctl", "io", udid, "recordVideo", "--codec=h264", raw_video]
                           )
-                          deadline = time.time() + 12
+                          deadline = time.time() + 7
                           while time.time() < deadline:
                               if os.path.exists(raw_video) and os.path.getsize(raw_video) > 0:
                                   break
                               time.sleep(0.25)
-                          time.sleep(1.5)
+                          time.sleep(2.0)
                       self.send_response(200)
                       self.end_headers()
                       self.wfile.write(b"started")
