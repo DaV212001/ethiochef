@@ -121,7 +121,7 @@ jobs:
           RAW_VIDEO="/tmp/raw_demo.mp4"
 
           python3 - "$UDID" "$RAW_VIDEO" <<'PY' &
-          import http.server, signal, subprocess, sys, time
+          import http.server, os, signal, subprocess, sys, time
           udid, raw_video = sys.argv[1], sys.argv[2]
           rec_proc = None
 
@@ -134,6 +134,12 @@ jobs:
                           rec_proc = subprocess.Popen(
                               ["xcrun", "simctl", "io", udid, "recordVideo", "--codec=h264", raw_video]
                           )
+                          deadline = time.time() + 12
+                          while time.time() < deadline:
+                              if os.path.exists(raw_video) and os.path.getsize(raw_video) > 0:
+                                  break
+                              time.sleep(0.25)
+                          time.sleep(1.5)
                       self.send_response(200)
                       self.end_headers()
                       self.wfile.write(b"started")
